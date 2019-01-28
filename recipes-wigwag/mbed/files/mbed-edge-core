@@ -1,0 +1,48 @@
+#!/bin/bash
+# /etc/init.d/devicejs: starts Arm edge-core
+### BEGIN INIT INFO
+# Provides:             edge-core
+# Required-Start:       $remote_fs $time wwrelay
+# Required-Stop:        $remote_fs $time
+# Should-Start:         $network
+# Should-Stop:          $network
+# Default-Start:        5
+# Default-Stop:         0 1 6
+# Short-Description:    System logger
+### END INIT INFO
+start_edge() {
+    if [ ! -d "/userdata/mbed" ]; then
+	# this directory is used to hold the developer certificate, if the user wants to use one
+	echo "Creating /userdata/mbed"
+	mkdir -p /userdata/mbed
+	chown developer -R /userdata/mbed
+    fi 
+    cd /userdata/mbed
+    /wigwag/mbed/edge-core/build/bin/edge-core  --http-port 9101  >> /var/log/edge-core 2>&1 &
+#    /wigwag/mbed/edge-core/build/mcc-linux-x86/existing/bin/edge-core --pt-api-port 9100 --http-port 9101 > /var/log/edge-core 2>&1 &
+}
+case "$1" in
+	start)
+		#
+		echo "Starting mbed edge-core"
+		start_edge
+		;;
+     #                                                                                                                                                                  
+     stop)
+		#
+		echo "Stopping edge-core"
+		killall edge-core
+		;;
+	#
+	restart)
+		#
+		echo "Restarting edge-core"
+		;;
+	#
+	*)
+		#
+		echo "Usage: \$0 {start|stop|restart}"
+		exit 1
+	#
+esac
+	exit 0
