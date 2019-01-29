@@ -94,7 +94,6 @@ RPI_STUFF = " \
 "
 
 WIGWAG_STUFF = " \
-    devicedb \
     emacs \
     fftw \
     imagemagick \
