@@ -80,7 +80,6 @@ EXTRA_TOOLS_INSTALL = " \
     rndaddtoentcnt \
     rng-tools \
     sysfsutils \
-    tcpdump \
     unzip \
     util-linux \
     wget \
