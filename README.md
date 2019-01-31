@@ -2,7 +2,7 @@
 
 The following are the instructions used to build Yocto for Raspberry Pi with as much of the WigWag-Meta as will compiles.
 
-Currently the 'meta-rpi' has the WigWag stuff added to it for the build so we could make a clean break with the old build system.
+Currently the 'meta-gateway-ww' has the WigWag stuff added to it for the build so we could make a clean break with the old build system.
 
 ## Ubuntu Setup
 
@@ -52,20 +52,20 @@ Then the dependency layers under that
 These repositories shouldn’t need modifications other then periodic updates 
 and can be reused for different projects or different boards.
 
-## Clone the meta-rpi repository
+## Clone the meta-gateway-ww repository
 
-Create a separate sub-directory for the meta-rpi repository before cloning. This is where you will be doing your customization.
+Create a separate sub-directory for the meta-gateway-ww repository before cloning. This is where you will be doing your customization.
 ```
 ~$ mkdir ~/rpi
 ~$ cd ~/rpi
-~/rpi$ git clone git://github.com:ARMmbed/meta-rpi.git
+~/rpi$ git clone git://github.com:ARMmbed/meta-gateway-ww.git
 ```
-The meta-rpi/README.md contains these very instructions.
+The meta-gateway-ww/README.md contains these very instructions.
 
 ## Initialize the build directory
 Again much of the following are only my conventions.
 
-Choose a build directory. I tend to do this on a per board and/or per project basis so I can quickly switch between projects. For this example I’ll put the build directory under ~/rpi/ with the meta-rpi layer.
+Choose a build directory. I tend to do this on a per board and/or per project basis so I can quickly switch between projects. For this example I’ll put the build directory under ~/rpi/ with the meta-gateway-ww layer.
 
 You could manually create the directory structure like this
 ```
@@ -78,12 +78,12 @@ Or you could use the Yocto environment script `oe-init-build-env` like this pass
 The Yocto environment script will create the build directory if it does not already exist.
 
 ## Customize the configuration files
-There are some sample configuration files in the `meta-rpi/conf` directory.
+There are some sample configuration files in the `meta-gateway-ww/conf` directory.
 
 Copy them to the `build/conf` directory (removing the ‘-sample’)
 ```
-~/rpi$ cp meta-rpi/conf/local.conf.sample build/conf/local.conf
-~/rpi$ cp meta-rpi/conf/bblayers.conf.sample build/conf/bblayers.conf
+~/rpi$ cp meta-gateway-ww/conf/local.conf.sample build/conf/local.conf
+~/rpi$ cp meta-gateway-ww/conf/bblayers.conf.sample build/conf/bblayers.conf
 ```
 If you used the `oe-init-build-env` script to create the build directory, it generated some generic configuration files in the `build/conf` directory. If you want to look at them, save them with a different name before overwriting.
 
@@ -107,7 +107,7 @@ For example, if your directory structure does not look exactly like this, you wi
      ...
 
 ~/rpi/
-    meta-rpi/
+    meta-gateway-ww/
     build/
         conf/
 ```
@@ -216,7 +216,7 @@ You can also run generated qemu images with a command like 'runqemu qemux86'
 ```
 I don’t use any of those Common targets, but instead always write my own custom image recipes.
 
-The `meta-rpi` layer has some examples under`meta-rpi/images/`.
+The `meta-gateway-ww` layer has some examples under`meta-gateway-ww/images/`.
 
 
 ## Build
@@ -246,7 +246,7 @@ The image files won’t get deleted from the TMPDIR until the next time you buil
 ## Copying the binaries to an SD card (or eMMC)
 After the build completes, the bootloader, kernel and rootfs image files can be found in **/deploy/images/$MACHINE** with **MACHINE** coming from your **local.conf**.
 
-The meta-rpi/scripts directory has some helper scripts to format and copy the files to a microSD card.
+The meta-gateway-ww/scripts directory has some helper scripts to format and copy the files to a microSD card.
 
 See this post for an additional first step required for the RPi Compute eMMC.
 
@@ -259,7 +259,7 @@ Insert the microSD into your workstation and note where it shows up.
 
 For example
 ```
-~/rpi/meta-rpi$ lsblk
+~/rpi/meta-gateway-ww$ lsblk
 NAME    MAJ:MIN RM   SIZE RO TYPE MOUNTPOINT
 sda       8:0    0 931.5G  0 disk
 |-sda1    8:1    0  93.1G  0 part /
@@ -282,8 +282,8 @@ It doesn’t matter if some partitions from the SD card are mounted. The mk2part
 
 WARNING: This script will format any disk on your workstation so make sure you choose the SD card.
 ```
-~$ cd ~/rpi/meta-rpi/scripts
-~/rpi/meta-rpi/scripts$ sudo ./mk2parts.sh sdb
+~$ cd ~/rpi/meta-gateway-ww/scripts
+~/rpi/meta-gateway-ww/scripts$ sudo ./mk2parts.sh sdb
 ```
 You only have to format the SD card once.
 
@@ -310,27 +310,27 @@ TMPDIR = "/oe4/rpi/tmp-thud"
 ```
 Then I would export this environment variable before running `copy_boot.sh`
 ```
-~/rpi/meta-rpi/scripts$ export OETMP=/oe4/rpi/tmp-thud
+~/rpi/meta-gateway-ww/scripts$ export OETMP=/oe4/rpi/tmp-thud
 ```
 If you didn’t override the default `TMPDIR` in `local.conf`, then set it to the default `TMPDIR`
 ```
-~/rpi/meta-rpi/scripts$ export OETMP=~/rpi/build/tmp
+~/rpi/meta-gateway-ww/scripts$ export OETMP=~/rpi/build/tmp
 ```
 The `copy_boot.sh` script also needs a `MACHINE` environment variable specifying the type of RPi board.
 ```
-~/rpi/meta-rpi/scripts$ export MACHINE=raspberrypi3
+~/rpi/meta-gateway-ww/scripts$ export MACHINE=raspberrypi3
 ```
 or
 ```
-~/rpi/meta-rpi/scripts$ export MACHINE=raspberrypi0-wifi
+~/rpi/meta-gateway-ww/scripts$ export MACHINE=raspberrypi0-wifi
 ```
 Then run the `copy_boot.sh` script passing the location of SD card
 ```
-~/rpi/meta-rpi/scripts$ ./copy_boot.sh sdb
+~/rpi/meta-gateway-ww/scripts$ ./copy_boot.sh sdb
 ```
 This script should run very fast.
 
-If you want to customize the config.txt or cmdline.txt files for the system, you can place either of those files in the `meta-rpi/scripts` directory and the `copy_boot.sh` script will copy them as well.
+If you want to customize the config.txt or cmdline.txt files for the system, you can place either of those files in the `meta-gateway-ww/scripts` directory and the `copy_boot.sh` script will copy them as well.
 
 Take a look at the script if this is unclear.
 
@@ -346,11 +346,11 @@ The script also accepts a hostname argument if you want the host name to be some
 
 Here’s an example of how you would run `copy_rootfs.sh`
 ```
-~/rpi/meta-rpi/scripts$ ./copy_rootfs.sh sdb console
+~/rpi/meta-gateway-ww/scripts$ ./copy_rootfs.sh sdb console
 ```
 or
 ```
-~/rpi/meta-rpi/scripts$ ./copy_rootfs.sh sdb qt5 rpi3
+~/rpi/meta-gateway-ww/scripts$ ./copy_rootfs.sh sdb qt5 rpi3
 ```
 The `copy_rootfs.sh` script will take longer to run and depends a lot on the quality of your SD card. With a good Class 10 card it should take less then 30 seconds.
 
@@ -362,9 +362,9 @@ Here’s a realistic example session where I want to copy already built images t
 ~$ sudo umount /dev/sdb2
 ~$ export OETMP=/oe4/rpi/tmp-thud
 ~$ export MACHINE=raspberrypi2
-~$ cd rpi/meta-rpi/scripts
-~/rpi/meta-rpi/scripts$ ./copy_boot.sh sdb
-~/rpi/meta-rpi/scripts$ ./copy_rootfs.sh sdb console rpi3
+~$ cd rpi/meta-gateway-ww/scripts
+~/rpi/meta-gateway-ww/scripts$ ./copy_boot.sh sdb
+~/rpi/meta-gateway-ww/scripts$ ./copy_rootfs.sh sdb console rpi3
 ```
 Once past the development stage I usually wrap all of the above in another script for convenience.
 
