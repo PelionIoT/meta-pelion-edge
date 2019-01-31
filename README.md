@@ -412,3 +412,25 @@ openssh-sshd:
         /usr/sbin/sshd
 ```
 For a package to be installed in your image it has to get into the IMAGE_INSTALL variable some way or another. See the example image recipes for some common conventions.
+
+## Adding WigWag packages
+Packages are addded in the file 'meta-gateway-ww/images/console-image.bb'
+
+Open it up with your favorite editor and scroll down to the variable WIGWAG_STUFF and you should see something like:
+
+```
+WIGWAG_STUFF = " \
+    emacs \
+    fftw \
+    imagemagick \
+    lcms \
+    mbed-cloud-edge \
+    panic \
+    pps-tools \
+    pwgen \
+    tsb \
+    twlib \
+"
+```
+
+Add a new line before the last quote containing the name of the recipe as defined in it's <recipe>.bb file.
