@@ -170,10 +170,10 @@ The default location is in the build directory, '~/rpi/build/sstate-cache'.
 ## ROOT PASSWORD
 There is only one login user by default, root.
 
-The default password is set to 'redmbed' by these two lines in the local.conf file
+The default password is set to 'redteam' by these two lines in the local.conf file
 ```
 INHERIT += "extrausers"
-EXTRA_USERS_PARAMS = "usermod -P redmbed root; "
+EXTRA_USERS_PARAMS = "usermod -P redteam root; "
 ```
 These two lines force a password change on first login
 ```
@@ -187,7 +187,7 @@ If you want no password at all (development only hopefully), comment those four 
 EXTRA_IMAGE_FEATURES = "debug-tweaks"
 
 #INHERIT += "extrausers"
-#EXTRA_USERS_PARAMS = "usermod -P redmbed root; "
+#EXTRA_USERS_PARAMS = "usermod -P redteam root; "
 
 #INHERIT += "chageusers"
 #CHAGE_USERS_PARAMS = "chage -d0 root; "
