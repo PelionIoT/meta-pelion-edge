@@ -24,7 +24,7 @@ PR = "r3"
 SRCREV = "${AUTOREV}"
 #SRCREV = "2dfe013c7b862ad1a6add97688ff89c65e2acb8d"
 #SRCREV = "36b08685b19fc574aaf29933264377233cf454af"
-SRC_URI = "git://git@github.com/WigWagCo/deviceOSWD.git;protocol=ssh;branch=master"
+SRC_URI = "git://git@github.com/kylestein-arm/deviceOSWD.git;protocol=ssh;branch=rpi"
 
 # ;tag=v1.2.6"
 
@@ -40,6 +40,7 @@ INHIBIT_PACKAGE_DEBUG_SPLIT = "1"
 INHIBIT_PACKAGE_STRIP = "1"
 #INSANE_SKIP_${PN} += "dev-so"
 #INSANE_SKIP_${PN} += "dev-so staticdev"
+INSANE_SKIP_${PN} += "ldflags"
 
 #FILES_lib = "${D}${libdir}/*" 
 #FILES_inc = "${D}${includedir}/TW/*"
