@@ -17,7 +17,7 @@ PKGV = "1.0+git${GITPKGV}"
 PR = "r2"
 
 SRCREV = "${AUTOREV}"
-SRC_URI = "git://git@github.com/WigWagCo/deviceOSWD.git;protocol=ssh"
+SRC_URI = "git://git@github.com/kylestein-arm/deviceOSWD.git;protocol=ssh;branch=rpi"
 
 #DEBUG_OPTIONS = "-rdynamic -D_TW_TASK_DEBUG_THREADS_"
 #GLIBCFLAG = "-D_USING_GLIBC_"
@@ -31,6 +31,7 @@ INHIBIT_PACKAGE_DEBUG_SPLIT = "1"
 INHIBIT_PACKAGE_STRIP = "1"
 #INSANE_SKIP_${PN} += "dev-so"
 #INSANE_SKIP_${PN} += "dev-so staticdev"
+INSANE_SKIP_${PN} += "ldflags"
 
 #FILES_lib = "${D}${libdir}/*" 
 #FILES_inc = "${D}${includedir}/TW/*"

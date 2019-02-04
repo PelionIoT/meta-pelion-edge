@@ -101,6 +101,7 @@ WIGWAG_STUFF = " \
     panic \
     pps-tools \
     pwgen \
+    su-exec \
     tsb \
     twlib \
 "
