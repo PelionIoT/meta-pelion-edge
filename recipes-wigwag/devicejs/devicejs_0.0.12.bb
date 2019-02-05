@@ -8,7 +8,7 @@ BUILD_NUMBER_FILE = "/home/walt/bin/build_number"
 
 DBN="/builds/walt/42/wwrelay-rootfs/tools/build-scrips2/data/config/builds"
 
-inherit pkgconfig gitpkgv npm 
+inherit pkgconfig gitpkgv npm-base npm-install
 
 # when using a tag don't use AUTOREV, or any of this crap:
 #PV = "1.0+git${SRCPV}"
@@ -23,7 +23,7 @@ SRC_URI="git://git@github.com/WigWagCo/devicejs-ng.git;protocol=ssh;branch=devel
 
 S = "${WORKDIR}/git"
 
-DEPENDS = "nodejs nodejs-native udev avahi"
+DEPENDS = "nodejs node-native udev avahi"
 RDEPENDS_${PN} += " nodejs"
 
 BBCLASSEXTEND = "native"

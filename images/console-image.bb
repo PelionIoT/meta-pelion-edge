@@ -93,6 +93,7 @@ RPI_STUFF = " \
 "
 
 WIGWAG_STUFF = " \
+    devicejs \
     emacs \
     fftw \
     imagemagick \
