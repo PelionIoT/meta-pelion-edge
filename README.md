@@ -62,6 +62,14 @@ Create a separate sub-directory for the meta-gateway-ww repository before clonin
 ```
 The meta-gateway-ww/README.md contains these very instructions.
 
+## Clone the meta-nodejs repository
+The meta-nodejs repository can be cloned into a sibling directory of meta-gateway-ww
+```
+~$ cd ~/rpi
+~/rpi$ git clone -b pyro git://git@github.com:aaronovz1/meta-nodejs.git
+```
+
+
 ## Initialize the build directory
 Again much of the following are only my conventions.
 
