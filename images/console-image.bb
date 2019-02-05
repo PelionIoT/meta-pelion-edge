@@ -99,6 +99,9 @@ WIGWAG_STUFF = " \
     lcms \
     mbed-cloud-edge \
     panic \
+    packagegroup-core-buildessential \
+    pgw-os-dev \
+    pgw-os-essentials \
     pps-tools \
     pwgen \
     su-exec \
