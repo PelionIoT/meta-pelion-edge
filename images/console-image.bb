@@ -99,6 +99,7 @@ WIGWAG_STUFF = " \
     imagemagick \
     lcms \
     mbed-cloud-edge \
+    mbed-devicejs-bridge \
     panic \
     packagegroup-core-buildessential \
     pgw-os-dev \
