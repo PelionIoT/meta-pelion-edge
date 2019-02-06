@@ -100,6 +100,7 @@ WIGWAG_STUFF = " \
     lcms \
     mbed-cloud-edge \
     mbed-devicejs-bridge \
+    node-hotplug \
     panic \
     packagegroup-core-buildessential \
     pgw-os-dev \
