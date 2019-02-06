@@ -3,7 +3,7 @@ DESCRIPTION = "a better git for igwag"
 LICENSE = "CLOSED"
 #LIC_FILES_CHKSUM = "file://index.js;md5=19b7b10a212c4a56cd7de36f5b13b889"
 
-inherit autotools pkgconfig gitpkgv npm 
+inherit autotools pkgconfig gitpkgv npm-base npm-install
 
 PV = "1.0+git${SRCPV}"
 PKGV = "1.0+git${GITPKGV}"
@@ -23,7 +23,7 @@ SRCREV_edgejs = "${AUTOREV}"
 
 
 
-DEPENDS = "nodejs nodejs-native"
+DEPENDS = "nodejs node-native"
 RDEPENDS_${PN} += " nodejs bash"
 
 S = "${WORKDIR}/git"
