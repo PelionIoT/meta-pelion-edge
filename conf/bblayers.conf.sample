@@ -16,4 +16,5 @@ BBLAYERS ?= " \
     ${HOME}/poky-thud/meta-qt5 \
     ${HOME}/poky-thud/meta-raspberrypi \
     ${HOME}/rpi/meta-gateway-ww \
+    ${HOME}/rpi/meta-nodejs \
 "

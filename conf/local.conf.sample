@@ -2,7 +2,7 @@
 # Yocto Project 2.6 Poky distribution [thud] branch
 # This is a sysvinit system
 
-LICENSE_FLAGS_WHITELIST = "commercial WigWagCommericalDeviceOS"
+LICENSE_FLAGS_WHITELIST = "commercial WigWagCommericalDeviceOS WigWagCommericalDeviceJS"
 
 DISTRO_FEATURES = "ext2 opengl usbhost ${DISTRO_FEATURES_LIBC}"
 
@@ -58,6 +58,11 @@ EXTRA_USERS_PARAMS = "usermod -P redmbed root; "
 # this will force root to change password on first login
 INHERIT += "chageusers"
 CHAGE_USERS_PARAMS = "chage -d0 root; "
+
+PREFERRED_PROVIDER_node-native = "nodejs-native"
+PREFERRED_PROVIDER_node = "nodejs"
+PREFERRED_VERSION_nodejs = "8.11.2"
+PREFERRED_VERSION_nodejs-native = "8.11.2"
 
 USER_CLASSES = "image-mklibs image-prelink"
 PATCHRESOLVE = "noop"
