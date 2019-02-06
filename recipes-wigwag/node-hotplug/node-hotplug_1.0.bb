@@ -3,7 +3,7 @@ LICENSE = "DEVICEOS-1"
 LICENSE_FLAGS="WigWagCommericalDeviceOS"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=543feeb21d5afbbe88012f44261f5217"
 
-inherit pkgconfig gitpkgv npm
+inherit pkgconfig gitpkgv npm-base npm-install
 #npm-install-global
 
 PV = "1.0+git${SRCPV}"
