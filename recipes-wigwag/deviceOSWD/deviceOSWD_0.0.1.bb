@@ -24,7 +24,7 @@ PR = "r3"
 SRCREV = "${AUTOREV}"
 #SRCREV = "2dfe013c7b862ad1a6add97688ff89c65e2acb8d"
 #SRCREV = "36b08685b19fc574aaf29933264377233cf454af"
-SRC_URI = "git://git@github.com/kylestein-arm/deviceOSWD.git;protocol=ssh;branch=rpi"
+SRC_URI = "git://git@github.com/WigWagCo/deviceOSWD.git;protocol=ssh;branch=master"
 
 # ;tag=v1.2.6"
 
@@ -40,7 +40,6 @@ INHIBIT_PACKAGE_DEBUG_SPLIT = "1"
 INHIBIT_PACKAGE_STRIP = "1"
 #INSANE_SKIP_${PN} += "dev-so"
 #INSANE_SKIP_${PN} += "dev-so staticdev"
-INSANE_SKIP_${PN} += "ldflags"
 
 #FILES_lib = "${D}${libdir}/*" 
 #FILES_inc = "${D}${includedir}/TW/*"
@@ -54,13 +53,18 @@ FILES_${PN} += "/wigwag/system/bin/*"
 
 
 do_configure () {
-    cd ${S}/deps
-USE_GYP_FOR_BUILD=1    ./install-deps.sh
 }
 
 do_compile() {
     cd ${S}
 
+        cd ${S}/deps
+    # get the --host value from the AR var
+    # so  AR=arm-poky-linux-gnueabi-ar
+    # then TOOLCHAIN=arm-poky-linux-gnueabi
+    TOOLCHAIN=`echo $AR | sed 's/.\{3\}$//'` ./install-deps.sh
+
+    cd ${S}
         make clean
         make deviceOSWD-dummy   
         cp deviceOSWD deviceOSWD_dummy
@@ -76,13 +80,13 @@ do_compile() {
         make clean
         make deviceOSWD-a10
 
-	make clean
-	make deviceOSWD-a10-relay
-	cp deviceOSWD deviceOSWD_a10_relay
+    make clean
+    make deviceOSWD-a10-relay
+    cp deviceOSWD deviceOSWD_a10_relay
 
-	make clean
-	make deviceOSWD-a10-tiny841
-	cp deviceOSWD deviceOSWD_a10_tiny841
+    make clean
+    make deviceOSWD-a10-tiny841
+    cp deviceOSWD deviceOSWD_a10_tiny841
 }
 
 do_install() {
