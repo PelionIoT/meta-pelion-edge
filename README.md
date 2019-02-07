@@ -4,9 +4,38 @@ The following are the instructions used to build Yocto for Raspberry Pi with as 
 
 Currently the 'meta-gateway-ww' has the WigWag stuff added to it for the build so we could make a clean break with the old build system.
 
-## Ubuntu Setup
+## Build environment for Wigwag gateway firmware
 
 The following instruction were built and tested on Ubuntu 18.10.
+
+These instructions assume that this repo is cloned at ~/wigwag-build-env.  If you cloned the repo at a different location, you will need to make appropriate changes to the commands below.
+
+First clone the repository:
+
+```
+git clone git@github.com:ARMmbed/wigwag-build-env.git
+```
+
+
+## Next Build the docker image
+
+```
+    cd ~/wigwag-build-env
+
+    docker build -t wigwag-build-env_${USER} --build-arg user=${USER} --build-arg group=${USER} --build-arg uid=$(id -u) --build-arg gid=$(id -g) .
+```
+
+## Then Run the docker image
+
+
+```
+    docker run -it -v $HOME:$HOME -v $(dirname $SSH_AUTH_SOCK):$(dirname $SSH_AUTH_SOCK) -e SSH_AUTH_SOCK=$SSH_AUTH_SOCK -e EDITOR=vim --name wigwag-build-env_${USER} wigwag-build-env_${USER}
+```
+
+You might also want to run that inside of screen to be able to detach and
+reattach
+
+## Inside of docker
 
 You will need the following packages installed
 ```
@@ -178,10 +207,10 @@ The default location is in the build directory, '~/rpi/build/sstate-cache'.
 ## ROOT PASSWORD
 There is only one login user by default, root.
 
-The default password is set to 'redteam' by these two lines in the local.conf file
+The default password is set to 'redmbed' by these two lines in the local.conf file
 ```
 INHERIT += "extrausers"
-EXTRA_USERS_PARAMS = "usermod -P redteam root; "
+EXTRA_USERS_PARAMS = "usermod -P redmbed root; "
 ```
 These two lines force a password change on first login
 ```
@@ -195,7 +224,7 @@ If you want no password at all (development only hopefully), comment those four 
 EXTRA_IMAGE_FEATURES = "debug-tweaks"
 
 #INHERIT += "extrausers"
-#EXTRA_USERS_PARAMS = "usermod -P redteam root; "
+#EXTRA_USERS_PARAMS = "usermod -P redmbed root; "
 
 #INHERIT += "chageusers"
 #CHAGE_USERS_PARAMS = "chage -d0 root; "
