@@ -5,12 +5,14 @@ IMAGE_LINGUAS = "en-us"
 
 inherit image
 
-DEPENDS += "bcm2835-bootfiles"
+DEPENDS += "bcm2835-bootfiles deviceos-users"
 
 CORE_OS = " \
     kernel-modules \
     openssh openssh-keygen openssh-sftp-server \
     packagegroup-core-boot \
+    packagegroup-core-full-cmdline \    
+    packagegroup-core-buildessential \
     term-prompt \
     tzdata \
 "
@@ -102,7 +104,6 @@ WIGWAG_STUFF = " \
     mbed-devicejs-bridge \
     node-hotplug \
     panic \
-    packagegroup-core-buildessential \
     pgw-os-dev \
     pgw-os-essentials \
     pps-tools \
@@ -110,6 +111,11 @@ WIGWAG_STUFF = " \
     su-exec \
     tsb \
     twlib \
+    devicedb \
+    maestro \
+    deviceos-users \
+    global-node-modules \
+    wwrelay-utils \
 "
 
 IMAGE_INSTALL += " \

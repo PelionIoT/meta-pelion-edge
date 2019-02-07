@@ -13,7 +13,7 @@ SRCREV_wwrelay = "${AUTOREV}"
 SRCREV_dss = "${AUTOREV}"
 
 
-inherit pkgconfig gitpkgv npm
+inherit pkgconfig gitpkgv npm-base
 
 INHIBIT_PACKAGE_STRIP = "1"
 
@@ -26,7 +26,7 @@ PR = "r7"
 DEPENDS = "update-rc.d-native nodejs nodejs-native"
 RDEPENDS_${PN} += " nodejs"
 
-FILES_${PN} = "/wigwag/* /etc/init.d /etc/init.d/* /etc/wigwag /etc/wigwag/* /etc/rc?.d/* /usr/bin /usr/bin/* /etc/* "
+FILES_${PN} = "/wigwag/* /wigwag/etc /wigwag/etc/* /etc/init.d /etc/init.d/* /etc/wigwag /etc/wigwag/* /etc/rc?.d/* /usr/bin /usr/bin/* /etc/* "
 
 S = "${WORKDIR}/git"
 S_MODPROBED="${S}/etc/modprobe.d"
@@ -52,7 +52,8 @@ do_configure(){
 }
 
 do_compile() {
-	BUILDMMU=$(cat ${BUILDMMUFILE})
+	BUILDMMU="monkey1"
+	#$(cat ${BUILDMMUFILE})
 	VER_FILE=${S}/version.json
 	if [ -e $VER_FILE ] ; then
 		rm $VER_FILE
@@ -159,7 +160,11 @@ do_install() {
  #    	install -d ${D}/etc/modprobe.d/
  #    	install -d ${D}/etc/init.d/
 	# do_dirInstall ${S}/etc/ ${D}${sysconfdir}
-	# install -d ${D}/wigwag/
+	install -d ${D}/wigwag/
+	install -d ${D}/wigwag/wwrelay-utils
+	install -d ${D}/wigwag/wwrelay-utils/conf
+	install -d ${D}/wigwag/etc
+	install -d ${D}/wigwag/ttt
 	# install -d ${D}/wigwag/system
 	# install -d ${D}/wigwag/system/bin
 	# mkdir -p ${D}/wigwag/system/lib
@@ -168,7 +173,6 @@ do_install() {
  #    #old way, must migrate
 
 
-	# install -d ${D}/wigwag/wwrelay-utils
 
 	# install -d ${D}/wigwag/devicejs-core-modules
 	# install -d ${D}/wigwag/devicejs-core-modules/rsmi
@@ -181,7 +185,9 @@ do_install() {
 	# cp -r ${S}/common ${D}/wigwag/wwrelay-utils/common
 	# cp -r ${S}/conf ${D}/wigwag/wwrelay-utils/conf
 	# cp -r ${S}/.b ${D}/wigwag/wwrelay-utils/
-	# cp -r ${S}/version.json ${D}/wigwag/wwrelay-utils/conf/versions.json
+	 cp -r ${S}/version.json ${D}/wigwag/wwrelay-utils/conf/versions.json
+	 cp -r ${S}/version.json ${D}/wigwag/etc/versions.json
+	 cp -r ${S}/version.json ${D}/wigwag/ttt/versions.json
 	# cp -r ${S}/initscripts ${D}/wigwag/wwrelay-utils/initscripts
 	# cp -r ${S}/debug_scripts ${D}/wigwag/wwrelay-utils/debug_scripts
 	# cp -r ${S}/slip-radio ${D}/wigwag/wwrelay-utils/slip-radio
@@ -240,6 +246,4 @@ do_install() {
 	# update-rc.d -r ${D} relayterm defaults 85 20
 	# update-rc.d -r ${D} sqa defaults 96 4
 }
-
-
 

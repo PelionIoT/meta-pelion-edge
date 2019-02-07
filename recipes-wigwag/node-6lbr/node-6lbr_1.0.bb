@@ -2,7 +2,7 @@ DESCRIPTION = "6LBR for Node"
 
 LICENSE = "DEVICEPROTOCOL-1"
 LICENSE_FLAGS = "WigWagCommericalDeviceProtocol"
-LIC_FILES_CHKSUM = "file://README.md;md5=f4961c535d1089eb3dcaef5e56c61ad5"
+LIC_FILES_CHKSUM = "file://README.md;md5=a3673749692f7c5f15f3650ee4abea47"
 
 inherit autotools pkgconfig gitpkgv
 
@@ -15,7 +15,7 @@ SRC_URI="git://git@github.com/WigWagCo/node-6lbr.git;protocol=ssh;branch=master"
 
 S = "${WORKDIR}/git"
 
-DEPENDS = "twlib"
+DEPENDS = "node-native twlib"
 
 BBCLASSEXTEND = "native"
 
@@ -68,4 +68,3 @@ do_install() {
     cp ${S}/index.js ${D}/wigwag/devicejs/core/utils/node-6lbr
 
 }
-

@@ -2,7 +2,7 @@
 # Yocto Project 2.6 Poky distribution [thud] branch
 # This is a sysvinit system
 
-LICENSE_FLAGS_WHITELIST = "commercial WigWagCommericalDeviceOS WigWagCommericalDeviceJS"
+LICENSE_FLAGS_WHITELIST = "commercial WigWagCommericalDeviceOS WigWagCommericalDeviceJS WigWagCommericalDeviceProtocol"
 
 DISTRO_FEATURES = "ext2 opengl usbhost ${DISTRO_FEATURES_LIBC}"
 

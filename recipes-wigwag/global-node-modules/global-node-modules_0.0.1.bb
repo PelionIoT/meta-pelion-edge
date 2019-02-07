@@ -4,7 +4,7 @@ LICENSE_FLAGS = "WigWagCommericalDeviceJS"
 LIC_FILES_CHKSUM = "file://wcm/LICENSE;md5=4011f5b49f62dc7a25bef33807edc4bd"
 
 
-inherit pkgconfig gitpkgv npm
+inherit pkgconfig gitpkgv npm-base
 #DBN="/home/walt/bin/config/builds"
 #DBN="/builds/walt/42/wwrelay-rootfs/tools/build-scrips2/data/config/builds"
 
