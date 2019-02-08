@@ -109,15 +109,11 @@ Again much of the following are only my conventions.
 
 Choose a build directory. I tend to do this on a per board and/or per project basis so I can quickly switch between projects. For this example I’ll put the build directory under ~/rpi/ with the meta-gateway-ww layer.
 
-You could manually create the directory structure like this
+Manually create the directory structure like this
+
 ```
 $ mkdir -p ~/rpi/build/conf
 ```
-Or you could use the Yocto environment script `oe-init-build-env` like this passing in the path to the build directory
-```
-~$ source poky-thud/oe-init-build-env ~/rpi/build
-```
-The Yocto environment script will create the build directory if it does not already exist.
 
 ## Customize the configuration files
 There are some sample configuration files in the `meta-gateway-ww/conf` directory.
