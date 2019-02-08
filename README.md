@@ -4,13 +4,21 @@ The following are the instructions used to build Yocto for Raspberry Pi with as 
 
 Currently the 'meta-gateway-ww' has the WigWag stuff added to it for the build so we could make a clean break with the old build system.
 
-## Build environment for Wigwag gateway firmware
+## Install Docker
 
-The following instruction were built and tested on Ubuntu 18.10.
+Before we begin we need to install the appropriate version of Docker CE for your operating system.
+
+Goto: https://docs.docker.com/install/
+
+All of the instructions in this document were built and tested with Docker CE on Ubuntu 18.10.
+
+Ubuntu instructions at this URL: https://docs.docker.com/install/linux/docker-ce/ubuntu/
+
+## Build environment for Wigwag gateway firmware
 
 These instructions assume that this repo is cloned at ~/wigwag-build-env.  If you cloned the repo at a different location, you will need to make appropriate changes to the commands below.
 
-### Build and run a Docker container
+## Build and run a Docker container
 
 First clone the repository:
 
