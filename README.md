@@ -10,14 +10,17 @@ The following instruction were built and tested on Ubuntu 18.10.
 
 These instructions assume that this repo is cloned at ~/wigwag-build-env.  If you cloned the repo at a different location, you will need to make appropriate changes to the commands below.
 
+### Build and run a Docker container
+
 First clone the repository:
 
 ```
 git clone git@github.com:ARMmbed/wigwag-build-env.git
 ```
 
+The most up to date instructions on getting the Docker container started are in the README.md of wigwag-build-env. For convenience, below is a copy (as of Feb 8th 2019) of the relevant part.
 
-## Next Build the docker image
+* build the image
 
 ```
     cd ~/wigwag-build-env
@@ -25,17 +28,19 @@ git clone git@github.com:ARMmbed/wigwag-build-env.git
     docker build -t wigwag-build-env_${USER} --build-arg user=${USER} --build-arg group=${USER} --build-arg uid=$(id -u) --build-arg gid=$(id -g) .
 ```
 
-## Then Run the docker image
-
+* run the container
 
 ```
     docker run -it -v $HOME:$HOME -v $(dirname $SSH_AUTH_SOCK):$(dirname $SSH_AUTH_SOCK) -e SSH_AUTH_SOCK=$SSH_AUTH_SOCK -e EDITOR=vim --name wigwag-build-env_${USER} wigwag-build-env_${USER}
 ```
 
-You might also want to run that inside of screen to be able to detach and
-reattach
+You might also want to run that inside of screen to be able to detach and reattach.
 
-## Inside of docker
+## (optional) Outside of Docker
+
+If you don't run the build in a Docker container, you'll need to manually verify the following requirements.
+
+If you are using the container from the previous step, this step is already done for you. Switch to the Docker container and proceed with all remaining steps.
 
 You will need the following packages installed
 ```
