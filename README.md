@@ -108,7 +108,7 @@ The meta-gateway-ww/README.md contains these very instructions.
 The meta-nodejs repository can be cloned into a sibling directory of meta-gateway-ww
 ```
 ~$ cd ~/rpi
-~/rpi$ git clone -b pyro git://git@github.com:aaronovz1/meta-nodejs.git
+~/rpi$ git clone -b pyro git@github.com:aaronovz1/meta-nodejs.git
 ```
 
 
@@ -288,6 +288,29 @@ To build the qt5-image it would be
 The cleansstate command (with two s’s) works for image recipes as well.
 
 The image files won’t get deleted from the TMPDIR until the next time you build.
+
+### NOTE: trouble running bitbake
+
+If you recieve an error running bitbake like:
+
+```
+Host key verification failed.
+fatal: Could not read from remote repository.
+
+Please make sure you have the correct access rights
+and the repository exists.
+
+
+Summary: There was 1 ERROR message shown, returning a non-zero exit code.
+```
+
+You need to fix your ssh access to github.
+
+This can usually be fixed by the following ssh command and then rerunning bitbake:
+
+```
+$ ssh -T git@github.com
+```
 
 ## Copying the binaries to an SD card (or eMMC)
 After the build completes, the bootloader, kernel and rootfs image files can be found in **/deploy/images/$MACHINE** with **MACHINE** coming from your **local.conf**.
