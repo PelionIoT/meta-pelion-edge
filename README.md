@@ -100,7 +100,7 @@ Create a separate sub-directory for the meta-gateway-ww repository before clonin
 ```
 ~$ mkdir ~/rpi
 ~$ cd ~/rpi
-~/rpi$ git clone git://github.com:ARMmbed/meta-gateway-ww.git
+~/rpi$ git clone git@github.com:ARMmbed/meta-gateway-ww.git
 ```
 The meta-gateway-ww/README.md contains these very instructions.
 
