@@ -126,14 +126,14 @@ $ mkdir -p ~/rpi/build/conf
 ## Customize the configuration files
 There are some sample configuration files in the `meta-gateway-ww/conf` directory.
 
-Copy them to the `build/conf` directory (removing the ‘-sample’)
+These sample files have a special token `##OEROOT##` that bitbake resolves automatically when setting up the build configuration for the first time.  To use the files, source the `oe-init-build-env` script with TEMPLATECONF defined in your environment:
+~/rpi$ TEMPLATECONF=meta-gateway-ww/conf source oe-init-build-env ~/rpi/build
+
+OR, copy them to the `build/conf` directory (removing the ‘-sample’) and manually fix the path to each meta layer.
 ```
 ~/rpi$ cp meta-gateway-ww/conf/local.conf.sample build/conf/local.conf
 ~/rpi$ cp meta-gateway-ww/conf/bblayers.conf.sample build/conf/bblayers.conf
 ```
-If you used the `oe-init-build-env` script to create the build directory, it generated some generic configuration files in the `build/conf` directory. If you want to look at them, save them with a different name before overwriting.
-
-It is not necessary, but you may want to customize the configuration files before your first build.
 
 ## Warning:
 Do not use the ‘~’ character when defining directory paths in the Yocto configuration files.
