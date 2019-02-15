@@ -13,7 +13,6 @@ BBLAYERS ?= " \
     ##OEROOT##/meta-openembedded/meta-networking \
     ##OEROOT##/meta-openembedded/meta-perl \
     ##OEROOT##/meta-openembedded/meta-python \
-    ##OEROOT##/meta-qt5 \
     ##OEROOT##/meta-raspberrypi \
     ##OEROOT##/meta-security \
     ##OEROOT##/meta-virtualization \
