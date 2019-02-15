@@ -88,7 +88,6 @@ Then the dependency layers under that
 ```
 ~$ cd poky-thud
 ~/poky-thud$ git clone -b thud git://git.openembedded.org/meta-openembedded
-~/poky-thud$ git clone -b thud https://github.com/meta-qt5/meta-qt5
 ~/poky-thud$ git clone -b thud git://git.yoctoproject.org/meta-raspberrypi
 ```
 These repositories shouldn’t need modifications other then periodic updates 
@@ -148,7 +147,6 @@ For example, if your directory structure does not look exactly like this, you wi
 ```
 ~/poky-thud/
      meta-openembedded/
-     meta-qt5/
      meta-raspberrypi
      ...
 
@@ -281,10 +279,6 @@ And then continue with the full build.
 ```
 ~/rpi/build$ bitbake console-image
 ```
-To build the qt5-image it would be
-```
-~/rpi/build$ bitbake qt5-image
-```
 The cleansstate command (with two s’s) works for image recipes as well.
 
 The image files won’t get deleted from the TMPDIR until the next time you build.
@@ -409,17 +403,13 @@ This script copies the root file system to the second partition of the SD card.
 
 The `copy_rootfs.sh` script needs the same `OETMP` and `MACHINE` environment variables.
 
-The script accepts an optional command line argument for the image type, for example console or qt5. The default is console if no argument is provided.
+The script accepts an optional command line argument for the image type, for example console. The default is console if no argument is provided.
 
 The script also accepts a hostname argument if you want the host name to be something other then the default `MACHINE`.
 
 Here’s an example of how you would run `copy_rootfs.sh`
 ```
 ~/rpi/meta-gateway-ww/scripts$ ./copy_rootfs.sh sdb console
-```
-or
-```
-~/rpi/meta-gateway-ww/scripts$ ./copy_rootfs.sh sdb qt5 rpi3
 ```
 The `copy_rootfs.sh` script will take longer to run and depends a lot on the quality of your SD card. With a good Class 10 card it should take less then 30 seconds.
 
