@@ -2,6 +2,13 @@
 # Yocto Project 2.6 Poky distribution [thud] branch
 # This is a sysvinit system
 
+RPI_USE_U_BOOT = "1"
+
+# to take a better look at the u-boot startup messages,
+# uncomment these lines to disable the normal boot logo/splash
+#DISABLE_RPI_BOOT_LOGO = "1"
+#IMAGE_FEATURES_remove = "splash"
+
 LICENSE_FLAGS_WHITELIST = "commercial WigWagCommericalDeviceOS WigWagCommericalDeviceJS WigWagCommericalDeviceProtocol"
 
 DISTRO_FEATURES = "ext2 opengl usbhost ${DISTRO_FEATURES_LIBC}"
@@ -33,7 +40,8 @@ MACHINE = "raspberrypi3"
 # Choices are Image or zImage if NOT using u-boot (no u-boot is the default)
 # Choices are uImage or zImage if using u-boot, though if you choose zImage
 # with u-boot you will also have to change the boot script boot command
-KERNEL_IMAGETYPE = "zImage"
+# Not specifying a type here will fall back to u-boot selecting an image type.
+#KERNEL_IMAGETYPE = "zImage"
 
 DISABLE_OVERSCAN = "1"
 ENABLE_UART = "1"

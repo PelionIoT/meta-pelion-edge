@@ -21,4 +21,9 @@ do_deploy_append() {
         echo "" >> ${DEPLOYDIR}/bcm2835-bootfiles/config.txt
         echo "dtoverlay=pi3-disable-bt" >> ${DEPLOYDIR}/bcm2835-bootfiles/config.txt
     fi
+
+    # match the u-boot.bin install name set in IMAGE_BOOT_FILES by meta-raspberrypi/conf/machine/include/rpi-base.inc
+    if [ "${RPI_USE_U_BOOT}" = "1" ]; then
+        sed -i 's/kernel=.*/kernel=${SDIMG_KERNELIMAGE}/' ${DEPLOYDIR}/bcm2835-bootfiles/config.txt
+    fi
 }
