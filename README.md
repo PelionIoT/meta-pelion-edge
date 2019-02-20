@@ -78,140 +78,49 @@ Choose 'No' to dash when prompted.
 
 For all upstream repositories, use the [thud] branch.
 
-The directory layout I am describing here is my preference. All of the paths to the meta-layers are configurable. If you choose something different, adjust the following instructions accordingly.
-
 First the main Yocto project poky layer
 ```
-~# git clone -b thud git://git.yoctoproject.org/poky.git poky-thud
+~# git clone -b thud git://git.yoctoproject.org/poky.git poky
 ```
 Then the dependency layers under that
 ```
-~$ cd poky-thud
-~/poky-thud$ git clone -b thud git://git.openembedded.org/meta-openembedded
-~/poky-thud$ git clone -b thud git://git.yoctoproject.org/meta-raspberrypi
+~$ cd poky
+~/poky$ git clone -b thud git://git.openembedded.org/meta-openembedded
+~/poky$ git clone -b thud git://git.yoctoproject.org/meta-virtualization
+~/poky$ git clone -b thud git://git.yoctoproject.org/meta-security
+~/poky$ git clone -b thud git://git.yoctoproject.org/meta-raspberrypi
+~/poky$ git clone -b pyro git@github.com:aaronovz1/meta-nodejs
+~/poky$ git clone -b dev git@github.com:armmbed/meta-gateway-ww
 ```
-These repositories shouldn’t need modifications other then periodic updates 
-and can be reused for different projects or different boards.
 
-## Clone the meta-gateway-ww repository
-
-Create a separate sub-directory for the meta-gateway-ww repository before cloning. This is where you will be doing your customization.
-```
-~$ mkdir ~/rpi
-~$ cd ~/rpi
-~/rpi$ git clone git@github.com:ARMmbed/meta-gateway-ww.git
-```
 The meta-gateway-ww/README.md contains these very instructions.
 
-## Clone the meta-nodejs repository
-The meta-nodejs repository can be cloned into a sibling directory of meta-gateway-ww
-```
-~$ cd ~/rpi
-~/rpi$ git clone -b pyro git@github.com:aaronovz1/meta-nodejs.git
-```
-
-
 ## Initialize the build directory
-Again much of the following are only my conventions.
 
-Choose a build directory. I tend to do this on a per board and/or per project basis so I can quickly switch between projects. For this example I’ll put the build directory under ~/rpi/ with the meta-gateway-ww layer.
-
-Manually create the directory structure like this
+Use Yocto's oe-init-build-env script to create the build directory layout and provide the meta-gateway-ww/conf example configuration scripts to initialize the build environment.
 
 ```
-$ mkdir -p ~/rpi/build/conf
+~/poky$ TEMPLATECONF=meta-gateway-ww/conf source oe-init-build-env 
 ```
-
-## Customize the configuration files
-There are some sample configuration files in the `meta-gateway-ww/conf` directory.
-
-These sample files have a special token `##OEROOT##` that bitbake resolves automatically when setting up the build configuration for the first time.  To use the files, source the `oe-init-build-env` script with TEMPLATECONF defined in your environment:
-~/rpi$ TEMPLATECONF=meta-gateway-ww/conf source oe-init-build-env ~/rpi/build
-
-OR, copy them to the `build/conf` directory (removing the ‘-sample’) and manually fix the path to each meta layer.
-```
-~/rpi$ cp meta-gateway-ww/conf/local.conf.sample build/conf/local.conf
-~/rpi$ cp meta-gateway-ww/conf/bblayers.conf.sample build/conf/bblayers.conf
-```
-
-## Warning:
-Do not use the ‘~’ character when defining directory paths in the Yocto configuration files.
-
-## Edit bblayers.conf
-In `bblayers.conf` file replace `${HOME}` with the appropriate path to the meta-layer repositories on your system if you modified any of the paths in the previous instructions.
 
 ## WARNING: 
 Do not include `meta-yocto-bsp` in your `bblayers.conf`. The Yocto BSP requirements for the Raspberry Pi are in `meta-raspberrypi`.
 
 For example, if your directory structure does not look exactly like this, you will need to modify bblayers.conf
 ```
-~/poky-thud/
+~/poky/
      meta-openembedded/
      meta-raspberrypi
-     ...
-
-~/rpi/
-    meta-gateway-ww/
-    build/
+     meta-gateway-ww/
+     build/
         conf/
+     ...
 ```
 
 ## Edit local.conf
-The variables you may want to customize are the following:
-```
-MACHINE
-TMPDIR
-DL_DIR
-SSTATE_DIR
-```
-The defaults for all of these work fine with the exception of MACHINE.
+Customize your local.conf to suit your build.
 
-## MACHINE
-The MACHINE variable is used to determine the target architecture and various compiler tuning flags.
-
-See the conf files under `meta-raspberrypi/conf/machine` for details.
-
-The choices for MACHINE are
-```
-raspberrypi (BCM2835)
-raspberrypi0 (BCM2835)
-raspberrypi0-wifi (BCM2835)
-raspberrypi2 (BCM2836 or BCM2837 v1.2+)
-raspberrypi3 (BCM2837)
-raspberrypi-cm (BCM2835)
-raspberrypi-cm3 (BCM2837)
-You can only build for one type of MACHINE at a time.
-```
-There are really just two tuning families using the default Yocto configuration files
-
-1. arm1176jzfshf - for the the BCM2835 boards
-1. cortexa7thf-neon-vfpv4 - for the BCM2836 and BCM2837 boards
-
-Boards in the same family can generally run the same software.
-
-One exception is u-boot, which is NOT the default for the systems being built here.
-
-One of the reasons you would want to use u-boot with the RPis is to work with the Mender upgrade system.
-
-## TMPDIR
-This is where temporary build files and the final build binaries will end up. Expect to use at least 50GB.
-
-The default location is under the build directory, in this example '~/rpi/build/tmp'.
-
-If you specify an alternate location as I do in the example conf file make sure the directory is writable by the user running the build.
-
-## DL_DIR
-This is where the downloaded source files will be stored. You can share this among configurations and builds so I always create a general location for this outside the project directory. Make sure the build user has write permission to the directory you decide on.
-
-The default location is in the build directory, '~/rpi/build/sources'.
-
-## SSTATE_DIR
-This is another Yocto build directory that can get pretty big, greater then 8GB. I often put this somewhere else other then my home directory as well.
-
-The default location is in the build directory, '~/rpi/build/sstate-cache'.
-
-
-## ROOT PASSWORD
+### ROOT PASSWORD
 There is only one login user by default, root.
 
 The default password is set to 'redmbed' by these two lines in the local.conf file
@@ -241,47 +150,32 @@ You can always add or change the password once logged in.
 ## Run the build
 You need to `source` the Yocto environment into your shell before you can use `bitbake`. The `oe-init-build-env` will not overwrite your customized conf files.
 ```
-~$ source poky-thud/oe-init-build-env ~/rpi/build
+~/poky$ source oe-init-build-env
 
 ##  Shell environment set up for builds. ## 
 
 You can now run 'bitbake '
 
 Common targets are:
-    core-image-minimal
-    core-image-sato
-    meta-toolchain
-    meta-toolchain-sdk
-    adt-installer
-    meta-ide-support
-
-You can also run generated qemu images with a command like 'runqemu qemux86'
-~/rpi/build$
-```
-I don’t use any of those Common targets, but instead always write my own custom image recipes.
-
-The `meta-gateway-ww` layer has some examples under`meta-gateway-ww/images/`.
-
+    console-image
 
 ## Build
 To build the console-image run the following command
 ```
-~/rpi/build$ bitbake console-image
+~/poky/build$ bitbake console-image
 ```
 You may occasionally run into build errors related to packages that either failed to download or sometimes out of order builds. The easy solution is to clean the failed package and rerun the build again.
 
 For instance if the build for zip failed for some reason, I would run this
 ```
-~/rpi/build$ bitbake -c cleansstate zip
-~/rpi/build$ bitbake zip 
+~/poky/build$ bitbake -c cleansstate zip
+~/poky/build$ bitbake zip 
 ```
 And then continue with the full build.
 ```
-~/rpi/build$ bitbake console-image
+~/poky/build$ bitbake console-image
 ```
 The cleansstate command (with two s’s) works for image recipes as well.
-
-The image files won’t get deleted from the TMPDIR until the next time you build.
 
 ### NOTE: trouble running bitbake
 
@@ -293,7 +187,6 @@ fatal: Could not read from remote repository.
 
 Please make sure you have the correct access rights
 and the repository exists.
-
 
 Summary: There was 1 ERROR message shown, returning a non-zero exit code.
 ```
@@ -360,169 +253,6 @@ Skip this if you use the WIC image
 
 ## Copying the binaries to an SD card (or eMMC)
 After the build completes, the bootloader, kernel and rootfs image files can be found in **/deploy/images/$MACHINE** with **MACHINE** coming from your **local.conf**.
-
-The meta-gateway-ww/scripts directory has some helper scripts to format and copy the files to a microSD card.
-
-See this post for an additional first step required for the RPi Compute eMMC.
-
-## mk2parts.sh
-This script will partition an SD card with the minimal 2 partitions required for the RPI.
-
-Insert the microSD into your workstation and note where it shows up.
-
-`lsblk` is convenient for finding the microSD card.
-
-For example
-```
-~/rpi/meta-gateway-ww$ lsblk
-NAME    MAJ:MIN RM   SIZE RO TYPE MOUNTPOINT
-sda       8:0    0 931.5G  0 disk
-|-sda1    8:1    0  93.1G  0 part /
-|-sda2    8:2    0  93.1G  0 part /home
-|-sda3    8:3    0  29.8G  0 part [SWAP]
-|-sda4    8:4    0     1K  0 part
-|-sda5    8:5    0   100G  0 part /oe5
-|-sda6    8:6    0   100G  0 part /oe6
-|-sda7    8:7    0   100G  0 part /oe7
-|-sda8    8:8    0   100G  0 part /oe8
-|-sda9    8:9    0   100G  0 part /oe9
-`-sda10   8:10   0 215.5G  0 part /oe10
-sdb       8:16   1   7.4G  0 disk
-|-sdb1    8:17   1    64M  0 part
-`-sdb2    8:18   1   7.3G  0 part
-```
-So I will use `sdb` for the card on this machine.
-
-It doesn’t matter if some partitions from the SD card are mounted. The mk2parts.sh script will unmount them.
-
-WARNING: This script will format any disk on your workstation so make sure you choose the SD card.
-```
-~$ cd ~/rpi/meta-gateway-ww/scripts
-~/rpi/meta-gateway-ww/scripts$ sudo ./mk2parts.sh sdb
-```
-You only have to format the SD card once.
-
-## Temporary mount point
-You will need to create a mount point on your workstation for the copy scripts to use.
-
-This is the default
-```
-~$ sudo mkdir /media/card
-```
-You only have to create this directory once.
-
-If you don’t want that location, you will have to edit the following scripts to use the mount point you choose.
-
-
-## copy_boot.sh
-This script copies the GPU firmware, the Linux kernel, dtbs and overlays, config.txt and cmdline.txt to the boot partition of the SD card.
-
-This `copy_boot.sh` script needs to know the `TMPDIR `to find the binaries. It looks for an environment variable called `OETMP`.
-
-For instance, if I had this in `build/conf/local.conf`
-```
-TMPDIR = "/oe4/rpi/tmp-thud"
-```
-Then I would export this environment variable before running `copy_boot.sh`
-```
-~/rpi/meta-gateway-ww/scripts$ export OETMP=/oe4/rpi/tmp-thud
-```
-If you didn’t override the default `TMPDIR` in `local.conf`, then set it to the default `TMPDIR`
-```
-~/rpi/meta-gateway-ww/scripts$ export OETMP=~/rpi/build/tmp
-```
-The `copy_boot.sh` script also needs a `MACHINE` environment variable specifying the type of RPi board.
-```
-~/rpi/meta-gateway-ww/scripts$ export MACHINE=raspberrypi3
-```
-or
-```
-~/rpi/meta-gateway-ww/scripts$ export MACHINE=raspberrypi0-wifi
-```
-Then run the `copy_boot.sh` script passing the location of SD card
-```
-~/rpi/meta-gateway-ww/scripts$ ./copy_boot.sh sdb
-```
-This script should run very fast.
-
-If you want to customize the config.txt or cmdline.txt files for the system, you can place either of those files in the `meta-gateway-ww/scripts` directory and the `copy_boot.sh` script will copy them as well.
-
-Take a look at the script if this is unclear.
-
-
-## copy_rootfs.sh
-This script copies the root file system to the second partition of the SD card.
-
-The `copy_rootfs.sh` script needs the same `OETMP` and `MACHINE` environment variables.
-
-The script accepts an optional command line argument for the image type, for example console. The default is console if no argument is provided.
-
-The script also accepts a hostname argument if you want the host name to be something other then the default `MACHINE`.
-
-Here’s an example of how you would run `copy_rootfs.sh`
-```
-~/rpi/meta-gateway-ww/scripts$ ./copy_rootfs.sh sdb console
-```
-The `copy_rootfs.sh` script will take longer to run and depends a lot on the quality of your SD card. With a good Class 10 card it should take less then 30 seconds.
-
-The copy scripts will NOT unmount partitions automatically. If an SD card partition is already mounted, the script will complain and abort. This is for safety, mine mostly, since I run these scripts many times a day on different machines and the SD cards show up in different places.
-
-Here’s a realistic example session where I want to copy already built images to a second SD card that I just inserted.
-```
-~$ sudo umount /dev/sdb1
-~$ sudo umount /dev/sdb2
-~$ export OETMP=/oe4/rpi/tmp-thud
-~$ export MACHINE=raspberrypi2
-~$ cd rpi/meta-gateway-ww/scripts
-~/rpi/meta-gateway-ww/scripts$ ./copy_boot.sh sdb
-~/rpi/meta-gateway-ww/scripts$ ./copy_rootfs.sh sdb console rpi3
-```
-Once past the development stage I usually wrap all of the above in another script for convenience.
-
-Both `copy_boot.sh` and `copy_rootfs.sh` are simple scripts, easily customized.
-
-
-## Adding additional packages
-To display the list of available recipes from the meta-layers included in `bblayers.conf`
-```
-~$ source poky-thud/oe-init-build-env ~/rpi/build
-
-~/rpi/build$ bitbake -s
-```
-Once you have the recipe name, you need to find what packages the recipe produces. Use the `oe-pkgdata-util` utility for this.
-
-For instance, to see the packages produced by the openssh recipe
-```
-~/rpi/build$ oe-pkgdata-util list-pkgs -p openssh
-openssh-keygen
-openssh-scp
-openssh-ssh
-openssh-sshd
-openssh-sftp
-openssh-misc
-openssh-sftp-server
-openssh-dbg
-openssh-dev
-openssh-doc
-openssh
-```
-These are the individual packages you could add to your image recipe.
-
-You can also use `oe-pkgdata-util` to check the individual files a package will install.
-
-For instance, to see the files for the `openssh-sshd` package
-```
-~/rpi/build$ oe-pkgdata-util list-pkg-files openssh-sshd
-openssh-sshd:
-        /etc/default/volatiles/99_sshd
-        /etc/init.d/sshd
-        /etc/ssh/moduli
-        /etc/ssh/sshd_config
-        /etc/ssh/sshd_config_readonly
-        /usr/libexec/openssh/sshd_check_keys
-        /usr/sbin/sshd
-```
-For a package to be installed in your image it has to get into the IMAGE_INSTALL variable some way or another. See the example image recipes for some common conventions.
 
 ## Adding WigWag packages
 Packages are addded in the file 'meta-gateway-ww/images/console-image.bb'
