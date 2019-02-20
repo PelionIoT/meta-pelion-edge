@@ -7,6 +7,8 @@ inherit image
 
 DEPENDS += "bcm2835-bootfiles deviceos-users"
 
+IMAGE_BOOT_FILES += "ww-console-image-initramfs-raspberrypi3.cpio.gz.u-boot;initramfs.img"
+
 CORE_OS = " \
     kernel-modules \
     openssh openssh-keygen openssh-sftp-server \
