@@ -16,7 +16,8 @@ VIRTUAL-RUNTIME_init_manager = "sysvinit"
 
 MACHINE_FEATURES_remove = "apm"
 
-IMAGE_FSTYPES = "tar.xz"
+WKS_FILE = "console-image.wic"
+IMAGE_FSTYPES = "wic"
 
 # Choose the board you are building for
 #MACHINE="raspberrypi"
