@@ -42,6 +42,14 @@ SERIAL_CONSOLES = "115200;ttyAMA0"
 #SSTATE_DIR = "/oe4/rpi/sstate-cache"
 #TMPDIR = "/oe4/rpi/tmp-thud"
 
+#initramfs setup
+INITRAMFS_IMAGE = "ww-console-image-initramfs"
+INITRAMFS_IMAGE_BUNDLE = "1"
+BOOT_SPACE = "1073741"
+INITRAMFS_MAXSIZE = "315400"
+IMAGE_FSTYPES_pn-${INITRAMFS_IMAGE} = "${INITRAMFS_FSTYPES}"
+
+
 DISTRO = "poky"
 PACKAGE_CLASSES = "package_ipk"
 
