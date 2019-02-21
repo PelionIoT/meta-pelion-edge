@@ -306,6 +306,58 @@ This can usually be fixed by the following ssh command and then rerunning bitbak
 $ ssh -T git@github.com
 ```
 
+# burn SD card image with WIC method
+Skip this if you use tar.gz or SDI methods
+
+## copy the WIC file to a SD
+
+First identify your SD card by inserting the microSD into your workstation and note where it shows up.
+
+`lsblk` is convenient for finding the microSD card.
+
+For example
+```
+~/rpi/meta-gateway-ww$ lsblk
+NAME    MAJ:MIN RM   SIZE RO TYPE MOUNTPOINT
+sda       8:0    0 931.5G  0 disk
+|-sda1    8:1    0  93.1G  0 part /
+|-sda2    8:2    0  93.1G  0 part /home
+|-sda3    8:3    0  29.8G  0 part [SWAP]
+|-sda4    8:4    0     1K  0 part
+|-sda5    8:5    0   100G  0 part /oe5
+|-sda6    8:6    0   100G  0 part /oe6
+|-sda7    8:7    0   100G  0 part /oe7
+|-sda8    8:8    0   100G  0 part /oe8
+|-sda9    8:9    0   100G  0 part /oe9
+`-sda10   8:10   0 215.5G  0 part /oe10
+sdb       8:16   1   7.4G  0 disk
+|-sdb1    8:17   1    64M  0 part
+`-sdb2    8:18   1   7.3G  0 part
+```
+So I will use `sdb` for the card on this machine.
+
+
+Next fetch the WIC image from the build folder: 
+```
+~/rpi/build/tmp/deploy/images/raspberrypi3
+```
+
+It will have a name something like: 
+```
+console-image-raspberrypi3-20190219203633.rootfs.wic
+```
+
+Then burn it to your sd card with a command like:
+```
+dd bs=4M if=console-image-raspberrypi3-somedate.rootfs.wic of=/dev/sdX conv=fsync
+```
+
+Note:
+Be sure to replace /dev/sdX with your sd cards path and console-image-raspberrypi3-somedate.rootfs.wic with your exact file name.
+
+# burn SD card image with tar.xz method 
+Skip this if you use the WIC image
+
 ## Copying the binaries to an SD card (or eMMC)
 After the build completes, the bootloader, kernel and rootfs image files can be found in **/deploy/images/$MACHINE** with **MACHINE** coming from your **local.conf**.
 
