@@ -26,6 +26,10 @@ WIFI_SUPPORT = " \
     wpa-supplicant \
 "
 
+BLUETOOTH_SUPPORT = " \
+    bluez5 \
+"
+
 DEV_SDK_INSTALL = " \
     binutils \
     binutils-symlinks \
@@ -127,6 +131,7 @@ IMAGE_INSTALL += " \
     ${EXTRA_TOOLS_INSTALL} \
     ${RPI_STUFF} \
     ${WIFI_SUPPORT} \
+    ${BLUETOOTH_SUPPORT} \
     ${WIGWAG_STUFF} \
 "
 
