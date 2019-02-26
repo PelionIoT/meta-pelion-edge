@@ -2,16 +2,9 @@
 # long-description: Creates a partitioned SD card image for use with
 # Raspberry Pi. Boot files are located in the first vfat partition.
 
-part /boot --source bootimg-partition --ondisk mmcblk0 --fstype=vfat --label boot --active --align 4096 --size 20
-part / --source rootfs --ondisk mmcblk0 --fstype=ext4 --label root --align 4096
-part /factory --ondisk mmcblk0 --fstype=ext4 --label factory --fixed-size 50
-part /proc --ondisk mmcblk0 --fstype=ext4 --label proc --fixed-size 50
-part /devpts --ondisk mmcblk0 --fstype=ext4 --label proc --fixed-size 50
-part /proc/bus/usb --ondisk mmcblk0 --fstype=ext4 --label usbdevfs --fixed-size 50
-part /run --fstype=ext4 --label tmpfs --fixed-size 50
-part /var/log --ondisk mmcblk0 --fstype=ext4 --label tmpfs --fixed-size 50
-part /var/volatile --ondisk mmcblk0 --fstype=ext4 --label tmpfs --fixed-size 50
-part /upgrade --ondisk mmcblk0 --fstype=ext4 --label ext4 --fixed-size 50
-part /user --ondisk mmcblk0 --fstype=ext4 --label ext4 --fixed-size 50
-
+part /boot --source bootimg-partition --ondisk mmcblk0 --fstype=vfat --label boot --active --align 4096 --size 128
+part / --source rootfs --ondisk mmcblk0 --fstype=ext4 --label factory --align 4096 --size 2048
+part /upgrade --ondisk mmcblk0 --fstype=ext4 --label upgrade --size 2048
+part /user --ondisk mmcblk0 --fstype=ext4 --label user --size 1024
+part /userdata --ondisk mmcblk0 --fstype=ext4 --label userdata --size 1024
 bootloader --ptable msdos
