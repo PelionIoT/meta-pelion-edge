@@ -17,7 +17,7 @@ VIRTUAL-RUNTIME_init_manager = "sysvinit"
 MACHINE_FEATURES_remove = "apm"
 
 WKS_FILE = "console-image.wic"
-IMAGE_FSTYPES = "wic"
+IMAGE_FSTYPES = "${INITRAMFS_FSTYPES} wic"
 
 # Choose the board you are building for
 #MACHINE="raspberrypi"
@@ -47,8 +47,8 @@ SERIAL_CONSOLES = "115200;ttyAMA0"
 INITRAMFS_IMAGE = "ww-console-image-initramfs"
 INITRAMFS_IMAGE_BUNDLE = "1"
 BOOT_SPACE = "1073741"
-INITRAMFS_MAXSIZE = "315400"
-IMAGE_FSTYPES_pn-${INITRAMFS_IMAGE} = "${INITRAMFS_FSTYPES}"
+INITRAMFS_MAXSIZE = "2600000"
+#IMAGE_FSTYPES_pn-${INITRAMFS_IMAGE} = "${INITRAMFS_FSTYPES}"
 
 
 DISTRO = "poky"
