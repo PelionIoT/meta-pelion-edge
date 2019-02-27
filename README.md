@@ -151,6 +151,7 @@ You can always add or change the password once logged in.
 You need to `source` the Yocto environment into your shell before you can use `bitbake`. The `oe-init-build-env` will not overwrite your customized conf files.
 ```
 ~/poky$ source oe-init-build-env
+```
 
 ##  Shell environment set up for builds. ## 
 
