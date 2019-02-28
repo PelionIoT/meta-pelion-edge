@@ -62,8 +62,6 @@ DEV_SDK_INSTALL = " \
 "
 
 DEV_EXTRAS = " \
-    serialecho  \
-    spiloop \
 "
 
 EXTRA_TOOLS_INSTALL = " \
@@ -95,8 +93,6 @@ EXTRA_TOOLS_INSTALL = " \
 "
 
 RPI_STUFF = " \
-    omxplayer \
-    raspi2fb \
     userland \
 "
 
