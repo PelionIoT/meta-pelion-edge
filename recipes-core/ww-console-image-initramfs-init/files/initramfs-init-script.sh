@@ -429,30 +429,35 @@ evaldebug(){
 #/	Out:	led color outputed
 #/	Expl:	setLED 10 10 10 3 10 0 0 <-- blinks the led every 1/3 second
 setLED() {
-	altred=0;
-	altblue=0;
-	altgreen=0;
-	ltime=0;
-	if [[ "$4" != "" ]]; then
-		ltime="$4"
-	fi
-	if [[ "$5" != "" ]]; then
-		altred="$5"
-	fi	
-	if [[ "$6" != "" ]]; then
-		altgreen="$6"
-	fi	
-	if [[ "$7" != "" ]]; then
-		altblue="$7"
-	fi	
+	echo "Setting LED here"
+############################
+#  No LED on Rpi - for now do nothing
+############################
+
+#	altred=0;
+#	altblue=0;
+#	altgreen=0;
+#	ltime=0;
+#	if [[ "$4" != "" ]]; then
+#		ltime="$4"
+#	fi
+#	if [[ "$5" != "" ]]; then
+#		altred="$5"
+#	fi
+#	if [[ "$6" != "" ]]; then
+#		altgreen="$6"
+#	fi
+#	if [[ "$7" != "" ]]; then
+#		altblue="$7"
+#	fi
 	
 	#_decho "$1 $2 $3 [$ltime] $altred $altgreen $altblue > thepipe" 
 	#2=RBG
-	if [[ $ledconfig -eq 2 ]]; then
-		echo "$1 $3 $2 $ltime $altred $altblue $altgreen" > /led.pipe
-	else
-		echo "$1 $2 $3 $ltime $altred $altgreen $altblue" > /led.pipe
-	fi
+#	if [[ $ledconfig -eq 2 ]]; then
+#		echo "$1 $3 $2 $ltime $altred $altblue $altgreen" > /led.pipe
+#	else
+#		echo "$1 $2 $3 $ltime $altred $altgreen $altblue" > /led.pipe
+#	fi
 }
 
 setLED_macro(){
@@ -605,7 +610,9 @@ watchdog(){
 	if [[ $startit -eq 1 ]]; then
 		cd /
 		say_init "enabling the watchdog with -w $wtime -d"
-		/deviceOSWD -w $wtime -d -s $WDKEEPALIVE -p $WDPID_PATH
+		#Watchdog is hw dependent and must be build specially for each platform
+		#ignore errors until orperational
+		/deviceOSWD -w $wtime -d -s $WDKEEPALIVE -p $WDPID_PATH 2>/dev/null
 	else
 		say_error "watchdog not started"
 	fi
@@ -689,23 +696,23 @@ mounttool(){
 	if [[ $? -eq 0 ]]; then
 		#check if it is ro vs rw
 		out=$(mount | grep $dev | awk '{print $6}' | awk -F ',' '{print $1}'| sed s/\(//)
-			if [[ "$out" != "$mt" ]]; then
-				say_general "remounting $dev as $mt"
-				umount $dev
-				mount -o $mt $dev $mp 
-			fi
-		else
+		if [[ "$out" != "$mt" ]]; then
+			say_general "remounting $dev as $mt"
+			umount $dev
 			mount -o $mt $dev $mp
 		fi
-	}
+	else
+		mount -o $mt $dev $mp
+	fi
+}
 
-	umounttool(){
-		dev="$1"
-		mount|grep $dev > /dev/null 2>&1
-		if [[ $? -eq 0 ]]; then
-			umount $dev
-		fi
-	}
+umounttool(){
+	dev="$1"
+	mount|grep $dev > /dev/null 2>&1
+	if [[ $? -eq 0 ]]; then
+		umount $dev
+	fi
+}
 
 #/	Desc:	mounts the boot partiton as read-write
 mountboot_rw(){
@@ -767,12 +774,12 @@ mountuserdata_ro(){
 
 #/	Desc:	mounts the sda1 drive as read-write
 mountsda1_ro(){
-	mounttool ro $dev_sda1 $bbmp_usb
+	mounttool ro $dev_sda1 $bbmp_usb 2>/dev/null
 }
 
 #/	Desc:	mounts the sda1 drive as read-write
 mountsdb1_ro(){
-	mounttool ro $dev_sdb1 $bbmp_usb
+	mounttool ro $dev_sdb1 $bbmp_usb 2>/dev/null
 }
 
 #/	Desc:	unmounts the boot partition
@@ -1961,38 +1968,46 @@ UPGRADE(){
 #/	Out:	xxx
 #/	Expl:	xxx
 initGPIO() {
-	ledconfig=$(eeprog -f /dev/i2c-1 0x50 -r 0x61:0x1)
-	if [[ "$ledconfig" != "2" ]]; then
-		_decho "led config does not equal 2, force to 1"
-		ledconfig=1;
-	fi
-	_decho "ledconfig is $ledconfig"
-	versiontemp=$(eeprog -f /dev/i2c-1 0x50 -r 0xA:0x5)
-	if [[ "$versiontemp" = "0.0.4" ]]; then
-		version=4
-	elif [[ "$versiontemp" = "0.0.9" ]]; then
-		version=7
-		dev_factory="/dev/mmcblk1p2"
-		dev_upgrade="/dev/mmcblk1p3"
-		dev_user="/dev/mmcblk1p4"
-	elif [[ "$versiontem"="0.0.8" ]]; then
-		version=8
-	else 
-		version=0
-	fi
-	say_init "HardwareVersion: $versiontemp found."
-	echo 236 > /sys/class/gpio/export
-	echo 37 > /sys/class/gpio/export
-	echo 38 > /sys/class/gpio/export
-	echo out > /sys/class/gpio/gpio37/direction
-	echo out > /sys/class/gpio/gpio38/direction
-	SCLK=/sys/class/gpio/gpio38/value
-	SDATA=/sys/class/gpio/gpio37/value
+###########################################
+# This routine is hardware specific, disabling
+# for now
+###########################################
 
-	lastbutton=$(cat /sys/class/gpio/gpio236/value)
-	if [[ $lastbutton -eq 0 ]]; then
-		bname="depressed"
-	fi
+echo "initGPIO would run here"
+
+#	ledconfig=$(eeprog -f /dev/i2c-1 0x50 -r 0x61:0x1)
+#	if [[ "$ledconfig" != "2" ]]; then
+#		_decho "led config does not equal 2, force to 1"
+#		ledconfig=1;
+#	fi
+#	_decho "ledconfig is $ledconfig"
+#	versiontemp=$(eeprog -f /dev/i2c-1 0x50 -r 0xA:0x5)
+#	if [[ "$versiontemp" = "0.0.4" ]]; then
+#		version=4
+#	elif [[ "$versiontemp" = "0.0.9" ]]; then
+#		version=7
+#		dev_factory="/dev/mmcblk1p2"
+#		dev_upgrade="/dev/mmcblk1p3"
+#		dev_user="/dev/mmcblk1p4"
+#	elif [[ "$versiontem"="0.0.8" ]]; then
+#		version=8
+#	else
+#		version=0
+#	fi
+#	say_init "HardwareVersion: $versiontemp found."
+#	echo 236 > /sys/class/gpio/export
+#	echo 37 > /sys/class/gpio/export
+#	echo 38 > /sys/class/gpio/export
+#	echo out > /sys/class/gpio/gpio37/direction
+#	echo out > /sys/class/gpio/gpio38/direction
+#	SCLK=/sys/class/gpio/gpio38/value
+#	SDATA=/sys/class/gpio/gpio37/value
+#
+#	lastbutton=$(cat /sys/class/gpio/gpio236/value)
+#	if [[ $lastbutton -eq 0 ]]; then
+#		bname="depressed"
+#	fi
+        lastbutton=1
 }
 
 #/	Desc:	xxx
@@ -2070,7 +2085,7 @@ initmkpaths() {
 	mkdirectory $bbmp_upgrade
 	mkdirectory $bbmp_userdata
 	mkdirectory $bbmp_boot
-	mkdirectory $newroot
+	mkdirectory $newr
 	mkdirectory $bbmp_usb
 }
 
@@ -2084,6 +2099,9 @@ initmkpaths() {
 initFS() {
 	_decho "initFS is called"
 	#Mount things needed by this script
+        #for now, explicitly making /proc and /sys before mount - they instead should be part of the fs
+        mkdir -p /proc
+        mkdir -p /sys
 	mount -t proc proc /proc
 	mount -t sysfs sysfs /sys
 	#mount -t devtmpfs devtmpfs /dev
@@ -2103,23 +2121,23 @@ initFS() {
 }
 
 initLED() {
-	say_init "Led initialized"
-	/led.sh &
-	/heartbeat.sh &
+	say_init "Led not presetnt"
+#	/led.sh &
+#	/heartbeat.sh &
 }
 
 stopled(){
 	_decho "func: stopled"
-	setLED 10 5 0
-	sleep .5
-	setLED 10 5 0
-	sleep .5
-	setLED 10 5 0
-	killall heartbeat.sh
-	setLED 10 5 0
-	sleep .5
-	killall led.sh
-	rm -rf /led.pipe
+#	setLED 10 5 0
+#	sleep .5
+#	setLED 10 5 0
+#	sleep .5
+#	setLED 10 5 0
+#	killall heartbeat.sh
+#	setLED 10 5 0
+#	sleep .5
+#	killall led.sh
+#	rm -rf /led.pipe
 }
 
 #---------------------------------------------------------------------------------------------------------------------------
@@ -2507,10 +2525,10 @@ fullpivot() {
 	#Unmount all other mounts so that the ram used by
 	#the initramfs can be cleared after switch_root
 	echo 1 > /proc/sys/kernel/printk
-	umount /sys /proc /dev
+	umount /sys /proc
 	say_init "Switching to the new root"
-	exec switch_root /newroot "${init}"
-fi
+	exec switch_root $newr "${init}"
+	fi
 }
 
 #---------------------------------------------------------------------------------------------------------------------------
