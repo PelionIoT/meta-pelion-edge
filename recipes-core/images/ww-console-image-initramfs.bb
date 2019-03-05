@@ -13,7 +13,7 @@ verify signatures and activating dm-verity."
 
 DEPENDS += "u-boot-mkimage-native"
 
-PACKAGE_INSTALL = "ww-console-image-initramfs-init util-linux-findfs busybox"
+PACKAGE_INSTALL = "ww-console-image-initramfs-init util-linux-findfs busybox e2fsprogs-e2fsck"
 
 # Do not pollute the initrd image with rootfs features
 IMAGE_FEATURES = ""
