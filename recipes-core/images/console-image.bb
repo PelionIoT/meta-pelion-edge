@@ -102,7 +102,8 @@ WIGWAG_STUFF = " \
     fftw \
     imagemagick \
     lcms \
-    mbed-cloud-edge \
+    virtual/mbed-edge-core \
+    mbed-edge-examples \
     mbed-devicejs-bridge \
     node-hotplug \
     panic \

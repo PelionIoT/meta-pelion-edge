@@ -1,0 +1,25 @@
+From d85540836dd9dbf4be414bea921b5869faa8a592 Mon Sep 17 00:00:00 2001
+From: Nic Costa <nic.costa@gmail.com>
+Date: Sat, 9 Mar 2019 21:38:29 -0600
+Subject: [PATCH] fix CMake test Build Type Release
+
+---
+ cmake/examples_configure.cmake | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/cmake/examples_configure.cmake b/cmake/examples_configure.cmake
+index 0094a97..8c9643d 100644
+--- a/cmake/examples_configure.cmake
++++ b/cmake/examples_configure.cmake
+@@ -3,7 +3,7 @@ if (NOT DEFINED TARGET_TOOLCHAIN)
+     include ("lib/${EDGE_SOURCES_DIR_NAME}/cmake/toolchains/${TARGET_TOOLCHAIN}.cmake")
+ endif()
+ 
+-if (NOT (CMAKE_BUILD_TYPE STREQUAL release))
++if (NOT (CMAKE_BUILD_TYPE STREQUAL Release))
+     SET (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O0")
+     SET (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0")
+ endif ()
+-- 
+2.7.4
+

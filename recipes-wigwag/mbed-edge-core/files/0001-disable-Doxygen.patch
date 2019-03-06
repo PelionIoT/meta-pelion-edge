@@ -1,0 +1,44 @@
+From 4a526016bd59aa2368c35f355d769c13f022a84f Mon Sep 17 00:00:00 2001
+From: Nic Costa <nic.costa@gmail.com>
+Date: Fri, 8 Mar 2019 08:53:43 -0600
+Subject: [PATCH] disable Doxygen
+
+the recipe fails to find doxygen and breaks the build
+
+Note: specifying "BUILD_DOCUMENTATION=OFF" in EXTRA_OECMAKE
+doesn't seem to help.
+---
+ CMakeLists.txt | 20 --------------------
+ 1 file changed, 20 deletions(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index e0b34cc..3444ece 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -86,23 +86,3 @@ add_subdirectory (edge-rpc)
+ add_subdirectory (pt-client)
+ add_subdirectory (pt-client-2)
+ 
+-# Add doc target for building documentation with Doxygen
+-# add a target to generate API documentation with Doxygen
+-find_package (Doxygen)
+-option (BUILD_DOCUMENTATION "Create and install the HTML based API documentation (requires Doxygen)" ${DOXYGEN_FOUND})
+-if (BUILD_DOCUMENTATION)
+-    if (NOT DOXYGEN_FOUND)
+-        message (FATAL_ERROR "Doxygen is needed to build the documentation.")
+-    endif ()
+-
+-    set (doxyfile_in ${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.in)
+-    set (doxyfile ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile)
+-    configure_file (${doxyfile_in} ${doxyfile} @ONLY)
+-
+-    add_custom_target (edge-doc
+-        COMMAND ${DOXYGEN_EXECUTABLE} ${doxyfile}
+-        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+-        COMMENT "Generating API documentation with Doxygen"
+-        VERBATIM)
+-endif ()
+-
+-- 
+2.7.4
+
