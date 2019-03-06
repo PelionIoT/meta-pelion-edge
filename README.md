@@ -20,15 +20,17 @@ These instructions assume that this repo is cloned at ~/wigwag-build-env.  If yo
 
 ## Build and run a Docker container
 
-First clone the repository:
+* First clone the repository:
 
 ```
 git clone git@github.com:ARMmbed/wigwag-build-env.git
 ```
 
-The most up to date instructions on getting the Docker container started are in the README.md of wigwag-build-env. For convenience, below is a copy (as of Feb 8th 2019) of the relevant part.
+* Provision your build with a Pelion Cloud developer certificate if you are building for [Pelion Cloud developer mode](https://cloud.mbed.com/docs/current/connecting/provisioning-development-devices.html).  Copy your Pelion Cloud credentials file to `recipes-wigwag/mbed-edge-core/files/`
 
 * build the image
+
+The most up to date instructions on getting the Docker container started are in the README.md of wigwag-build-env. For convenience, below is a copy (as of Feb 8th 2019) of the relevant part.
 
 ```
     cd ~/wigwag-build-env
