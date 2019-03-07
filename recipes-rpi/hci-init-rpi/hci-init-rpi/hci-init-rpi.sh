@@ -6,8 +6,12 @@
 # Default-Start:     2 3 4 5
 # Default-Stop:
 # Short-Description: bring up hci0
-# Description:       
+# Description:
 ### END INIT INFO
 
-/usr/bin/btuart
-/usr/bin/bthelper hci0
+if [ "$1" = "start" ]; then
+    /usr/bin/btuart
+    /usr/bin/bthelper hci0
+else
+    echo >&2 "$0": function "$1" not supported.
+fi
