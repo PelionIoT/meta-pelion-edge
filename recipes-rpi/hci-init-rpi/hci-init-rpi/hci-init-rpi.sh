@@ -12,6 +12,8 @@
 if [ "$1" = "start" ]; then
     /usr/bin/btuart
     /usr/bin/bthelper hci0
+    /usr/bin/hciconfig hci0 down
+    /usr/bin/hciconfig hci0 up
 else
     echo >&2 "$0": function "$1" not supported.
 fi
