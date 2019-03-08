@@ -1,0 +1,27 @@
+From b2c111f1a21ef7b13ab8ed4ddbac79a983cac9ab Mon Sep 17 00:00:00 2001
+From: Sami Haapakoski <sami.haapakoski@arm.com>
+Date: Wed, 30 Jan 2019 14:33:53 +0200
+Subject: [PATCH] Edge: increased the HCI_LE_AUTOCONN_TIMEOUT to 20 seconds
+
+HCI_LE_AUTOCONN_TIMEOUT needs to be increased so that some BLE devices will connect more robustly.
+See https://www.spinics.net/lists/linux-bluetooth/msg67800.html
+---
+ include/net/bluetooth/hci.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/include/net/bluetooth/hci.h b/include/net/bluetooth/hci.h
+index fe98f0a..6507038 100644
+--- a/include/net/bluetooth/hci.h
++++ b/include/net/bluetooth/hci.h
+@@ -273,7 +273,7 @@ enum {
+ #define HCI_AUTO_OFF_TIMEOUT	msecs_to_jiffies(2000)	/* 2 seconds */
+ #define HCI_POWER_OFF_TIMEOUT	msecs_to_jiffies(5000)	/* 5 seconds */
+ #define HCI_LE_CONN_TIMEOUT	msecs_to_jiffies(20000)	/* 20 seconds */
+-#define HCI_LE_AUTOCONN_TIMEOUT	msecs_to_jiffies(2000)	/* 2 seconds */
++#define HCI_LE_AUTOCONN_TIMEOUT msecs_to_jiffies(20000) /* 20 seconds */
+ 
+ /* HCI data types */
+ #define HCI_COMMAND_PKT		0x01
+-- 
+2.7.4
+
