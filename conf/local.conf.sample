@@ -24,7 +24,7 @@ VIRTUAL-RUNTIME_init_manager = "sysvinit"
 MACHINE_FEATURES_remove = "apm"
 
 WKS_FILE = "console-image.wic"
-IMAGE_FSTYPES = "${INITRAMFS_FSTYPES} wic"
+IMAGE_FSTYPES = "${INITRAMFS_FSTYPES} wic wic.gz"
 
 DISTRO_FEATURES_append += " bluez5 bluetooth"
 
