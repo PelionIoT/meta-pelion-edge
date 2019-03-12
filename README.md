@@ -201,11 +201,10 @@ This can usually be fixed by the following ssh command and then rerunning bitbak
 ```
 $ ssh -T git@github.com
 ```
+# Flash
 
-# burn SD card image with WIC method
-Skip this if you use tar.gz or SDI methods
-
-## copy the WIC file to a SD
+## burn SD card image with WIC method
+Skip this if you use tar.gz, SDI, or wic.gz methods
 
 First identify your SD card by inserting the microSD into your workstation and note where it shows up.
 
@@ -235,7 +234,7 @@ So I will use `sdb` for the card on this machine.
 
 Next fetch the WIC image from the build folder: 
 ```
-~/rpi/build/tmp/deploy/images/raspberrypi3
+poky/build/tmp/deploy/images/raspberrypi3
 ```
 
 It will have a name something like: 
@@ -251,10 +250,21 @@ dd bs=4M if=console-image-raspberrypi3-somedate.rootfs.wic of=/dev/sdX conv=fsyn
 Note:
 Be sure to replace /dev/sdX with your sd cards path and console-image-raspberrypi3-somedate.rootfs.wic with your exact file name.
 
-# burn SD card image with tar.xz method 
+## burn SD card image with wic.gz
+Skip this if you use the WIC image or tar.xz image
+
+The instructions for flashing a wic.gz method are similar to the instructions for flashing a .wic image with the following exceptions:
+
+* The image name ends in .wic.gz.  for example `poky/build/tmp/deploy/images/raspberrypi3/console-image-raspberrypi3-20190219203633.rootfs.wic.gz`
+
+* The image file must be unzipped before it can be flashed.  Once the image is unzipped, the flash command is the same as for the .wic image.  Conveniently, the steps to unzip and flash can be combined into a single command:
+```
+gunzip -c 'console-image-raspberrypi3-<date>.rootfs.wic.gz' | sudo dd of=/dev/sdX bs=4M  iflag=fullblock oflag=direct conv=fsync status=progress
+```
+
+## burn SD card image with tar.xz method
 Skip this if you use the WIC image
 
-## Copying the binaries to an SD card (or eMMC)
 After the build completes, the bootloader, kernel and rootfs image files can be found in **/deploy/images/$MACHINE** with **MACHINE** coming from your **local.conf**.
 
 ## Adding WigWag packages
