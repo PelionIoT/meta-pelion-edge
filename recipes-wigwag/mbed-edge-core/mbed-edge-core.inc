@@ -4,9 +4,9 @@ LICENSE="Apache-2.0"
 LIC_FILES_CHKSUM = "file://${WORKDIR}/git/LICENSE;md5=1dece7821bf3fd70fe1309eaa37d52a2"
 SCRIPT_DIR = "${WORKDIR}/git/lib/mbed-cloud-client/update-client-hub/modules/pal-linux/scripts"
 
-MBED_EDGE_CONFIG_TRACE_LEVEL="DEBUG"
-MBED_EDGE_CONFIG_FIRMWARE_UPDATE="OFF"
-MBED_EDGE_CONFIG_FACTORY_MODE="OFF"
+MBED_EDGE_CORE_CONFIG_TRACE_LEVEL ?= "DEBUG"
+MBED_EDGE_CORE_CONFIG_FIRMWARE_UPDATE ?= "OFF"
+MBED_EDGE_CORE_CONFIG_FACTORY_MODE ?= "OFF"
 
 # Patches for quilt goes to files directory
 FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
@@ -19,7 +19,7 @@ SRC_URI = "git://git@github.com/ARMmbed/mbed-edge.git;protocol=ssh; \
            file://0002-fix-libevent-build-with-CMake-in-Yocto.patch \
            file://0003-fix-compile-error-when-building-for-Release.patch"
 SRC_URI += "\
-    ${@bb.utils.contains('MBED_EDGE_CONFIG_FACTORY_MODE','OFF','file://mbed_cloud_dev_credentials.c','',d)} \
+    ${@bb.utils.contains('MBED_EDGE_CORE_CONFIG_FACTORY_MODE','OFF','file://mbed_cloud_dev_credentials.c','',d)} \
 "
 
 SRCREV = "0.8.0"
@@ -41,10 +41,10 @@ EXTRA_OECMAKE += " \
     -DCMAKE_BUILD_TYPE=Release \
     -DTARGET_TOOLCHAIN=yocto \
     -DTARGET_CONFIG_ROOT=${WORKDIR} \
-    -DTRACE_LEVEL=${MBED_EDGE_CONFIG_TRACE_LEVEL} \
-    -DFIRMWARE_UPDATE=${MBED_EDGE_CONFIG_FIRMWARE_UPDATE} \
-    -DFACTORY_MODE=${MBED_EDGE_CONFIG_FACTORY_MODE} \
-    ${MBED_EDGE_CUSTOM_CMAKE_ARGUMENTS}"
+    -DTRACE_LEVEL=${MBED_EDGE_CORE_CONFIG_TRACE_LEVEL} \
+    -DFIRMWARE_UPDATE=${MBED_EDGE_CORE_CONFIG_FIRMWARE_UPDATE} \
+    -DFACTORY_MODE=${MBED_EDGE_CORE_CONFIG_FACTORY_MODE} \
+    ${MBED_EDGE_CORE_CUSTOM_CMAKE_ARGUMENTS}"
 
 inherit cmake update-rc.d
 
