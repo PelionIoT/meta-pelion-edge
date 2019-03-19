@@ -12,7 +12,6 @@ MBED_EDGE_CORE_CONFIG_FACTORY_MODE ?= "OFF"
 FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
 
 SRC_URI = "git://git@github.com/ARMmbed/mbed-edge.git;protocol=ssh; \
-           file://edge-core.init \
            file://edge-core.logrotate \
            file://toolchain.cmake \
            file://0001-disable-Doxygen.patch \
@@ -46,10 +45,7 @@ EXTRA_OECMAKE += " \
     -DFACTORY_MODE=${MBED_EDGE_CORE_CONFIG_FACTORY_MODE} \
     ${MBED_EDGE_CORE_CUSTOM_CMAKE_ARGUMENTS}"
 
-inherit cmake update-rc.d
-
-INITSCRIPT_NAME = "edge-core.sh"
-INITSCRIPT_PARAMS = "defaults 85 15"
+inherit cmake
 
 do_configure_prepend() {
     cd ${S}
@@ -61,9 +57,6 @@ do_configure_prepend() {
 }
 
 do_install() {
-    install -d "${D}/etc/init.d/"
-    install -m 755 "${WORKDIR}/edge-core.init" "${D}/etc/init.d/${INITSCRIPT_NAME}"
-
     install -d "${D}/wigwag/mbed/"
     install "${WORKDIR}/build/bin/edge-core" "${D}/wigwag/mbed/"
 
