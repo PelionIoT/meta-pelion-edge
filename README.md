@@ -22,8 +22,6 @@ This meta currently defines recipes for two images
 
 These images and u-boot are included in the resultant complete flashable image.
 
-
-
 ### Adding packages
 Packages are addded in the file 'meta-pelion-edge/recipes-core/images/console-image.bb'
 
