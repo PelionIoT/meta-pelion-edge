@@ -147,6 +147,12 @@ UGwwusbmsg="$bbmp_usb/wwusbmsg.sh"
 UGdir="$bbmp_user_slash/upgrades"
 UGscript=$UGdir"/upgrade.sh"
 UGtarball=$UGdir"/upgrade.tar.gz"
+UGcfg_tarball=$UGdir"/upgrade-config.tar.gz"
+UGsignature=$UGtarball".sig"
+UGcfg_signature=$UGcfg_tarball".sig"
+UGcert=$UGdir"/upgrade.cert"
+UGpubkey=$UGdir"/upgrade.pubkey"
+UGca_cert="/etc/ssl/certs/upgradeCA.cert"
 Vfactory=$bbmp_factory"/wigwag/etc/versions.json"
 Vupgrade=$bbmp_upgrade"/wigwag/etc/versions.json"
 newr="/newroot"
@@ -1127,6 +1133,97 @@ erase_UPGRADEFILES(){
 	fi
 }
 
+#Upgrade candidate was unauthenticated - dispose of it.
+quarantine_upgrade_candidate(){
+	say_update "Upgrade candidate will be quarantined as an unauthorized upgrade."
+	#For now, simply delete the candidate
+	erase_UPGRADEFILES
+}
+
+#Verifies that the certificate included wiht an upgrade candidate was signed by the upgrade CA
+#Returns true if signature is valid, false ohterwise
+verify_upgrade_certificate(){
+	#TODO - the date is not correctly set in this context,  if we had network access, then the
+	#commmand below would correctly set the date from time.nist.gov (132.163.96.2)
+
+	# date -s "$(nc 132.163.96.2 13 | cut -d' ' -f2,3)"
+	# openssl verify -x509_strict -CAfile $UGca_cert $UGcert
+
+	#For now, validate the cert while ignoring the validity dates
+	openssl verify -x509_strict -no_check_time -CAfile $UGca_cert $UGcert
+	if [ $? -ne 0 ]; then
+		say_update "$UGcert is not a certificate issued by CA $UGca_cert."
+		false
+	else
+		true
+	fi
+}
+
+#Verify the signatures for an upgrade candidate
+#Returns true if all signatures are verified, false otherwise
+verify_upgrade_signatures(){
+	openssl x509 -in $UGcert -pubkey -out $UGpubkey
+	openssl dgst -sha256 -verify $UGpubkey -signature $UGsignature $UGtarball
+	if [ $? -ne 0 ]; then
+		say_update "Signature $UGsignature is inconsistent with $UGtarball and $UGcert"
+		false
+	else
+		openssl dgst -sha256 -verify $UGpubkey -signature $UGcfg_signature $UGcfg_tarball
+		if [ $? -ne 0 ]; then
+			say_update "Signature $UGcfg_signature is inconsistent with $UGcfg_tarball and $UGcert"
+			false
+		else
+			true
+		fi
+	fi
+}
+
+#Verify the upgrade candididate
+#returns true if all files are present and all tests are valid,
+#false otherwise
+verify_upgrade_candidate(){
+	if [ ! -f $UGtarball ]; then
+		#No need to spam console when no update candidate is present
+		false
+	elif [ ! -f $UGcert ] || [ ! -f $UGcfg_tarball ] || [ ! -f $UGsignature ] || [ ! -f $UGcfg_signature ]; then
+		say_update "$UGtarball is an invalid authenticated upgrade candidate."
+		say_update "Files $UGcert $UGtarball $UGsignature $UGcfg_tarball and $UGcfg_signature must be present."
+		false
+	else
+		#Complete candidate is present
+		if verify_upgrade_certificate; then
+			#Upgrade certificate is valid and signed by upgrade CA
+			if verify_upgrade_signatures; then
+				#Upgrade signatures have been verified.  Untar the config tarball.
+				say_update "Untarring upgrade config tarball $UGcfg_tarball"
+				cd $UGdir
+				tar -xzf $UGcfg_tarball
+				cd -
+				#The following test for the existence of an upgrade script is all that is required for an unaurthenicated
+				#upgrade and is therefore the last test for ab authenticate dupgrade
+				if [ ! -f $UGscript ]; then
+					say_update "Signatures on upgrade candidate are valid, but no upgrade script in configuration tarball."
+					quarantine_upgrade_candidate
+					false
+				else
+					#Upgrade has been authenticated and is ready to apply.
+					true
+				fi
+
+
+			else
+				#Invalid signatures on upgrade candidate
+				quarantine_upgrade_candidate
+				false
+			fi
+		else
+			#Invalid upgrade cerificate
+			quarantine_upgrade_candidate
+			false
+		fi
+	fi
+}
+
 #/	Desc:	xxx
 #/	Ver:	.1
 #/	$1:		name1
@@ -1141,21 +1238,20 @@ check_OSmessages() {
 	say_update "Checking for messages from DeviceOS"
 	cd /
 	umountall
-	mountuser_ro
-	if [[ -e $UGscript ]]; then
-		say_update "Received an upgrade message from the OS"
+	mountuser_rw
+	if verify_upgrade_candidate; then
+		say_update "Received an authorized upgrade message from the OS"
 		watchdog 1200
-	#if [[ -e $UGscript  && -e $UGtarball ]]; then
-	cp $UGscript /
-	source /upgrade.sh
-	_decho "DONE: sourced /upgrade.sh, lets erase the upgrade file $ERASETHEUPGRADEFILES"
-	erase_UPGRADEFILES
-	rebootit
-else
-	umountuser
-	say_update "No messages from DeviceOS"
-fi
-_decho "done with check_OSmessages"
+		cp $UGscript /
+		source /upgrade.sh
+		_decho "DONE: sourced /upgrade.sh, lets erase the upgrade file $ERASETHEUPGRADEFILES"
+		erase_UPGRADEFILES
+		rebootit
+	else
+		umountuser
+		say_update "No messages from DeviceOS"
+	fi
+	_decho "done with check_OSmessages"
 }
 
 #/	Desc:	xxx
