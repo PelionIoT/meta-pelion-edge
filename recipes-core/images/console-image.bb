@@ -117,6 +117,7 @@ WIGWAG_STUFF = " \
     deviceos-users \
     global-node-modules \
     wwrelay-utils \
+    fcc \
 "
 
 IMAGE_INSTALL += " \
