@@ -49,7 +49,7 @@ ENABLE_UART = "1"
 # If you need serial console access, for example to debug uboot or
 # initramfs, uncomment the next two lines.  Be aware that doing this
 # disables the bluetooth radio, so do not leave this on by default.
-#ENABLE_RPI3_SERIAL_CONSOLE = "1"
+#ENABLE_SERIAL_CONSOLE = "1"
 #SERIAL_CONSOLES = "115200;ttyAMA0"
 # SERIAL_CONSOLES_forcevariable = ""
 

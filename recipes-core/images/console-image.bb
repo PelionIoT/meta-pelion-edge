@@ -5,7 +5,7 @@ IMAGE_LINGUAS = "en-us"
 
 inherit image
 
-DEPENDS += "bcm2835-bootfiles deviceos-users"
+DEPENDS += "bcm2835-bootfiles linux-firmware-rpidistro deviceos-users"
 
 IMAGE_BOOT_FILES += "ww-console-image-initramfs-raspberrypi3.cpio.gz.u-boot;initramfs.img"
 
@@ -22,7 +22,6 @@ CORE_OS = " \
 WIFI_SUPPORT = " \
     crda \
     iw \
-    linux-firmware-raspbian \
     wpa-supplicant \
 "
 
@@ -83,7 +82,6 @@ EXTRA_TOOLS_INSTALL = " \
     nmap \
     ntp ntp-tickadj \
     procps \
-    rndaddtoentcnt \
     rng-tools \
     sysfsutils \
     unzip \
