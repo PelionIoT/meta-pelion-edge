@@ -5,7 +5,7 @@ IMAGE_LINGUAS = "en-us"
 
 inherit image
 
-DEPENDS += "bcm2835-bootfiles linux-firmware-rpidistro deviceos-users"
+DEPENDS += "deviceos-users"
 
 IMAGE_BOOT_FILES += "ww-console-image-initramfs-raspberrypi3.cpio.gz.u-boot;initramfs.img"
 
@@ -129,6 +129,7 @@ IMAGE_INSTALL += " \
     ${WIFI_SUPPORT} \
     ${BLUETOOTH_SUPPORT} \
     ${WIGWAG_STUFF} \
+    ${MACHINE_EXTRA_RRECOMMENDS} \
 "
 
 set_local_timezone() {

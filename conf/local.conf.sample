@@ -26,7 +26,7 @@ MACHINE_FEATURES_remove = "apm"
 WKS_FILE = "console-image.wic"
 IMAGE_FSTYPES = "${INITRAMFS_FSTYPES} wic wic.gz wic.bmap"
 
-DISTRO_FEATURES_append += " bluez5 bluetooth"
+DISTRO_FEATURES_append += " bluez5 bluetooth wifi"
 
 # Choose the board you are building for
 #MACHINE="raspberrypi"
