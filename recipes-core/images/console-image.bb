@@ -7,7 +7,7 @@ inherit image
 
 DEPENDS += "deviceos-users"
 
-IMAGE_BOOT_FILES += "ww-console-image-initramfs-raspberrypi3.cpio.gz.u-boot;initramfs.img"
+#IMAGE_BOOT_FILES += "ww-console-image-initramfs-raspberrypi3.cpio.gz.u-boot;initramfs.img"
 
 CORE_OS = " \
     kernel-modules \
@@ -165,7 +165,6 @@ WIGWAG_STUFF = " \
     devicedb \
     maestro \
     deviceos-users \
-    global-node-modules \
     wwrelay-utils \
 "
 

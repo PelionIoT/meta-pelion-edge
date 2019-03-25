@@ -25,6 +25,7 @@ do_configure(){
 	oe_runnpm_native install -g node-gyp
 }
 
+export SSH_AUTH_SOCK
 do_compile() {
   cp ${STAGING_INCDIR}/avahi-compat-libdns_sd/dns_sd.h ${STAGING_INCDIR}/
   ARCH=`echo $AR | awk -F '-' '{print $1}'`
