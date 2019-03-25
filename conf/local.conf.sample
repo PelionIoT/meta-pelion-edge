@@ -31,7 +31,7 @@ DISTRO_FEATURES_append += " bluez5 bluetooth wifi"
 #MACHINE="raspberrypi0"
 #MACHINE="raspberrypi0-wifi"
 #MACHINE="raspberrypi2"
-MACHINE = "raspberrypi3"
+MACHINE = "raspberrypi3-mbl"
 #MACHINE="raspberrypi-cm"
 #MACHINE="raspberrypi-cm3"
 
@@ -57,7 +57,7 @@ ENABLE_UART = "1"
 
 #initramfs setup
 INITRAMFS_IMAGE = "ww-console-image-initramfs"
-INITRAMFS_IMAGE_BUNDLE = "1"
+#INITRAMFS_IMAGE_BUNDLE = "1"
 BOOT_SPACE = "1073741"
 INITRAMFS_MAXSIZE = "2600000"
 #IMAGE_FSTYPES_pn-${INITRAMFS_IMAGE} = "${INITRAMFS_FSTYPES}"
