@@ -87,6 +87,10 @@ PREFERRED_PROVIDER_node = "nodejs"
 PREFERRED_VERSION_nodejs = "8.11.2"
 PREFERRED_VERSION_nodejs-native = "8.11.2"
 
+PREFERRED_PROVIDER_openssl = "openssl10"
+PREFERRED_PROVIDER_openssl-native = "openssl10-native"
+PREFERRED_VERSION_openssl10 = "1.0.2%"
+
 USER_CLASSES = "image-mklibs image-prelink"
 PATCHRESOLVE = "noop"
 RM_OLD_IMAGE = "1"

@@ -120,6 +120,14 @@ WIGWAG_STUFF = " \
     fcc \
 "
 
+OPENSSL_102 = " \
+    libcrypto10 \
+    libssl10 \
+    openssl10 \
+    openssl \
+    openssl-bin \
+"
+
 IMAGE_INSTALL += " \
     ${CORE_OS} \
     ${DEV_SDK_INSTALL} \
@@ -129,6 +137,7 @@ IMAGE_INSTALL += " \
     ${WIFI_SUPPORT} \
     ${BLUETOOTH_SUPPORT} \
     ${WIGWAG_STUFF} \
+    ${OPENSSL_102} \
     ${MACHINE_EXTRA_RRECOMMENDS} \
 "
 
