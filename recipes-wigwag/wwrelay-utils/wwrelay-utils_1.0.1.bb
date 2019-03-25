@@ -1,8 +1,7 @@
 DESCRIPTION = "Utilities used by the WigWag Relay"
 
-LICENSE = "DEVICEOS-1"
-LICENSE_FLAGS="WigWagCommericalDeviceOS"
-LIC_FILES_CHKSUM = "file://LICENSE;md5=543feeb21d5afbbe88012f44261f5217"
+LICENSE = "Apache-2.0"
+LIC_FILES_CHKSUM = "file://LICENSE;md5=4336ad26bb93846e47581adc44c4514d"
 
 #if you switch to maestro, you need to uncomment a line in the install section
 SRC_URI="git://git@github.com/WigWagCo/wwrelay-utils.git;protocol=ssh;branch=development;name=wwrelay \
