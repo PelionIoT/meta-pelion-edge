@@ -3,17 +3,16 @@ DESCRIPTION = "Utilities used by the WigWag Relay"
 LICENSE = "Apache-2.0"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=4336ad26bb93846e47581adc44c4514d"
 
-#if you switch to maestro, you need to uncomment a line in the install section
 SRC_URI="git://git@github.com/WigWagCo/wwrelay-utils.git;protocol=ssh;branch=development;name=wwrelay \
 git://git@github.com/WigWagCo/deviceos-shell-scripts.git;protocol=ssh;branch=master;name=dss;destsuffix=git/dss \
 file://wwrelay \
 file://BUILDMMU.txt \
+file://logrotate_directives/ \
 "
 
 SRCREV_FORMAT = "wwrelay-dss"
 SRCREV_wwrelay = "${AUTOREV}"
 SRCREV_dss = "${AUTOREV}"
-
 
 inherit pkgconfig gitpkgv npm-base update-rc.d
 
@@ -22,7 +21,7 @@ INHIBIT_PACKAGE_STRIP = "1"
 INITSCRIPT_NAME = "wwrelay"
 INITSCRIPT_PARAMS = "defaults 80 20" 
 
-#DBN="/home/walt/bin/config/builds"
+BUILDMMUFILE="/tmp/BUILDMMU.txt"
 PV = "1.0+git${SRCPV}"
 PKGV = "1.0+git${GITPKGV}"
 PR = "r7"
@@ -30,7 +29,7 @@ PR = "r7"
 DEPENDS = "update-rc.d-native nodejs nodejs-native"
 RDEPENDS_${PN} += " bash nodejs openssl10"
 
-FILES_${PN} = "/wigwag/* /wigwag/etc /wigwag/etc/* /etc/init.d /etc/init.d/* /etc/wigwag /etc/wigwag/* /etc/rc?.d/* /usr/bin /usr/bin/* /etc/* /userdata /upgrades /localdata "
+FILES_${PN} = "/wigwag/* /wigwag/etc /wigwag/etc/* /etc/logrotate.d/* /etc/init.d /etc/init.d/* /etc/wigwag /etc/wigwag/* /etc/rc?.d/* /usr/bin /usr/bin/* /etc/* /userdata /upgrades /localdata "
 
 S = "${WORKDIR}/git"
 S_MODPROBED="${S}/etc/modprobe.d"
@@ -172,21 +171,6 @@ do_install() {
 	install -m 0755 ${S}/etc/dnsmasq.d/dnsmasq.conf ${D}/etc/dnsmasq.d/dnsmasq.conf
 	install -m 0755 ${S}/etc/modprobe.d/at24.conf ${D}/etc/modprobe.d/at24.conf
 	install -m 0755 ${S}/etc/profile.d/wigwagpath.sh ${D}/etc/profile.d/wigwagpath.sh
-
-	# install -d ${D}/wigwag/
-	# install -d ${D}/wigwag/wwrelay-utils
-	# install -d ${D}/wigwag/wwrelay-utils/conf
-	# install -d ${D}/wigwag/etc
-	# install -d ${D}/wigwag/wigwag-core-modules
-	# install -d ${D}/wigwag/wigwag-core-modules/relay-term/
-	# install -d ${D}/wigwag/wigwag-core-modules/relay-term/config/
-	# install -d ${D}/wigwag/devicejs-core-modules
-	# install -d ${D}/wigwag/devicejs-core-modules/rsmi
-	# install -d ${D}/wigwag/devicejs-core-modules/rsmi/bin
-
-
-
-	#install init scripts and set them up to their run levels
 	install -m 0755 ${S}/../wwrelay ${D}${INIT_D_DIR}
 	install -m 0755 ${S}/etc/init.d/devjssupport ${D}${INIT_D_DIR}
 	install -m 0755 ${S}/etc/init.d/relayterm ${D}${INIT_D_DIR}
@@ -196,28 +180,16 @@ do_install() {
 	#spreadsheet work needed
 	#conf
 	cp -r ${S}/conf ${D}/wigwag/wwrelay-utils/
-	#install -m 0755 ${S}/conf/interfaces ${D}/etc/network/interfaces
 	
 	#version
 	install -m 0755 ${S}/version.json ${D}/wigwag/wwrelay-utils/conf/versions.json
 	install -m 0755 ${S}/version.json ${D}/wigwag/etc/versions.json
 
-
-	#install config scripts
-	#now using directory system
-	#install -m 0755 ${S}/conf/relayterm_template.config.json ${D}/wigwag/wigwag-core-modules/relay-term/config/relayterm_template.config.json
-
-	
-
-	#turning it all on
-
 	cp ${S}/slipcomms/slipcomms ${D}/wigwag/devicejs-core-modules/rsmi/bin/slipcomms-arm
 	cp ${S}/cc2530prog/cc2530prog ${D}/wigwag/devicejs-core-modules/rsmi/bin/cc2530prog-arm
 	cp -r ${S}/6BSMD ${D}/wigwag/wwrelay-utils/6BSMD
 	cp -r ${S}/common ${D}/wigwag/wwrelay-utils/common
-	
 	cp -r ${S}/.b ${D}/wigwag/wwrelay-utils/
-	
 	cp -r ${S}/initscripts ${D}/wigwag/wwrelay-utils/initscripts
 	install -m 0755 ${S}/initscripts/UDEV/96-local.rules ${D}/etc/udev/rules.d/96-local.rules
 	cp -r ${S}/debug_scripts ${D}/wigwag/wwrelay-utils/debug_scripts
@@ -264,16 +236,13 @@ do_install() {
 	install -d ${D}/wigwag/wigwag-core-modules/relay-term/
 	install -d ${D}/wigwag/wigwag-core-modules/relay-term/config/
 
-	#cp relay_logger.conf.json ${D}/wigwag/devicejs-core-modules/Runner/relay_logger.conf.json
-	#cp template.config.json ${D}/wigwag/devicejs-core-modules/Runner/template.config.json
-	#cp template.devicejs.conf ${D}/wigwag/devicejs-core-modules/Runner/template.devicejs.conf
-	#cp template.devicedb.conf ${D}/wigwag/devicejs-core-modules/Runner/template.devicedb.conf
+	#logrotate.d
+	install -d "${D}${sysconfdir}/logrotate.d/"
+	ALL_LDs="$(ls ${WORKDIR}/logrotate_directives)"
+	for f in $ALL_LDs; do
+		install -m 644 "${WORKDIR}/logrotate_directives/$f" "${D}${sysconfdir}/logrotate.d"
+	done 
 
-	#update-rc.d -r ${D} bluetooth defaults 85 5
-	# commenting out this for a while...  7/7/2017
-
-	
-	#update-rc.d -r ${D} sqa defaults 96 4
 }
 
 

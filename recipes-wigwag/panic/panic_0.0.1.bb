@@ -8,19 +8,8 @@ PR = "r1"
 PV = "0.1"
 
 SRC_URI = "file://Makefile \
-           file://panic.c \
-           file://COPYING \
-          "
+file://panic.c \
+file://COPYING \
+"
 
 S = "${WORKDIR}"
-
-#FILES_${PN} += "/wigwag/system/other/*" 
-#FILES_${PN}-dbg += "/wigwag/system/other/.debug" 
-
-# The inherit of module.bbclass will automatically name module packages with
-# "kernel-module-" prefix as required by the oe-core build environment.
-#do_install() {
-#     cd ${S}
-#     install -d ${D}/wigwag/system/other
-##shellcheck disable=SC2034     install -m 755 ${S}/panic.ko ${D}/wigwag/system/other/
-#}
