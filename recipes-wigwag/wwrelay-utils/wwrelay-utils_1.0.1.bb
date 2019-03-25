@@ -50,6 +50,7 @@ do_configure(){
 	do_log "node-gyp installed at: $(which node-gyp)"
 }
 
+export SSH_AUTH_SOCK
 do_compile() {
 	BUILDMMU=$(cat ${S}/../BUILDMMU.txt)
 	VER_FILE=${S}/version.json

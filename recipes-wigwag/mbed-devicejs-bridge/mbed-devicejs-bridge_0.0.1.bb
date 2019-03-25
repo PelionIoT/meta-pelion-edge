@@ -29,6 +29,7 @@ INSANE_SKIP_${PN} += "arch"
 FILES_${PN} += "/wigwag/*" 
 
 
+export SSH_AUTH_SOCK
 do_compile() {
     ARCH=`echo $AR | awk -F '-' '{print $1}'`
     PLATFORM=`echo $AR | awk -F '-' '{print $3}'`
