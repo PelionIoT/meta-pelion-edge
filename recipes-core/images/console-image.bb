@@ -96,7 +96,7 @@ EXTRA_WW_NOTWORKING = " \
 cgroup-lite \
 "
 
-EXTRA_EXTRA= " \
+EXTRA_EXTRA = " \
 perl \
 "
 
@@ -106,7 +106,9 @@ cmake \
 curl \
 daemontools \
 dhcp-client \
+dnsmasq \
 dbus \
+e2fsprogs \
 git-perltools \
 glibc-gconvs \
 glibc-utils \
@@ -172,8 +174,6 @@ mbed-devicejs-bridge \
 mbed-edge-core-ww \
 node-hotplug \
 panic \
-pgw-os-dev \
-pgw-os-essentials \
 pps-tools \
 pwgen \
 twlib \
