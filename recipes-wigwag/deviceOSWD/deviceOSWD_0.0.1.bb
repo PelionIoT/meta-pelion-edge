@@ -1,10 +1,7 @@
 DESCRIPTION = "High Performance Logging library for c"
 
-#LICENSE = "CLOSED"
-#LIC_FILES_CHKSUM = "file://index.js;md5=19b7b10a212c4a56cd7de36f5b13b889"
-LICENSE = "DEVICEOS-1"
-LICENSE_FLAGS="WigWagCommericalDeviceOS"
-LIC_FILES_CHKSUM = "file://LICENSE;md5=543feeb21d5afbbe88012f44261f5217"
+LICENSE = "Apache-2.0"
+LIC_FILES_CHKSUM = "file://LICENSE;md5=4336ad26bb93846e47581adc44c4514d"
 
 # libuv is built into the the installer deps, so we don't want yocto's
 #DEPENDS = "libuv"

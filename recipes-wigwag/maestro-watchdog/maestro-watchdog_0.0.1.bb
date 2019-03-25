@@ -1,9 +1,7 @@
 DESCRIPTION = "maetro is a runtime / container manager for deviceOS"
 
-#LICENSE = "GPLv2+"
-LICENSE = "DEVICEOS-1"
-LICENSE_FLAGS="WigWagCommericalDeviceOS"
-LIC_FILES_CHKSUM = "file://LICENSE;md5=543feeb21d5afbbe88012f44261f5217"
+LICENSE = "Apache-2.0"
+LIC_FILES_CHKSUM = "file://LICENSE;md5=4336ad26bb93846e47581adc44c4514d"
 
 inherit go pkgconfig gitpkgv
 
