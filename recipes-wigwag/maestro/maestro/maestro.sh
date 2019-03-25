@@ -109,13 +109,13 @@ START() {
             echo "did not start devicejs because wwrelay said not to" >> $WWRELAY_LOG
         fi
         exit 7
-     fi
-    }
+    fi
+}
 
 
 
-    case "$1" in
-        start) START; ;;
+case "$1" in
+    start) START; ;;
     #
     stop)
 echo "Stopping DeviceJS"

@@ -1,0 +1,6 @@
+/var/log/debug {
+	rotate 0
+	daily
+	size 50K
+	nodateext
+}

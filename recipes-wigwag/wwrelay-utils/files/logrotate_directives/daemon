@@ -1,0 +1,6 @@
+/var/log/daemon.log {
+	rotate 0
+	daily
+	size 50K
+	nodateext
+}

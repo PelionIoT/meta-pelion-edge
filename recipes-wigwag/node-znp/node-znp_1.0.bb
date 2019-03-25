@@ -1,8 +1,7 @@
-DESCRIPTION = "node module for TIs Zigbee Network Protocol HA profile"
+DESCRIPTION = "node module for Zigbee Network Protocol HA profile"
 
-LICENSE = "DEVICEPROTOCOL-1"
-LICENSE_FLAGS = "WigWagCommericalDeviceProtocol"
-LIC_FILES_CHKSUM = "file://README.md;md5=f4961c535d1089eb3dcaef5e56c61ad5"
+LICENSE = "Apache-2.0"
+LIC_FILES_CHKSUM = "file://README.md;md5=4336ad26bb93846e47581adc44c4514d"
 
 inherit pkgconfig gitpkgv
 
@@ -21,13 +20,9 @@ INHIBIT_PACKAGE_STRIP = "1"
 
 FILES_${PN} = "/wigwag/devicejs/core/utils/node-znp"
 
-# do_package_qa () {
-#   echo "done"
-# }
 
 do_compile() {
     cd ${S}
-
     export ARCH=`echo $AR | awk -F '-' '{print $1}'`
     export PLATFORM=`echo $AR | awk -F '-' '{print $3}'`
     export npm_config_arch=$ARCH
@@ -42,7 +37,7 @@ do_compile() {
 
 }
 do_package_qa() {
-   echo "done"
+ echo "done"
 }
 
 
@@ -53,6 +48,5 @@ do_install() {
     install -d ${D}/wigwag/devicejs/core/utils
     install -d ${D}/wigwag/devicejs/core/utils/node-znp
     cp -r ${S}/* ${D}/wigwag/devicejs/core/utils/node-znp
-
 }
 

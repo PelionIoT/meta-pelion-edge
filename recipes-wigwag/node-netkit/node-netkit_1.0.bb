@@ -26,44 +26,38 @@ do_package_qa () {
 }
 
 do_compile() {
-   cd ${S}
+ cd ${S}
+ export AR
+ export LD=$CXX
+ export LINK=$CXX
+ export CC
+ export CXX
+ export RANLIB
 
-   #
-   # Export the Bitback build tools
-   #
-   export AR
-   export LD=$CXX
-   export LINK=$CXX
-   export CC
-   export CXX
-   export RANLIB
+ export GYPFLAGS="-Dv8_can_use_fpu_instructions=false -Darm_version=7 -Darm_float_abi=softfp"
+ NGYP_OPTIONS="--without-snapshot --dest-cpu=arm --dest-os=linux --with-arm-float-abi=softfp"
+ CONFIG_OPTIONS="--host=arm-poky-linux-gnueabi --target=arm-poky-linux-gnueabi"
 
-   export GYPFLAGS="-Dv8_can_use_fpu_instructions=false -Darm_version=7 -Darm_float_abi=softfp"
-   NGYP_OPTIONS="--without-snapshot --dest-cpu=arm --dest-os=linux --with-arm-float-abi=softfp"
-   CONFIG_OPTIONS="--host=arm-poky-linux-gnueabi --target=arm-poky-linux-gnueabi"
+ # Obtain and export the Architecture for NPM / node-gyp
+ ARCH=`echo $AR | awk -F '-' '{print $1}'`
+ export npm_config_arch=$ARCH
 
-   # Obtain and export the Architecture for NPM / node-gyp
-   ARCH=`echo $AR | awk -F '-' '{print $1}'`
-   export npm_config_arch=$ARCH
-
-   node-gyp -d configure
-   node-gyp build
+ node-gyp -d configure
+ node-gyp build
 }
 
 do_install() {
-    cd ${S}
-    install -d ${D}/wigwag
-    install -d ${D}/wigwag/devicejs
-    install -d ${D}/wigwag/devicejs/core
-    install -d ${D}/wigwag/devicejs/core/utils
-    install -d ${D}/wigwag/devicejs/core/utils/node-netkit
-
-    cp -r ${S}/build ${D}/wigwag/devicejs/core/utils/node-netkit
-    cp -r ${S}/deps ${D}/wigwag/devicejs/core/utils/node-netkit
-    cp -r ${S}/libs ${D}/wigwag/devicejs/core/utils/node-netkit
-    cp -r ${S}/tests ${D}/wigwag/devicejs/core/utils/node-netkit
-
-    cp ${S}/index.js ${D}/wigwag/devicejs/core/utils/node-netkit
-    cp ${S}/package.json ${D}/wigwag/devicejs/core/utils/node-netkit
+  cd ${S}
+  install -d ${D}/wigwag
+  install -d ${D}/wigwag/devicejs
+  install -d ${D}/wigwag/devicejs/core
+  install -d ${D}/wigwag/devicejs/core/utils
+  install -d ${D}/wigwag/devicejs/core/utils/node-netkit
+  cp -r ${S}/build ${D}/wigwag/devicejs/core/utils/node-netkit
+  cp -r ${S}/deps ${D}/wigwag/devicejs/core/utils/node-netkit
+  cp -r ${S}/libs ${D}/wigwag/devicejs/core/utils/node-netkit
+  cp -r ${S}/tests ${D}/wigwag/devicejs/core/utils/node-netkit
+  cp ${S}/index.js ${D}/wigwag/devicejs/core/utils/node-netkit
+  cp ${S}/package.json ${D}/wigwag/devicejs/core/utils/node-netkit
 }
 
