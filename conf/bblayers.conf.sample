@@ -20,4 +20,6 @@ BBLAYERS ?= " \
     ##OEROOT##/meta-raspberrypi-mbl \
     ##OEROOT##/meta-mbl-bsp-common \
     ##OEROOT##/openembedded-core-mbl/meta \
+    ##OEROOT##/meta-linaro/meta-optee \
+    ##OEROOT##/meta-linaro-mbl/meta-optee \
 "
