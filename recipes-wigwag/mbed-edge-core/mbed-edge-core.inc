@@ -52,7 +52,7 @@ EXTRA_OECMAKE += " \
 
 inherit cmake update-rc.d
 
-INITSCRIPT_NAME = "edge-core.sh"
+INITSCRIPT_NAME = "mbed-edge-core"
 INITSCRIPT_PARAMS = "defaults 85 15"
 
 do_configure_prepend() {
