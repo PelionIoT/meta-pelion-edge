@@ -92,23 +92,21 @@ zip \
 RPI_STUFF = " \
 userland \
 "
+
+
 EXTRA_WW_NOTWORKING = " \
 cgroup-lite \
-"
-
-EXTRA_EXTRA = " \
-perl \
+dbus \
+dnsmasq \
 "
 
 EXTRA_WW = " \
-bash-completion \
 cmake \
 curl \
 daemontools \
 dhcp-client \
-dnsmasq \
-dbus \
 e2fsprogs \
+bash-completion \
 git-perltools \
 glibc-gconvs \
 glibc-utils \
@@ -116,6 +114,10 @@ gnutls-openssl \
 hostapd \
 go \
 iputils-ping \
+libcrypto10 \
+libssl10 \
+openssl10 \
+openssl-bin \
 jansson \
 jansson-dev \
 kernel-dev \
@@ -130,6 +132,7 @@ ltp \
 modemmanager \
 minicom \
 ncurses-dev \
+perl \
 parted \
 ppp \
 python-pip \
@@ -152,18 +155,12 @@ valgrind \
 wget-locale-zh-cn \
 wget-locale-zh-tw \
 xz \
-libcrypto10 \
-libssl10 \
-openssl10 \
-openssl-bin \
-jansson \
-jansson-dev \
-deviceoswd \
 "
 
 
 WIGWAG_STUFF = " \
 devicejs \
+deviceoswd \
 emacs \
 fftw \
 imagemagick \
@@ -193,8 +190,9 @@ ${EXTRA_TOOLS_INSTALL} \
 ${RPI_STUFF} \
 ${WIFI_SUPPORT} \
 ${BLUETOOTH_SUPPORT} \
-${EXTRA_WW} \
 ${WIGWAG_STUFF} \
+${EXTRA_HALF} \
+${EXTRA_WW} \
 ${MACHINE_EXTRA_RRECOMMENDS} \
 "
 
