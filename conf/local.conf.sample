@@ -87,15 +87,12 @@ PREFERRED_PROVIDER_node = "nodejs"
 PREFERRED_VERSION_nodejs = "8.11.2"
 PREFERRED_VERSION_nodejs-native = "8.11.2"
 
+PREFERRED_PROVIDER_openssl = "openssl10"
+PREFERRED_PROVIDER_openssl-native = "openssl10-native"
+PREFERRED_VERSION_openssl10 = "1.0.2%"
+
 USER_CLASSES = "image-mklibs image-prelink"
 PATCHRESOLVE = "noop"
 RM_OLD_IMAGE = "1"
 INHERIT += "rm_work"
 CONF_VERSION = "1"
-
-MBED_EDGE_CORE_CONFIG_DEVELOPER_MODE = "OFF"
-MBED_EDGE_CORE_CONFIG_FACTORY_MODE = "ON"
-MBED_EDGE_CORE_CONFIG_BYOC_MODE = "OFF"
-
-
-

@@ -6,6 +6,7 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=4336ad26bb93846e47581adc44c4514d"
 SRC_URI="git://git@github.com/WigWagCo/wwrelay-utils.git;protocol=ssh;branch=development;name=wwrelay \
 git://git@github.com/WigWagCo/deviceos-shell-scripts.git;protocol=ssh;branch=master;name=dss;destsuffix=git/dss \
 file://wwrelay \
+file://BUILDMMU.txt \
 file://logrotate_directives/ \
 "
 
@@ -26,7 +27,7 @@ PKGV = "1.0+git${GITPKGV}"
 PR = "r7"
 
 DEPENDS = "update-rc.d-native nodejs nodejs-native"
-RDEPENDS_${PN} += " bash nodejs"
+RDEPENDS_${PN} += " bash nodejs openssl10"
 
 FILES_${PN} = "/wigwag/* /wigwag/etc /wigwag/etc/* /etc/logrotate.d/* /etc/init.d /etc/init.d/* /etc/wigwag /etc/wigwag/* /etc/rc?.d/* /usr/bin /usr/bin/* /etc/* /userdata /upgrades /localdata "
 
@@ -54,8 +55,7 @@ do_configure(){
 }
 
 do_compile() {
-	BUILDMMU="0.0.0"
-	#$(cat ${BUILDMMUFILE})
+	BUILDMMU=$(cat ${S}/../BUILDMMU.txt)
 	VER_FILE=${S}/version.json
 	if [ -e $VER_FILE ] ; then
 		rm $VER_FILE
@@ -216,7 +216,7 @@ do_install() {
 	#all of DOGControl
 	install -m 755 ${S}/DOGcontrol/dogProgrammer.sh ${D}/wigwag/system/bin/dogProgrammer
 	#cherrypick manu-tools
-	#all of I2C 
+	#all of I2C
 	cp -r ${S}/I2C ${D}/wigwag/wwrelay-utils/I2C
 	install -m 755 ${S}/I2C/eetool.sh ${D}/wigwag/system/bin/eetool
 	rm -rf ${D}/wigwag/wwrelay-utils/I2C/eetool.sh
