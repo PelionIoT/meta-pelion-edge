@@ -26,6 +26,6 @@ RDEPENDS_${PN} = "bash zlib ncurses-libtinfo"
 
 do_install(){
 	cd ${S}
-	install -d ${D}/usr
-	cp -r ${S}/usr/ ${D}/
+    	install -d ${D}/usr
+    	cp -r ${S}/usr/ ${D}/
 }
