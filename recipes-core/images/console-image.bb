@@ -14,8 +14,6 @@ CORE_OS = " \
     openssh openssh-keygen openssh-sftp-server \
     packagegroup-core-boot \
     packagegroup-core-full-cmdline \    
-    packagegroup-core-buildessential \
-    term-prompt \
     tzdata \
 "
 
@@ -30,30 +28,17 @@ BLUETOOTH_SUPPORT = " \
 "
 
 DEV_SDK_INSTALL = " \
-    binutils \
-    binutils-symlinks \
     coreutils \
-    cpp \
-    cpp-symlinks \
     diffutils \
     elfutils elfutils-binutils \
     file \
-    g++ \
-    g++-symlinks \
-    gcc \
-    gcc-symlinks \
     gdb \
     gdbserver \
-    gettext \
     git \
     ldd \
-    libstdc++ \
-    libstdc++-dev \
-    libtool \
     ltrace \
-    make \
     nodejs \
-    pkgconfig \
+    packagegroup-core-buildessential \
     python3-modules \
     strace \
     openssl-dev \
@@ -110,6 +95,7 @@ WIGWAG_STUFF = " \
     pps-tools \
     pwgen \
     su-exec \
+    term-prompt \
     tsb \
     twlib \
     devicedb \
