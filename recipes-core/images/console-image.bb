@@ -204,3 +204,8 @@ ROOTFS_POSTPROCESS_COMMAND += " \
 "
 
 export IMAGE_BASENAME = "console-image"
+
+do_image_wic[depends] += "virtual/atf:do_deploy"
+
+# Convince the task that creates image_license.manifest to include atf.
+do_populate_lic_deploy[depends] += "virtual/atf:do_deploy"
