@@ -1,0 +1,7 @@
+/wigwag/log/check_edge_connection.log {
+rotate 1
+size 1M
+nodateext
+copytruncate
+missingok
+}
