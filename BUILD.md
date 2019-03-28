@@ -4,7 +4,7 @@ The following are instructions for building Pelion Edge firmware for the Raspber
 
 For convenience, the manual instructions below have been automated in repositories for [Environment](https://github.com/armpelionedge/manifest-pelion-os-edge) and [Build](https://github.com/armpelionedge/build-pelion-os-edge).
 See also [instructions for flashing the image](https://github.com/armpelionedge/meta-pelion-edge-ww/blob/master/FLASH.md) onto an SD card.
- 
+
 ## Manual instructions
 
 Note:
@@ -66,17 +66,7 @@ If you enabled support for Pelion firmware updates in mbed-edge-core, copy your 
 
 To generate update_default_resources.c, run [manifest-tool](https://github.com/ARMmbed/manifest-tool).  See the documentation on [getting the update resources](https://github.com/ARMmbed/mbed-edge/blob/master/README.md#getting-the-update-resources).
 
-
-#### Upgrade CA Certificate
-
-Authenticated upgrade requires inclusion of a cerificate authority certificate to be included in the initialization image.   This CA is used to issue the certificates included with an authenticated upgrade.  After obtaining your CA certificate, copy to the local file meta-pelion-edge/recipes-core/ww-console-image-initramfs-init/files/upgradeCA.cert.
-
-To generate upgradeCA.cert, create a CA key and use the key to generate a certificate signing request, or a self-signed certificate for development purposes.  Here is an example that shows how to create a key and a self-signed certificate.
-
-```
-openssl genrsa -out upgradeCA.key 2048
-openssl req -new -x509 -key upgradeCA.key -out upgradeCA.cert
-```
+Note: To unlock the rich node features, such as gateway logs and gateway terminal in the Pelion web Portal, pass the command-line parameter `-V 42fa7b48-1a65-43aa-890f-8c704daade54` to the manifest-tool while generating `update_default_resources.c`.
 
 ### Initialize the build directory
 
