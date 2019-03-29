@@ -14,6 +14,7 @@ SRC_URI = "git://git@github.com/ARMmbed/mbed-edge-examples.git;protocol=ssh; \
            file://0002-fix-libevent-build-with-CMake-in-Yocto.patch \
            file://0003-examples-0.8.0-should-use-mbed-edge-0.8.0.patch \
            file://0004-fix-CMake-test-Build-Type-Release.patch \
+           file://mept-ble.init \
            "
 
 SRCREV = "0.8.0"
@@ -40,6 +41,10 @@ EXTRA_OECMAKE += " \
     ${MBED_EDGE_CUSTOM_CMAKE_ARGUMENTS} "
 inherit cmake
 
+inherit update-rc.d
+INITSCRIPT_NAME = "mept-ble"
+INITSCRIPT_PARAMS = "defaults 86 15"
+
 do_configure_prepend() {
     cd ${S}
     git submodule update --init --recursive
@@ -57,4 +62,7 @@ do_install() {
     install -d "${D}${sysconfdir}/logrotate.d"
     install -m 644 "${WORKDIR}/pt-example" "${D}${sysconfdir}/logrotate.d"
     install -m 644 "${WORKDIR}/blept-example" "${D}${sysconfdir}/logrotate.d"
+
+    install -d "${D}${sysconfdir}/init.d/"
+    install -m 755 "${WORKDIR}/mept-ble.init" "${D}${sysconfdir}/init.d/${INITSCRIPT_NAME}"
 }
