@@ -52,7 +52,7 @@ do_install() {
     #also install the sparsehash headers
     install -d ${D}${includedir}/google
     cp -r deps/include/google/* ${D}${includedir}/google
-    pushd ${WORKDIR}/git/deps/lib
+    cd ${WORKDIR}/git/deps/lib
     if [ ! -e libTW.so ] ; then
         ln -s libTW.so.1.0.1 libTW.so
     fi
