@@ -5,7 +5,7 @@ LIC_FILES_CHKSUM = "file://m/LICENSE;md5=4336ad26bb93846e47581adc44c4514d"
 
 
 DEPENDS="deviceos-users"
-RDEPENDS_${PN}+="bash"
+RDEPENDS_${PN}+="bash twlib"
 inherit go pkgconfig gitpkgv update-rc.d
 
 INITSCRIPT_NAME = "maestro.sh"
