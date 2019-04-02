@@ -165,6 +165,7 @@ WIGWAG_STUFF = " \
     devicedb \
     maestro \
     deviceos-users \
+    global-node-modules \
     wwrelay-utils \
 "
 
