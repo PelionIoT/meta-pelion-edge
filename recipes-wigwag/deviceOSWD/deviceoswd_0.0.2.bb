@@ -9,7 +9,7 @@ RDEPENDS_${PN}+="bash"
 inherit pkgconfig gitpkgv update-rc.d
 
 INITSCRIPT_NAME = "deviceOS-watchdog"
-INITSCRIPT_PARAMS = "defaults 60 40" 
+INITSCRIPT_PARAMS = "defaults 60 40"
 
 PV = "1.0+git${SRCPV}"
 PKGV = "1.0+git${GITPKGV}"
@@ -26,7 +26,7 @@ WSYS="${D}/wigwag/system"
 INHIBIT_PACKAGE_DEBUG_SPLIT = "1"
 INHIBIT_PACKAGE_STRIP = "1"
 
-FILES_${PN} += "/wigwag/system/bin/* ${INIT_D_DIR}/*" 
+FILES_${PN} += "/wigwag/system/bin/* ${INIT_D_DIR}/*"
 
 
 
@@ -39,12 +39,12 @@ do_compile() {
 
     cd ${S}
     make clean
-    make deviceOSWD-dummy   
+    make deviceOSWD-dummy
     cp deviceOSWD deviceOSWD_dummy
 
     make clean
     make deviceOSWD-dummy-debug
-    cp deviceOSWD deviceOSWD_dummy_debug     
+    cp deviceOSWD deviceOSWD_dummy_debug
 
     make clean
     make deviceOSWD-a10-debug
@@ -60,6 +60,10 @@ do_compile() {
     make clean
     make deviceOSWD-a10-tiny841
     cp deviceOSWD deviceOSWD_a10_tiny841
+
+    make clean
+    make deviceOSWD-rpi-b3plus
+    cp deviceOSWD deviceOSWD_rpi_b3plus
 }
 
 do_install() {
