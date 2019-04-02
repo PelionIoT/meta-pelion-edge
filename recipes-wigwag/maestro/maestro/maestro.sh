@@ -24,16 +24,16 @@ MAESTRO_CONFIG="${WIGWAGROOT}/wwrelay-utils/conf/maestro-conf/edge-config-rpi-pr
     MAESTRO_STOP_CMD="echo Need_Stop_Command"
 
 
-    RUNNER_DIR="${WIGWAGROOT}/devicejs-core-modules/Runner"
-    RUNNER_START_CMD="./start -c ./relay.config.json"
-    RUNNER_STOP_CMD="echo Need_Stop_Command"
+RUNNER_DIR="${WIGWAGROOT}/devicejs-core-modules/Runner"
+RUNNER_START_CMD="./start -c ./relay.config.json"
+RUNNER_STOP_CMD="echo Need_Stop_Command"
 
-    export NODE_PATH=${WIGWAGROOT}/devicejs-core-modules/node_modules
+export NODE_PATH=${WIGWAGROOT}/devicejs-core-modules/node_modules
 
-    RUNNER_LOG="${WIGWAGROOT}/log/runner.log"
-    WWRELAY_LOG=${WIGWAGLOGROOT}"/wwrelay.log"
+RUNNER_LOG="${WIGWAGROOT}/log/runner.log"
+WWRELAY_LOG=${WIGWAGLOGROOT}"/wwrelay.log"
 
-    MAESTRO_RUNTIME_LOG="${WIGWAGROOT}/log/maestro-runtime.log"
+MAESTRO_RUNTIME_LOG="${WIGWAGROOT}/log/maestro-runtime.log"
 #MAESTRO_RUNTIME_LOG="/dev/null"
 PIDROOT="/var/run"
 maestroOK=$PIDROOT"/maestroOK"
