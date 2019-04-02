@@ -1,0 +1,7 @@
+/wigwag/log/maestro-runtime.log {
+    rotate 10
+    size 4M
+    nodateext
+    copytruncate
+    missingok
+}
