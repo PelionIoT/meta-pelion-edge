@@ -60,6 +60,10 @@ do_compile() {
     make clean
     make deviceOSWD-a10-tiny841
     cp deviceOSWD deviceOSWD_a10_tiny841
+
+    make clean
+    make deviceOSWD-rpi-3bplus
+    cp deviceOSWD deviceOSWD_rpi_3bplus
 }
 
 do_install() {
