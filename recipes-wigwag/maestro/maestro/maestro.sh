@@ -20,8 +20,8 @@ MAESTRO_DIR="${WIGWAGROOT}/system/bin"
 GREASE_STATIC_LIB="${WIGWAGROOT}/system/lib"
 MAESTRO_CONFIG="${WIGWAGROOT}/wwrelay-utils/conf/maestro-conf/edge-config-rpi-production.yaml"
 
-    MAESTRO_START_CMD="$MAESTRO_DIR/maestro -config ${MAESTRO_CONFIG}"
-    MAESTRO_STOP_CMD="echo Need_Stop_Command"
+MAESTRO_START_CMD="$MAESTRO_DIR/maestro -config ${MAESTRO_CONFIG}"
+MAESTRO_STOP_CMD="echo Need_Stop_Command"
 
 
 RUNNER_DIR="${WIGWAGROOT}/devicejs-core-modules/Runner"
@@ -34,7 +34,6 @@ RUNNER_LOG="${WIGWAGROOT}/log/runner.log"
 WWRELAY_LOG=${WIGWAGLOGROOT}"/wwrelay.log"
 
 MAESTRO_RUNTIME_LOG="${WIGWAGROOT}/log/maestro-runtime.log"
-#MAESTRO_RUNTIME_LOG="/dev/null"
 PIDROOT="/var/run"
 maestroOK=$PIDROOT"/maestroOK"
 
