@@ -29,19 +29,7 @@ STOP_DEVICEOSWD_CMD="echo -e \"stop\" | socat unix-sendto:$KEEPALIVE STDIO"
 RUNNER_LOG="${WIGWAGROOT}/log/runner.log"
 WWRELAY_LOG=${WIGWAGLOGROOT}"/wwrelay.log"
 
-# LED control is integrated with deviceOSWD, tried detecting the hardware inside devcieOSWD, that dint work 
-# Detect the platform and swap the files 
-PROG_RELAY="deviceOSWD_a10_relay"
-PROG_RP200="deviceOSWD_a10_tiny841"
 
-eeprog /dev/i2c-1 0x55 -f -r 0:10 2> /dev/null
-if [[ $? -eq 0 ]]; then
-    # hardwareversion="relay"
-    START_DEVICEOSWD_CMD="$PROG_PATH/$PROG_RELAY -w 3000 -m 900 -s $KEEPALIVE -d -p $PIDROOT/"
-else
-    START_DEVICEOSWD_CMD="$PROG_PATH/$PROG_RP200 -w 3000 -m 900 -s $KEEPALIVE -d -p $PIDROOT/"
-    # hardwareversion="RP200"
-fi
 
 ENABLE_TINY_WATCHDOG_CMD="echo -e \"dog_go\" | socat unix-sendto:$KEEPALIVE STDIO"
 DISABLE_TINY_WATCHDOG_CMD="echo -e \"dog_stop\" | socat unix-sendto:$KEEPALIVE STDIO"
