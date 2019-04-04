@@ -15,21 +15,24 @@ All of the instructions in this document were built and tested with Docker CE on
 [Install Yocto system requirements](https://www.yoctoproject.org/docs/2.6.1/ref-manual/ref-manual.html#ref-manual-system-requirements)
 
 Install additional requirements
-   1. sudo dpkg --add-architecture i386
-   2. sudo apt-get update
-   3. sudo apt-get install -y --no-install-recommends g++-multilib libssl-dev:i386 libcrypto++-dev:i386 zlib1g-dev:i386
-   4. sudo dpkg-reconfigure dash
-      i.  This reconfigures Ubuntu/Debian to use bash as the non-interactive shell.  At the prompt, select No.
-
 ```
+sudo dpkg --add-architecture i386
+sudo apt-get update
+sudo apt-get install -y --no-install-recommends g++-multilib libssl-dev:i386 libcrypto++-dev:i386 zlib1g-dev:i386
+sudo dpkg-reconfigure dash
+```
+This last command reconfigures Ubuntu/Debian to use bash as the non-interactive shell.  At the prompt, select No.
+
 For older Ubuntu's you also need to install the python 2.7 package
 ```
-python2.7
+sudo apt-get install python2.7
 ```
+
 And then create some links for it in /usr/bin
 ```
 sudo ln -sf /usr/bin/python2.7 /usr/bin/python
 sudo ln -sf /usr/bin/python2.7 /usr/bin/python2
+```
 
 ### Clone Repositories
 
