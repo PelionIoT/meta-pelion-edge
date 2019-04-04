@@ -55,7 +55,6 @@ inherit cmake update-rc.d
 INITSCRIPT_NAME = "mbed-edge-core"
 INITSCRIPT_PARAMS = "defaults 85 15"
 
-export SSH_AUTH_SOCK
 do_configure_prepend() {
     cd ${S}
     git submodule update --init --recursive
