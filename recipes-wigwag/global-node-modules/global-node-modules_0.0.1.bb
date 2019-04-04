@@ -33,7 +33,6 @@ do_package_qa () {
 	echo "done"
 }
 
-export SSH_AUTH_SOCK
 do_configure() {
 	cd ${S}
 	cp ${STAGING_INCDIR}/avahi-compat-libdns_sd/dns_sd.h ${STAGING_INCDIR}/
