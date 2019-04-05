@@ -181,6 +181,11 @@ tloop(){
 	fi
 }
 
+monitor_edge_core(){
+	# Detect edge-core is now claimed. Burn eeprom and reboot. Temp fix until maestro implements this
+	/wigwag/wwrelay-utils/debug_scripts/check_edge_connection.sh >& /wigwag/log/check_edge_connection.log &
+}
+
 start(){
 	_logrotate
 	rm -rf $maestroOK
@@ -204,9 +209,7 @@ start(){
 		# Make sure edge-core is running all time. Start a script to monitor edge-core until maestro implements this feature
 		/wigwag/wwrelay-utils/debug_scripts/run_mbed_edge_core.sh >& /wigwag/log/run_mbed_edge_core.log &
 
-		# Detect edge-core is now claimed. Burn eeprom and reboot. Temp fix until maestro implements this
-		/wigwag/wwrelay-utils/debug_scripts/check_edge_connection.sh >& /wigwag/log/check_edge_connection.log &
-
+		monitor_edge_core
 		# if [ -d /userdata/mbed ]; then
 		# 	_log "Detected edge-gw. Reading edge eeprom..."
 		# 	/usr/bin/node ./mbed-edge-eeprom-reader.js -c $MBED_SETUP_FILE >> $WWRELAY_LOG 2>&1
@@ -243,6 +246,7 @@ start(){
 		_led 10 10 0
 		updateEthernetMAC;
 		udhcpc -n
+		monitor_edge_core
 		# #stop the watchdog here with a humanhalt
 		# /etc/init.d/deviceOS-watchdog humanhalt
 		# if [[ $hardwareversion = "relay" ]]; then
