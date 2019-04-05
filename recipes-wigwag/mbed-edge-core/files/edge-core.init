@@ -11,7 +11,7 @@
 # Short-Description:    System logger
 ### END INIT INFO
 start_edge() {
-    if [ ! -d "/userdata/mbed" ]; then
+    if [ ! -d "/userdata/mbed/mcc_config" ]; then
         # this directory is used to hold the developer certificate, if the user wants to use one
         echo "Creating /userdata/mbed"
         mkdir -p /userdata/mbed/mcc-config
