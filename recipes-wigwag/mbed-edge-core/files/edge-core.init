@@ -13,8 +13,8 @@
 start_edge() {
     if [ ! -d "/userdata/mbed/mcc_config" ]; then
         # this directory is used to hold the developer certificate, if the user wants to use one
-        echo "Creating /userdata/mbed"
-        mkdir -p /userdata/mbed/mcc-config
+        echo "Creating /userdata/mbed/mcc_config"
+        mkdir -p /userdata/mbed/mcc_config
         chown developer -R /userdata/mbed
     fi
     cd /userdata/mbed
