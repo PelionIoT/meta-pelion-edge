@@ -5,7 +5,7 @@ LIC_FILES_CHKSUM = "file://${WORKDIR}/git/LICENSE;md5=1dece7821bf3fd70fe1309eaa3
 SCRIPT_DIR = "${WORKDIR}/git/lib/mbed-cloud-client/update-client-hub/modules/pal-linux/scripts"
 
 MBED_EDGE_CORE_CONFIG_TRACE_LEVEL ?= "INFO"
-MBED_EDGE_CORE_CONFIG_FIRMWARE_UPDATE ?= "OFF"
+MBED_EDGE_CORE_CONFIG_FIRMWARE_UPDATE ?= "ON"
 MBED_EDGE_CORE_CONFIG_DEVELOPER_MODE ?= "ON"
 MBED_EDGE_CORE_CONFIG_FACTORY_MODE ?= "OFF"
 MBED_EDGE_CORE_CONFIG_BYOC_MODE ?= "OFF"
@@ -22,6 +22,7 @@ SRC_URI = "git://git@github.com/ARMmbed/mbed-edge.git;protocol=ssh; \
            file://0003-fix-compile-error-when-building-for-Release.patch"
 SRC_URI += "\
     ${@bb.utils.contains('MBED_EDGE_CORE_CONFIG_DEVELOPER_MODE','ON','file://mbed_cloud_dev_credentials.c','',d)} \
+    ${@bb.utils.contains('MBED_EDGE_CORE_CONFIG_FIRMWARE_UPDATE','ON','file://update_default_resources.c','',d)} \
 "
 
 SRCREV = "0.8.0"
@@ -60,6 +61,9 @@ do_configure_prepend() {
     git submodule update --init --recursive
     [ -f "${WORKDIR}/mbed_cloud_dev_credentials.c" ] && {
         mv "${WORKDIR}/mbed_cloud_dev_credentials.c" config/
+    }
+    [ -f "${WORKDIR}/update_default_resources.c" ] && {
+        mv "${WORKDIR}/update_default_resources.c" config/
     }
     cd ${WORKDIR}/build
 }
