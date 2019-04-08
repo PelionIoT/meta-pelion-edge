@@ -21,7 +21,6 @@ INHIBIT_PACKAGE_STRIP = "1"
 INITSCRIPT_NAME = "wwrelay"
 INITSCRIPT_PARAMS = "defaults 80 20" 
 
-BUILDMMUFILE="/tmp/BUILDMMU.txt"
 PV = "1.0+git${SRCPV}"
 PKGV = "1.0+git${GITPKGV}"
 PR = "r7"
