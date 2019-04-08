@@ -46,7 +46,7 @@ do_configure() {
 	cd combo
 	cp -R ../wcm/* . >> /dev/null
 	cp -R ../dcm/* . >> /dev/null
-	echo -en "{\n\"devjs-configurator\": \"http://github.com/WigWagCo/devjs-configurator#maestroRunner\",\n\"netkit\": \"git+ssh://git@github.com:WigWagCo/node-netkit.git\"\n}\n" > /tmp/overrides.json
+	echo -en "{\n\"devjs-configurator\": \"http://github.com/WigWagCo/devjs-configurator#maestroRunner\",\n\"netkit\": \"git+ssh://git@github.com:WigWagCo/node-netkit.git\"\n}\n" > ${WORKDIR}/overrides.json
 	cd ../../
 	#--------------------devjs-production-tools-----------------------------------------------------------
 	cd ${S}/../
@@ -81,7 +81,7 @@ do_compile() {
 	cd ${S}/combo/
 	rm -f package.json || :
 	rm -f package-lock.json || :
-	node ../../devjs-production-tools/consolidator.js -O /tmp/overrides.json -d grease-log -d dhclient ../wcm/* ../dcm/* ../dcm/wigwag-devices
+	node ../../devjs-production-tools/consolidator.js -O ${WORKDIR}/overrides.json -d grease-log -d dhclient ../wcm/* ../dcm/* ../dcm/wigwag-devices
 	sed -i '/isc-dhclient/d' ./package.json
 	sed -i '/node-hotplug/d' ./package.json
 	NPM_FLAGS="--target_arch=$ARCH --target_platform=linux --loglevel silly"
