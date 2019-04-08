@@ -7,7 +7,7 @@ SET (PAL_USER_DEFINED_CONFIGURATION "\"${TARGET_CONFIG_ROOT}/sotp_fs_rpi3_yocto.
 SET (BIND_TO_ALL_INTERFACES 0)
 SET (PAL_FS_MOUNT_POINT_PRIMARY "\"/userdata/mbed/mcc_config\"")
 SET (PAL_FS_MOUNT_POINT_SECONDARY "\"/userdata/mbed/mcc_config\"")
-SET (PAL_UPDATE_FIRMWARE_DIR "\"/userdata/mbed/firmware\"")
+SET (PAL_UPDATE_FIRMWARE_DIR "\"/upgrades\"")
 SET (ARM_UC_SOCKET_TIMEOUT_MS 300000)
 
 if (${FIRMWARE_UPDATE})
