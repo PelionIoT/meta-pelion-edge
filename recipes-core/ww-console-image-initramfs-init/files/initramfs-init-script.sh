@@ -618,6 +618,7 @@ watchdog(){
 		say_init "enabling the watchdog with -w $wtime -d"
 		#Watchdog is hw dependent and must be build specially for each platform
 		#ignore errors until orperational
+		mkdirectory $WDPID_PATH
 		/deviceOSWD -w $wtime -d -s $WDKEEPALIVE -p $WDPID_PATH 2>/dev/null
 	else
 		say_error "watchdog not started"
