@@ -28,6 +28,8 @@ git clone git@github.com:ARMmbed/wigwag-build-env.git
 
 * Provision your build with a Pelion Cloud developer certificate if you are building for [Pelion Cloud developer mode](https://cloud.mbed.com/docs/current/connecting/provisioning-development-devices.html).  Copy your Pelion Cloud credentials file to `recipes-wigwag/mbed-edge-core/files/`
 
+* If you enabled support for firmware updates in mbed-edge-core, copy your update certificate update_default_resources.c into `recipes-wigwag/mbed-edge-core/files/`.  Run manifest-tool to generate the certificate.  See the documentation on [getting the update resources](https://github.com/ARMmbed/mbed-edge/blob/master/README.md#getting-the-update-resources).
+
 * build the image
 
 The most up to date instructions on getting the Docker container started are in the README.md of wigwag-build-env. For convenience, below is a copy (as of Feb 8th 2019) of the relevant part.
