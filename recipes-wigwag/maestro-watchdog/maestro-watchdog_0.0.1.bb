@@ -1,4 +1,4 @@
-DESCRIPTION = "maetro is a runtime / container manager for deviceOS"
+DESCRIPTION = "maetro-watchdog for ralypoint hw"
 
 LICENSE = "Apache-2.0"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=4336ad26bb93846e47581adc44c4514d"
@@ -12,7 +12,7 @@ SRCREV = "${AUTOREV}"
 
 PR = "r0"
 FILES_${PN} += "/wigwag/system/bin/* /wigwag/system/lib/*" 
-SRC_URI="git://git@github.com/WigWagCo/rallypointwatchdogs.git;protocol=ssh;branch=master"
+SRC_URI="git://git@github.com/armPelionEdge/rallypointwatchdogs.git;protocol=ssh;branch=master"
 S = "${WORKDIR}/git"
 WSB="/wigwag/system/bin"
 
@@ -38,9 +38,9 @@ do_compile() {
  export GOPATH="$WORKSPACE"
  export GOBIN="$WORKSPACE/bin"
  cd go-workspace/src
- mkdir -p github.com/WigWagCo
- mv $TOP/git github.com/WigWagCo/rallypointwatchdogs
- cd github.com/WigWagCo/rallypointwatchdogs
+ mkdir -p github.com/armPelionEdge
+ mv $TOP/git github.com/armPelionEdge/rallypointwatchdogs
+ cd github.com/armPelionEdge/rallypointwatchdogs
  ./build.sh
 }
 
@@ -49,7 +49,7 @@ do_install() {
  DWLIB="${D}/${WLIB}"
  install -d ${DWLIB}
  WORKSPACE=`pwd`/../go-workspace
- install -m 0755 "${WORKSPACE}/src/github.com/WigWagCo/rallypointwatchdogs/rp100/rp100wd.so" "${D}/${WLIB}"    
- install -m 0755 "${WORKSPACE}/src/github.com/WigWagCo/rallypointwatchdogs/dummy/dummywd.so" "${D}/${WLIB}"    
+ install -m 0755 "${WORKSPACE}/src/github.com/armPelionEdge/rallypointwatchdogs/rp100/rp100wd.so" "${D}/${WLIB}"    
+ install -m 0755 "${WORKSPACE}/src/github.com/armPelionEdge/rallypointwatchdogs/dummy/dummywd.so" "${D}/${WLIB}"    
 }
 

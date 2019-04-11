@@ -13,7 +13,7 @@ PKGV = "1.0+git${GITPKGV}"
 PR = "r1"
 
 SRCREV = "${AUTOREV}"
-SRC_URI="git://git@github.com/WigWagCo/node-isc-dhclient.git;protocol=ssh;branch=master"
+SRC_URI="git://git@github.com/armPelionEdge/node-isc-dhclient.git;protocol=ssh;branch=master"
 
 S = "${WORKDIR}/git"
 

@@ -11,7 +11,7 @@ PKGV = "1.0+git${GITPKGV}"
 PR = "r1"
 
 SRCREV = "${AUTOREV}"
-SRC_URI = "git://github.com/WigWagCo/twlib;protocol=git;branch=master"
+SRC_URI = "git://github.com/armPelionEdge/twlib;protocol=git;branch=master"
 
 DEBUG_OPTIONS = "-rdynamic -D_TW_TASK_DEBUG_THREADS_"
 GLIBCFLAG = "-D_USING_GLIBC_"

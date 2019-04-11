@@ -10,7 +10,7 @@ PKGV = "1.0+git${GITPKGV}"
 PR = "r1"
 
 SRCREV = "${AUTOREV}"
-SRC_URI="git://git@github.com/WigWagCo/node-6lbr.git;protocol=ssh;branch=master"
+SRC_URI="git://git@github.com/armPelionEdge/node-6lbr.git;protocol=ssh;branch=master"
 
 S = "${WORKDIR}/git"
 

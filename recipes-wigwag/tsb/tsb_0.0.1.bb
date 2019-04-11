@@ -12,8 +12,8 @@ PKGV = "1.0+git${GITPKGV}"
 PR = "r3"
 
 SRCREV = "${AUTOREV}"
-#SRC_URI = "git://git@github.com/WigWagCo/deviceOSWD.git;protocol=ssh"
-SRC_URI = "git://git@github.com/WigWagCo/tsb-c.git;protocol=ssh"
+
+SRC_URI = "git://git@github.com/armPelionEdge/tsb-c.git;protocol=ssh"
 
 S = "${WORKDIR}/git"
 

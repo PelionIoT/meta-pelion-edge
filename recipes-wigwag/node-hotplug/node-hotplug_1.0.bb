@@ -1,6 +1,6 @@
 DESCRIPTION = "Node binding udev"
 LICENSE = "Apache-2.0"
-LIC_FILES_CHKSUM = "file://LICENSE;md5=4336ad26bb93846e47581adc44c4514d"
+LIC_FILES_CHKSUM = "file://LICENSE;md5=1dece7821bf3fd70fe1309eaa37d52a2"
 
 inherit pkgconfig gitpkgv npm-base npm-install
 
@@ -10,7 +10,7 @@ PKGV = "1.0+git${GITPKGV}"
 PR = "r1"
 
 SRCREV = "${AUTOREV}"
-SRC_URI="git://git@github.com/WigWagCo/node-hotplug.git;protocol=ssh"
+SRC_URI="git://git@github.com/armPelionEdge/node-hotplug.git;protocol=ssh"
 
 S = "${WORKDIR}/git"
 

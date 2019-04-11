@@ -1,7 +1,7 @@
 DESCRIPTION = "Watchdog controller for edgeOS"
 
 LICENSE = "Apache-2.0"
-LIC_FILES_CHKSUM = "file://LICENSE;md5=4336ad26bb93846e47581adc44c4514d"
+LIC_FILES_CHKSUM = "file://LICENSE;md5=1dece7821bf3fd70fe1309eaa37d52a2"
 
 
 RDEPENDS_${PN}+="bash"
@@ -16,7 +16,7 @@ PKGV = "1.0+git${GITPKGV}"
 PR = "r4"
 
 SRCREV = "${AUTOREV}"
-SRC_URI = "git://git@github.com/WigWagCo/deviceOSWD.git;protocol=ssh;branch=master \
+SRC_URI = "git://git@github.com/armPelionEdge/edgeos-wd.git;protocol=ssh;branch=master \
 file://deviceOS-watchdog \
 "
 
