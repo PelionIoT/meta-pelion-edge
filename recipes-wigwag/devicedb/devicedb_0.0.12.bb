@@ -1,7 +1,6 @@
 DESCRIPTION = "devicedb distributed database"
-LICENSE = "DEVICEJS-1"
-LICENSE_FLAGS = "WigWagCommericalDeviceJS"
-LIC_FILES_CHKSUM = "file://ddb/LICENSE;md5=4011f5b49f62dc7a25bef33807edc4bd"
+LICENSE = "Appache-2.0"
+LIC_FILES_CHKSUM = "file://ddb/LICENSE;md5=1dece7821bf3fd70fe1309eaa37d52a2"
 
 inherit go pkgconfig gitpkgv
 
@@ -9,12 +8,12 @@ PR = "r5"
 # Why are we using the destsuffix= option in SRC_URI here? B/c qapprently in "thud", the golang bbclass is a bit naive and 
 # can't deal with SRCREV=hash or tags. This is do to some incomplete "help" it provides in the URI fetcher
 # you can see the half-working code here: https://github.com/openembedded/openembedded-core/blob/thud/meta/classes/go.bbclass
-SRC_URI = "git://git@github.com/WigWagCo/devicejs-ng.git;protocol=ssh;branch=development;name=ddb;destsuffix=git/ddb \
+SRC_URI = "git://git@github.com/armPelionEdge/devicejs-ng.git;protocol=ssh;branch=master;name=ddb;destsuffix=git/ddb \
 file://devicedb \
 "
 
 SRCREV_FORMAT = "ddb"
-SRCREV_ddb = "v0.2.6"
+SRCREV_ddb = "${AUTOREV}"
 S = "${WORKDIR}/git"
 
 DEPENDS = ""

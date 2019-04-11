@@ -1,18 +1,18 @@
 DESCRIPTION = "mbed bridge"
 
 LICENSE = "Apache-2.0"
-LIC_FILES_CHKSUM = "file://bridge/LICENSE;md5=4336ad26bb93846e47581adc44c4514d"
+LIC_FILES_CHKSUM = "file://bridge/LICENSE;md5=1dece7821bf3fd70fe1309eaa37d52a2"
 inherit autotools pkgconfig gitpkgv npm-base npm-install
 
 PV = "1.0+git${SRCPV}"
 PKGV = "1.0+git${GITPKGV}"
 SRCREV = "${AUTOREV}"
-SRC_URI = "git://git@github.com/WigWagCo/mbed-devicejs-bridge;protocol=ssh;branch=master"
+SRC_URI = "git://git@github.com/armPelionEdge/mbed-devicejs-bridge;protocol=ssh;branch=master"
 PR = "r2"
 
 
-SRC_URI="git://git@github.com/WigWagCo/mbed-devicejs-bridge;protocol=ssh;branch=master;name=bridge;destsuffix=git/bridge \
-git://git@github.com/WigWagCo/mbed-edge-websocket.git;protocol=ssh;branch=master;name=edgejs;destsuffix=git/edgejs \
+SRC_URI="git://git@github.com/armPelionEdge/mbed-devicejs-bridge;protocol=ssh;branch=master;name=bridge;destsuffix=git/bridge \
+git://git@github.com/armPelionEdge/mbed-edge-websocket.git;protocol=ssh;branch=master;name=edgejs;destsuffix=git/edgejs \
 file://config-dev.json"
 SRCREV_FORMAT = "bridge-edgejs"
 SRCREV_bridge = "${AUTOREV}"

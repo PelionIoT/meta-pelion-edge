@@ -1,15 +1,14 @@
 DESCRIPTION = "devicejs message bus"
 
-LICENSE = "DEVICEJS-1"
-LICENSE_FLAGS = "WigWagCommericalDeviceJS"
-LIC_FILES_CHKSUM = "file://LICENSE;md5=4011f5b49f62dc7a25bef33807edc4bd"
+LICENSE = "Apache-2.0"
+LIC_FILES_CHKSUM = "file://LICENSE;md5=1dece7821bf3fd70fe1309eaa37d52a2"
 
 inherit pkgconfig gitpkgv npm-base npm-install
 
 PR = "r4"
-SRC_URI = "git://git@github.com/WigWagCo/devicejs-ng.git;protocol=ssh;branch=development"
+SRC_URI = "git://git@github.com/armPelionEdge/devicejs-ng.git;protocol=ssh;branch=master"
 
-SRCREV = "v0.2.6"
+SRCREV = "${AUTOREV}"
 
 S = "${WORKDIR}/git"
 
