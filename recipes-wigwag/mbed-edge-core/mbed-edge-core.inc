@@ -22,7 +22,7 @@ SRC_URI = "git://git@github.com/ARMmbed/mbed-edge.git;protocol=ssh; \
            file://0003-fix-compile-error-when-building-for-Release.patch"
 SRC_URI += "\
     ${@bb.utils.contains('MBED_EDGE_CORE_CONFIG_DEVELOPER_MODE','ON','file://mbed_cloud_dev_credentials.c','',d)} \
-    ${@bb.utils.contains('MBED_EDGE_CORE_CONFIG_FIRMWARE_UPDATE','ON','file://update_default_resources.c','',d)} \
+    ${@bb.utils.contains('MBED_EDGE_CORE_CONFIG_DEVELOPER_MODE','ON','file://update_default_resources.c','',d)} \
 "
 
 SRCREV = "0.8.0"
