@@ -1,5 +1,5 @@
 DESCRIPTION = "devicedb distributed database"
-LICENSE = "Appache-2.0"
+LICENSE = "Apache-2.0"
 LIC_FILES_CHKSUM = "file://ddb/LICENSE;md5=1dece7821bf3fd70fe1309eaa37d52a2"
 
 inherit go pkgconfig gitpkgv
