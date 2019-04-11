@@ -1,10 +1,10 @@
 DESCRIPTION = "Utilities used by the WigWag Relay"
 
 LICENSE = "Apache-2.0"
-LIC_FILES_CHKSUM = "file://LICENSE;md5=4336ad26bb93846e47581adc44c4514d"
+LIC_FILES_CHKSUM = "file://LICENSE;md5=1dece7821bf3fd70fe1309eaa37d52a2"
 
-SRC_URI="git://git@github.com/WigWagCo/wwrelay-utils.git;protocol=ssh;branch=development;name=wwrelay \
-git://git@github.com/WigWagCo/deviceos-shell-scripts.git;protocol=ssh;branch=master;name=dss;destsuffix=git/dss \
+SRC_URI="git://git@github.com/armPelionEdge/edge-utils.git;protocol=ssh;branch=master;name=wwrelay \
+git://git@github.com/armPelionEdge/edgeos-shell-scripts.git;protocol=ssh;branch=master;name=dss;destsuffix=git/dss \
 file://wwrelay \
 file://BUILDMMU.txt \
 file://logrotate_directives/ \
@@ -35,10 +35,6 @@ S_MODPROBED="${S}/etc/modprobe.d"
 S_PROFILED="${S}/etc/profile.d"
 SWSB="${S}/system/bin"
 SDTB ="${S}/dev-tools/bin"
-
-
-
-
 
 do_package_qa () {
 	echo "done"
@@ -94,7 +90,7 @@ do_compile() {
 	fi
 	mkdir tempI2C
 	cd tempI2C
-	git clone -b master git@github.com:WigWagCo/node-i2c.git
+	git clone -b master git@github.com:armPelionEdge/node-i2c.git
 	cd node-i2c
 	do_log "in wwrelay-utils node-i2c"
 	oe_runnpm install --target_arch=arm --production
@@ -113,18 +109,9 @@ do_compile() {
 	oe_runnpm install --production
 	make
 
-#	do_log "manu-tools"
-#	cd ${S}/manu-tools
-#	make
-
 do_log "slip-radio"
 cd ${S}/slip-radio
 oe_runnpm install --production
-
-do_log "WWSupportTunnel"
-cd ${S}/WWSupportTunnel
-oe_runnpm install --production
-do_log "all done with compile"
 
 do_log "slipcoms"
 cd ${S}/slipcomms 
@@ -165,7 +152,6 @@ do_install() {
 	install -d ${D}/etc/udev
 	install -d ${D}/etc/udev/rules.d
 	do_dirInstall ${S}/wigwag/ ${D}/wigwag/
-
 	install -m 0755 ${S}/etc/dnsmasq.conf ${D}/etc/dnsmasq.conf
 	install -m 0755 ${S}/etc/dnsmasq.d/dnsmasq.conf ${D}/etc/dnsmasq.d/dnsmasq.conf
 	install -m 0755 ${S}/etc/modprobe.d/at24.conf ${D}/etc/modprobe.d/at24.conf
@@ -183,7 +169,6 @@ do_install() {
 	#version
 	install -m 0755 ${S}/version.json ${D}/wigwag/wwrelay-utils/conf/versions.json
 	install -m 0755 ${S}/version.json ${D}/wigwag/etc/versions.json
-
 	cp ${S}/slipcomms/slipcomms ${D}/wigwag/devicejs-core-modules/rsmi/bin/slipcomms-arm
 	cp ${S}/cc2530prog/cc2530prog ${D}/wigwag/devicejs-core-modules/rsmi/bin/cc2530prog-arm
 	cp -r ${S}/6BSMD ${D}/wigwag/wwrelay-utils/6BSMD
@@ -226,7 +211,6 @@ do_install() {
 	install -d ${D}/wigwag/etc/devicejs
 	install -d ${D}/wigwag/support
 	install -d ${D}/wigwag/devicejs/devjs-usr/App
-	cp -r ${S}/WWSupportTunnel/* ${D}/wigwag/support
 	cd ${S}/conf
 	install -d ${D}${sysconfdir}/wigwag
 	install -d ${D}/wigwag/devicejs-core-modules

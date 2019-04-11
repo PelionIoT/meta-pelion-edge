@@ -11,11 +11,10 @@ SRCREV = "${AUTOREV}"
 
 PR = "r0"
 
-#FILES_${PN} = "/wigwag/* /etc/init.d /etc/init.d/* /etc/wigwag /etc/wigwag/* /etc/rc?.d/* /usr/bin /usr/bin/*"
 FILES_${PN} += "/wigwag/system/bin/*" 
 
 
-SRC_URI="git://git@github.com/WigWagCo/maestro-shell.git;protocol=ssh;branch=master"
+SRC_URI="git://git@github.com/armPelionEdge/maestro-shell.git;protocol=ssh;branch=master"
 S= "${WORKDIR}/git"
 WSB="/wigwag/system/bin"
 
@@ -49,9 +48,9 @@ do_compile() {
   export GOPATH="$WORKSPACE"
   export GOBIN="$WORKSPACE/bin"
   cd go-workspace
-  mkdir -p src/github.com/WigWagCo
-  mv "${S}" src/github.com/WigWagCo/maestro-shell
-  cd src/github.com/WigWagCo/maestro-shell
+  mkdir -p src/github.com/armPelionEdge
+  mv "${S}" src/github.com/armPelionEdge/maestro-shell
+  cd src/github.com/armPelionEdge/maestro-shell
   go build
 
 }
@@ -62,6 +61,6 @@ do_install() {
  WLIB="/wigwag/system/lib"
  DWBIN="${D}/${WBIN}"
  install -d ${DWBIN}
- install -m 0755 "${WORKSPACE}/src/github.com/WigWagCo/maestro-shell/maestro-shell" "${D}/${WBIN}"
+ install -m 0755 "${WORKSPACE}/src/github.com/armPelionEdge/maestro-shell/maestro-shell" "${D}/${WBIN}"
 }
 

@@ -10,7 +10,7 @@ PKGV = "1.0+git${GITPKGV}"
 PR = "r1"
 
 SRCREV = "${AUTOREV}"
-SRC_URI="git://git@github.com/WigWagCo/node-netkit.git;protocol=ssh;branch=mvp"
+SRC_URI="git://git@github.com/armPelionEdge/node-netkit.git;protocol=ssh;branch=master"
 
 S = "${WORKDIR}/git"
 
