@@ -105,26 +105,7 @@ _eepromToSSH(){
 _doUDEVreload(){
 	udevadm control --reload-rules && udevadm trigger
 }
-_doGenerateSupportCertificates() {
-	if [ ! -e $SUPPORTCERTROOT ]; then
-		mkdir -p $SUPPORTCERTROOT
-		_log "Created $SUPORTCERTROOT"
-	fi
-	if [ ! -e ${WIGWAGROOT}/devicejs-core-modules/AppServer/Certs/ca.crt ]; then
-		_log "Generating support certificates"
-		cd ${WIGWAGROOT}/devicejs-core-modules/AppServer/Certs
-		pwgen 50 1 > passphrase
-		openssl genrsa -des3 -passout file:passphrase -out ca.key 1024
-		openssl req -new -passin file:passphrase -key ca.key -out ca.csr -subj "/C=US/ST=Texas/L=Austin/O=WigWag Inc./OU=Consumer/CN=www.wigwag.com/emailAddress=support@wigwag.com"
-		openssl x509 -req -days 7300 -in ca.csr -out ca.crt -passin file:passphrase -signkey ca.key
-		openssl genrsa -des3 -passout file:passphrase -out server.key 1024
-		openssl req -new -passin file:passphrase -key server.key -out server.csr -subj "/C=US/ST=Texas/L=Austin/O=WigWag Inc./OU=Consumer/CN=www.wigwag.com/emailAddress=support@wigwag.com"
-		cp server.key server.key.passphrase
-		openssl rsa -in server.key.passphrase -passin file:passphrase -out server.key
-		openssl x509 -req -days 7300 -in server.csr -passin file:passphrase -signkey server.key -out server.crt
-		rm passphrase
-	fi
-}
+
 
 EEMESAGE=""
 _eepromBurned(){
@@ -195,7 +176,6 @@ start(){
 	updateEthernetMAC
 	_doPostUpgrade
 	_doPrepDb
-	_doGenerateSupportCertificates
 	_doUDEVreload
 	#_eepromBurned
 	#exit
