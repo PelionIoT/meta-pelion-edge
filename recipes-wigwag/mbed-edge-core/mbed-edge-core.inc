@@ -2,7 +2,6 @@ DESCRIPTION="mbed-edge-core"
 
 LICENSE="Apache-2.0"
 LIC_FILES_CHKSUM = "file://${WORKDIR}/git/LICENSE;md5=1dece7821bf3fd70fe1309eaa37d52a2"
-SCRIPT_DIR = "${WORKDIR}/git/lib/mbed-cloud-client/update-client-hub/modules/pal-linux/scripts"
 
 MBED_EDGE_CORE_CONFIG_TRACE_LEVEL ?= "INFO"
 MBED_EDGE_CORE_CONFIG_FIRMWARE_UPDATE ?= "ON"
