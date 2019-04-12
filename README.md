@@ -2,7 +2,7 @@
 
 The following are the instructions used to build Yocto for Raspberry Pi with as much of the WigWag-Meta as will compiles.
 
-Currently the 'meta-gateway-ww' has the WigWag stuff added to it for the build so we could make a clean break with the old build system.
+Currently the 'meta-pelion-os-edge' has the WigWag stuff added to it for the build so we could make a clean break with the old build system.
 
 ## Install Docker
 
@@ -14,7 +14,7 @@ All of the instructions in this document were built and tested with Docker CE on
 
 Ubuntu instructions at this URL: https://docs.docker.com/install/linux/docker-ce/ubuntu/
 
-## Build environment for Wigwag gateway firmware
+## Build environment for Pelion OS Edge firmware
 
 These instructions assume that this repo is cloned at ~/wigwag-build-env.  If you cloned the repo at a different location, you will need to make appropriate changes to the commands below.
 
@@ -94,17 +94,17 @@ Then the dependency layers under that
 ~/poky$ git clone -b thud git://git.yoctoproject.org/meta-security
 ~/poky$ git clone -b thud git://git.yoctoproject.org/meta-raspberrypi
 ~/poky$ git clone -b pyro git@github.com:aaronovz1/meta-nodejs
-~/poky$ git clone -b dev git@github.com:armmbed/meta-gateway-ww
+~/poky$ git clone -b dev git@github.com:armpelionedge/meta-pelion-os-edge
 ```
 
-The meta-gateway-ww/README.md contains these very instructions.
+The meta-pelion-os-edge/README.md contains these very instructions.
 
 ## Initialize the build directory
 
-Use Yocto's oe-init-build-env script to create the build directory layout and provide the meta-gateway-ww/conf example configuration scripts to initialize the build environment.
+Use Yocto's oe-init-build-env script to create the build directory layout and provide the meta-pelion-os-edge/conf example configuration scripts to initialize the build environment.
 
 ```
-~/poky$ TEMPLATECONF=meta-gateway-ww/conf source oe-init-build-env 
+~/poky$ TEMPLATECONF=meta-pelion-os-edge/conf source oe-init-build-env 
 ```
 
 ## WARNING: 
@@ -115,7 +115,7 @@ For example, if your directory structure does not look exactly like this, you wi
 ~/poky/
      meta-openembedded/
      meta-raspberrypi
-     meta-gateway-ww/
+     meta-pelion-os-edge/
      build/
         conf/
      ...
@@ -214,7 +214,7 @@ First identify your SD card by inserting the microSD into your workstation and n
 
 For example
 ```
-~/rpi/meta-gateway-ww$ lsblk
+~/rpi/meta-pelion-os-edge$ lsblk
 NAME    MAJ:MIN RM   SIZE RO TYPE MOUNTPOINT
 sda       8:0    0 931.5G  0 disk
 |-sda1    8:1    0  93.1G  0 part /
@@ -270,7 +270,7 @@ Skip this if you use the WIC image
 After the build completes, the bootloader, kernel and rootfs image files can be found in **/deploy/images/$MACHINE** with **MACHINE** coming from your **local.conf**.
 
 ## Adding WigWag packages
-Packages are addded in the file 'meta-gateway-ww/images/console-image.bb'
+Packages are addded in the file 'meta-pelion-os-edge/images/console-image.bb'
 
 Open it up with your favorite editor and scroll down to the variable WIGWAG_STUFF and you should see something like:
 
