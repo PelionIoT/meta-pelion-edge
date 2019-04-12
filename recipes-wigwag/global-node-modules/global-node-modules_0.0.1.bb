@@ -104,11 +104,11 @@ do_install() {
 	cp -r ${S}/package.json ${D}/wigwag/devicejs-core-modules/
 	ALL_WigWag_Core_Modules="DevStateManager LEDController RelayStatsSender VirtualDeviceDriver onsite-enterprise-server relay-term"
     for f in $ALL_WigWag_Core_Modules; do
-		do_dirInstall ${S}/$f/ ${D}/wigwag/wigwag-core-modules/
+		do_dirInstall ${S}/$f ${D}/wigwag/wigwag-core-modules/$f
     done
-    ALL_Devicejs_Core_Modules="rsmi zigbeeHA node_modules"
+    ALL_Devicejs_Core_Modules="rsmi zigbeeHA node_modules maestroRunner"
     for f in $ALL_Devicejs_Core_Modules; do
-		do_dirInstall ${S}/$f/ ${D}/wigwag/wigwag-core-modules/
+		do_dirInstall ${S}/$f ${D}/wigwag/devicejs-core-modules/$f
     done
 }
 
