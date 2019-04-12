@@ -11,6 +11,7 @@ SRC_URI += "file://target.cmake \
             file://arm_update_cmdline.sh \
             file://arm_update_activate.sh \
             file://arm_update_active_details.sh \
+            file://0001-change-path-to-upgrade-scripts.patch \
             "
 
 do_install_append() {
