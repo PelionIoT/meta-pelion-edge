@@ -21,8 +21,7 @@ killall maestro
 /etc/init.d/maestro.sh start
 
 mv $FIRMWARE /upgrades/firmware.tar.gz
-cd /wigwag/system/bin
-/wigwag/system/bin/upgrade -F -t -U -v -w -S /upgrades/firmware.tar.gz
+tar -xzf /upgrades/firmware.tar.gz -C /upgrades/
 /etc/init.d/deviceOS-watchdog start
 reboot
 echo "-------------------- Finished activate.sh -------------------------"
