@@ -8,7 +8,7 @@
 # OFFSET
 # SIZE
 #
-. /wigwag/mbed/update_scripts/arm_update_cmdline.sh
+. /wigwag/mbed/arm_update_cmdline.sh
 # copy stored header to expected location
 echo "-------------------- Executing active_details.sh -------------------------"
 VALUE=$(cp /userdata/extended/header.bin $HEADER)

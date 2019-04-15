@@ -9,14 +9,16 @@
 # OFFSET
 # SIZE
 #
-. /wigwag/mbed/update_scripts/arm_update_cmdline.sh
+. /wigwag/mbed/arm_update_cmdline.sh
 
 echo "-------------------- Executing activate.sh -------------------------"
 mkdir -p /userdata/extended
 # copy header to store
 VALUE=$(cp $HEADER /userdata/extended/header.bin)
 
-rm -rf /wigwag/log/*
+mkdir -p /userdata/.logs-before-upgrade
+cp -R /wigwag/log/* /userdata/.logs-before-upgrade/
+
 killall maestro
 /etc/init.d/maestro.sh start
 
