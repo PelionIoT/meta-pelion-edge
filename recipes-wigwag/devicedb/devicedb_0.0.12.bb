@@ -8,12 +8,12 @@ PR = "r5"
 # Why are we using the destsuffix= option in SRC_URI here? B/c qapprently in "thud", the golang bbclass is a bit naive and 
 # can't deal with SRCREV=hash or tags. This is do to some incomplete "help" it provides in the URI fetcher
 # you can see the half-working code here: https://github.com/openembedded/openembedded-core/blob/thud/meta/classes/go.bbclass
-SRC_URI = "git://git@github.com/armPelionEdge/devicejs-ng.git;protocol=ssh;branch=master;name=ddb;destsuffix=git/ddb \
+SRC_URI = "git://git@github.com/armPelionEdge/devicejs-ng.git;protocol=ssh;name=ddb;destsuffix=git/ddb \
 file://devicedb \
 "
 
 SRCREV_FORMAT = "ddb"
-SRCREV_ddb = "${AUTOREV}"
+SRCREV_ddb = "5a6f1c38fcdaab4754af88f4ca7c71c293435e18"
 S = "${WORKDIR}/git"
 
 DEPENDS = ""

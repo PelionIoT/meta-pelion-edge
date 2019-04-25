@@ -8,11 +8,11 @@ inherit go pkgconfig gitpkgv
 
 PV = "1.0+git${SRCPV}"
 PKGV = "1.0+git${GITPKGV}"
-SRCREV = "${AUTOREV}"
+SRCREV = "54ee3bd50b063425606ad76aefad4167780d8760"
 
 PR = "r0"
 FILES_${PN} += "/wigwag/system/bin/* /wigwag/system/lib/*" 
-SRC_URI="git://git@github.com/armPelionEdge/rallypointwatchdogs.git;protocol=ssh;branch=master"
+SRC_URI="git://git@github.com/armPelionEdge/rallypointwatchdogs.git;protocol=ssh"
 S = "${WORKDIR}/git"
 WSB="/wigwag/system/bin"
 

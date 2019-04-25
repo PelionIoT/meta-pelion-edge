@@ -9,8 +9,8 @@ PV = "1.0+git${SRCPV}"
 PKGV = "1.0+git${GITPKGV}"
 PR = "r1"
 
-SRCREV = "${AUTOREV}"
-SRC_URI="git://git@github.com/armPelionEdge/node-netkit.git;protocol=ssh;branch=master"
+SRCREV = "9b0c8cb53f3d1c9a70e13d942a941fb6fc970f5c"
+SRC_URI="git://git@github.com/armPelionEdge/node-netkit.git;protocol=ssh"
 
 S = "${WORKDIR}/git"
 

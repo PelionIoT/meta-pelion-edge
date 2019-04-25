@@ -6,17 +6,14 @@ inherit autotools pkgconfig gitpkgv npm-base npm-install
 
 PV = "1.0+git${SRCPV}"
 PKGV = "1.0+git${GITPKGV}"
-SRCREV = "${AUTOREV}"
-SRC_URI = "git://git@github.com/armPelionEdge/mbed-devicejs-bridge;protocol=ssh;branch=master"
 PR = "r2"
 
-
-SRC_URI="git://git@github.com/armPelionEdge/mbed-devicejs-bridge;protocol=ssh;branch=master;name=bridge;destsuffix=git/bridge \
-git://git@github.com/armPelionEdge/mbed-edge-websocket.git;protocol=ssh;branch=master;name=edgejs;destsuffix=git/edgejs \
+SRC_URI="git://git@github.com/armPelionEdge/mbed-devicejs-bridge;protocol=ssh;name=bridge;destsuffix=git/bridge \
+git://git@github.com/armPelionEdge/mbed-edge-websocket.git;protocol=ssh;name=edgejs;destsuffix=git/edgejs \
 file://config-dev.json"
 SRCREV_FORMAT = "bridge-edgejs"
-SRCREV_bridge = "${AUTOREV}"
-SRCREV_edgejs = "${AUTOREV}"
+SRCREV_bridge = "613aa74c459fdbf898dc5a0e7bea227a0e87c31d"
+SRCREV_edgejs = "17efa1fca58fd466e2302dbafd1369280bf9bb15"
 
 
 DEPENDS = "nodejs node-native"
