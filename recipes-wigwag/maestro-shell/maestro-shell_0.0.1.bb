@@ -7,14 +7,14 @@ inherit go pkgconfig gitpkgv
 
 PV = "1.0+git${SRCPV}"
 PKGV = "1.0+git${GITPKGV}"
-SRCREV = "${AUTOREV}"
+SRCREV = "6453fba93557fc7c4593c48022cf88395bd23a57"
 
 PR = "r0"
 
 FILES_${PN} += "/wigwag/system/bin/*" 
 
 
-SRC_URI="git://git@github.com/armPelionEdge/maestro-shell.git;protocol=ssh;branch=master"
+SRC_URI="git://git@github.com/armPelionEdge/maestro-shell.git;protocol=ssh"
 S= "${WORKDIR}/git"
 WSB="/wigwag/system/bin"
 

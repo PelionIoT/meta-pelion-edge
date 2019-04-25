@@ -8,8 +8,9 @@ PV = "1.0+git${SRCPV}"
 PKGV = "1.0+git${GITPKGV}"
 PR = "r6"
 
-SRC_URI="git://git@github.com/armPelionEdge/edge-node-modules.git;protocol=ssh;branch=master;"
-SRCREV = "${AUTOREV}"
+SRC_URI="git://git@github.com/armPelionEdge/edge-node-modules.git;protocol=ssh"
+SRCREV = "8c6ca90b0e58ad7543ff8a0a8fd76b465bba20ab"
+SRCREV_devjs_prod_tools = "9f795d20bc68b0a49f4e1b004429aed6ba073a4b"
 
 S = "${WORKDIR}/git"
 WSYS= "${D}/wigwag/system"
@@ -48,6 +49,7 @@ do_configure() {
 	if [[ ! -e devjs-production-tools ]]; then
 		echo "devjs-production-tools does not exist" >> /tmp/global-node-modules.log
 		git clone git@github.com:armPelionEdge/devjs-production-tools.git
+		git -C devjs-production-tools checkout ${SRCREV_devjs_prod_tools}
 	else
 		echo "devjs-production-tools exists, lets pull" >>/tmp/global-node-modules.log
 		cd devjs-production-tools

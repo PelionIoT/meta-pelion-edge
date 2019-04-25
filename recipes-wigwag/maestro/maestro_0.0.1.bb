@@ -22,14 +22,14 @@ PR = "r0"
 
 FILES_${PN} += "/wigwag/system/bin/* /wigwag/system/lib/* ${INIT_D_DIR}/*"
 
-SRC_URI="git://git@github.com/armPelionEdge/maestro.git;protocol=ssh;branch=master;name=m;destsuffix=git/m \
-git://git@github.com/armPelionEdge/rallypointwatchdogs.git;protocol=ssh;branch=master;name=wd;destsuffix=git/wd \
+SRC_URI="git://git@github.com/armPelionEdge/maestro.git;protocol=ssh;name=m;destsuffix=git/m \
+git://git@github.com/armPelionEdge/rallypointwatchdogs.git;protocol=ssh;name=wd;destsuffix=git/wd \
 file://maestro.sh \
 "
 
 SRCREV_FORMAT="m-wd"
-SRCREV_m="${AUTOREV}"
-SRCREV_wd="${AUTOREV}"
+SRCREV_m="fd3f38e08c4be0f03676773d3a17bb97d8aa0495"
+SRCREV_wd="54ee3bd50b063425606ad76aefad4167780d8760"
 
 S = "${WORKDIR}/git"
 

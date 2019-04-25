@@ -6,9 +6,9 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=1dece7821bf3fd70fe1309eaa37d52a2"
 inherit pkgconfig gitpkgv npm-base npm-install
 
 PR = "r4"
-SRC_URI = "git://git@github.com/armPelionEdge/devicejs-ng.git;protocol=ssh;branch=master"
+SRC_URI = "git://git@github.com/armPelionEdge/devicejs-ng.git;protocol=ssh"
 
-SRCREV = "${AUTOREV}"
+SRCREV = "5a6f1c38fcdaab4754af88f4ca7c71c293435e18"
 
 S = "${WORKDIR}/git"
 
