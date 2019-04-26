@@ -19,8 +19,6 @@ fitimg_name=boot.scr
 fitimg_addr=0x02100000
 msg_src=MMC
 
-#fdt addr ${fdt_addr} && fdt get value bootargs /chosen bootargs
-
 # The area between 0x10000000 and 0x11000000 has to be kept for secure
 # world so that the kernel doesn't use it.
 setenv bootargs "${bootargs} memmap=16M$256M"
@@ -38,5 +36,4 @@ else
 fi
 
 echo Booting secure image from ${msg_src}
-#@@KERNEL_BOOTCMD@@ ${kernel_addr_r} ${kernel_param_initramfs} ${fdt_addr}
 bootm ${fitimg_addr}#conf@bcm2710-rpi-3-b-plus.dtb
