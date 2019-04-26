@@ -31,7 +31,7 @@ setenv bootargs "${bootargs} 8250.nr_uarts=1 console=ttyS0,115200 rootwait rw"
 # Disable FIQs in the USB driver. Using FIQs in USB driver causes the TF-A to crash.
 setenv bootargs "${bootargs} dwc_otg.fiq_enable=0 dwc_otg.fiq_fsm_enable=0 dwc_otg.nak_holdoff=0"
 
-if fatload usb 0:1 ${fitimg_addr} ${fitimg_name} || ext4load usb 0:1 ${fitimg_addr} /boot/${fitimg_name}; then
+if fatload usb 0:1 ${fitimg_addr} /boot/${fitimg_name} || ext4load usb 0:1 ${fitimg_addr} /boot/${fitimg_name}; then
 	msg_src=USB
 else
 	fatload mmc 0:1 ${fitimg_addr} ${fitimg_name} || ext4load mmc 0:1 ${fitimg_addr} ${fitimg_name}
