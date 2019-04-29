@@ -59,7 +59,7 @@ ENABLE_UART = "1"
 INITRAMFS_IMAGE = "ww-console-image-initramfs"
 # If we want to bundle initramfs, we need to fix initramfs so that /dev/console exists.
 # Otherwise the board will not boot.
-#INITRAMFS_IMAGE_BUNDLE = "1"
+INITRAMFS_IMAGE_BUNDLE = "1"
 BOOT_SPACE = "1073741"
 INITRAMFS_MAXSIZE = "2600000"
 #IMAGE_FSTYPES_pn-${INITRAMFS_IMAGE} = "${INITRAMFS_FSTYPES}"
@@ -98,5 +98,3 @@ INHERIT += "rm_work"
 CONF_VERSION = "1"
 
 export SSH_AUTH_SOCK
-
-UBOOT_SIGN_ENABLE = "1"
