@@ -4,15 +4,6 @@
 
 #setenv bootdelay 0
 
-echo "                                        "
-echo " _____                         ______ _ "
-echo "/  ___|                        | ___ (_)"
-echo "\ `--.  ___  ___ _   _ _ __ ___| |_/ /_ "
-echo " `--. \/ _ \/ __| | | | '__/ _ \  __/| |"
-echo "/\__/ /  __/ (__| |_| | | |  __/ |   | |"
-echo "\____/ \___|\___|\__,_|_|  \___\_|   |_|"
-echo "                                        "
-
 # The FIT image contains this script plus the kernel and initramfs; it will look
 # like we load ourselves recursively, but we actually run a different part of the image next
 fitimg_name=boot.scr
