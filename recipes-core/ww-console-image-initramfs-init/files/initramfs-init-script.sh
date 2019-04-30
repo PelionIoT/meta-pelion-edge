@@ -1352,7 +1352,7 @@ Strategy_UGpartition(){
 		1) expectedsize=$BootPartitionOrginalSize;
 		#
 		;;
-		2) expectedsize=52;
+		2) expectedsize=128;
 		#
 		;;	
 	esac
