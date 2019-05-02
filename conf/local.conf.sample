@@ -98,3 +98,8 @@ INHERIT += "rm_work"
 CONF_VERSION = "1"
 
 export SSH_AUTH_SOCK
+
+# This is a workaround for a bug in Yocto that sometimes causes the following warning to appear:
+# u-boot-1_2018.07-r0 do_concat_dtb: Failure while adding public key to u-boot binary. Verified boot won't be available.
+# See https://notred.atlassian.net/browse/AV-222 for more details
+RM_WORK_EXCLUDE += "u-boot"
