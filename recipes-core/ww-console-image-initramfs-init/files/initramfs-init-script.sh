@@ -161,6 +161,9 @@ newr_factory="$newr"$bbmp_factory
 newr_upgrade="$newr"$bbmp_upgrade
 newr_user="$newr"$bbmp_user
 newr_userdata="$newr"/userdata
+uboot_bin=fip2.bin
+uboot_offset=1024
+uboot_size=1920
 current_factory_version=""
 current_upgrade_version=""
 potential_next_factory_version=""
@@ -567,7 +570,7 @@ echo "  \ V  V / | | (_| |\ V  V / (_| | (_| |"
 funccall(){
 	type $1 > /dev/null 2>&1
 	if [[ $? -eq 0 ]]; then
-		$1
+		$1 "$@"
 	fi
 }
 
@@ -661,18 +664,34 @@ determinebuildversions(){
 
 determineUbootVersions(){
 	mountboot_ro
-	availableUboot=$(cat /mnt/.boot/u-boot.bin | grep -a "WigWag-U-boot-version_id" | tail -1 | awk '{print $2}')
-	if [[ "$availableUboot" = "" ]]; then
-		availableUboot=0;
-	fi
-	dd if=/dev/mmcblk0 of=/uboot.img seek=8 bs=1024 count=100 >> /dev/null 2>&1
+
+	dd if=/dev/mmcblk0 of=/uboot.img skip=$uboot_offset bs=1024 count=$uboot_size >> /dev/null 2>&1
 	currentUboot=$(cat /uboot.img | grep -a "WigWag-U-boot-version_id" | tail -1 | awk '{print $2}')
 	if [[ "$currentUboot" = "" ]]; then
 		currentUboot=0;
 	fi
+	rm /uboot.img
+
+	expandTMPFS
+	availableUboot=0;
+	if [ -f /tmpfs/boot.tar.xz ]; then
+		if tar xJf /tmpfs/boot.tar.xz -C / ./$uboot_bin 2>/dev/null; then
+			availableUboot=$(cat /$uboot_bin | grep -a "WigWag-U-boot-version_id" | tail -1 | awk '{print $2}')
+			if [[ "$availableUboot" = "" ]]; then
+				# no version info available, but a new u-boot is contained in the upgrade data
+				availableUboot=1;
+			fi
+			rm /$uboot_bin
+		else
+			_decho "No new $uboot_bin available in the boot upgrade data."
+			ls -la /tmpfs/*
+			tar tf /tmpfs/boot.tar.xz
+			_decho "Upgrade may fail if the ROT key has changed."
+		fi
+	fi
+
 	_decho "currentUboot='$currentUboot'"
 	_decho "availableUboot='$availableUboot'"
-	rm /uboot.img
 	umountboot
 }
 
@@ -681,7 +700,7 @@ determineUbootVersions(){
 
 determineUbootBoard(){
 	mountboot_ro
-	dd if=/dev/mmcblk0 of=/uboot.img seek=8 bs=1024 count=100
+	dd if=/dev/mmcblk0 of=/uboot.img skip=$uboot_offset bs=1024 count=$uboot_size
 	currentUbootBoard=$(cat /uboot.img | grep -a "WigWag-Board-Support" | tail -1 | awk '{print $2}')
 	_decho "currentUbootBoard=$currentUbootBoard"
 	rm /uboot.img
@@ -861,7 +880,6 @@ mountall_ro(){
 wipe() {
 	device=$1
 	cd /
-	device=$1
 	if [[ "$device" = "$dev_boot" ]]; then
 		if [[ $wasWiped_boot -eq 0 ]]; then
 			say_update2 "BOOT" "wiping Boot: $device"
@@ -926,11 +944,11 @@ ddbootsector(){
 	_decho "entered the ddbootsector"
 	cd /
 	mountboot_ro
-	cp /mnt/.boot/uboot.bin /
+	cp $bbmp_boot/$uboot_bin /uboot.bin
 	umountboot
 	say_update2 "UBOOT" "reapplying the uboot" 
-	_decho "dd if=/uboot.bin of=/dev/mmcblk0 seek=8 bs=1024"
-	dd if=/uboot.bin of=/dev/mmcblk0 seek=8 bs=1024
+	_decho "dd if=/uboot.bin of=/dev/mmcblk0 seek=$uboot_offset bs=1024"
+	dd if=/uboot.bin of=/dev/mmcblk0 seek=$uboot_offset bs=1024
 }
 
 #---------------------------------------------------------------------------------------------------------------------------
@@ -1043,7 +1061,7 @@ backupVitals(){
 	cp -a $bbmp_boot /tmpfs/
 	cp -a $bbmp_userdata /tmpfs/
 	sync
-	backupVitals2 #this call is here to call a function named the same thing in the upgrade.sh utility if needed
+	funccall backupVitals2 #this call is here to call a function named the same thing in the upgrade.sh utility if needed
 	umountall
 }
 
@@ -1128,8 +1146,8 @@ erase_UPGRADEFILES(){
 	  #   	rm -rf $UGscript
 	  #   	rm -rf $UGdir/factoryversions.json
 	  #   	rm -rf $UGdir/upgradeversions.json
-	  rm -rf $UGdir/*
-	  rm -rf $UGdir/.*
+	  rm -rf $UGdir
+	  mkdir -p $UGdir
 	  umountuser
 	fi
 }
@@ -1450,7 +1468,10 @@ Strategy_UGpartition(){
 		;;
 		2) expectedsize=128;
 		#
-		;;	
+		;;
+		*) REPARTITIONEMMC=0
+			say_update2 "Unknown partition schema requested: '$PARTITIONSCHEMA'"
+		;;
 	esac
 	bootParitionSize=$(fdisk -l /dev/mmcblk0p1 | xargs | awk '{print $3}');
 	_decho "$bootParitionSize -ne $expectedsize && $REPARTITIONEMMC -eq 1"
@@ -1847,23 +1868,26 @@ Strategy_UGU_boot(){
 }
 UGU_boot(){
 	if [[ "$WIPETHEU_BOOT" -eq 1 ]]; then
-		dd if=/dev/zero of=$dev_maindisk bs=1024 seek=8 count=100
+		dd if=/dev/zero of=$dev_maindisk bs=1024 seek=$uboot_offset count=$uboot_size
 		say_update2 "UBOOT" "update needed. (wipe forced)"
 		UGUBOOT_DOIT_ALL=1
 	fi
 	if [[ "$UGUBOOT_DOIT_ALL" -eq 1 ]]; then
 		cd /
-		mountboot_ro
+		mountboot_rw
 		_decho "u-boot flashing"
+		_decho "dd if=$bbmp_boot/$uboot_bin of=$dev_maindisk bs=1024 seek=$uboot_offset"
 		say_update2 "UBOOT" "LED Sechema ${CYAN}CYAN${NORM} & ${RED}RED${NORM}"
 		setLED "lm_uguboot"
-		dd if=$bbmp_boot/u-boot.bin of=$dev_maindisk bs=1024 seek=8
+		# TODO: handle the case where u-boot is upgraded but the boot partition isn't?
+		dd if=$bbmp_boot/$uboot_bin of=$dev_maindisk bs=1024 seek=$uboot_offset
 		if [[ $? -eq 0 ]]; then
 			success=1
 			say_update2 "UBOOT" "flashing ${GREEN}success${NORM}"
 		else
 			say_update2 "UBOOT" "flashing ${RED}failure${NORM}"
 		fi
+		rm -f $bbmp_boot/$uboot_bin
 		funccall UGU_boot2
 		umountboot
 	fi
@@ -2121,7 +2145,7 @@ initSelectRootDev() {
 	P3="mmcblk0p3"
 	P5="mmcblk0p5"
 	P6="mmcblk0p6"
-	dev_maindisk="mmcblk0"
+	dev_maindisk="/dev/mmcblk0"
 	_decho "selecting root"	
 	mdev -s
 	sync
