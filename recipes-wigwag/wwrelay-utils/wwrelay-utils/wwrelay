@@ -188,7 +188,7 @@ start(){
 
 		# Make sure edge-core is running all time. Start a script to monitor edge-core until maestro implements this feature
 		/wigwag/wwrelay-utils/debug_scripts/run_mbed_edge_core.sh >& /wigwag/log/run_mbed_edge_core.log &
-
+		/wigwag/wwrelay-utils/debug_scripts/monitor-acquire-new-lease.sh >& /wigwag/log/acquireNewLease.log &
 		monitor_edge_core
 		# if [ -d /userdata/mbed ]; then
 		# 	_log "Detected edge-gw. Reading edge eeprom..."
