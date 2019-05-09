@@ -15,7 +15,7 @@ BBLAYERS ?= " \
     ##OEROOT##/meta-openembedded/meta-python \
     ##OEROOT##/meta-raspberrypi \
     ##OEROOT##/meta-security \
-    ##OEROOT##/meta-pelion-os-edge \
+    ##OEROOT##/meta-pelion-edge \
     ##OEROOT##/meta-nodejs \
     ##OEROOT##/meta-linaro/meta-optee \
     ##OEROOT##/meta-mbl/meta-raspberrypi-mbl \
