@@ -9,6 +9,7 @@ PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 
 #m 		h 		dom		mon 	dow 	user 	command
 */10	*       *       *       *       root    /usr/sbin/logrotate /etc/logrotate.conf > /wigwag/log/cron-logrotate.log 2>&1
+0       1       *       *       *       root    /wigwag/wwrelay-utils/dev-tools/scripts/restartjob.sh >> /wigwag/log/restartjob.log 2>&1
 1		*		*		*		*		root 	cd / && run-parts /etc/cron.hourly
 30		7		*		*		*		root 	cd / && run-parts /etc/cron.daily
 42		7		*		*		7		root 	cd / && run-parts /etc/cron.weekly
