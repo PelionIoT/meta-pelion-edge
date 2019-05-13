@@ -1,13 +1,13 @@
-# Meta for Pelion OS Edge firmware
+# Meta for Pelion Edge firmware
 
-This repository contains the package and recipes that make up the meta layer for Pelion OS Edge.  It is intended to be used as part of a Yocto Linux build.
-This repository also includes instructions for [Building](https://github.com/armpelionedge/meta-pelion-os-edge/blob/master/BUILD.md) and [Flashing](https://github.com/armpelionedge/meta-pelion-os-edge/blob/master/FLASH.md) a complete firmware image.
+This repository contains the package and recipes that make up the meta layer for Pelion Edge.  It is intended to be used as part of a Yocto Linux build.
+This repository also includes instructions for [Building](https://github.com/armpelionedge/meta-pelion-edge/blob/master/BUILD.md) and [Flashing](https://github.com/armpelionedge/meta-pelion-edge/blob/master/FLASH.md) a complete firmware image.
 
 Optionally, there are two automation repositories for convenience.
 
-[Repo Manifest](https://github.com/armpelionedge/manifest-pelion-os-edge) can be used to manage all the repositories (including this one) used for a complete build.
+[Repo Manifest](https://github.com/armpelionedge/manifest-pelion-edge) can be used to manage all the repositories (including this one) used for a complete build.
 
-[Build Environment](https://github.com/armpelionedge/build-pelion-os-edge) provides a Docker container with all of the requirements for build and a Makefile for building using the make utility.
+[Build Environment](https://github.com/armpelionedge/build-pelion-edge) provides a Docker container with all of the requirements for build and a Makefile for building using the make utility.
 
 
 ## Supported Platforms
@@ -25,7 +25,7 @@ These images and u-boot are included in the resultant complete flashable image.
 
 
 ### Adding packages
-Packages are addded in the file 'meta-pelion-os-edge/recipes-core/images/console-image.bb'
+Packages are addded in the file 'meta-pelion-edge/recipes-core/images/console-image.bb'
 
 Open it up with your favorite editor and scroll down to the variable WIGWAG_STUFF and you should see something like:
 

@@ -1,9 +1,9 @@
-# Yocto build instructions for Pelion OS Edge firmware on Raspberry Pi
+# Yocto build instructions for Pelion Edge firmware on Raspberry Pi
 
-The following are instructions for building Pelion OS Edge firmware for the Raspberry Pi. Pelion OS Edge firmware is a Yocto Linux Raspberry Pi build which includes the meta (meta-pelion-os-edge) included in this repository.
+The following are instructions for building Pelion Edge firmware for the Raspberry Pi. Pelion Edge firmware is a Yocto Linux Raspberry Pi build which includes the meta (meta-pelion-edge) included in this repository.
 
 For convenience, the manual instructions below have been automated in repositories for [Environment](https://github.com/armpelionedge/manifest-pelion-os-edge) and [Build](https://github.com/armpelionedge/build-pelion-os-edge).
-See also [instructions for flashing the image](https://github.com/armpelionedge/meta-pelion-os-edge-ww/blob/master/FLASH.md) onto an SD card.
+See also [instructions for flashing the image](https://github.com/armpelionedge/meta-pelion-edge-ww/blob/master/FLASH.md) onto an SD card.
  
 ## Manual instructions
 
@@ -50,17 +50,17 @@ Then the dependency layers under that
 ~/poky$ git clone -b thud git://git.yoctoproject.org/meta-security
 ~/poky$ git clone -b thud git://git.yoctoproject.org/meta-raspberrypi
 ~/poky$ git clone -b pyro git@github.com:aaronovz1/meta-nodejs
-~/poky$ git clone -b dev git@github.com:armpelionedge/meta-pelion-os-edge
+~/poky$ git clone -b dev git@github.com:armpelionedge/meta-pelion-edge
 ```
 
-The meta-pelion-os-edge/BUILD.md contains these very instructions.
+The meta-pelion-edge/BUILD.md contains these very instructions.
 
 ### Initialize the build directory
 
-Use Yocto's oe-init-build-env script to create the build directory layout and provide the meta-pelion-os-edge/conf example configuration scripts to initialize the build environment.
+Use Yocto's oe-init-build-env script to create the build directory layout and provide the meta-pelion-edge/conf example configuration scripts to initialize the build environment.
 
 ```
-~/poky$ TEMPLATECONF=meta-pelion-os-edge/conf source oe-init-build-env 
+~/poky$ TEMPLATECONF=meta-pelion-edge/conf source oe-init-build-env
 ```
 
 ### WARNING: 
@@ -71,7 +71,7 @@ For example, if your directory structure does not look exactly like this, you wi
 ~/poky/
      meta-openembedded/
      meta-raspberrypi
-     meta-pelion-os-edge/
+     meta-pelion-edge/
      build/
         conf/
      ...
