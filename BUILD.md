@@ -53,7 +53,46 @@ Then the dependency layers under that
 ~/poky$ git clone -b dev git@github.com:armpelionedge/meta-pelion-edge
 ```
 
-The meta-pelion-edge/BUILD.md contains these very instructions.
+### Credentials, Keys, and Certificates
+
+#### Pelion Cloud credentials
+
+    Pelion Cloud development credentials are needed for Pelion Edge.  Provision your build with a Pelion Cloud developer certificate if you are building for [Pelion Cloud developer mode](https://cloud.mbed.com/docs/current/connecting/provisioning-development-devices.html).  Copy your mbed_cloud_dev_credentials.c file to `recipes-wigwag/mbed-edge-core/files/mbed_cloud_dev_credentials.c`.
+
+
+#### Firmware Update Manifest Credentials
+
+    If you enabled support for Pelion firmware updates in mbed-edge-core, copy your manifest certificate to `recipes-wigwag/mbed-edge-core/files/update_default_resources.c`.
+
+   To generate update_default_resources.c, run [manifest-tool](https://github.com/ARMmbed/manifest-tool).  See the documentation on [getting the update resources](https://github.com/ARMmbed/mbed-edge/blob/master/README.md#getting-the-update-resources).
+
+
+#### Upgrade CA Certificate
+
+    Authenticated upgrade requires inclusion of a cerificate authority certificate to be included in the initialization image.   This CA is used to issue the certificates included with an authenticated upgrade.  After obtaining your CA certificate, copy to the local file meta-pelion-edge/recipes-core/ww-console-image-initramfs-init/files/upgradeCA.cert.
+
+    To generate upgradeCA.cert, create a CA key and use the key to generate a certificate signing request, or a self-signed certificate for development purposes.  Here is an example that shows how to create a key and a self-signed certificate.
+
+    1. openssl genrsa -out upgradeCA.key 2048
+    2. openssl req -new -x509 -key upgradeCA.key -out upgradeCA.cert
+
+
+#### Secure Boot Trusted World Root of Trust
+
+    The Secure Boot RoT key is used to protect a subset of trusted world bootloaders as well as normal world U-Boot.
+
+    To generate rot_key.pem, run openssl to generate an RSA key.
+
+    1. openssl genrsa -out rot_key.pem 2048
+
+#### U-Boot Verified Boot FIT image signing key and certificate
+
+    The FIT image signing key is used to protect U-Boot FIT images containing the kernel, DTBs, initramfs, and boot script.
+
+    To generate mbl-fit-rot-key.key and mbl-fit-rot-key.crt, run the following openssl commands.
+
+    1. openssl genrsa -out mbl-fit-rot-key.key 2048
+    2. openssl req -new -x509 -key mbl-fit-rot-key.key -out mbl-fit-rot-key.crt
 
 ### Initialize the build directory
 
