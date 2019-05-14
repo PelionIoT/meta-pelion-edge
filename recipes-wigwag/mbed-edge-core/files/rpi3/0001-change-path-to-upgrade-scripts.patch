@@ -1,0 +1,36 @@
+From 65f8362600b0e0a4beb93a8b9c56e6a84ef86e50 Mon Sep 17 00:00:00 2001
+From: Nic Costa <nic.costa@gmail.com>
+Date: Fri, 12 Apr 2019 15:51:58 -0500
+Subject: [PATCH] change path to upgrade scripts
+
+the upgrade scripts are installed in the /wigwag/mbed folder
+on Pelion OS Edge builds.
+---
+ .../modules/pal-linux/source/arm_uc_pal_linux_yocto_rpi.c             | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/lib/mbed-cloud-client/update-client-hub/modules/pal-linux/source/arm_uc_pal_linux_yocto_rpi.c b/lib/mbed-cloud-client/update-client-hub/modules/pal-linux/source/arm_uc_pal_linux_yocto_rpi.c
+index 05beb2b..8bf3e3b 100755
+--- a/lib/mbed-cloud-client/update-client-hub/modules/pal-linux/source/arm_uc_pal_linux_yocto_rpi.c
++++ b/lib/mbed-cloud-client/update-client-hub/modules/pal-linux/source/arm_uc_pal_linux_yocto_rpi.c
+@@ -49,7 +49,7 @@ ARM_UC_PAAL_UPDATE_CAPABILITIES ARM_UC_PAL_Linux_GetCapabilities_Yocto_RPi(void)
+ }
+ 
+ arm_ucp_worker_t arm_uc_worker_parameters_active_details = {
+-    .command = "/opt/arm/arm_update_active_details.sh",
++    .command = "/wigwag/mbed/arm_update_active_details.sh",
+     .header   = 1,
+     .firmware = 0,
+     .location = 0,
+@@ -61,7 +61,7 @@ arm_ucp_worker_t arm_uc_worker_parameters_active_details = {
+ };
+ 
+ arm_ucp_worker_t arm_uc_worker_parameters_activate = {
+-    .command = "/opt/arm/arm_update_activate.sh",
++    .command = "/wigwag/mbed/arm_update_activate.sh",
+     .header   = 1,
+     .firmware = 1,
+     .location = 0,
+-- 
+2.7.4
+

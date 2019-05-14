@@ -1,0 +1,7 @@
+/wigwag/log/relay-updater.log {
+	nocreate
+	nodateext
+	copytruncate
+	size 2M
+	rotate 0
+}

@@ -1,0 +1,11 @@
+/var/log/news* {
+	rotate 5
+	daily
+	size 50K
+	nodateext
+	postrotate
+	/etc/init.d/syslog stop
+	sleep 2
+	/etc/init.d/syslog start
+	endscript
+}

@@ -1,8 +1,7 @@
 DESCRIPTION = "6LBR for Node"
 
-LICENSE = "DEVICEPROTOCOL-1"
-LICENSE_FLAGS = "WigWagCommericalDeviceProtocol"
-LIC_FILES_CHKSUM = "file://README.md;md5=f4961c535d1089eb3dcaef5e56c61ad5"
+LICENSE = "Apache-2.0"
+LIC_FILES_CHKSUM = "file://README.md;md5=4336ad26bb93846e47581adc44c4514d"
 
 inherit autotools pkgconfig gitpkgv
 
@@ -10,19 +9,19 @@ PV = "1.0+git${SRCPV}"
 PKGV = "1.0+git${GITPKGV}"
 PR = "r1"
 
-SRCREV = "${AUTOREV}"
-SRC_URI="git://git@github.com/WigWagCo/node-6lbr.git;protocol=ssh;branch=master"
+SRCREV = "fb2c5c938bdd297d0015aba904a89c81e84ec5f8"
+SRC_URI="git://git@github.com/armPelionEdge/node-6lbr.git;protocol=ssh"
 
 S = "${WORKDIR}/git"
 
-DEPENDS = "twlib"
+DEPENDS = "node-native twlib"
 
 BBCLASSEXTEND = "native"
 
 INHIBIT_PACKAGE_STRIP = "1"  
 
 FILES_${PN} = "/wigwag/devicejs/core/utils/node-6lbr \
-               /wigwag/devicejs/core/utils/node_modules"
+/wigwag/devicejs/core/utils/node_modules"
 
 
 do_package_qa () {
@@ -37,21 +36,12 @@ do_compile() {
     PLATFORM=`echo $AR | awk -F '-' '{print $3}'`
     export npm_config_arch=$ARCH
 
-#
-# Yocto finds this file with a need for /usr/local/bin/node-bench
-# If it does not exist, the build will fail
-#
     npm install --build-from-source --target_arch=$ARCH --target_platform=linux --production
 
-#     node-gyp -d configure
-#     node-gyp -d build
-
     if [ -e  ${S}/node_modules/aws-sdk/node_modules/xml2js/node_modules/sax/examples/switch-bench.js ] ; then
-       rm ${S}/node_modules/aws-sdk/node_modules/xml2js/node_modules/sax/examples/switch-bench.js
-    fi
+     rm ${S}/node_modules/aws-sdk/node_modules/xml2js/node_modules/sax/examples/switch-bench.js
+ fi
 
-#    ./node_modules/.bin/node-pre-gyp package --target_arch=$ARCH --target_platform=$PLATFORM
-#    ./node_modules/.bin/node-pre-gyp publish --target_arch=$ARCH --target_platform=$PLATFORM
 }
 
 do_install() {
@@ -60,12 +50,10 @@ do_install() {
     install -d ${D}/wigwag/devicejs/core
     install -d ${D}/wigwag/devicejs/core/utils
     install -d ${D}/wigwag/devicejs/core/utils/node-6lbr
-    install -d ${D}/wigwag/devicejs/core/utils/node_modules
-  
+    install -d ${D}/wigwag/devicejs/core/utils/node_modules 
     cp -r ${S}/build ${D}/wigwag/devicejs/core/utils/node-6lbr
     cp -r ${S}/slip-radio_bin ${D}/wigwag/devicejs/core/utils/node-6lbr
     cp -r ${S}/node_modules ${D}/wigwag/devicejs/core/utils/node-6lbr
     cp ${S}/index.js ${D}/wigwag/devicejs/core/utils/node-6lbr
 
 }
-

@@ -6,14 +6,15 @@ BBPATH = "${TOPDIR}"
 BBFILES ?= ""
 
 BBLAYERS ?= " \
-    ${HOME}/poky-thud/meta \
-    ${HOME}/poky-thud/meta-poky \
-    ${HOME}/poky-thud/meta-openembedded/meta-oe \
-    ${HOME}/poky-thud/meta-openembedded/meta-multimedia \
-    ${HOME}/poky-thud/meta-openembedded/meta-networking \
-    ${HOME}/poky-thud/meta-openembedded/meta-perl \
-    ${HOME}/poky-thud/meta-openembedded/meta-python \
-    ${HOME}/poky-thud/meta-qt5 \
-    ${HOME}/poky-thud/meta-raspberrypi \
-    ${HOME}/rpi/meta-gateway-ww \
+    ##OEROOT##/meta \
+    ##OEROOT##/meta-poky \
+    ##OEROOT##/meta-openembedded/meta-oe \
+    ##OEROOT##/meta-openembedded/meta-filesystems \
+    ##OEROOT##/meta-openembedded/meta-networking \
+    ##OEROOT##/meta-openembedded/meta-perl \
+    ##OEROOT##/meta-openembedded/meta-python \
+    ##OEROOT##/meta-raspberrypi \
+    ##OEROOT##/meta-security \
+    ##OEROOT##/meta-pelion-edge \
+    ##OEROOT##/meta-nodejs \
 "

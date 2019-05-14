@@ -1,0 +1,186 @@
+#!/bin/bash
+# /etc/init.d/deviceOS-watchdog: starts deviceOS watchdog which Runner keeps fed.
+# good article on runlevel info: http://www.thegeekstuff.com/2012/03/lsbinit-script/
+# 
+### BEGIN INIT INFO
+# Provides:             deviceOSwatchdog
+# Required-Start:       $remote_fs $time wwrelay
+# Required-Stop:        
+# Should-Start:         $network
+# Should-Stop:          
+# Default-Start:        5
+# Default-Stop:         0 1 
+# Short-Description:    watchdog timer for the relay
+### END INIT INFO
+PROG="deviceOSWD"
+source /etc/init.d/functions
+source /etc/init.d/wwfunctions
+
+
+PIDROOT="/var/run"
+SSLROOT="/mnt/.boot/.ssl"
+maestroOK=$PIDROOT"/maestroOK"
+PROG_PATH="/wigwag/system/bin"
+KEEPALIVE="/var/deviceOSkeepalive"
+#this is fixed by the binary... you cannot change it, so go with it.
+FIXED_PID_FILE="deviceOSWD.pid"
+START_DEVICEOSWD_CMD="$PROG_PATH/$PROG -w 3000 -m 900 -s $KEEPALIVE -d -p $PIDROOT/"
+STOP_DEVICEOSWD_CMD="echo -e \"stop\" | socat unix-sendto:$KEEPALIVE STDIO"
+RUNNER_LOG="${WIGWAGROOT}/log/runner.log"
+WWRELAY_LOG=${WIGWAGLOGROOT}"/wwrelay.log"
+
+
+
+ENABLE_TINY_WATCHDOG_CMD="echo -e \"dog_go\" | socat unix-sendto:$KEEPALIVE STDIO"
+DISABLE_TINY_WATCHDOG_CMD="echo -e \"dog_stop\" | socat unix-sendto:$KEEPALIVE STDIO"
+HEARTBEAT_TINY_WATCHDOG_CMD="echo -e \"dog_run\" | socat unix-sendto:$KEEPALIVE STDIO"
+EXPIRENOW_TINY_WATCHDOG_CMD="echo -e \"dog_die\" | socat unix-sendto:$KEEPALIVE STDIO"
+
+
+
+start() {
+    _startCalled
+    if [[ -e $maestroOK || 0 -eq 0 ]]; then
+        _log "maestroOK"
+    if [ -e "$PIDROOT/$PROG.pid" ]; then
+        _log "Program is running, exit with error."
+        pid=$(pgrep $PROG)
+        _throw_warning "currently running ($pid)"
+        exit 1
+    else
+        ## Change from /dev/null to something like /var/log/$PROG if you want to save output.
+        pgrep $PROG
+        pkill $PROG
+        $START_DEVICEOSWD_CMD
+        pid=$(pgrep $PROG)
+        _throw_success "started ($pid)"
+        sleep 1
+        eval "$HEARTBEAT_TINY_WATCHDOG_CMD"
+    fi
+    else
+        #When the relay doesn't have its keys in the right places, we dont autostart devicejs or the watchdog...
+        _throw_failure "maestro flag is not OK"
+        echo "did not start $0 deviceOS-watchdog because wwrelay said not to" >> $RUNNER_LOG
+        echo "did not start $0 deviceOS-watchdog because wwrelay said not to" >> $WWRELAY_LOG
+        #you must stop the middle boot deviceOSWD, otherwise you will bootloop in 300 seconds
+        #this seems strange here, but the only way to stop the internal hardware timer is to take over the heartbeat, then stop the heartbeat
+        eval "$DISABLE_TINY_WATCHDOG_CMD"
+        sleep 1
+        pkill $PROG
+         $START_DEVICEOSWD_CMD
+        eval "$STOP_DEVICEOSWD_CMD"
+        pkill $PROG
+        rm "$PIDROOT/$FIXED_PID_FILE"
+        exit 7
+    fi
+}
+humanhalt() {
+	 _stopCalled
+    if [ -e "$PIDROOT/$FIXED_PID_FILE" ]; then
+        ## Program is running, so stop it
+        eval "$DISABLE_TINY_WATCHDOG_CMD"
+        sleep 1
+        pid=`cat $PIDROOT/$FIXED_PID_FILE`
+        eval "$STOP_DEVICEOSWD_CMD"
+        kill -9 $pid
+        rm "$PIDROOT/$FIXED_PID_FILE"
+        _throw_success "stopped ($pid)"
+    else
+        ## Program is not running, exit with error.
+        _throw_warning "not started!" 1>&2
+        exit 1
+    fi
+}
+
+
+update(){
+    t="$2"
+    SOCATCMD="echo -e \"up $t\" | socat unix-sendto:$KEEPALIVE STDIO"; 
+    eval "$HEARTBEAT_TINY_WATCHDOG_CMD"
+    echo "$SOCATCMD"
+    eval "$SOCATCMD"
+    if [[ $? -eq 0 ]]; then
+        _throw_success "update successful"
+    else
+        _throw_failure "update failed"
+    fi
+}
+panic(){
+    eval "$EXPIRENOW_TINY_WATCHDOG_CMD"
+    sleep 2
+    insmod /lib/modules/4.2.0-rc8/extra/panic.ko
+}
+
+expirenow(){
+    eval "$EXPIRENOW_TINY_WATCHDOG_CMD"
+}
+
+status(){
+	_statusCalled
+    if [[ -e $PIDROOT/$FIXED_PID_FILE ]]; then
+        pid=$(pgrep $PROG)
+        _throw_success "(pid $pid) is running... logging to /var/log/syslog"
+    else
+        _throw_warning "not running."
+    fi
+}
+
+## Check to see if we are running as root first.
+if [ "$(id -u)" != "0" ]; then
+    echo "This script must be run as root" 1>&2
+    exit 1
+fi
+
+
+case "$1" in
+    start)
+        #
+        start
+        exit 0
+        ;;
+    #
+    humanhalt)
+        #
+        humanhalt
+        exit 0
+        ;;
+    #
+    status)
+        #
+        status
+        exit 0
+        ;;
+    #
+    panic)
+        #
+        panic
+        exit 0
+        ;;
+    #
+    expirenow)
+        #
+        expirenow
+        exit 0
+        ;;
+    #
+    reload|restart|force-reload)
+        #
+        _restartCalled
+        humanhalt
+        start
+        exit 0
+        ;;
+    #
+    update)
+        #
+        update $@
+        exit 0
+        ;;
+    #
+    **)
+        #
+        echo "Usage: $0 {start|humanhalt|status|panic|reload|restart|expirenow|update <sec>}" 1>&2
+        exit 1
+        ;;
+#
+esac

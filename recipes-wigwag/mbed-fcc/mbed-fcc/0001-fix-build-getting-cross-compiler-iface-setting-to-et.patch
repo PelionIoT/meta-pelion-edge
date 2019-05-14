@@ -1,0 +1,21 @@
+From 852970bade5871b3186b7980c97ae2bb541066aa Mon Sep 17 00:00:00 2001
+From: Travis McCollum <x85446@yahoo.com>
+Date: Sun, 24 Mar 2019 02:56:49 +0000
+Subject: [PATCH] fix build getting cross compiler iface setting to eth0
+
+---
+ CMakeLists.txt | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index e3d2cb2..d1c7a85 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -47,6 +47,7 @@ execute_process(COMMAND ip -o -4 route show to default
+ 						COMMAND head -n1
+ 						OUTPUT_STRIP_TRAILING_WHITESPACE
+ 						OUTPUT_VARIABLE  ETHNAME)
++set(ETHNAME eth0)
+ set(TMPD \"${ETHNAME}\")
+ add_definitions(-DETHERNET_LINUX_IFACE_NAME=${TMPD})
+ message("ETHERNET_LINUX_IFACE_NAME=${ETHNAME}")

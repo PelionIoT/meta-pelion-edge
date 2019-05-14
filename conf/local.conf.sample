@@ -2,7 +2,12 @@
 # Yocto Project 2.6 Poky distribution [thud] branch
 # This is a sysvinit system
 
-LICENSE_FLAGS_WHITELIST = "commercial"
+RPI_USE_U_BOOT = "1"
+
+# to take a better look at the u-boot startup messages,
+# uncomment these lines to disable the normal boot logo/splash
+#DISABLE_RPI_BOOT_LOGO = "1"
+#IMAGE_FEATURES_remove = "splash"
 
 DISTRO_FEATURES = "ext2 opengl usbhost ${DISTRO_FEATURES_LIBC}"
 
@@ -16,7 +21,10 @@ VIRTUAL-RUNTIME_init_manager = "sysvinit"
 
 MACHINE_FEATURES_remove = "apm"
 
-IMAGE_FSTYPES = "tar.xz"
+WKS_FILE = "console-image.wic"
+IMAGE_FSTYPES = "${INITRAMFS_FSTYPES} wic wic.gz wic.bmap"
+
+DISTRO_FEATURES_append += " bluez5 bluetooth wifi"
 
 # Choose the board you are building for
 #MACHINE="raspberrypi"
@@ -30,17 +38,30 @@ MACHINE = "raspberrypi3"
 # Choices are Image or zImage if NOT using u-boot (no u-boot is the default)
 # Choices are uImage or zImage if using u-boot, though if you choose zImage
 # with u-boot you will also have to change the boot script boot command
-KERNEL_IMAGETYPE = "zImage"
+# Not specifying a type here will fall back to u-boot selecting an image type.
+#KERNEL_IMAGETYPE = "zImage"
 
 DISABLE_OVERSCAN = "1"
 ENABLE_UART = "1"
-ENABLE_RPI3_SERIAL_CONSOLE = "1"
-SERIAL_CONSOLES = "115200;ttyAMA0"
+
+# If you need serial console access, for example to debug uboot or
+# initramfs, uncomment the next two lines.  Be aware that doing this
+# disables the bluetooth radio, so do not leave this on by default.
+#ENABLE_SERIAL_CONSOLE = "1"
+#SERIAL_CONSOLES = "115200;ttyAMA0"
 # SERIAL_CONSOLES_forcevariable = ""
 
 #DL_DIR = "${HOME}/oe-sources"
 #SSTATE_DIR = "/oe4/rpi/sstate-cache"
 #TMPDIR = "/oe4/rpi/tmp-thud"
+
+#initramfs setup
+INITRAMFS_IMAGE = "ww-console-image-initramfs"
+INITRAMFS_IMAGE_BUNDLE = "1"
+BOOT_SPACE = "1073741"
+INITRAMFS_MAXSIZE = "2600000"
+#IMAGE_FSTYPES_pn-${INITRAMFS_IMAGE} = "${INITRAMFS_FSTYPES}"
+
 
 DISTRO = "poky"
 PACKAGE_CLASSES = "package_ipk"
@@ -58,6 +79,15 @@ EXTRA_USERS_PARAMS = "usermod -P redmbed root; "
 # this will force root to change password on first login
 INHERIT += "chageusers"
 CHAGE_USERS_PARAMS = "chage -d0 root; "
+
+PREFERRED_PROVIDER_node-native = "nodejs-native"
+PREFERRED_PROVIDER_node = "nodejs"
+PREFERRED_VERSION_nodejs = "8.11.2"
+PREFERRED_VERSION_nodejs-native = "8.11.2"
+
+PREFERRED_PROVIDER_openssl = "openssl10"
+PREFERRED_PROVIDER_openssl-native = "openssl10-native"
+PREFERRED_VERSION_openssl10 = "1.0.2%"
 
 USER_CLASSES = "image-mklibs image-prelink"
 PATCHRESOLVE = "noop"

@@ -1,0 +1,7 @@
+/wigwag/log/monitorRelayTerm.log {
+rotate 1
+size 1M
+nodateext
+copytruncate
+missingok
+}

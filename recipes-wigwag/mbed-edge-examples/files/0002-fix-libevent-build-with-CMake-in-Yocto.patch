@@ -1,0 +1,47 @@
+From 542500189b97f0e77960e7688fab290b387ae1df Mon Sep 17 00:00:00 2001
+From: Nic Costa <nic.costa@arm.com>
+Date: Fri, 8 Mar 2019 05:17:16 +0000
+Subject: [PATCH] fix libevent build with CMake in Yocto
+
+---
+ CMakeLists.txt               |  5 +++++
+ cmake/toolchains/yocto.cmake | 11 +++++++++++
+ 2 files changed, 16 insertions(+)
+ create mode 100644 cmake/toolchains/yocto.cmake
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 55bf863..84a23c3 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -13,6 +13,11 @@ find_package (Threads REQUIRED)
+ # Use the ones in edge to avoid duplication
+ include (lib/${EDGE_SOURCES_DIR_NAME}/cmake/common.cmake)
+ 
++if (NOT DEFINED TARGET_TOOLCHAIN)
++    SET (TARGET_TOOLCHAIN "yocto")
++endif()
++include ("cmake/toolchains/${TARGET_TOOLCHAIN}.cmake")
++
+ include(git_details.cmake)
+ 
+ # Edge basic configuration
+diff --git a/cmake/toolchains/yocto.cmake b/cmake/toolchains/yocto.cmake
+new file mode 100644
+index 0000000..6db36ba
+--- /dev/null
++++ b/cmake/toolchains/yocto.cmake
+@@ -0,0 +1,11 @@
++MESSAGE (STATUS "Yocto build, toolchain is provided by Yocto build environment.")
++
++# Workaround for: https://github.com/libevent/libevent/issues/482
++# Applies for CMake build for libevent 2.1.8-stable
++# Fixing commit: https://github.com/libevent/libevent/commit/66a4eb0c3ae3b1f22b084b2d3aeb5c872f37efbd
++set (EVENT__HAVE_WAITPID_WITH_WNOWAIT_EXITCODE "1"
++     CACHE STRING "Result from TRY_RUN" FORCE)
++
++set (EVENT__HAVE_WAITPID_WITH_WNOWAIT_EXITCODE__TRYRUN_OUTPUT
++     "PLEASE_FILL_OUT-NOTFOUND"
++     CACHE STRING "Output from TRY_RUN" FORCE)
+-- 
+2.17.1
+

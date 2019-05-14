@@ -1,0 +1,50 @@
+#!/bin/bash
+# /etc/init.d/mept-ble: starts Arm mbed edge protocol translator for BLE
+### BEGIN INIT INFO
+# Provides:             mept-ble
+# Required-Start:       $remote_fs $time edge-core
+# Required-Stop:        $remote_fs $time
+# Should-Start:         $network
+# Should-Stop:          $network
+# Default-Start:        5
+# Default-Stop:         0 1 6
+# Short-Description:    Mbed Edge BLE Protocol Translator
+### END INIT INFO
+
+start_mept() {
+    /wigwag/mbed/blept-example -n blept-example -e ble -c -d /wigwag/mbed/blept-devices.json >> /var/log/blept-example.log &
+}
+
+stop_mept() {
+    killall blept-example
+}
+
+status_mept() {
+    ps aux | grep -v grep | grep -v status | grep blept-example >/dev/null || {
+        echo mept-ble is NOT running
+        return 1
+    }
+    echo mept-ble is running
+}
+
+case "$1" in
+    start)
+        echo "Starting mbed edge BLE protocol translator"
+        start_mept
+        ;;
+    stop)
+        echo "Stopping mbed edge BLE protocol translator"
+        stop_mept
+        ;;
+    restart)
+        echo "Restarting mbed edge BLE protocol translator"
+        stop_mept
+        start_mept
+        ;;
+    status)
+        status_mept
+        ;;
+    *)
+        echo "Usage: \$0 {start|stop|restart|status}"
+        exit 1
+esac
