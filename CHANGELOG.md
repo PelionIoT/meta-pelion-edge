@@ -1,12 +1,12 @@
 # 1.0.0
 ## Summary Abstract 
-This is the 1.0 release of the Pelion Edge for Gateways.  In general, it is a yocto meta recipe to build an operating system for a gateway that will connect to the arm Pelion Cloud.   Once provisioned with the Pelion Cloud, the gateway can register Zigbee and Bluetooth devices to the cloud, can patriate in secure update campaigns, and be controlled from our mobile application.   Our first platform for support is the Raspberry PI3b+.    
+This is the 1.0 release of the Pelion Edge for Gateways.  In general, it is a Yocto meta layer to build an operating system for a gateway that will connect to the arm Pelion Cloud.   Once provisioned with the Pelion Cloud, the gateway can register Bluetooth devices to the cloud, can participate in secure update campaigns, and be controlled from a mobile application.   The first supported platform is the Raspberry PI3b+.    
 ## Features Description 
 - Gateway based service enabling edge applications to interact with gateway connected devices through a REST API. 
 - Systems management API and daemon (Maestro) 
   - Dynamic system configuration 
-  - Full system logging pushed to the Pelion Cloud 
-- Protocol translator engine with implementations for: Bluetooth 
+  - Logging pushed to the Pelion Cloud 
+- Protocol translator engine with example Bluetooth implementation
 - Supports upgrade campaigns from Pelion Cloud 
   - Securely downloads edge gateway firmware updates 
   - Keeps deployed gateways up to date 
@@ -26,9 +26,9 @@ Follow the readme.  For issues file Github issues
 ## Known Issues 
 ### System Software 
 - There is a known situation where the maestro daemon can run out of system resources and cause the platform to reboot.  (E19-264) 
-- On some networks, the IP address can become disconnected and DHCP fails to re-obtain an address.  To remedy this problem, restart the hardware. (E19-243) 
-- Sometimes the preview feature 'remote terminal' fails to connect.  In this instance, the workaround is to reboot the gateway. 
+- On some networks, the IP address can become disconnected and DHCP fails to re-obtain an address.  To remedy this problem, restart the gateway. (E19-243) 
+- Sometimes the preview feature 'remote terminal' fails to connect.  In this instance, the workaround is to restart the gateway. 
 
 ### Cloud Service 
-- Sending 1-2K back to back requests to the WigWag "accounts" service causes a 500 return.  After the requests clear, in a few seconds, the service is again available.  (E19-381) 
+- Sending 1-2K back to back requests to the Pelion Cloud "accounts" service causes a 500 return.  After the requests clear, in a few seconds, the service is again available.  (E19-381) 
 - While provisioning your gateway, please use vendor-id=42fa7b48-1a65-43aa-890f-8c704daade54 to unlock some of the functionalities like Gateway logs and Gateway terminal in the Pelion web portal (E19-419) 
