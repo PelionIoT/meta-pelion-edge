@@ -17,14 +17,13 @@ SRC_URI = "git://git@github.com/ARMmbed/mbed-edge.git;protocol=ssh; \
            file://edge-core.logrotate \
            file://toolchain.cmake \
            file://0001-disable-Doxygen.patch \
-           file://0002-fix-libevent-build-with-CMake-in-Yocto.patch \
-           file://0003-fix-compile-error-when-building-for-Release.patch"
+           file://0002-fix-libevent-build-with-CMake-in-Yocto.patch"
 SRC_URI += "\
     ${@bb.utils.contains('MBED_EDGE_CORE_CONFIG_DEVELOPER_MODE','ON','file://mbed_cloud_dev_credentials.c','',d)} \
     ${@bb.utils.contains('MBED_EDGE_CORE_CONFIG_DEVELOPER_MODE','ON','file://update_default_resources.c','',d)} \
 "
 
-SRCREV = "0.8.0"
+SRCREV = "0.9.0"
 
 RDEPENDS_${PN} = " procps start-stop-daemon bash tar bzip2"
 
