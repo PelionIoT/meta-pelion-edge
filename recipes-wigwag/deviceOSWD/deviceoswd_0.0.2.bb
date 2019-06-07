@@ -35,7 +35,7 @@ do_compile() {
     cd ${S}
 
     cd ${S}/deps
-    TOOLCHAIN=`echo $AR | sed 's/.\{3\}$//'` ./install-deps.sh
+    TOOLCHAIN=`echo $AR | sed 's/.\{7\}$//'` ./install-deps.sh
 
     cd ${S}
     make clean
