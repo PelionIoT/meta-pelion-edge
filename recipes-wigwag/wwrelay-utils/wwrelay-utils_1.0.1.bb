@@ -3,8 +3,8 @@ DESCRIPTION = "Utilities used by the WigWag Relay"
 LICENSE = "Apache-2.0"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=1dece7821bf3fd70fe1309eaa37d52a2"
 
-SRC_URI="git://git@github.com/armPelionEdge/edge-utils.git;protocol=ssh;branch=master;name=wwrelay \
-git://git@github.com/armPelionEdge/edgeos-shell-scripts.git;protocol=ssh;branch=master;name=dss;destsuffix=git/dss \
+SRC_URI="git://git@github.com/armPelionEdge/edge-utils.git;protocol=ssh;name=wwrelay \
+git://git@github.com/armPelionEdge/edgeos-shell-scripts.git;protocol=ssh;name=dss;destsuffix=git/dss \
 file://wwrelay \
 file://BUILDMMU.txt \
 file://logrotate_directives/ \
@@ -13,6 +13,7 @@ file://logrotate_directives/ \
 SRCREV_FORMAT = "wwrelay-dss"
 SRCREV_wwrelay = "${AUTOREV}"
 SRCREV_dss = "${AUTOREV}"
+SRCREV_node_i2c = "${AUTOREV}"
 
 inherit pkgconfig gitpkgv npm-base update-rc.d
 
@@ -91,6 +92,7 @@ do_compile() {
 	mkdir tempI2C
 	cd tempI2C
 	git clone -b master git@github.com:armPelionEdge/node-i2c.git
+	git -C node-i2c checkout ${SRCREV_node_i2c}
 	cd node-i2c
 	do_log "in wwrelay-utils node-i2c"
 	oe_runnpm install --target_arch=arm --production
