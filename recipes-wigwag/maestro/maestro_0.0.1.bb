@@ -105,9 +105,9 @@ do_configure() {
     # remove the /vendor/maestroSpecs dir, b/c we want this to use the same folder
     # as the plugins (watchdog, etc.)
     cd $S_M
-    DEBUG=1 DEBUG2=1 ./build.sh preprocess_only
+# DEBUG=1 DEBUG2=1 ./build.sh preprocess_only
     # wipe out the src directories, seems to cause confusion with Go compiler in
-    rm -rf src
+# rm -rf src
 
     # Yocto build
 
