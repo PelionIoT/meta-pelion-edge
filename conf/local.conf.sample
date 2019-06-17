@@ -2,6 +2,8 @@
 # Yocto Project 2.6 Poky distribution [thud] branch
 # This is a sysvinit system
 
+DISTRO = "mbl"
+
 RPI_USE_U_BOOT = "1"
 
 # to take a better look at the u-boot startup messages,
@@ -91,63 +93,6 @@ INHERIT += "rm_work"
 CONF_VERSION = "1"
 
 export SSH_AUTH_SOCK
-
-# This is a workaround for a bug in Yocto that sometimes causes the following warning to appear:
-# u-boot-1_2018.07-r0 do_concat_dtb: Failure while adding public key to u-boot binary. Verified boot won't be available.
-# This is due to rm_work deleting the $DEPLOYDIR, which do_concat_dtb depends on.
-RM_WORK_EXCLUDE += "u-boot"
-# Copyright (c) 2018 Arm Limited and Contributors. All rights reserved.
-#
-# SPDX-License-Identifier: MIT
-
-# See mbl-partitions.conf for directories that are mount points.
-
-# Path to where apps are installed and run from. This path must reside on a r+w partition.
-MBL_APP_DIR = "/home/app"
-# Copyright (c) 2019 Arm Limited and Contributors. All rights reserved.
-#
-# SPDX-License-Identifier: MIT
-
-###############################################################################
-#   This file configures internally-linked repositories variables, to uniformaly be used by the fetcher across all managed repositories.
-#   Each linked repository has 2 variables - SRC_URI_<repo name>_REPO and SRCREV_<repo name>.
-#   Usr may add (or override) additional options from the bitbake source file, by using a 3rd variable SRC_URI_OPTIONS_<repo name>_REPO.
-#   Whenever SRCREV is hard coded in this file, we wanted the same SRCREV to be uniformaly fetched by all recipes.
-#   Here are some comments on the branch and source revision configuration :
-#   1) Do not give a branch name and leave SRCREV empty ("") to get the master branch.
-#   2) Give a branch name and leave SRCREV empty ("") to get another branch than master.
-#)  3) To choose a specific revision and ignoring any branch - add nobranch=1 in the SRC_URI and state the revision hash.
-#   4) To choose a specific revision on a branch (not necessarily on the head) - give both branch name and revision hash.
-#      Fetcher will validate that revision is on the branch (this is less error prune).
-###############################################################################
-
-SRC_URI_OPTIONS_MBL_CORE_REPO ??= ""
-SRC_URI_MBL_CORE_REPO = "git://git@github.com/ARMmbed/mbl-core.git;protocol=ssh;nobranch=1;${SRC_URI_OPTIONS_MBL_CORE_REPO};"
-SRCREV_MBL_CORE_REPO = "9ab4600695f3b355e3645fc4d5cd6bc1c7364143"
-
-SRC_URI_OPTIONS_MBL_CLOUD_CLIENT_INTERNAL_REPO ??= ""
-SRC_URI_MBL_CLOUD_CLIENT_INTERNAL_REPO = "\
-    git://git@github.com/ARMmbed/mbl-cloud-client-internal.git;nobranch=1;protocol=ssh;${SRC_URI_OPTIONS_MBL_CLOUD_CLIENT_INTERNAL_REPO};"
-SRCREV_MBL_CLOUD_CLIENT_INTERNAL_REPO = "ed5d641571c25df6f924739a58be64cee9885520"
-
-SRC_URI_OPTIONS_MBL_SCRATCH_REPO ??= ""
-SRC_URI_MBL_SCRATCH_REPO = "git://git@github.com/ARMmbed/mbl-scratch.git;protocol=ssh;${SRC_URI_OPTIONS_MBL_SCRATCH_REPO};"
-
-SRC_URI_OPTIONS_MBL_OPTEE_REFERENCE_APPS_REPO ??= ""
-SRC_URI_MBL_OPTEE_REFERENCE_APPS_REPO = " \
-    git://git@github.com/ARMmbed/mbl-optee-reference-apps.git;nobranch=1;protocol=ssh;${SRC_URI_OPTIONS_MBL_OPTEE_REFERENCE_APPS_REPO};"
-SRCREV_MBL_OPTEE_REFERENCE_APPS_REPO = "92ddf857cd0bd3ca2ee2cf355798332c2038053f"
-# Copyright (c) 2018 Arm Limited and Contributors. All rights reserved.
-#
-# SPDX-License-Identifier: MIT
-
-# ------------------------------------------------------------------------------
-# See docs/partitions.md for information about partition layouts. If you
-# change the names or values of these variables then make sure they are still
-# compatible with the .wks files in the wic directory and
-# recipes-core/base-files/files/fstab.
-# ------------------------------------------------------------------------------
-
 MBL_PARTITIONS = "\
     BOOT \
     BOOTFLAGS \
@@ -183,81 +128,3 @@ MBL_SCRATCH_PARTITION_LABEL = "user"
 
 MBL_HOME_DIR = "/userdata"
 MBL_HOME_PARTITION_LABEL = "userdata"
-# Copyright (c) 2018 Arm Limited and Contributors. All rights reserved.
-#
-# SPDX-License-Identifier: MIT
-
-###############################################################################
-# mbl.conf
-#
-# This file is the mbed linux OpenEmbedded distribution configuration file.
-# The symbol definitions control the behaviour of the meta layers composed
-# to form the distribution, including:
-# - Enabling the distribution virtualisation features.
-# - Removing the x11 feature which is enabled by default.
-# - Specifying virtual providers for subsystems.
-###############################################################################
-
-DISTRO_NAME = "Mbed Linux OS"
-DISTRO_VERSION = "0.0"
-DISTRO_FEATURES_append = " virtualization"
-
-# Set systemd as the init manager
-DISTRO_FEATURES_append = " systemd"
-VIRTUAL-RUNTIME_init_manager = "systemd" 
-VIRTUAL-RUNTIME_initscripts = "systemd-compat-units"
-DISTRO_FEATURES_BACKFILL_CONSIDERED = "sysvinit"
-
-# We don't want to install avahi-daemon to deal with mDNS.
-# We are using systemd-resolved instead
-DISTRO_FEATURES_DEFAULT_remove = "zeroconf"
-
-# Enable build history with installed package size information and image info.
-INHERIT += "buildhistory"
-INHERIT += "image-buildinfo"
-BUILDHISTORY_COMMIT = "1"
-
-# Prevent OE from messing around too much with /var/log - we have a separate
-# partition for it
-VOLATILE_LOG_DIR = "no"
-
-# Remove x11 related packages for distro images.
-DISTRO_FEATURES_DEFAULT_remove = "x11"
-
-# dosfstools is in RRECOMMENDS for packagegroup-base-vfat but it's GPLv3 so we
-# don't want it
-BAD_RECOMMENDATIONS += "dosfstools"
-
-# docker and lxc is in RRECOMMENDS for runc-opencontainers package - we do not need it
-# We would like to have the minimal runc functionality
-BAD_RECOMMENDATIONS += "docker lxc"
-
-# readline is GPLv3 so don't include the command line tools for bluez5 that
-# depend on readline
-PACKAGECONFIG_remove_pn-bluez5 = "readline"
-
-# By default wpa-supplicant uses gnutls as its TLS library, but gnutls depends
-# on libunistring which is GPLv3, so tell wpa-supplicant to use openssl instead
-# of gnutls.
-PACKAGECONFIG_pn-wpa-supplicant = "openssl"
-
-# Defines root hash suffix.
-ROOT_HASH_SUFFIX  = ".root_hash.txt"
-#
-# Defines signed root hash suffix.
-SIGNED_ROOT_HASH_SUFFIX = ".sha256"
-#
-# Defines base 64 suffix used for the signed root hash
-BASE64_SUFFIX = ".base64"
-#
-# Defines directory for the Verity keys
-VERITY_KEYS_DIR = "${MBL_DISTRO_LAYER_VERITY_KEYS_DIR}"
-
-# Defines rootfs verity public key name
-VERITY_ROOTFS_ROOT_HASH_PUBLIC_KEY_NAME="verity_rootfs_root_hash_public.pem"
-#
-# Defines rootfs verity private key name
-VERITY_ROOTFS_ROOT_HASH_PRIVATE_KEY_NAME="verity_rootfs_root_hash_private.pem"
-
-# Set runc preferred provider to Open Container Initiative (OCI) runc (default is runc-docker)
-PREFERRED_PROVIDER_virtual/runc = "runc-opencontainers"
