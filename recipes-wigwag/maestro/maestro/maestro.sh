@@ -1,9 +1,9 @@
 #!/bin/bash
-# /etc/init.d/devicejs: starts DeviceJS & WigWag runtime
+# /etc/init.d/devicejs: starts maestro
 # good article on runlevel info: http://www.thegeekstuff.com/2012/03/lsbinit-script/
 
 ### BEGIN INIT INFO
-# Provides:             devicejs
+# Provides:             maestro
 # Required-Start:       $remote_fs $time wwrelay
 # Required-Stop:        $remote_fs $time
 # Should-Start:         $network
@@ -14,24 +14,12 @@
 ### END INIT INFO
 WIGWAGROOT="/wigwag"
 
-START_SOFTWARE="maestro" # runner or maestro
-
 MAESTRO_DIR="${WIGWAGROOT}/system/bin"
-GREASE_STATIC_LIB="${WIGWAGROOT}/system/lib"
+GREASE_DYNAMIC_LIB="${WIGWAGROOT}/system/lib"
 MAESTRO_CONFIG="${WIGWAGROOT}/wwrelay-utils/conf/maestro-conf/edge-config-rpi-production.yaml"
 
 MAESTRO_START_CMD="$MAESTRO_DIR/maestro -config ${MAESTRO_CONFIG}"
 MAESTRO_STOP_CMD="echo Need_Stop_Command"
-
-
-RUNNER_DIR="${WIGWAGROOT}/devicejs-core-modules/Runner"
-RUNNER_START_CMD="./start -c ./relay.config.json"
-RUNNER_STOP_CMD="echo Need_Stop_Command"
-
-export NODE_PATH=${WIGWAGROOT}/devicejs-core-modules/node_modules
-
-RUNNER_LOG="${WIGWAGROOT}/log/runner.log"
-WWRELAY_LOG=${WIGWAGLOGROOT}"/wwrelay.log"
 
 MAESTRO_RUNTIME_LOG="${WIGWAGROOT}/log/maestro-runtime.log"
 PIDROOT="/var/run"
@@ -47,71 +35,43 @@ config_cpu_scaling() {
 }
 
 stop_devjs() {
-    if [[ $START_SOFTWARE = "maestro" ]]; then
-        $MAESTRO_STOP_CMD > $MAESTRO_RUNTIME_LOG 2>&1
-    else
-        pushd $RUNNER_DIR
-        $RUNNER_STOP_CMD > $RUNNER_LOG 2>&1
-        popd
-    fi
+    $MAESTRO_STOP_CMD > $MAESTRO_RUNTIME_LOG 2>&1
 }
+
 START() {
     if [[ -e $maestroOK ]]; then
         echo "hey my maestro is ok (devicejs)" >> /wigwag/log/deviceOSWD.log
         eval $COLOR_BOLD
         eval $COLOR_NORMAL
         config_cpu_scaling
-        # do we need to store maestro runtime? maestro log is stored somewhere else (check maestro config file)
-        # if [ -e $MAESTRO_RUNTIME_LOG ]; then
-        #   mv $MAESTRO_RUNTIME_LOG $MAESTRO_RUNTIME_LOG.1
-        # fi
-        if [[ $START_SOFTWARE = "maestro" ]]; then
-            ulimit -c unlimited
-            LD_LIBRARY_PATH=$GREASE_STATIC_LIB:/$LD_LIBRARY_PATH
-            export LD_LIBRARY_PATH
-            echo "starting maestro"
-            $MAESTRO_START_CMD >> $MAESTRO_RUNTIME_LOG 2>&1 &
-        else
-            if [ -e $RUNNER_LOG ]; then
-                mv $RUNNER_LOG $RUNNER_LOG.1
-            fi
-
-            ulimit -c unlimited
-            pushd $RUNNER_DIR
-            echo "starting runner"
-            $RUNNER_START_CMD > $RUNNER_LOG 2>&1 &
-            popd
-        fi
+        ulimit -c unlimited
+        echo "starting maestro"
+        export LD_LIBRARY_PATH=$GREASE_DYNAMIC_LIB:$LD_LIBRARY_PATH  
+        $MAESTRO_START_CMD >> $MAESTRO_RUNTIME_LOG 2>&1 &
     else
         #When the relay doesn't have its keys in the right places, we dont autostart devicejs or the watchdog...
-        if [[ $START_SOFTWARE = "maestro" ]]; then
-            echo "did not start devicejs because wwrelay said not to" >> $MAESTRO_RUNTIME_LOG
-        else
-            echo "did not start devicejs because wwrelay said not to" >> $RUNNER_LOG
-            echo "did not start devicejs because wwrelay said not to" >> $WWRELAY_LOG
-        fi
+        echo "did not start maestro because wwrelay said not to" >> $MAESTRO_RUNTIME_LOG
         exit 7
-     fi
-    }
+    fi
+}
 
-
-
-    case "$1" in
-        start) START; ;;
-    #
+case "$1" in
+    start) 
+        START; 
+        ;;
     stop)
-echo "Stopping DeviceJS"
-stop_devjs
-;;
-restart)
-echo "Restarting DeviceJS"
-stop_devjs
-config_cpu_scaling
-run_devjs
-;;
-*)
-echo "Usage: $0 {start|stop|restart}"
-exit 1
+        echo "Stopping DeviceJS"
+        stop_devjs
+        ;;
+    restart)
+        echo "Restarting DeviceJS"
+        stop_devjs
+        config_cpu_scaling
+        run_devjs
+        ;;
+    *)
+        echo "Usage: $0 {start|stop|restart}"
+        exit 1
 esac
 
 exit 0
