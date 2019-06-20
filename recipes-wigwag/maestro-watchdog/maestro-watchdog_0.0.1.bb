@@ -1,55 +1,30 @@
 DESCRIPTION = "maetro-watchdog for ralypoint hw"
 
 LICENSE = "Apache-2.0"
-LIC_FILES_CHKSUM = "file://LICENSE;md5=4336ad26bb93846e47581adc44c4514d"
+LIC_FILES_CHKSUM = "file://src/${GO_IMPORT}/LICENSE;md5=1dece7821bf3fd70fe1309eaa37d52a2"
 
 inherit go pkgconfig gitpkgv
-
 
 PV = "1.0+git${SRCPV}"
 PKGV = "1.0+git${GITPKGV}"
 SRCREV = "54ee3bd50b063425606ad76aefad4167780d8760"
 
 PR = "r0"
-FILES_${PN} += "/wigwag/system/bin/* /wigwag/system/lib/*" 
-SRC_URI="git://git@github.com/armPelionEdge/rallypointwatchdogs.git;protocol=ssh"
-S = "${WORKDIR}/git"
-WSB="/wigwag/system/bin"
-
-DEPENDS +=" maestro"
-
-do_package_qa () {
-  echo "done"
-}
-
-do_configure() {
-	echo "a new build" > "/tmp/maestro-watchdog.log"
-	_logit "$GOPATH"
-}
+SRC_URI="git://git@github.com/armPelionEdge/rallypointwatchdogs.git;protocol=ssh;branch=master"
+GO_IMPORT = "github.com/armPelionEdge/rallypointwatchdogs"
 
 do_compile() {
- cd ..
- TOP=`pwd`
- mkdir -p go-workspace/bin
- mkdir -p go-workspace/pkg
- mkdir -p go-workspace/src      
- WORKSPACE="`pwd`/go-workspace"
- export CGO_ENABLED=1
- export GOPATH="$WORKSPACE"
- export GOBIN="$WORKSPACE/bin"
- cd go-workspace/src
- mkdir -p github.com/armPelionEdge
- mv $TOP/git github.com/armPelionEdge/rallypointwatchdogs
- cd github.com/armPelionEdge/rallypointwatchdogs
- ./build.sh
+  pushd src/${GO_IMPORT}
+   ./build.sh
+  popd
 }
 
+WLIB="/wigwag/system/lib"
+FILES_${PN} += "/wigwag/system/bin/ /wigwag/system/lib/rp100wd.so /wigwag/system/lib/dummywd.so"
+
 do_install() {
- WLIB="/wigwag/system/lib"
- DWLIB="${D}/${WLIB}"
- install -d ${DWLIB}
- WORKSPACE=`pwd`/../go-workspace
- install -m 0755 "${WORKSPACE}/src/github.com/armPelionEdge/rallypointwatchdogs/rp100/rp100wd.so" "${D}/${WLIB}"    
- install -m 0755 "${WORKSPACE}/src/github.com/armPelionEdge/rallypointwatchdogs/dummy/dummywd.so" "${D}/${WLIB}"    
+ install -d "${D}/${WLIB}"
+ install -m 0755 "${B}/src/${GO_IMPORT}/rp100/rp100wd.so" "${D}/${WLIB}"
+ install -m 0755 "${B}/src/${GO_IMPORT}/dummy/dummywd.so" "${D}/${WLIB}"
 }
 
