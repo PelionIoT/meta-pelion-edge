@@ -2,8 +2,6 @@
 # Yocto Project 2.6 Poky distribution [thud] branch
 # This is a sysvinit system
 
-DISTRO = "mbl"
-
 RPI_USE_U_BOOT = "1"
 
 # to take a better look at the u-boot startup messages,

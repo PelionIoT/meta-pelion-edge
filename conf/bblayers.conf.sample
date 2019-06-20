@@ -22,8 +22,6 @@ BBLAYERS ?= " \
     ${OEROOT}/meta-pelion-edge \
     ${OEROOT}/meta-nodejs \
     ${OEROOT}/meta-linaro/meta-optee \
-    ${OEROOT}/meta-mbl/meta-mbl-distro \
-    ${OEROOT}/meta-mbl/meta-mbl-apps \
     ${OEROOT}/meta-mbl/meta-raspberrypi-mbl \
     ${OEROOT}/meta-mbl/meta-mbl-bsp-common \
     ${OEROOT}/meta-mbl/openembedded-core-mbl/meta \
