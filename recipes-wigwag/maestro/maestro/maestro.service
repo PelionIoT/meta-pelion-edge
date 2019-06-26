@@ -1,0 +1,9 @@
+[Unit]
+Descritpion=Maestro: Network, Config, DeviceJS manager
+
+[Service]
+Environment="LD_LIBRARY_PATH=/wigwag/system/lib"
+ExecStart=/wigwag/system/bin/maestro -config /wigwag/wwrelay-utils/conf/maestro-conf/edge-config-rpi-production.yaml
+
+[Install]
+RequiredBy=network.target

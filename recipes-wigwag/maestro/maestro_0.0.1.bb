@@ -19,10 +19,16 @@ PKGV = "1.0+git${GITPKGV}"
 
 PR = "r0"
 
-FILES_${PN} += "/wigwag/system/bin/* /wigwag/system/lib/* ${INIT_D_DIR}/*"
+FILES_${PN} += "\
+    /wigwag/system/bin/*\
+    /wigwag/system/lib/*\
+    ${INIT_D_DIR}/*\
+    ${systemd_system_unitdir}/maestro.service\
+    "
 
 SRC_URI="git://git@github.com/armPelionEdge/maestro.git;protocol=ssh;branch=master;name=m \
 file://maestro.sh \
+file://maestro.service \
 "
 
 SRCREV_FORMAT="m"
@@ -95,10 +101,12 @@ do_install() {
   install -d ${D}/${WSB}
   install -d ${D}/${WSL}
   install -d ${D}/${INIT_D_DIR}
+  install -d ${D}${systemd_system_unitdir}
   install -m 0755 ${WORKDIR}/maestro.sh ${D}${INIT_D_DIR}/maestro.sh
   install -m 0755 "${B}/${GO_BUILD_BINDIR}/maestro" "${D}/${WSB}"
   install -m 0755 "${B}/${CGREASE_SRC}/grease_echo" "${D}/${WSB}"
   install -m 0755 "${B}/${CGREASE_SRC}/standalone_test_logsink" "${D}/${WSB}"
   install -m 0755 -o deviceos -g deviceos ${B}/${GREASE_SRC}/deps/lib/libgrease.so ${D}/${WSL}
   install -m 0755 -o deviceos -g deviceos ${B}/${GREASE_SRC}/deps/lib/libgrease.so.1 ${D}/${WSL}
+  install -m 0644 ${WORKDIR}/maestro.service ${D}${systemd_system_unitdir}/maestro.service
 }
