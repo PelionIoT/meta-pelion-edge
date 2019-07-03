@@ -18,6 +18,11 @@ PREFERRED_PROVIDER_jpeg-native = "libjpeg-turbo-native"
 
 PREFERRED_PROVIDER_udev = "eudev"
 
+DISTRO_FEATURES_append = " systemd"
+VIRTUAL-RUNTIME_init_manager = "systemd" 
+VIRTUAL-RUNTIME_initscripts = "systemd-compat-units"
+DISTRO_FEATURES_BACKFILL_CONSIDERED = "sysvinit"
+
 MACHINE_FEATURES_remove = "apm"
 
 WKS_FILE = "console-image.wic"
