@@ -1,5 +1,7 @@
 [Unit]
 Descritpion=Maestro: Network, Config, DeviceJS manager
+Requires=deviceos-wd
+After=deviceos-wd
 
 [Service]
 Environment="LD_LIBRARY_PATH=/wigwag/system/lib"
