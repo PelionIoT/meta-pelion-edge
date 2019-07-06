@@ -127,8 +127,6 @@ cd ${S}
 
 }
 
-do_compile[nostamp] += "1"
-
 do_dirInstall(){
 	pushd . >> /dev/null
 	cd $1
