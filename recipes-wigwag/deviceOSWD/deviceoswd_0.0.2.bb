@@ -6,7 +6,7 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=1dece7821bf3fd70fe1309eaa37d52a2"
 
 RDEPENDS_${PN}+="bash"
 
-inherit pkgconfig gitpkgv update-rc.d
+inherit pkgconfig gitpkgv update-rc.d systemd
 
 INITSCRIPT_NAME = "deviceOS-watchdog"
 INITSCRIPT_PARAMS = "defaults 60 40"
@@ -64,6 +64,7 @@ do_compile() {
     cp deviceOSWD deviceOSWD_rpi_3bplus
 }
 
+SYSTEMD_PACKAGES = "${PN}"
 SYSTEMD_SERVICE_${PN} = "deviceos-wd.service"
 SYSTEMD_AUTO_ENABLE_${PN} = "enable"
 
