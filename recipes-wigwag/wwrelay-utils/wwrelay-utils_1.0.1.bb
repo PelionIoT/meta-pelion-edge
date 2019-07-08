@@ -3,11 +3,13 @@ DESCRIPTION = "Utilities used by the WigWag Relay"
 LICENSE = "Apache-2.0"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=1dece7821bf3fd70fe1309eaa37d52a2"
 
-SRC_URI="git://git@github.com/armPelionEdge/edge-utils.git;protocol=ssh;name=wwrelay \
-git://git@github.com/armPelionEdge/edgeos-shell-scripts.git;protocol=ssh;name=dss;destsuffix=git/dss \
-file://wwrelay \
-file://BUILDMMU.txt \
-file://logrotate_directives/ \
+SRC_URI="\
+  git://git@github.com/armPelionEdge/edge-utils.git;protocol=ssh;name=wwrelay \
+  git://git@github.com/armPelionEdge/edgeos-shell-scripts.git;protocol=ssh;name=dss;destsuffix=git/dss \
+  git://git@github.com/armPelionEdge/node-i2c.git;protocol=ssh;name=node_i2c;destsuffix=git/tempI2C/node-i2c \
+  file://wwrelay \
+  file://BUILDMMU.txt \
+  file://logrotate_directives/ \
 "
 
 SRCREV_FORMAT = "wwrelay-dss"
@@ -84,16 +86,7 @@ do_compile() {
 	make all
 
 	do_log "I2c"
-	cd ${S}
-	cd ..
-	if [[ -e tempI2C ]]; then
-		rm -rf tempI2C/
-	fi
-	mkdir tempI2C
-	cd tempI2C
-	git clone -b master git@github.com:armPelionEdge/node-i2c.git
-	git -C node-i2c checkout ${SRCREV_node_i2c}
-	cd node-i2c
+	cd ${S}/tempI2C/node-i2c
 	do_log "in wwrelay-utils node-i2c"
 	oe_runnpm install --target_arch=arm --production
 	node-gyp configure
@@ -104,26 +97,26 @@ do_compile() {
 	sed -i -- "/node-i2c/d" package.json
 	oe_runnpm install  --target_arch=arm --production
 	cd node_modules
-	cp -r ${S}/../tempI2C/node-i2c/ i2c
+	cp -r ${S}/tempI2C/node-i2c/ i2c
 
 	do_log "GPIO"
 	cd ${S}/GPIO
 	oe_runnpm install --production
 	make
 
-do_log "slip-radio"
-cd ${S}/slip-radio
-oe_runnpm install --production
+  do_log "slip-radio"
+  cd ${S}/slip-radio
+  oe_runnpm install --production
 
-do_log "slipcoms"
-cd ${S}/slipcomms 
-make 
+  do_log "slipcoms"
+  cd ${S}/slipcomms
+  make
 
-do_log "cc2530prog"
-cd ${S}/cc2530prog
-make
+  do_log "cc2530prog"
+  cd ${S}/cc2530prog
+  make
 
-cd ${S}
+  cd ${S}
 
 }
 
@@ -132,8 +125,7 @@ do_dirInstall(){
 	cd $1
 	find . -type d -exec install -d $2/{} \;
 	find . -type f -exec install -m 0755 {} $2/{} \; 
-#a more cleaver one:
-popd >> /dev/null
+  popd >> /dev/null
 }
 
 
