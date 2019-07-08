@@ -14,6 +14,7 @@ FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
 
 SRC_URI = "git://git@github.com/ARMmbed/mbed-edge.git;protocol=ssh; \
            file://edge-core.init \
+           file://edge-core.service \
            file://edge-core.logrotate \
            file://toolchain.cmake \
            file://0001-disable-Doxygen.patch \
@@ -49,10 +50,13 @@ EXTRA_OECMAKE += " \
     -DBYOC_MODE=${MBED_EDGE_CORE_CONFIG_BYOC_MODE} \
     ${MBED_EDGE_CORE_CUSTOM_CMAKE_ARGUMENTS}"
 
-inherit cmake update-rc.d
+inherit cmake update-rc.d systemd
 
 INITSCRIPT_NAME = "mbed-edge-core"
 INITSCRIPT_PARAMS = "defaults 85 15"
+
+SYSTEMD_PACKAGES = "${PN}"
+SYSTEMD_SERVICE_${PN} = "edge-core.service"
 
 do_configure_prepend() {
     cd ${S}
@@ -69,6 +73,9 @@ do_configure_prepend() {
 do_install() {
     install -d "${D}/etc/init.d/"
     install -m 755 "${WORKDIR}/edge-core.init" "${D}/etc/init.d/${INITSCRIPT_NAME}"
+
+    install -d "${D}${systemd_system_unitdir}"
+    install -m 755 "${WORKDIR}/edge-core.service" "${D}${systemd_system_unitdir}/edge-core.service"
 
     install -d "${D}/wigwag/mbed/"
     install "${WORKDIR}/build/bin/edge-core" "${D}/wigwag/mbed/"

@@ -1,0 +1,10 @@
+[Unit]
+Description = Edge Core
+
+[Service]
+ExecStartPre=mkdir -p /userdata/mbed
+ExecStartPre=chown developer -R /userdata/mbed
+ExecStart=/wigwag/mbed/edge-core  --http-port 9101
+
+[Install]
+RequiredBy=network.target
