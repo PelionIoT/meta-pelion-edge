@@ -6,11 +6,14 @@ LIC_FILES_CHKSUM = "file://src/${GO_IMPORT}/LICENSE;md5=1dece7821bf3fd70fe1309ea
 
 DEPENDS="deviceos-users"
 RDEPENDS_${PN}+="bash twlib"
-inherit go pkgconfig gitpkgv update-rc.d
+inherit go pkgconfig gitpkgv update-rc.d systemd
 
 INITSCRIPT_NAME = "maestro.sh"
 INITSCRIPT_PARAMS = "defaults 85 15"
 
+SYSTEMD_PACKAGES = "${PN}"
+SYSTEMD_SERVICE_${PN} = "maestro.service"
+SYSTEMD_AUTO_ENABLE_${PN} = "enable"
 
 CGO_ENABLED = "1"
 
