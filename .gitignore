@@ -3,3 +3,6 @@
 scripts/config.txt
 scripts/interfaces
 scripts/wpa_supplicant.conf
+recipes-wigwag/mbed-edge-core/files/mbed_cloud_dev_credentials.c
+recipes-wigwag/mbed-edge-core/files/update_default_resources.c
+recipes-core/ww-console-image-initramfs-init/files/upgradeCA.cert
