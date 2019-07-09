@@ -2,6 +2,7 @@
 Description = Edge Core
 
 [Service]
+Restart=Always
 ExecStartPre=mkdir -p /userdata/mbed
 ExecStartPre=chown developer -R /userdata/mbed
 ExecStart=/wigwag/mbed/edge-core  --http-port 9101
