@@ -9,6 +9,8 @@ SRC_URI="\
   git://git@github.com/armPelionEdge/node-i2c.git;protocol=ssh;name=node_i2c;destsuffix=git/tempI2C/node-i2c \
   file://wwrelay \
   file://BUILDMMU.txt \
+  file://wwrelay.service \
+  file://wait-for-pelion-identity.service \
   file://logrotate_directives/ \
 "
 
@@ -17,12 +19,16 @@ SRCREV_wwrelay = "c508f584f34540f98e9349bb919faf716902d560"
 SRCREV_dss = "04db833a43b80ecdfae07fd388bbe4e242771f38"
 SRCREV_node_i2c = "511b1f0beae55bd9067537b199d52381f6ac3e01"
 
-inherit pkgconfig gitpkgv npm-base update-rc.d
+inherit pkgconfig gitpkgv npm-base update-rc.d systemd
 
 INHIBIT_PACKAGE_STRIP = "1"
 
 INITSCRIPT_NAME = "wwrelay"
 INITSCRIPT_PARAMS = "defaults 80 20" 
+
+SYSTEMD_PACKAGES = "${PN}"
+SYSTEMD_SERVICE_${PN} = "wait-for-pelion-identity.service wwrelay.service"
+SYSTEMD_AUTO_ENABLE_${PN} = "enable"
 
 PV = "1.0+git${SRCPV}"
 PKGV = "1.0+git${GITPKGV}"
@@ -31,7 +37,25 @@ PR = "r7"
 DEPENDS = "update-rc.d-native nodejs nodejs-native"
 RDEPENDS_${PN} += " bash nodejs openssl10"
 
-FILES_${PN} = "/wigwag/* /wigwag/etc /wigwag/etc/* /etc/logrotate.d/* /etc/init.d /etc/init.d/* /etc/wigwag /etc/wigwag/* /etc/rc?.d/* /usr/bin /usr/bin/* /etc/* /userdata /upgrades /localdata "
+FILES_${PN} = "\
+  /wigwag/*\
+  /wigwag/etc\
+  /wigwag/etc/*\
+  /etc/logrotate.d/*\
+  /etc/init.d\
+  /etc/init.d/*\
+  /etc/wigwag\
+  /etc/wigwag/*\
+  /etc/rc?.d/*\
+  /usr/bin\
+  /usr/bin/*\
+  /etc/*\
+  /userdata\
+  /upgrades\
+  /localdata\
+  ${systemd_system_unitdir}/wwrelay.service\
+  ${systemd_system_unitdir}/wait-for-pelion-identity.service\
+"
 
 S = "${WORKDIR}/git"
 S_MODPROBED="${S}/etc/modprobe.d"
@@ -143,16 +167,22 @@ do_install() {
 	install -d ${D}/etc/network
 	install -d ${D}/etc/udev
 	install -d ${D}/etc/udev/rules.d
+  install -d ${D}/wigwag/system/bin
 	do_dirInstall ${S}/wigwag/ ${D}/wigwag/
 	install -m 0755 ${S}/etc/dnsmasq.conf ${D}/etc/dnsmasq.conf
 	install -m 0755 ${S}/etc/dnsmasq.d/dnsmasq.conf ${D}/etc/dnsmasq.d/dnsmasq.conf
 	install -m 0755 ${S}/etc/modprobe.d/at24.conf ${D}/etc/modprobe.d/at24.conf
 	install -m 0755 ${S}/etc/profile.d/wigwagpath.sh ${D}/etc/profile.d/wigwagpath.sh
-	install -m 0755 ${S}/../wwrelay ${D}${INIT_D_DIR}
+	install -m 0755 ${WORKDIR}/wwrelay ${D}/wigwag/system/bin
 	install -m 0755 ${S}/etc/init.d/devjssupport ${D}${INIT_D_DIR}
 	install -m 0755 ${S}/etc/init.d/relayterm ${D}${INIT_D_DIR}
 	install -m 0755 ${S}/etc/init.d/wwfunctions ${D}${INIT_D_DIR}
 	update-rc.d -r ${D} relayterm defaults 85 20
+
+# Install systemd units
+  install -d ${D}${systemd_system_unitdir}
+  install -m 644 ${WORKDIR}/wwrelay.service ${D}${systemd_system_unitdir}/wwrelay.service
+  install -m 644 ${WORKDIR}/wait-for-pelion-identity.service ${D}${systemd_system_unitdir}/wait-for-pelion-identity.service
 
 	#spreadsheet work needed
 	#conf
