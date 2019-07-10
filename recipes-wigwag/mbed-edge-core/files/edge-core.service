@@ -3,7 +3,7 @@ Description=Edge Core
 After=systemd-networkd-wait-online.service maestro.service
 
 [Service]
-Restart=Always
+Restart=always
 RestartSec=5s
 ExecStartPre=mkdir -p /userdata/mbed
 ExecStartPre=chown developer -R /userdata/mbed
