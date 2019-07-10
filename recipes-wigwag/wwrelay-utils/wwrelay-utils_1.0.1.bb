@@ -11,6 +11,7 @@ SRC_URI="\
   file://BUILDMMU.txt \
   file://wwrelay.service \
   file://wait-for-pelion-identity.service \
+  file://do-post-upgrade.service \
   file://logrotate_directives/ \
 "
 
@@ -27,7 +28,7 @@ INITSCRIPT_NAME = "wwrelay"
 INITSCRIPT_PARAMS = "defaults 80 20" 
 
 SYSTEMD_PACKAGES = "${PN}"
-SYSTEMD_SERVICE_${PN} = "wait-for-pelion-identity.service wwrelay.service"
+SYSTEMD_SERVICE_${PN} = "wait-for-pelion-identity.service wwrelay.service do-post-upgrade.service"
 SYSTEMD_AUTO_ENABLE_${PN} = "enable"
 
 PV = "1.0+git${SRCPV}"
@@ -55,6 +56,7 @@ FILES_${PN} = "\
   /localdata\
   ${systemd_system_unitdir}/wwrelay.service\
   ${systemd_system_unitdir}/wait-for-pelion-identity.service\
+  ${systemd_system_unitdir}/do-post-upgrade.service\
 "
 
 S = "${WORKDIR}/git"
@@ -183,6 +185,7 @@ do_install() {
   install -d ${D}${systemd_system_unitdir}
   install -m 644 ${WORKDIR}/wwrelay.service ${D}${systemd_system_unitdir}/wwrelay.service
   install -m 644 ${WORKDIR}/wait-for-pelion-identity.service ${D}${systemd_system_unitdir}/wait-for-pelion-identity.service
+  install -m 644 ${WORKDIR}/do-post-upgrade.service ${D}${systemd_system_unitdir}/do-post-upgrade.service
 
 	#spreadsheet work needed
 	#conf
