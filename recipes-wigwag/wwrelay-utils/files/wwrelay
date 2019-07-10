@@ -16,12 +16,6 @@
 WIGWAGROOT="/wigwag"
 GW_IDENTITY_FILE="/userdata/edge_gw_config/identity.json"
 
-if [ -e /userdata/postUpgrade.sh ] ; then
-  echo "Running postUpgrade script"
-  /userdata/postUpgrade.sh
-  /bin/rm /userdata/postUpgrade.sh
-fi
-
 if [ -e /userdata/edge_gw_config/identity.json ] ; then
   cd ${WIGWAGROOT}/wwrelay-utils/I2C
   PATH=/wigwag/system/lib/bash:$PATH /wigwag/system/bin/json2sh $GW_IDENTITY_FILE /wigwag/system/lib/bash/relaystatics.sh
