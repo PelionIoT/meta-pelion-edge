@@ -1,25 +1,6 @@
 #! /bin/sh
-# /etc/init.d/wwrelay: initialized the WigWag
 
-### BEGIN INIT INFO
-# Provides:             wwrelay
-# Required-Start:       $remote_fs $time
-# Required-Stop:        $remote_fs $time
-# Should-Start:
-# Should-Stop:
-# Default-Start:        2 3 4 5
-# Default-Stop:         0 1 6
-# Short-Description:    System logger
-### END INIT INFO
-# Source function library.
-
-WIGWAGROOT="/wigwag"
-GW_IDENTITY_FILE="/userdata/edge_gw_config/identity.json"
-
-if [ -e /userdata/edge_gw_config/identity.json ] ; then
-  cd ${WIGWAGROOT}/wwrelay-utils/I2C
-  PATH=/wigwag/system/lib/bash:$PATH /wigwag/system/bin/json2sh $GW_IDENTITY_FILE /wigwag/system/lib/bash/relaystatics.sh
-else
+if [ ! -e /userdata/edge_gw_config/identity.json ] ; then
   # This should not be needed, but hey maestro keeps crashing on me
   # TODO: remove this if when maestro reliably gets an ip
   if [ -z "$(ip addr show eth0 | grep 'inet ')" ] ; then
