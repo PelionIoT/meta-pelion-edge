@@ -4,6 +4,8 @@ Requires=deviceos-wd.service
 After=deviceos-wd.service
 
 [Service]
+Restart=always
+RestartSec=5s
 Environment="LD_LIBRARY_PATH=/wigwag/system/lib"
 ExecStart=/wigwag/system/bin/maestro -config /wigwag/wwrelay-utils/conf/maestro-conf/edge-config-rpi-production.yaml
 
