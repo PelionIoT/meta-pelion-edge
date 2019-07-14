@@ -13,7 +13,7 @@ CORE_OS = " \
     kernel-modules \
     openssh openssh-keygen openssh-sftp-server \
     packagegroup-core-boot \
-    packagegroup-core-full-cmdline \    
+    packagegroup-core-full-cmdline \
     packagegroup-core-buildessential \
     term-prompt \
     tzdata \
@@ -162,13 +162,15 @@ WIGWAG_STUFF = " \
     pps-tools \
     pwgen \
     twlib \
-    devicedb \
     maestro \
     deviceos-users \
     global-node-modules \
     wwrelay-utils \
 "
 
+PAUSE = " \
+ devicedb \
+"
 OPENSSL_102 = " \
     libcrypto10 \
     libssl10 \
@@ -182,7 +184,6 @@ IMAGE_INSTALL += " \
     ${DEV_SDK_INSTALL} \
     ${DEV_EXTRAS} \
     ${EXTRA_TOOLS_INSTALL} \
-    ${RPI_STUFF} \
     ${WIFI_SUPPORT} \
     ${BLUETOOTH_SUPPORT} \
     ${EXTRA_WW} \

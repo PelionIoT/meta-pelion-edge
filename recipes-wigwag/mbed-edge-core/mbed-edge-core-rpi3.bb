@@ -1,6 +1,6 @@
 require mbed-edge-core.inc
 
-COMPATIBLE_MACHINE = "raspberrypi3"
+#COMPATIBLE_MACHINE = "raspberrypi3"
 
 PROVIDES += " virtual/mbed-edge-core virtual/mbed-edge-core-dbg "
 RPROVIDES_${PN} += " virtual/mbed-edge-core virtual/mbed-edge-core-dbg "

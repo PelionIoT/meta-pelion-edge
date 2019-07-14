@@ -459,7 +459,7 @@ setLED() {
 #	if [[ "$7" != "" ]]; then
 #		altblue="$7"
 #	fi
-	
+
 	#_decho "$1 $2 $3 [$ltime] $altred $altgreen $altblue > thepipe" 
 	#2=RBG
 #	if [[ $ledconfig -eq 2 ]]; then
@@ -551,13 +551,13 @@ displayBanner(){
 	echo "             | |__  _   _"
 	echo "             | '_ \| | | |"
 	echo "             | |_) | |_| |"
-echo "             |_.__/ \__, |"
-echo "                    |___/"
+	echo "             |_.__/ \__, |"
+	echo "                    |___/"
 
-echo "${LBLUE}__        ___     __        __"
-echo "\ \      / (_) __ \ \      / /_ _  __ _"
-echo " \ \ /\ / /| |/ _  \ \ /\ / / _  |/ _  |"
-echo "  \ V  V / | | (_| |\ V  V / (_| | (_| |"
+	echo "${LBLUE}__        ___     __        __"
+	echo "\ \      / (_) __ \ \      / /_ _  __ _"
+	echo " \ \ /\ / /| |/ _  \ \ /\ / / _  |/ _  |"
+	echo "  \ V  V / | | (_| |\ V  V / (_| | (_| |"
 	echo "   \_/\_/  |_|\__, | \_/\_/ \__,_|\__, |"
 	echo "              |___/               |___/"
 	echo "${NORM}"
@@ -1470,19 +1470,19 @@ Strategy_UGpartition(){
 		#
 		;;
 		*) REPARTITIONEMMC=0
-			say_update2 "Unknown partition schema requested: '$PARTITIONSCHEMA'"
-		;;
-	esac
-	bootParitionSize=$(fdisk -l /dev/mmcblk0p1 | xargs | awk '{print $3}');
-	_decho "$bootParitionSize -ne $expectedsize && $REPARTITIONEMMC -eq 1"
-	if [[ $bootParitionSize -ne $expectedsize && $REPARTITIONEMMC -eq 1 ]]; then
-		UGPARTITION_DO_IT_ALL=1;
-		FORCEUPGRADETHEFACTORY=1
-		FORCEUPGRADETHEUPGRADE=1
-		say_update2 "PARTITION" "update needed."
-	else
-		say_update2 "PARTITION" "update not needed."
-	fi
+say_update2 "Unknown partition schema requested: '$PARTITIONSCHEMA'"
+;;
+esac
+bootParitionSize=$(fdisk -l /dev/mmcblk0p1 | xargs | awk '{print $3}');
+_decho "$bootParitionSize -ne $expectedsize && $REPARTITIONEMMC -eq 1"
+if [[ $bootParitionSize -ne $expectedsize && $REPARTITIONEMMC -eq 1 ]]; then
+	UGPARTITION_DO_IT_ALL=1;
+	FORCEUPGRADETHEFACTORY=1
+	FORCEUPGRADETHEUPGRADE=1
+	say_update2 "PARTITION" "update needed."
+else
+	say_update2 "PARTITION" "update not needed."
+fi
 }
 UGpartition(){
 	if [[ "$UGPARTITION_DO_IT_ALL" -eq 1 ]]; then
@@ -2128,7 +2128,7 @@ echo "initGPIO would run here"
 #	if [[ $lastbutton -eq 0 ]]; then
 #		bname="depressed"
 #	fi
-        lastbutton=1
+lastbutton=1
 }
 
 #/	Desc:	xxx
@@ -2209,6 +2209,15 @@ initmkpaths() {
 	mkdirectory $newr
 	mkdirectory $bbmp_usb
 }
+do_mount_fs() {
+	grep -q "$1" /proc/filesystems || return
+	test -d "$2" || mkdir -p "$2"
+	mount -t "$1" "$1" "$2"
+}
+
+do_mknod() {
+	test -e "$1" || mknod "$1" "$2" "$3" "$4"
+}
 
 #/	Desc:	xxx
 #/	Ver:	.1
@@ -2223,13 +2232,15 @@ initFS() {
         #for now, explicitly making /proc and /sys before mount - they instead should be part of the fs
         mkdir -p /proc
         mkdir -p /sys
-	mount -t proc proc /proc
-	mount -t sysfs sysfs /sys
+        mount -t proc proc /proc
+        mount -t sysfs sysfs /sys
 	#mount -t devtmpfs devtmpfs /dev
-	#Disable kernel messages from popping onto the screen
-	echo 0 > /proc/sys/kernel/printk
+	if [[ $debug -eq 0 ]]; then
+		#Disable kernel messages from popping onto the screen
+		echo 0 > /proc/sys/kernel/printk
+	fi
 	#Clear the screen
-#	clear
+	#clear
 	#Create device nodes: historical comment, adding mount -t devtmpfs fixed the need to do this
 	mknod /dev/null c 1 3
 	mknod /dev/tty c 5 0
@@ -2238,7 +2249,19 @@ initFS() {
 	mknod /dev/sdb b 16 0
 	mknod /dev/sdb1 b 16 1
 	mdev -s
+	#Entries in /dev/pts are pseudo-terminals (pty for short). Unix kernels have a generic notion of terminals.
+	#A terminal provides a way for applications to display output and to receive input through a
+	# terminal device. A process may have a controlling terminal - for a text mode application, this is how it interacts with the user.
+	do_mount_fs devpts /dev/pts
+
+	mkdir -p /run
+	mkdir -p /var/run
+
+	# Set up console
+	do_mknod /dev/console c 5 1
+	exec </dev/console >/dev/console 2>/dev/console
 	sync
+	_decho "initFS complete"
 }
 
 initLED() {
@@ -2511,20 +2534,20 @@ recovery() {
 	locked=1;
 	firstenteredlock=0;
 	while [ $elapsed -lt $timout ]; do 
-	secnow=$(date +%s)
-	if [[ "$state" = "starting" || "$state" = "pausedbegin" ]]; then
-		elapsed=0
-	else
-		elapsed=$(( $secnow - $event_start ))
-	fi
-	newbutton=$(cat /sys/class/gpio/gpio236/value)
-	if [[ $newbutton -ne $lastbutton ]]; then
-		lastbutton=$newbutton
-		event_start=$secnow
-		if [[ $newbutton -eq 1 ]]; then
-			button_up
-			buttoncount=$(( $buttoncount + 1 ))
+		secnow=$(date +%s)
+		if [[ "$state" = "starting" || "$state" = "pausedbegin" ]]; then
+			elapsed=0
+		else
+			elapsed=$(( $secnow - $event_start ))
 		fi
+		newbutton=$(cat /sys/class/gpio/gpio236/value)
+		if [[ $newbutton -ne $lastbutton ]]; then
+			lastbutton=$newbutton
+			event_start=$secnow
+			if [[ $newbutton -eq 1 ]]; then
+				button_up
+				buttoncount=$(( $buttoncount + 1 ))
+			fi
 			#echo "got a button, starting timer over ($elapsed)"
 		fi
 	done
@@ -2649,7 +2672,7 @@ fullpivot() {
 	umount /sys /proc
 	say_init "Switching to the new root"
 	exec switch_root $newr "${init}"
-	fi
+fi
 }
 
 #---------------------------------------------------------------------------------------------------------------------------

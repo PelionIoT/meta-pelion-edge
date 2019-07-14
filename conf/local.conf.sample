@@ -25,7 +25,10 @@ DISTRO_FEATURES_BACKFILL_CONSIDERED = "sysvinit"
 
 MACHINE_FEATURES_remove = "apm"
 
-WKS_FILE = "console-image.wic"
+#WKS_FILE = "console-image.wic"
+# Need to override imx6ulevk.conf setting
+WKS_FILE_remove = "imx-uboot-spl-bootpart.wks"
+WKS_FILE_append = " console-image.wks"
 IMAGE_FSTYPES = "${INITRAMFS_FSTYPES} wic wic.gz wic.bmap"
 
 DISTRO_FEATURES_append += " bluez5 bluetooth wifi"
@@ -35,9 +38,15 @@ DISTRO_FEATURES_append += " bluez5 bluetooth wifi"
 #MACHINE="raspberrypi0"
 #MACHINE="raspberrypi0-wifi"
 #MACHINE="raspberrypi2"
-MACHINE = "raspberrypi3-mbl"
+#MACHINE="raspberrypi3-mbl"
 #MACHINE="raspberrypi-cm"
 #MACHINE="raspberrypi-cm3"
+
+# DES0258 machine and mask out raspberry-pi changes
+MACHINE = "imx6ul-des0258-mbl"
+BBMASK += "/meta-pelion-edge/recipes-bsp/atf/atf-raspberrypi3-mbl_git.bbappend"
+BBMASK += "/meta-pelion-edge/recipes-bsp/bootfiles/rpi-config_git.bbappend"
+BBMASK += "/meta-pelion-edge/recipes-kernel/linux/linux-raspberrypi_%.bbappend"
 
 # Choices are Image or zImage if NOT using u-boot (no u-boot is the default)
 # Choices are uImage or zImage if using u-boot, though if you choose zImage
