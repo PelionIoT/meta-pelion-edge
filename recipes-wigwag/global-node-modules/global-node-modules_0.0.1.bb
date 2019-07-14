@@ -18,7 +18,7 @@ WBIN= "${D}/wigwag/system/bin"
 
 BBCLASSEXTEND = "native"
 DEPENDS = "nodejs avahi udev nodejs-native"
-RDEPENDS_${PN} += " nodejs"
+RDEPENDS_${PN} += " nodejs bluez5"
 
 FILES_${PN} = "/wigwag/* /wigwag/wigwag-core-modules/* /wigwag/devicejs-core-modules/*"
 
