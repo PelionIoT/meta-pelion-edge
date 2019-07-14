@@ -108,7 +108,7 @@ do_install() {
     for f in $ALL_WigWag_Core_Modules; do
 		do_dirInstall ${S}/$f ${D}/wigwag/wigwag-core-modules/$f
     done
-    ALL_Devicejs_Core_Modules="rsmi zigbeeHA node_modules maestroRunner core-interfaces"
+    ALL_Devicejs_Core_Modules="rsmi zigbeeHA node_modules maestroRunner core-interfaces bluetoothlowenergy"
     for f in $ALL_Devicejs_Core_Modules; do
 		do_dirInstall ${S}/$f ${D}/wigwag/devicejs-core-modules/$f
     done
