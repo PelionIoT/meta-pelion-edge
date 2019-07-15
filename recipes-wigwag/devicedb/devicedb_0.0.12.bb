@@ -11,7 +11,7 @@ file://devicedb \
 
 SRCREV_FORMAT = "ddb"
 SRCREV_ddb = "${AUTOREV}"
-GO_IMPORT = "devicedb/"
+GO_IMPORT = "github.com/armPelionEdge/devicedb/"
 
 DEPENDS = ""
 RDEPENDS_${PN} += " logrotate"
