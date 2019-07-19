@@ -148,7 +148,6 @@ xz \
 
 WIGWAG_STUFF = " \
     devicejs \
-    deviceoswd \
     emacs \
     fftw \
     imagemagick \
