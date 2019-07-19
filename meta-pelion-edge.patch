@@ -1,0 +1,207 @@
+diff --git a/conf/bblayers.conf.sample b/conf/bblayers.conf.sample
+index 31c52c0..05fc58c 100644
+--- a/conf/bblayers.conf.sample
++++ b/conf/bblayers.conf.sample
+@@ -15,16 +15,16 @@ BBLAYERS ?= " \
+     ${OEROOT}/meta-openembedded/meta-networking \
+     ${OEROOT}/meta-openembedded/meta-perl \
+     ${OEROOT}/meta-openembedded/meta-python \
+-    ${OEROOT}/meta-mbl/meta-virtualization-mbl \
+     ${OEROOT}/meta-virtualization \
+-    ${OEROOT}/meta-raspberrypi \
+     ${OEROOT}/meta-security \
+     ${OEROOT}/meta-pelion-edge \
+     ${OEROOT}/meta-nodejs \
+     ${OEROOT}/meta-linaro/meta-optee \
+-    ${OEROOT}/meta-mbl/meta-raspberrypi-mbl \
+     ${OEROOT}/meta-mbl/meta-mbl-bsp-common \
+     ${OEROOT}/meta-mbl/openembedded-core-mbl/meta \
+     ${OEROOT}/meta-mbl/meta-linaro-mbl/meta-optee \
+-    ${OEROOT}/meta-mbl/meta-psa \
++    ${OEROOT}/meta-mbl/meta-freescale-mbl \
++    ${OEROOT}/meta-freescale \
++    ${OEROOT}/meta-mbl/meta-freescale-3rdparty-mbl \
++    ${OEROOT}/meta-freescale-3rdparty \
+ "
+diff --git a/conf/local.conf.sample b/conf/local.conf.sample
+index 494b985..c20edbd 100644
+--- a/conf/local.conf.sample
++++ b/conf/local.conf.sample
+@@ -25,7 +25,9 @@ DISTRO_FEATURES_BACKFILL_CONSIDERED = "sysvinit"
+ 
+ MACHINE_FEATURES_remove = "apm"
+ 
+-WKS_FILE = "console-image.wic"
++# Need to override imx6ulevk.conf setting
++WKS_FILE_remove = "imx-uboot-spl-bootpart.wks"
++WKS_FILE_append = " console-image.wks"
+ IMAGE_FSTYPES = "${INITRAMFS_FSTYPES} wic wic.gz wic.bmap"
+ 
+ DISTRO_FEATURES_append += " bluez5 bluetooth wifi"
+@@ -35,10 +37,16 @@ DISTRO_FEATURES_append += " bluez5 bluetooth wifi"
+ #MACHINE="raspberrypi0"
+ #MACHINE="raspberrypi0-wifi"
+ #MACHINE="raspberrypi2"
+-MACHINE = "raspberrypi3-mbl"
++#MACHINE = "raspberrypi3-mbl"
+ #MACHINE="raspberrypi-cm"
+ #MACHINE="raspberrypi-cm3"
+ 
++# DES0258 machine and mask out raspberry-pi changes
++MACHINE = "imx6ul-des0258-mbl"
++BBMASK += "/meta-pelion-edge/recipes-bsp/atf/atf-raspberrypi3-mbl_git.bbappend"
++BBMASK += "/meta-pelion-edge/recipes-bsp/bootfiles/rpi-config_git.bbappend"
++BBMASK += "/meta-pelion-edge/recipes-kernel/linux/linux-raspberrypi_%.bbappend"
++
+ # Choices are Image or zImage if NOT using u-boot (no u-boot is the default)
+ # Choices are uImage or zImage if using u-boot, though if you choose zImage
+ # with u-boot you will also have to change the boot script boot command
+@@ -114,8 +122,8 @@ MBL_PARTITIONS = "\
+ MBL_BOOT_DIR = "/mnt/.boot"
+ MBL_BOOT_PARTITION_LABEL = "boot"
+ 
+-MBL_BOOTFLAGS_DIR = "/mnt/flags"
+-MBL_BOOTFLAGS_PARTITION_LABEL = "bootflags"
++MBL_BOOTFLAGS_DIR = "/mnt/.boot"
++MBL_BOOTFLAGS_PARTITION_LABEL = "boot"
+ 
+ MBL_FACTORY_CONFIG_DIR = "/mnt/.overlay/factory"
+ MBL_FACTORY_CONFIG_PARTITION_LABEL = "factory"
+@@ -123,8 +131,8 @@ MBL_FACTORY_CONFIG_PARTITION_LABEL = "factory"
+ MBL_NON_FACTORY_CONFIG_DIR = "/mnt/.overlay/upgrade"
+ MBL_NON_FACTORY_CONFIG_PARTITION_LABEL = "upgrade"
+ 
+-MBL_LOG_DIR = "/var/log"
+-MBL_LOG_PARTITION_LABEL = "log"
++MBL_LOG_DIR = "/userdata"
++MBL_LOG_PARTITION_LABEL = "userdata"
+ 
+ MBL_SCRATCH_DIR = "/mnt/.overlay/user"
+ MBL_SCRATCH_PARTITION_LABEL = "user"
+diff --git a/recipes-core/images/console-image.bb b/recipes-core/images/console-image.bb
+index be02de2..894bde7 100644
+--- a/recipes-core/images/console-image.bb
++++ b/recipes-core/images/console-image.bb
+@@ -162,7 +162,6 @@ WIGWAG_STUFF = " \
+     pps-tools \
+     pwgen \
+     twlib \
+-    devicedb \
+     maestro \
+     deviceos-users \
+     global-node-modules \
+@@ -182,7 +181,6 @@ IMAGE_INSTALL += " \
+     ${DEV_SDK_INSTALL} \
+     ${DEV_EXTRAS} \
+     ${EXTRA_TOOLS_INSTALL} \
+-    ${RPI_STUFF} \
+     ${WIFI_SUPPORT} \
+     ${BLUETOOTH_SUPPORT} \
+     ${EXTRA_WW} \
+diff --git a/recipes-core/ww-console-image-initramfs-init/files/initramfs-init-script.sh b/recipes-core/ww-console-image-initramfs-init/files/initramfs-init-script.sh
+index 6d29ad8..aea44f7 100644
+--- a/recipes-core/ww-console-image-initramfs-init/files/initramfs-init-script.sh
++++ b/recipes-core/ww-console-image-initramfs-init/files/initramfs-init-script.sh
+@@ -2210,6 +2210,17 @@ initmkpaths() {
+ 	mkdirectory $bbmp_usb
+ }
+
++
++do_mount_fs() {
++	grep -q "$1" /proc/filesystems || return
++	test -d "$2" || mkdir -p "$2"
++	mount -t "$1" "$1" "$2"
++}
++
++do_mknod() {
++	test -e "$1" || mknod "$1" "$2" "$3" "$4"
++}
++
+ #/	Desc:	xxx
+ #/	Ver:	.1
+ #/	$1:		name1
+@@ -2226,8 +2237,10 @@ initFS() {
+ 	mount -t proc proc /proc
+ 	mount -t sysfs sysfs /sys
+ 	#mount -t devtmpfs devtmpfs /dev
+-	#Disable kernel messages from popping onto the screen
+-	echo 0 > /proc/sys/kernel/printk
++	if [[ $debug -eq 0 ]]; then
++		#Disable kernel messages from popping onto the screen
++		echo 0 > /proc/sys/kernel/printk
++	fi
+ 	#Clear the screen
+ #	clear
+ 	#Create device nodes: historical comment, adding mount -t devtmpfs fixed the need to do this
+@@ -2238,7 +2251,20 @@ initFS() {
+ 	mknod /dev/sdb b 16 0
+ 	mknod /dev/sdb1 b 16 1
+ 	mdev -s
++
++	#Entries in /dev/pts are pseudo-terminals (pty for short). Unix kernels have a generic notion of terminals. 
++	#A terminal provides a way for applications to display output and to receive input through a
++	# terminal device. A process may have a controlling terminal - for a text mode application, this is how it interacts with the user.
++	do_mount_fs devpts /dev/pts
++
++	mkdir -p /run
++	mkdir -p /var/run
++
++	# Set up console
++	do_mknod /dev/console c 5 1
++	exec </dev/console >/dev/console 2>/dev/console
+ 	sync
++	_decho "initFS complete"
+ }
+
+ initLED() {
+diff --git a/recipes-kernel/linux/linux-fslc_%.bbappend b/recipes-kernel/linux/linux-fslc_%.bbappend
+index e69de29..ec1b7c3 100644
+--- a/recipes-kernel/linux/linux-fslc_%.bbappend
++++ b/recipes-kernel/linux/linux-fslc_%.bbappend
+@@ -0,0 +1,9 @@
++FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
++
++SRC_URI += "file://0001-Edge-increased-the-HCI_LE_AUTOCONN_TIMEOUT-to-20-sec.patch \
++            file://extra-kernel-config.cfg"
++
++
++do_configure_prepend() {
++    ${S}/scripts/kconfig/merge_config.sh -m -O ${B} ${B}/.config ${WORKDIR}/extra-kernel-config.cfg
++}
+diff --git a/recipes-wigwag/mbed-edge-core/mbed-edge-core-rpi3.bb b/recipes-wigwag/mbed-edge-core/mbed-edge-core-rpi3.bb
+index 58a356e..f3c25ca 100644
+--- a/recipes-wigwag/mbed-edge-core/mbed-edge-core-rpi3.bb
++++ b/recipes-wigwag/mbed-edge-core/mbed-edge-core-rpi3.bb
+@@ -1,6 +1,6 @@
+ require mbed-edge-core.inc
+ 
+-COMPATIBLE_MACHINE = "raspberrypi3"
++# COMPATIBLE_MACHINE = "raspberrypi3"
+ 
+ PROVIDES += " virtual/mbed-edge-core virtual/mbed-edge-core-dbg "
+ RPROVIDES_${PN} += " virtual/mbed-edge-core virtual/mbed-edge-core-dbg "
+diff --git a/wic/console-image.wks b/wic/console-image.wks
+index a71b659..2961921 100644
+--- a/wic/console-image.wks
++++ b/wic/console-image.wks
+@@ -2,10 +2,15 @@
+ # long-description: Creates a partitioned SD card image for use with
+ # Raspberry Pi. Boot files are located in the first vfat partition.
+ 
+-part --source rawcopy --sourceparams="file=fip2.bin" --no-table --align 1024
++# Disable FIP and add Temporary SPL layout
++#part --source rawcopy --sourceparams="file=fip2.bin" --no-table --align 1024
++part SPL --source rawcopy --sourceparams="file=SPL" --no-table --align 1
++part u-boot --source rawcopy --sourceparams="file=u-boot.img" --no-table --align 69
++
++# Reduce size to fit under 3.6GB
+ part /mnt/.boot --source bootimg-partition --ondisk mmcblk0 --fstype=vfat --label boot --active --align 4096 --fixed-size 128
+-part /mnt/.overlay/factory --source rootfs --ondisk mmcblk0 --fstype=ext4 --label factory --align 4096 --size 2048
+-part /mnt/.overlay/upgrade --ondisk mmcblk0 --fstype=ext4 --label upgrade --size 2048
+-part /mnt/.overlay/user --ondisk mmcblk0 --fstype=ext4 --label user --size 1024
+-part /userdata --ondisk mmcblk0 --fstype=ext4 --label userdata --size 1024
++part /mnt/.overlay/factory --source rootfs --ondisk mmcblk0 --fstype=ext4 --label factory --align 4096 --size 1536
++part /mnt/.overlay/upgrade --ondisk mmcblk0 --fstype=ext4 --label upgrade --size 128
++part /mnt/.overlay/user --ondisk mmcblk0 --fstype=ext4 --label user --size 512
++part /userdata --ondisk mmcblk0 --fstype=ext4 --label userdata --size 512
+ bootloader --ptable msdos

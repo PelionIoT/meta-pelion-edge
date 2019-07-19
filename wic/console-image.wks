@@ -2,10 +2,15 @@
 # long-description: Creates a partitioned SD card image for use with
 # Raspberry Pi. Boot files are located in the first vfat partition.
 
-part --source rawcopy --sourceparams="file=fip2.bin" --no-table --align 1024
+# Disable FIP and add Temporary SPL layout
+#part --source rawcopy --sourceparams="file=fip2.bin" --no-table --align 1024
+part SPL --source rawcopy --sourceparams="file=SPL" --no-table --align 1
+part u-boot --source rawcopy --sourceparams="file=u-boot.img" --no-table --align 69
+
+# Reduce size to fit under 3.6GB
 part /mnt/.boot --source bootimg-partition --ondisk mmcblk0 --fstype=vfat --label boot --active --align 4096 --fixed-size 128
-part /mnt/.overlay/factory --source rootfs --ondisk mmcblk0 --fstype=ext4 --label factory --align 4096 --size 2048
-part /mnt/.overlay/upgrade --ondisk mmcblk0 --fstype=ext4 --label upgrade --size 2048
-part /mnt/.overlay/user --ondisk mmcblk0 --fstype=ext4 --label user --size 1024
-part /userdata --ondisk mmcblk0 --fstype=ext4 --label userdata --size 1024
+part /mnt/.overlay/factory --source rootfs --ondisk mmcblk0 --fstype=ext4 --label factory --align 4096 --size 1536
+part /mnt/.overlay/upgrade --ondisk mmcblk0 --fstype=ext4 --label upgrade --size 128
+part /mnt/.overlay/user --ondisk mmcblk0 --fstype=ext4 --label user --size 512
+part /userdata --ondisk mmcblk0 --fstype=ext4 --label userdata --size 512
 bootloader --ptable msdos

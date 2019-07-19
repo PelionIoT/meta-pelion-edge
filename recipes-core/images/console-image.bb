@@ -162,7 +162,6 @@ WIGWAG_STUFF = " \
     pps-tools \
     pwgen \
     twlib \
-    devicedb \
     maestro \
     deviceos-users \
     global-node-modules \
@@ -182,7 +181,6 @@ IMAGE_INSTALL += " \
     ${DEV_SDK_INSTALL} \
     ${DEV_EXTRAS} \
     ${EXTRA_TOOLS_INSTALL} \
-    ${RPI_STUFF} \
     ${WIFI_SUPPORT} \
     ${BLUETOOTH_SUPPORT} \
     ${EXTRA_WW} \
