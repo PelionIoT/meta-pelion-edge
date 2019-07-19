@@ -148,7 +148,7 @@ xz \
 
 WIGWAG_STUFF = " \
     devicejs \
-    deviceoswd \
+    devicedb \
     emacs \
     fftw \
     imagemagick \
@@ -169,8 +169,9 @@ WIGWAG_STUFF = " \
 "
 
 PAUSE = " \
- devicedb \
+ deviceoswd \
 "
+
 OPENSSL_102 = " \
     libcrypto10 \
     libssl10 \
