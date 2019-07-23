@@ -148,7 +148,6 @@ xz \
 
 WIGWAG_STUFF = " \
     devicejs \
-    deviceoswd \
     emacs \
     fftw \
     imagemagick \
@@ -182,7 +181,6 @@ IMAGE_INSTALL += " \
     ${DEV_SDK_INSTALL} \
     ${DEV_EXTRAS} \
     ${EXTRA_TOOLS_INSTALL} \
-    ${RPI_STUFF} \
     ${WIFI_SUPPORT} \
     ${BLUETOOTH_SUPPORT} \
     ${EXTRA_WW} \

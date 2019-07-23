@@ -2210,6 +2210,17 @@ initmkpaths() {
 	mkdirectory $bbmp_usb
 }
 
+
+do_mount_fs() {
+	grep -q "$1" /proc/filesystems || return
+	test -d "$2" || mkdir -p "$2"
+	mount -t "$1" "$1" "$2"
+}
+
+do_mknod() {
+	test -e "$1" || mknod "$1" "$2" "$3" "$4"
+}
+
 #/	Desc:	xxx
 #/	Ver:	.1
 #/	$1:		name1
@@ -2226,8 +2237,10 @@ initFS() {
 	mount -t proc proc /proc
 	mount -t sysfs sysfs /sys
 	#mount -t devtmpfs devtmpfs /dev
-	#Disable kernel messages from popping onto the screen
-	echo 0 > /proc/sys/kernel/printk
+	if [[ $debug -eq 0 ]]; then
+		#Disable kernel messages from popping onto the screen
+		echo 0 > /proc/sys/kernel/printk
+	fi
 	#Clear the screen
 #	clear
 	#Create device nodes: historical comment, adding mount -t devtmpfs fixed the need to do this
@@ -2238,7 +2251,20 @@ initFS() {
 	mknod /dev/sdb b 16 0
 	mknod /dev/sdb1 b 16 1
 	mdev -s
+
+	#Entries in /dev/pts are pseudo-terminals (pty for short). Unix kernels have a generic notion of terminals. 
+	#A terminal provides a way for applications to display output and to receive input through a
+	# terminal device. A process may have a controlling terminal - for a text mode application, this is how it interacts with the user.
+	do_mount_fs devpts /dev/pts
+
+	mkdir -p /run
+	mkdir -p /var/run
+
+	# Set up console
+	do_mknod /dev/console c 5 1
+	exec </dev/console >/dev/console 2>/dev/console
 	sync
+	_decho "initFS complete"
 }
 
 initLED() {
