@@ -1,6 +1,8 @@
 DESCRIPTION = "devicedb distributed database"
 LICENSE = "Apache-2.0"
 LIC_FILES_CHKSUM = "file://src/${GO_IMPORT}/LICENSE;md5=58b1e0eba1968eab8a0f46444674102a"
+# avoid the `-linkshared` option in this recipe as it causes a panic
+GO_LINKSHARED=""
 
 inherit go pkgconfig gitpkgv
 
