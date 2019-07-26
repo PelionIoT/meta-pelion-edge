@@ -6,7 +6,7 @@ inherit pkgconfig gitpkgv npm-base autotools
 
 PV = "1.0+git${SRCPV}"
 PKGV = "1.0+git${GITPKGV}"
-PR = "r6"
+PR = "r7"
 
 SRC_URI="git://git@github.com/armPelionEdge/edge-node-modules.git;protocol=ssh"
 SRCREV = "${AUTOREV}"
