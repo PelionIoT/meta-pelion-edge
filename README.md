@@ -1,7 +1,7 @@
 # Meta for Pelion Edge firmware
 
 This repository contains the package and recipes that make up the meta layer for Pelion Edge.  It is intended to be used as part of a Yocto Linux build.
-This repository also includes instructions for [Building](https://github.com/armpelionedge/meta-pelion-edge/blob/master/BUILD.md) and [Flashing](https://github.com/armpelionedge/meta-pelion-edge/blob/master/FLASH.md) a complete firmware image.
+This repository also includes instructions for [Building](BUILD.md) and [Flashing](https://github.com/armpelionedge/meta-pelion-edge/blob/master/FLASH.md) a complete firmware image.
 
 Optionally, there are two automation repositories for convenience.
 
