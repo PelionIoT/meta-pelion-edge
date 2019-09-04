@@ -11,7 +11,7 @@ inherit cmake pkgconfig gitpkgv distutils setuptools pythonnative
 PV = "1.0+git${SRCPV}"
 PKGV = "1.0+git${GITPKGV}"
 PR = "r0"
-SRCREV = "${AUTOREV}"
+SRCREV = "14ab6f4a4743da1e234a55557c2ba964f9de87e1"
 
 SRC_URI = "git://git@github.com/ARMmbed/factory-configurator-client-example.git;protocol=ssh;branch=master; \
 file://0001-fix-build-getting-cross-compiler-iface-setting-to-et.patch \

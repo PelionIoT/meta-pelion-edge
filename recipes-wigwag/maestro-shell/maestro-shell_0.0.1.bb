@@ -7,7 +7,7 @@ inherit go pkgconfig gitpkgv
 
 PV = "1.0+git${SRCPV}"
 PKGV = "1.0+git${GITPKGV}"
-SRCREV = "${AUTOREV}"
+SRCREV = "6453fba93557fc7c4593c48022cf88395bd23a57"
 
 PR = "r0"
 
