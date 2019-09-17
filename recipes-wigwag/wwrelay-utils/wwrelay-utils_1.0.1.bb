@@ -16,7 +16,7 @@ SRC_URI="\
 "
 
 SRCREV_FORMAT = "wwrelay-dss"
-SRCREV_wwrelay = "e5df3b6462f71222529cc7d7538f4fdefd499186"
+SRCREV_wwrelay = "4c95a6359ee03133a55a43b67ab89d0f0994d46e"
 SRCREV_dss = "04db833a43b80ecdfae07fd388bbe4e242771f38"
 SRCREV_node_i2c = "511b1f0beae55bd9067537b199d52381f6ac3e01"
 
