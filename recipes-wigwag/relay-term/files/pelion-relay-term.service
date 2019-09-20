@@ -1,6 +1,6 @@
 [Unit]
 Description=relay terminal for remote terminals in pelion cloud
-After=maestro.service network-online.target
+After=maestro.service
 
 [Service]
 Restart=always
@@ -9,4 +9,4 @@ Environment=NODE_PATH=/wigwag/devicejs-core-modules/node_modules
 ExecStart=/usr/bin/node /wigwag/wigwag-core-modules/relay-term/src/index.js start /wigwag/wigwag-core-modules/relay-term/config/config.json
 
 [Install]
-WantedBy=network-online.target
+WantedBy=network.target
