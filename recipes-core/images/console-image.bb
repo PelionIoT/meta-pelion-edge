@@ -167,6 +167,7 @@ WIGWAG_STUFF = " \
     deviceos-users \
     global-node-modules \
     wwrelay-utils \
+    relay-term \
 "
 
 OPENSSL_102 = " \
