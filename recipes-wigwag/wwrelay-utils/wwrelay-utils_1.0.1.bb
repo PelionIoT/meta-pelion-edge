@@ -36,7 +36,7 @@ PKGV = "1.0+git${GITPKGV}"
 PR = "r7"
 
 DEPENDS = "update-rc.d-native nodejs nodejs-native"
-RDEPENDS_${PN} += " bash nodejs openssl10"
+RDEPENDS_${PN} += " bash nodejs openssl10 global-node-modules"
 
 FILES_${PN} = "\
   /wigwag/*\
