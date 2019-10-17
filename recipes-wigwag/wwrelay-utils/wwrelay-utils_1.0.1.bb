@@ -3,7 +3,7 @@ DESCRIPTION = "Utilities used by the WigWag Relay"
 LICENSE = "Apache-2.0"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=1dece7821bf3fd70fe1309eaa37d52a2"
 
-SRC_URI="git://git@github.com/armPelionEdge/edge-utils.git;protocol=ssh;name=wwrelay \
+SRC_URI="git://git@github.com/armPelionEdge/edge-utils.git;protocol=ssh;name=wwrelay;branch=mvp1_ble \
 git://git@github.com/armPelionEdge/edgeos-shell-scripts.git;protocol=ssh;name=dss;destsuffix=git/dss \
 file://wwrelay \
 file://BUILDMMU.txt \
@@ -11,7 +11,7 @@ file://logrotate_directives/ \
 "
 
 SRCREV_FORMAT = "wwrelay-dss"
-SRCREV_wwrelay = "4fbb3cb83f727f02ab8e1913901621c89816d744"
+SRCREV_wwrelay = "${AUTOREV}"
 SRCREV_dss = "04db833a43b80ecdfae07fd388bbe4e242771f38"
 SRCREV_node_i2c = "511b1f0beae55bd9067537b199d52381f6ac3e01"
 
