@@ -9,7 +9,7 @@ PKGV = "1.0+git${GITPKGV}"
 PR = "r6"
 
 SRC_URI="git://git@github.com/armPelionEdge/edge-node-modules.git;protocol=ssh"
-SRCREV = "9eeecb12787a38d1ce85a8eb4d408ddfcb4ea76c"
+SRCREV = "c3562b4285facf571ec5755a2f97ca9f2b313151"
 SRCREV_devjs_prod_tools = "9f795d20bc68b0a49f4e1b004429aed6ba073a4b"
 
 S = "${WORKDIR}/git"
@@ -18,7 +18,7 @@ WBIN= "${D}/wigwag/system/bin"
 
 BBCLASSEXTEND = "native"
 DEPENDS = "nodejs avahi udev nodejs-native"
-RDEPENDS_${PN} += " nodejs"
+RDEPENDS_${PN} += " nodejs bluez5"
 
 FILES_${PN} = "/wigwag/* /wigwag/wigwag-core-modules/* /wigwag/devicejs-core-modules/*"
 
@@ -108,7 +108,7 @@ do_install() {
     for f in $ALL_WigWag_Core_Modules; do
 		do_dirInstall ${S}/$f ${D}/wigwag/wigwag-core-modules/$f
     done
-    ALL_Devicejs_Core_Modules="rsmi zigbeeHA node_modules maestroRunner core-interfaces"
+    ALL_Devicejs_Core_Modules="rsmi zigbeeHA node_modules maestroRunner core-interfaces bluetoothlowenergy"
     for f in $ALL_Devicejs_Core_Modules; do
 		do_dirInstall ${S}/$f ${D}/wigwag/devicejs-core-modules/$f
     done
