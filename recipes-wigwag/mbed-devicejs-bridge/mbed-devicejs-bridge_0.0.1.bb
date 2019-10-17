@@ -12,7 +12,7 @@ SRC_URI="git://git@github.com/armPelionEdge/mbed-devicejs-bridge;protocol=ssh;na
 git://git@github.com/armPelionEdge/mbed-edge-websocket.git;protocol=ssh;name=edgejs;destsuffix=git/edgejs \
 file://config-dev.json"
 SRCREV_FORMAT = "bridge-edgejs"
-SRCREV_bridge = "613aa74c459fdbf898dc5a0e7bea227a0e87c31d"
+SRCREV_bridge = "b9cb430e57cf4660d585c23db0e82756a567c652"
 SRCREV_edgejs = "17efa1fca58fd466e2302dbafd1369280bf9bb15"
 
 
