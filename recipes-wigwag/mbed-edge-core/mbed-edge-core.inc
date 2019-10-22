@@ -17,6 +17,7 @@ SRC_URI = "git://git@github.com/ARMmbed/mbed-edge.git;protocol=ssh; \
            file://edge-core.service \
            file://edge-core.logrotate \
            file://toolchain.cmake \
+           file://edge_gw_mcc_user_config.h \
            file://0001-disable-Doxygen.patch \
            file://0002-fix-libevent-build-with-CMake-in-Yocto.patch"
 SRC_URI += "\
@@ -48,6 +49,7 @@ EXTRA_OECMAKE += " \
     -DDEVELOPER_MODE=${MBED_EDGE_CORE_CONFIG_DEVELOPER_MODE} \
     -DFACTORY_MODE=${MBED_EDGE_CORE_CONFIG_FACTORY_MODE} \
     -DBYOC_MODE=${MBED_EDGE_CORE_CONFIG_BYOC_MODE} \
+    -DCLOUD_CLIENT_CONFIG=${WORKDIR}/edge_gw_mcc_user_config.h \
     ${MBED_EDGE_CORE_CUSTOM_CMAKE_ARGUMENTS}"
 
 inherit cmake update-rc.d systemd
