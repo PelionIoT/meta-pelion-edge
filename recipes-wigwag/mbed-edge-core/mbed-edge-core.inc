@@ -24,7 +24,7 @@ SRC_URI += "\
     ${@bb.utils.contains('MBED_EDGE_CORE_CONFIG_DEVELOPER_MODE','ON','file://update_default_resources.c','',d)} \
 "
 
-SRCREV = "0.9.0"
+SRCREV = "0.10.0"
 
 RDEPENDS_${PN} = " procps start-stop-daemon bash tar bzip2"
 
