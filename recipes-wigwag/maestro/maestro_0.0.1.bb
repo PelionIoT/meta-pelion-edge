@@ -6,7 +6,9 @@ LIC_FILES_CHKSUM = "file://src/${GO_IMPORT}/LICENSE;md5=1dece7821bf3fd70fe1309ea
 
 DEPENDS="deviceos-users"
 RDEPENDS_${PN}+="bash twlib"
+CGO_LDFLAGS = "-Lsrc/github.com/armPelionEdge/maestro/vendor/github.com/armPelionEdge/greasego/deps/lib"
 inherit go pkgconfig gitpkgv update-rc.d systemd
+GOBUILDFLAGS_MOD = "${GO_PARALLEL_BUILD} -v ${GO_LDFLAGS} -buildmode=pie "
 
 INITSCRIPT_NAME = "maestro.sh"
 INITSCRIPT_PARAMS = "defaults 85 15"
@@ -94,7 +96,7 @@ do_configure_append() {
 
 do_compile() {
 	export TMPDIR="${GOTMPDIR}"
-  ${GO} install ${GOBUILDFLAGS} ${GO_IMPORT}/maestro
+  ${GO} install ${GOBUILDFLAGS_MOD} ${GO_IMPORT}/maestro
 }
 
 WSB="wigwag/system/bin"
