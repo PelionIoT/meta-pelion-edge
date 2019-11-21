@@ -4,9 +4,13 @@ LICENSE = "Apache-2.0"
 LIC_FILES_CHKSUM = "file://src/${GO_IMPORT}/LICENSE;md5=1dece7821bf3fd70fe1309eaa37d52a2"
 
 
-DEPENDS="deviceos-users"
-RDEPENDS_${PN}+="bash twlib"
+DEPENDS = "deviceos-users"
+RDEPENDS_${PN} += "bash twlib"
+
+GO_LINKSHARED = ""
+CGO_LDFLAGS = "-Lsrc/github.com/armPelionEdge/maestro/vendor/github.com/armPelionEdge/greasego/deps/lib"
 inherit go pkgconfig gitpkgv update-rc.d systemd
+GO_CUSTOM_BUILD_CMD = '${GO_PARALLEL_BUILD} -v -ldflags="${GO_RPATH} ${GO_LINKMODE} -extldflags '${GO_EXTLDFLAGS}' -buildmode=pie "'
 
 INITSCRIPT_NAME = "maestro.sh"
 INITSCRIPT_PARAMS = "defaults 85 15"
@@ -94,7 +98,7 @@ do_configure_append() {
 
 do_compile() {
 	export TMPDIR="${GOTMPDIR}"
-  ${GO} install ${GOBUILDFLAGS} ${GO_IMPORT}/maestro
+ ${GO} install ${GO_CUSTOM_BUILD_CMD} ${GO_IMPORT}/maestro
 }
 
 WSB="wigwag/system/bin"
