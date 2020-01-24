@@ -25,6 +25,7 @@ do_configure () {
 	curl -k https://bootstrap.pypa.io/get-pip.py | python
 	export PYTHONPATH=`pwd`/recipe-sysroot-native/user/lib/python2.7
 	export PATH=$PYTHONPATH:$PATH
+	python -m pip install pip==19.3.1
 	python -m pip install mbed-cli click requests
 }
 
