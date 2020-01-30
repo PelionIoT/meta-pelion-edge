@@ -39,7 +39,7 @@ file://maestro.service \
 "
 
 SRCREV_FORMAT="m"
-SRCREV_m="1b3b088edaea6a7e43535ec4d0e4d0ab6d6833aa"
+SRCREV_m="99c65304f218d3af452920fca1972df349e62395"
 
 GO_IMPORT = "github.com/armPelionEdge/maestro"
 
