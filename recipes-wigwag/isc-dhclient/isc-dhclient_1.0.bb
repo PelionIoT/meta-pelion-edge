@@ -12,7 +12,7 @@ PV = "1.0+git${SRCPV}"
 PKGV = "1.0+git${GITPKGV}"
 PR = "r1"
 
-SRCREV = "b5aa812b2ebaf6c866f6c24fb176d71b1e6e28ba"
+SRCREV = "${AUTOREV}"
 SRC_URI="git://git@github.com/armPelionEdge/node-isc-dhclient.git;protocol=ssh;branch=master"
 
 S = "${WORKDIR}/git"

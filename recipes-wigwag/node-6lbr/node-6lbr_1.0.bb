@@ -9,7 +9,7 @@ PV = "1.0+git${SRCPV}"
 PKGV = "1.0+git${GITPKGV}"
 PR = "r1"
 
-SRCREV = "fb2c5c938bdd297d0015aba904a89c81e84ec5f8"
+SRCREV = "${AUTOREV}"
 SRC_URI="git://git@github.com/armPelionEdge/node-6lbr.git;protocol=ssh;branch=master"
 
 S = "${WORKDIR}/git"

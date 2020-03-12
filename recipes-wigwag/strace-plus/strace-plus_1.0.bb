@@ -9,7 +9,7 @@ PV = "1.0+git${SRCPV}"
 PKGV = "1.0+git${GITPKGV}"
 PR = "r1"
 
-SRCREV = "748ba45eaf506558671d018a18302877c4b237b7"
+SRCREV = "${AUTOREV}"
 SRC_URI="git://git@github.com/pgbovine/strace-plus.git;protocol=ssh"
 
 

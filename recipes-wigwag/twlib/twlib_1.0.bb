@@ -10,7 +10,7 @@ PV = "1.0+git${SRCPV}"
 PKGV = "1.0+git${GITPKGV}"
 PR = "r1"
 
-SRCREV = "7a2219924e66cb33810dad5a8314b0f0cff49018"
+SRCREV = "${AUTOREV}"
 SRC_URI = "git://github.com/armPelionEdge/twlib;protocol=git;branch=master"
 
 DEBUG_OPTIONS = "-rdynamic -D_TW_TASK_DEBUG_THREADS_"

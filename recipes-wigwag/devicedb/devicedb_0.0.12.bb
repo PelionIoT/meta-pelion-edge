@@ -12,7 +12,7 @@ file://devicedb \
 "
 
 SRCREV_FORMAT = "ddb"
-SRCREV_ddb = "66859c16080c98dc4af5e75f3c093d0c9387e9b3"
+SRCREV_ddb = "${AUTOREV}"
 GO_IMPORT = "github.com/armPelionEdge/devicedb/"
 
 DEPENDS = ""
