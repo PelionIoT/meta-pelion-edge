@@ -26,7 +26,7 @@ do_configure () {
 	export PYTHONPATH=`pwd`/recipe-sysroot-native/user/lib/python2.7
 	export PATH=$PYTHONPATH:$PATH
 	python -m pip install pip==19.3.1
-	python -m pip install mbed-cli click requests
+	python -m pip install mbed-cli click==7.0 requests
 }
 
 do_compile() {
