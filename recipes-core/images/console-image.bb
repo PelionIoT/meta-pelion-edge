@@ -87,6 +87,7 @@ EXTRA_TOOLS_INSTALL = " \
     util-linux \
     wget \
     zip \
+    jq \
 "
 
 RPI_STUFF = " \
