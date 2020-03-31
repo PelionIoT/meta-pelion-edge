@@ -1,11 +1,12 @@
 [Unit]
-Description=Wait for a connection to Pelion and create cridentials
+Description=Wait for a connection to Pelion and create credentials
 After=edge-core.service
 
 [Service]
 Restart=on-failure
 RestartSec=5s
 RemainAfterExit=true
+Environment=NODE_PATH=/wigwag/devicejs-core-modules/node_modules
 ExecStart=/wigwag/wwrelay-utils/debug_scripts/create-new-eeprom-with-self-signed-certs.sh
 
 [Install]
