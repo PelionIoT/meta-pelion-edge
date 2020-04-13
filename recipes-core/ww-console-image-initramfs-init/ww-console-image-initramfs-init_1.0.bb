@@ -9,17 +9,14 @@
 SUMMARY = "sample initramfs image init script (to be replaced by wigwag specific)"
 LICENSE = "MIT"
 LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecda2f7b4f302"
-FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
-SRC_URI += "file://initramfs-init-script.sh \
-            file://upgradeCA.cert"
+SRC_URI = "file://initramfs-init-script.sh"
 
 S = "${WORKDIR}"
 
 do_install() {
         install -m 0755 ${WORKDIR}/initramfs-init-script.sh ${D}/init
-        install -D -m 0444 ${WORKDIR}/upgradeCA.cert ${D}/etc/ssl/certs/upgradeCA.cert
 }
 
 inherit allarch
 
-FILES_${PN} += " /init /etc/ssl/certs/upgradeCA.cert "
+FILES_${PN} += " /init "

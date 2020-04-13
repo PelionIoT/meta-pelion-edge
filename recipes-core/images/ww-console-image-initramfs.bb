@@ -38,8 +38,3 @@ NO_RECOMMENDATIONS = "1"
 #  dependency. There EXTRA_IMAGEDEPENDS is therefore cleared in mbl-console-image-initramfs
 #  to stop this circular dependency being formed.
 EXTRA_IMAGEDEPENDS = ""
-
-# Tell the "image" base class that this image does not have a dependency on the
-# kernel. Otherwise we'll end up with the kernel and some other dependencies
-# listed in the initramfs's image_license.manifest
-KERNELDEPMODDEPEND = ""
