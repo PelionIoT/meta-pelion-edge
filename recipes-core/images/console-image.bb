@@ -7,7 +7,7 @@ inherit image
 
 DEPENDS += "deviceos-users"
 
-#IMAGE_BOOT_FILES += "ww-console-image-initramfs-raspberrypi3.cpio.gz.u-boot;initramfs.img"
+IMAGE_BOOT_FILES += "ww-console-image-initramfs-raspberrypi3.cpio.gz.u-boot;initramfs.img"
 
 CORE_OS = " \
     kernel-modules \
@@ -207,8 +207,3 @@ ROOTFS_POSTPROCESS_COMMAND += " \
 "
 
 export IMAGE_BASENAME = "console-image"
-
-do_image_wic[depends] += "virtual/atf:do_deploy"
-
-# Convince the task that creates image_license.manifest to include atf.
-do_populate_lic_deploy[depends] += "virtual/atf:do_deploy"
