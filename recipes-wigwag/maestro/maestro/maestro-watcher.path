@@ -1,0 +1,9 @@
+[Unit]
+Description=Monitor the changes to identity.json file and restart maestro
+
+[Path]
+PathChanged=/userdata/edge_gw_config/identity.json
+Unit=maestro-watcher.service
+
+[Install]
+WantedBy=network.target

@@ -36,6 +36,8 @@ FILES_${PN} += "\
 SRC_URI="git://git@github.com/armPelionEdge/maestro.git;protocol=ssh;branch=master;name=m \
 file://maestro.sh \
 file://maestro.service \
+file://maestro-watcher.service \
+file://maestro-watcher.path \
 "
 
 SRCREV_FORMAT="m"
@@ -116,4 +118,6 @@ do_install() {
   install -m 0755 -o deviceos -g deviceos ${B}/${GREASE_SRC}/deps/lib/libgrease.so ${D}/${WSL}
   install -m 0755 -o deviceos -g deviceos ${B}/${GREASE_SRC}/deps/lib/libgrease.so.1 ${D}/${WSL}
   install -m 0644 ${WORKDIR}/maestro.service ${D}${systemd_system_unitdir}/maestro.service
+  install -m 0644 ${WORKDIR}/maestro-watcher.service ${D}${systemd_system_unitdir}/maestro-watcher.service
+  install -m 0644 ${WORKDIR}/maestro-watcher.path ${D}${systemd_system_unitdir}/maestro-watcher.path
 }
