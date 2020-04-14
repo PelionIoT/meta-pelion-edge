@@ -211,7 +211,6 @@ do_install() {
 	install -m 755 ${S}/dev-tools/bin/ccommon.sh ${D}/wigwag/system/bin/
 	install -m 755 ${S}/dss/* ${D}/wigwag/system/bin/
 	install -m 755 ${S}/dev-tools/bin/stopwatchdog.sh ${D}/wigwag/system/bin/stopwatchdog
-	install -m 755 ${S}/dev-tools/scripts/restartjob.sh ${D}/wigwag/system/bin/restartjob.sh
 	rm -rf ${D}/wigwag/wwrelay-utils/dev-tools/bin/{stopwatchdog.sh,info.sh}
 
 	#all of GPIO
