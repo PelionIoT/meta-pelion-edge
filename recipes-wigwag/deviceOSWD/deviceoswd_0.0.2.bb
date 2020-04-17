@@ -60,6 +60,10 @@ do_compile() {
     cp deviceOSWD deviceOSWD_a10_tiny841
 
     make clean
+    make deviceOSWD-rpi-3bplus-debug
+    cp deviceOSWD deviceOSWD_rpi_3bplus_debug
+
+    make clean
     make deviceOSWD-rpi-3bplus
     cp deviceOSWD deviceOSWD_rpi_3bplus
 }
@@ -79,6 +83,7 @@ do_install() {
     install -m 755 ${S}/deviceOSWD_a10_relay ${WSYS}/bin/
     install -m 755 ${S}/deviceOSWD_dummy_debug ${WSYS}/bin/
     install -m 755 ${S}/deviceOSWD_a10_tiny841 ${WSYS}/bin/
+    install -m 755 ${S}/deviceOSWD_rpi_3bplus_debug ${WSYS}/bin/
     install -m 755 ${S}/../deviceOS-watchdog ${D}${INIT_D_DIR}/deviceOS-watchdog
     install -m 755 ${S}/../deviceos-wd.service ${D}${systemd_system_unitdir}/deviceos-wd.service
 

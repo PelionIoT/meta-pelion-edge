@@ -4,8 +4,7 @@ Description="Device OS watchdog reseting service"
 [Service]
 Restart=always
 ExecStartPre=-/usr/bin/pkill deviceOSWD
-ExecStart=/wigwag/system/bin/deviceOSWD -w 3000 -m 900 -s /var/deviceOSkeepalive
-ExecStartPost=sh -c "echo -e \"dog_stop\" | socat unix-sendto:/var/deviceOSkeepalive STDIO"
+ExecStart=/wigwag/system/bin/deviceOSWD -w 300 -m 90 -s /var/deviceOSkeepalive
 ExecStop=sh -c "echo -e stop | socat unix-sendto:/var/deviceOSkeepalive STDIO"
 
 [Install]
