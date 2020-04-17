@@ -165,6 +165,7 @@ WIGWAG_STUFF = " \
     twlib \
     devicedb \
     maestro \
+    maestro-watchdog \
     deviceos-users \
     global-node-modules \
     wwrelay-utils \
