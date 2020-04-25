@@ -31,6 +31,8 @@ FILES_${PN} += "\
     /wigwag/system/lib/*\
     ${INIT_D_DIR}/*\
     ${systemd_system_unitdir}/maestro.service\
+    ${systemd_system_unitdir}/maestro-watcher.service\
+    ${systemd_system_unitdir}/maestro-watcher.path\
     "
 
 SRC_URI="git://git@github.com/armPelionEdge/maestro.git;protocol=ssh;branch=master;name=m \
