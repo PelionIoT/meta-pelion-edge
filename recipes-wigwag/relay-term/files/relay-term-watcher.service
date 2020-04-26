@@ -1,0 +1,9 @@
+[Unit]
+Description=Relay-term restarter
+
+[Service]
+Type=oneshot
+ExecStart=/bin/systemctl restart pelion-relay-term.service
+
+[Install]
+WantedBy=network.target
