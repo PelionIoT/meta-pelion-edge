@@ -561,7 +561,7 @@ echo "  \ V  V / | | (_| |\ V  V / (_| | (_| |"
 funccall(){
 	type $1 > /dev/null 2>&1
 	if [[ $? -eq 0 ]]; then
-		$1
+		$1 "$@"
 	fi
 }
 
