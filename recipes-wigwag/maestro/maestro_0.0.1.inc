@@ -26,9 +26,15 @@ PKGV = "1.0+git${GITPKGV}"
 
 PR = "r0"
 
+RUN_CONFIG_DIR="wigwag/etc/run"
+TEMPLATE_CONFIG_DIR="wigwag/etc/template"
+
+FILESEXTRAPATHS_prepend := "${THISDIR}/maestro:"
 FILES_${PN} += "\
     /wigwag/system/bin/*\
     /wigwag/system/lib/*\
+    /${RUN_CONFIG_DIR}/*\
+    /${TEMPLATE_CONFIG_DIR}/*\
     ${INIT_D_DIR}/*\
     ${systemd_system_unitdir}/maestro.service\
     ${systemd_system_unitdir}/maestro-watcher.service\
@@ -112,6 +118,8 @@ do_install() {
   install -d ${D}/${WSB}
   install -d ${D}/${WSL}
   install -d ${D}/${INIT_D_DIR}
+  install -d ${D}/${RUN_CONFIG_DIR}
+  install -d ${D}/${TEMPLATE_CONFIG_DIR}
   install -d ${D}${systemd_system_unitdir}
   install -m 0755 ${WORKDIR}/maestro.sh ${D}${INIT_D_DIR}/maestro.sh
   install -m 0755 "${B}/${GO_BUILD_BINDIR}/maestro" "${D}/${WSB}"
