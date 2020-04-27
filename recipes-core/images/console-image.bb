@@ -13,7 +13,7 @@ CORE_OS = " \
     kernel-modules \
     openssh openssh-keygen openssh-sftp-server \
     packagegroup-core-boot \
-    packagegroup-core-full-cmdline \    
+    packagegroup-core-full-cmdline \
     packagegroup-core-buildessential \
     term-prompt \
     tzdata \
