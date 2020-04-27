@@ -14,6 +14,8 @@ SRC_URI += "file://maestro-config-rpi3bplus.yaml \
 
 do_install_append() {
     # Maestro configuration management
+    install -d ${D}/${RUN_CONFIG_DIR}
+    install -d ${D}/${TEMPLATE_CONFIG_DIR}
     install -m 0644 ${WORKDIR}/maestro-config-rpi3bplus.yaml ${D}/${RUN_CONFIG_DIR}/maestro-config.yaml
     install -m 0644 ${WORKDIR}/devicejs.template.conf ${D}/${TEMPLATE_CONFIG_DIR}/devicejs.template.conf
     install -m 0644 ${WORKDIR}/devicedb.template.conf ${D}/${TEMPLATE_CONFIG_DIR}/devicedb.template.conf

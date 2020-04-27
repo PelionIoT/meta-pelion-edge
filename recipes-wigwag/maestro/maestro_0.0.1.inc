@@ -118,8 +118,6 @@ do_install() {
   install -d ${D}/${WSB}
   install -d ${D}/${WSL}
   install -d ${D}/${INIT_D_DIR}
-  install -d ${D}/${RUN_CONFIG_DIR}
-  install -d ${D}/${TEMPLATE_CONFIG_DIR}
   install -d ${D}${systemd_system_unitdir}
   install -m 0755 ${WORKDIR}/maestro.sh ${D}${INIT_D_DIR}/maestro.sh
   install -m 0755 "${B}/${GO_BUILD_BINDIR}/maestro" "${D}/${WSB}"
