@@ -11,7 +11,7 @@ file://logrotate_directives/ \
 "
 
 SRCREV_FORMAT = "wwrelay-dss"
-SRCREV_wwrelay = "c508f584f34540f98e9349bb919faf716902d560"
+SRCREV_wwrelay = "2035b669b63d51b038156709558f3c204f69e381"
 SRCREV_dss = "04db833a43b80ecdfae07fd388bbe4e242771f38"
 SRCREV_node_i2c = "511b1f0beae55bd9067537b199d52381f6ac3e01"
 
