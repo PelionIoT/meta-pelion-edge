@@ -3,7 +3,7 @@ DESCRIPTION = "Utilities used by the WigWag Relay"
 LICENSE = "Apache-2.0"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=1dece7821bf3fd70fe1309eaa37d52a2"
 
-SRC_URI="git://git@github.com/armPelionEdge/edge-utils.git;protocol=ssh;name=wwrelay \
+SRC_URI="git://git@github.com/armPelionEdge/edge-utils.git;protocol=ssh;branch=1.0-reduced-conf;name=wwrelay \
 git://git@github.com/armPelionEdge/edgeos-shell-scripts.git;protocol=ssh;name=dss;destsuffix=git/dss \
 file://wwrelay \
 file://BUILDMMU.txt \
