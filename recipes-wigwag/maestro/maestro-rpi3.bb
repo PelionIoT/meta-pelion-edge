@@ -3,6 +3,7 @@ require maestro_0.0.1.inc
 COMPATIBLE_MACHINE = "raspberrypi3"
 
 PROVIDES += " maestro "
+RPROVIDES_${PN} += " maestro "
 
 FILESEXTRAPATHS_prepend := "${THISDIR}/maestro/rpi3:"
 SRC_URI += "file://maestro-config-rpi3bplus.yaml \
