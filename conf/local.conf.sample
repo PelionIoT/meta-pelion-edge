@@ -35,7 +35,7 @@ DISTRO_FEATURES_append += " bluez5 bluetooth wifi"
 #MACHINE="raspberrypi0"
 #MACHINE="raspberrypi0-wifi"
 #MACHINE="raspberrypi2"
-MACHINE = "raspberrypi3-mbl"
+MACHINE = "raspberrypi3"
 #MACHINE="raspberrypi-cm"
 #MACHINE="raspberrypi-cm3"
 
@@ -61,9 +61,12 @@ ENABLE_UART = "1"
 
 #initramfs setup
 INITRAMFS_IMAGE = "ww-console-image-initramfs"
+INITRAMFS_IMAGE_BUNDLE = "1"
 BOOT_SPACE = "1073741"
 INITRAMFS_MAXSIZE = "2600000"
 
+
+DISTRO = "poky"
 PACKAGE_CLASSES = "package_ipk"
 
 # i686 or x86_64
@@ -96,38 +99,3 @@ INHERIT += "rm_work"
 CONF_VERSION = "1"
 
 export SSH_AUTH_SOCK
-MBL_PARTITIONS = "\
-    BOOT \
-    BOOTFLAGS \
-    FACTORY_CONFIG \
-    NON_FACTORY_CONFIG \
-    LOG \
-    SCRATCH \
-    HOME \
-"
-
-# For each <partition> in MBL_PARTITIONS that should be mounted by default, we
-# must define the following variables:
-# MBL_<partition>_DIR # Mountpoint for partition
-# MBL_<partition>_PARTITION_LABEL # Label of partition
-
-MBL_BOOT_DIR = "/mnt/.boot"
-MBL_BOOT_PARTITION_LABEL = "boot"
-
-MBL_BOOTFLAGS_DIR = "/mnt/.boot"
-MBL_BOOTFLAGS_PARTITION_LABEL = "boot"
-
-MBL_FACTORY_CONFIG_DIR = "/mnt/.overlay/factory"
-MBL_FACTORY_CONFIG_PARTITION_LABEL = "factory"
-
-MBL_NON_FACTORY_CONFIG_DIR = "/mnt/.overlay/upgrade"
-MBL_NON_FACTORY_CONFIG_PARTITION_LABEL = "upgrade"
-
-MBL_LOG_DIR = "/userdata"
-MBL_LOG_PARTITION_LABEL = "userdata"
-
-MBL_SCRATCH_DIR = "/mnt/.overlay/user"
-MBL_SCRATCH_PARTITION_LABEL = "user"
-
-MBL_HOME_DIR = "/userdata"
-MBL_HOME_PARTITION_LABEL = "userdata"

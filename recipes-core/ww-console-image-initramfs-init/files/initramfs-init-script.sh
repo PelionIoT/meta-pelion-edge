@@ -147,12 +147,6 @@ UGwwusbmsg="$bbmp_usb/wwusbmsg.sh"
 UGdir="$bbmp_user_slash/upgrades"
 UGscript=$UGdir"/upgrade.sh"
 UGtarball=$UGdir"/upgrade.tar.gz"
-UGcfg_tarball=$UGdir"/upgrade-config.tar.gz"
-UGsignature=$UGtarball".sig"
-UGcfg_signature=$UGcfg_tarball".sig"
-UGcert=$UGdir"/upgrade.cert"
-UGpubkey=$UGdir"/upgrade.pubkey"
-UGca_cert="/etc/ssl/certs/upgradeCA.cert"
 Vfactory=$bbmp_factory"/wigwag/etc/versions.json"
 Vupgrade=$bbmp_upgrade"/wigwag/etc/versions.json"
 newr="/newroot"
@@ -161,9 +155,6 @@ newr_factory="$newr"$bbmp_factory
 newr_upgrade="$newr"$bbmp_upgrade
 newr_user="$newr"$bbmp_user
 newr_userdata="$newr"/userdata
-uboot_bin=fip2.bin
-uboot_offset=1024
-uboot_size=1920
 current_factory_version=""
 current_upgrade_version=""
 potential_next_factory_version=""
@@ -664,34 +655,18 @@ determinebuildversions(){
 
 determineUbootVersions(){
 	mountboot_ro
-
-	dd if=/dev/mmcblk0 of=/uboot.img skip=$uboot_offset bs=1024 count=$uboot_size >> /dev/null 2>&1
+	availableUboot=$(cat /mnt/.boot/u-boot.bin | grep -a "WigWag-U-boot-version_id" | tail -1 | awk '{print $2}')
+	if [[ "$availableUboot" = "" ]]; then
+		availableUboot=0;
+	fi
+	dd if=/dev/mmcblk0 of=/uboot.img seek=8 bs=1024 count=100 >> /dev/null 2>&1
 	currentUboot=$(cat /uboot.img | grep -a "WigWag-U-boot-version_id" | tail -1 | awk '{print $2}')
 	if [[ "$currentUboot" = "" ]]; then
 		currentUboot=0;
 	fi
-	rm /uboot.img
-
-	expandTMPFS
-	availableUboot=0;
-	if [ -f /tmpfs/boot.tar.xz ]; then
-		if tar xJf /tmpfs/boot.tar.xz -C / ./$uboot_bin 2>/dev/null; then
-			availableUboot=$(cat /$uboot_bin | grep -a "WigWag-U-boot-version_id" | tail -1 | awk '{print $2}')
-			if [[ "$availableUboot" = "" ]]; then
-				# no version info available, but a new u-boot is contained in the upgrade data
-				availableUboot=1;
-			fi
-			rm /$uboot_bin
-		else
-			_decho "No new $uboot_bin available in the boot upgrade data."
-			ls -la /tmpfs/*
-			tar tf /tmpfs/boot.tar.xz
-			_decho "Upgrade may fail if the ROT key has changed."
-		fi
-	fi
-
 	_decho "currentUboot='$currentUboot'"
 	_decho "availableUboot='$availableUboot'"
+	rm /uboot.img
 	umountboot
 }
 
@@ -700,7 +675,7 @@ determineUbootVersions(){
 
 determineUbootBoard(){
 	mountboot_ro
-	dd if=/dev/mmcblk0 of=/uboot.img skip=$uboot_offset bs=1024 count=$uboot_size
+	dd if=/dev/mmcblk0 of=/uboot.img seek=8 bs=1024 count=100
 	currentUbootBoard=$(cat /uboot.img | grep -a "WigWag-Board-Support" | tail -1 | awk '{print $2}')
 	_decho "currentUbootBoard=$currentUbootBoard"
 	rm /uboot.img
@@ -880,6 +855,7 @@ mountall_ro(){
 wipe() {
 	device=$1
 	cd /
+	device=$1
 	if [[ "$device" = "$dev_boot" ]]; then
 		if [[ $wasWiped_boot -eq 0 ]]; then
 			say_update2 "BOOT" "wiping Boot: $device"
@@ -944,11 +920,11 @@ ddbootsector(){
 	_decho "entered the ddbootsector"
 	cd /
 	mountboot_ro
-	cp $bbmp_boot/$uboot_bin /uboot.bin
+	cp /mnt/.boot/uboot.bin /
 	umountboot
 	say_update2 "UBOOT" "reapplying the uboot" 
-	_decho "dd if=/uboot.bin of=/dev/mmcblk0 seek=$uboot_offset bs=1024"
-	dd if=/uboot.bin of=/dev/mmcblk0 seek=$uboot_offset bs=1024
+	_decho "dd if=/uboot.bin of=/dev/mmcblk0 seek=8 bs=1024"
+	dd if=/uboot.bin of=/dev/mmcblk0 seek=8 bs=1024
 }
 
 #---------------------------------------------------------------------------------------------------------------------------
@@ -1061,7 +1037,7 @@ backupVitals(){
 	cp -a $bbmp_boot /tmpfs/
 	cp -a $bbmp_userdata /tmpfs/
 	sync
-	funccall backupVitals2 #this call is here to call a function named the same thing in the upgrade.sh utility if needed
+	backupVitals2 #this call is here to call a function named the same thing in the upgrade.sh utility if needed
 	umountall
 }
 
@@ -1146,100 +1122,9 @@ erase_UPGRADEFILES(){
 	  #   	rm -rf $UGscript
 	  #   	rm -rf $UGdir/factoryversions.json
 	  #   	rm -rf $UGdir/upgradeversions.json
-	  rm -rf $UGdir
-	  mkdir -p $UGdir
+	  rm -rf $UGdir/*
+	  rm -rf $UGdir/.*
 	  umountuser
-	fi
-}
-
-#Upgrade candidate was unauthenticated - dispose of it.
-quarantine_upgrade_candidate(){
-	say_update "Upgrade candidate will be quarantined as an unauthorized upgrade."
-	#For now, simply delete the candidate
-	erase_UPGRADEFILES
-}
-
-#Verifies that the certificate included wiht an upgrade candidate was signed by the upgrade CA
-#Returns true if signature is valid, false ohterwise
-verify_upgrade_certificate(){
-	#TODO - the date is not correctly set in this context,  if we had network access, then the
-	#commmand below would correctly set the date from time.nist.gov (132.163.96.2)
-
-	# date -s "$(nc 132.163.96.2 13 | cut -d' ' -f2,3)"
-	# openssl verify -x509_strict -CAfile $UGca_cert $UGcert
-
-	#For now, validate the cert while ignoring the validity dates
-	openssl verify -x509_strict -no_check_time -CAfile $UGca_cert $UGcert
-	if [ $? -ne 0 ]; then
-		say_update "$UGcert is not a certificate issued by CA $UGca_cert."
-		false
-	else
-		true
-	fi
-}
-
-#Verify the signatures for an upgrade candidate
-#Returns true if all signatures are verified, false otherwise
-verify_upgrade_signatures(){
-	openssl x509 -in $UGcert -pubkey -out $UGpubkey
-	openssl dgst -sha256 -verify $UGpubkey -signature $UGsignature $UGtarball
-	if [ $? -ne 0 ]; then
-		say_update "Signature $UGsignature is inconsistent with $UGtarball and $UGcert"
-		false
-	else
-		openssl dgst -sha256 -verify $UGpubkey -signature $UGcfg_signature $UGcfg_tarball
-		if [ $? -ne 0 ]; then
-			say_update "Signature $UGcfg_signature is inconsistent with $UGcfg_tarball and $UGcert"
-			false
-		else
-			true
-		fi
-	fi
-}
-
-#Verify the upgrade candididate
-#returns true if all files are present and all tests are valid,
-#false otherwise
-verify_upgrade_candidate(){
-	if [ ! -f $UGtarball ]; then
-		#No need to spam console when no update candidate is present
-		false
-	elif [ ! -f $UGcert ] || [ ! -f $UGcfg_tarball ] || [ ! -f $UGsignature ] || [ ! -f $UGcfg_signature ]; then
-		say_update "$UGtarball is an invalid authenticated upgrade candidate."
-		say_update "Files $UGcert $UGtarball $UGsignature $UGcfg_tarball and $UGcfg_signature must be present."
-		false
-	else
-		#Complete candidate is present
-		if verify_upgrade_certificate; then
-			#Upgrade certificate is valid and signed by upgrade CA
-			if verify_upgrade_signatures; then
-				#Upgrade signatures have been verified.  Untar the config tarball.
-				say_update "Untarring upgrade config tarball $UGcfg_tarball"
-				cd $UGdir
-				tar -xzf $UGcfg_tarball
-				cd -
-				#The following test for the existence of an upgrade script is all that is required for an unaurthenicated
-				#upgrade and is therefore the last test for ab authenticate dupgrade
-				if [ ! -f $UGscript ]; then
-					say_update "Signatures on upgrade candidate are valid, but no upgrade script in configuration tarball."
-					quarantine_upgrade_candidate
-					false
-				else
-					#Upgrade has been authenticated and is ready to apply.
-					true
-				fi
-
-
-			else
-				#Invalid signatures on upgrade candidate
-				quarantine_upgrade_candidate
-				false
-			fi
-		else
-			#Invalid upgrade cerificate
-			quarantine_upgrade_candidate
-			false
-		fi
 	fi
 }
 
@@ -1257,20 +1142,21 @@ check_OSmessages() {
 	say_update "Checking for messages from DeviceOS"
 	cd /
 	umountall
-	mountuser_rw
-	if verify_upgrade_candidate; then
-		say_update "Received an authorized upgrade message from the OS"
+	mountuser_ro
+	if [[ -e $UGscript ]]; then
+		say_update "Received an upgrade message from the OS"
 		watchdog 1200
-		cp $UGscript /
-		source /upgrade.sh
-		_decho "DONE: sourced /upgrade.sh, lets erase the upgrade file $ERASETHEUPGRADEFILES"
-		erase_UPGRADEFILES
-		rebootit
-	else
-		umountuser
-		say_update "No messages from DeviceOS"
-	fi
-	_decho "done with check_OSmessages"
+	#if [[ -e $UGscript  && -e $UGtarball ]]; then
+	cp $UGscript /
+	source /upgrade.sh
+	_decho "DONE: sourced /upgrade.sh, lets erase the upgrade file $ERASETHEUPGRADEFILES"
+	erase_UPGRADEFILES
+	rebootit
+else
+	umountuser
+	say_update "No messages from DeviceOS"
+fi
+_decho "done with check_OSmessages"
 }
 
 #/	Desc:	xxx
@@ -1468,10 +1354,7 @@ Strategy_UGpartition(){
 		;;
 		2) expectedsize=128;
 		#
-		;;
-		*) REPARTITIONEMMC=0
-			say_update2 "Unknown partition schema requested: '$PARTITIONSCHEMA'"
-		;;
+		;;	
 	esac
 	bootParitionSize=$(fdisk -l /dev/mmcblk0p1 | xargs | awk '{print $3}');
 	_decho "$bootParitionSize -ne $expectedsize && $REPARTITIONEMMC -eq 1"
@@ -1868,26 +1751,23 @@ Strategy_UGU_boot(){
 }
 UGU_boot(){
 	if [[ "$WIPETHEU_BOOT" -eq 1 ]]; then
-		dd if=/dev/zero of=$dev_maindisk bs=1024 seek=$uboot_offset count=$uboot_size
+		dd if=/dev/zero of=$dev_maindisk bs=1024 seek=8 count=100
 		say_update2 "UBOOT" "update needed. (wipe forced)"
 		UGUBOOT_DOIT_ALL=1
 	fi
 	if [[ "$UGUBOOT_DOIT_ALL" -eq 1 ]]; then
 		cd /
-		mountboot_rw
+		mountboot_ro
 		_decho "u-boot flashing"
-		_decho "dd if=$bbmp_boot/$uboot_bin of=$dev_maindisk bs=1024 seek=$uboot_offset"
 		say_update2 "UBOOT" "LED Sechema ${CYAN}CYAN${NORM} & ${RED}RED${NORM}"
 		setLED "lm_uguboot"
-		# TODO: handle the case where u-boot is upgraded but the boot partition isn't?
-		dd if=$bbmp_boot/$uboot_bin of=$dev_maindisk bs=1024 seek=$uboot_offset
+		dd if=$bbmp_boot/u-boot.bin of=$dev_maindisk bs=1024 seek=8
 		if [[ $? -eq 0 ]]; then
 			success=1
 			say_update2 "UBOOT" "flashing ${GREEN}success${NORM}"
 		else
 			say_update2 "UBOOT" "flashing ${RED}failure${NORM}"
 		fi
-		rm -f $bbmp_boot/$uboot_bin
 		funccall UGU_boot2
 		umountboot
 	fi
@@ -2145,7 +2025,7 @@ initSelectRootDev() {
 	P3="mmcblk0p3"
 	P5="mmcblk0p5"
 	P6="mmcblk0p6"
-	dev_maindisk="/dev/mmcblk0"
+	dev_maindisk="mmcblk0"
 	_decho "selecting root"	
 	mdev -s
 	sync

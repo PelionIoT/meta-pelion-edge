@@ -15,16 +15,8 @@ BBLAYERS ?= " \
     ${OEROOT}/meta-openembedded/meta-networking \
     ${OEROOT}/meta-openembedded/meta-perl \
     ${OEROOT}/meta-openembedded/meta-python \
-    ${OEROOT}/meta-mbl/meta-virtualization-mbl \
-    ${OEROOT}/meta-virtualization \
     ${OEROOT}/meta-raspberrypi \
     ${OEROOT}/meta-security \
     ${OEROOT}/meta-pelion-edge \
     ${OEROOT}/meta-nodejs \
-    ${OEROOT}/meta-linaro/meta-optee \
-    ${OEROOT}/meta-mbl/meta-raspberrypi-mbl \
-    ${OEROOT}/meta-mbl/meta-mbl-bsp-common \
-    ${OEROOT}/meta-mbl/openembedded-core-mbl/meta \
-    ${OEROOT}/meta-mbl/meta-linaro-mbl/meta-optee \
-    ${OEROOT}/meta-mbl/meta-psa \
 "
