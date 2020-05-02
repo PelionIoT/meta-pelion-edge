@@ -20,7 +20,10 @@ inherit pkgconfig systemd
 
 
 SYSTEMD_PACKAGES = "${PN}"
-SYSTEMD_SERVICE_${PN} = "${RT_SERVICE_FILE}"
+SYSTEMD_SERVICE_${PN} = "${RT_SERVICE_FILE} \
+${PN}-watcher.service \
+${PN}-watcher.path"
+
 SYSTEMD_AUTO_ENABLE_${PN} = "enable"
 
 

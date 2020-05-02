@@ -16,7 +16,10 @@ INITSCRIPT_NAME = "maestro.sh"
 INITSCRIPT_PARAMS = "defaults 85 15"
 
 SYSTEMD_PACKAGES = "${PN}"
-SYSTEMD_SERVICE_${PN} = "maestro.service"
+SYSTEMD_SERVICE_${PN} = "maestro.service \
+maestro-watcher.path \
+maestro-watcher.service"
+
 SYSTEMD_AUTO_ENABLE_${PN} = "enable"
 
 CGO_ENABLED = "1"
