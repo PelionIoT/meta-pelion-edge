@@ -16,9 +16,9 @@ SRC_URI="\
 "
 
 SRCREV_FORMAT = "wwrelay-dss"
-SRCREV_wwrelay = "${AUTOREV}"
-SRCREV_dss = "${AUTOREV}"
-SRCREV_node_i2c = "${AUTOREV}"
+SRCREV_wwrelay = "0f96b7eb53756fd1bd9202758f9030b2ac3744d9"
+SRCREV_dss = "04db833a43b80ecdfae07fd388bbe4e242771f38"
+SRCREV_node_i2c = "511b1f0beae55bd9067537b199d52381f6ac3e01"
 
 inherit pkgconfig gitpkgv npm-base update-rc.d systemd
 

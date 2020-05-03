@@ -44,7 +44,7 @@ FILES_${PN} += "\
     ${systemd_system_unitdir}/maestro-watcher.path\
     "
 
-SRC_URI="git://git@github.com/armPelionEdge/maestro.git;protocol=ssh;branch=master;name=m \
+SRC_URI="git://git@github.com/armPelionEdge/maestro.git;protocol=ssh;;name=m \
 file://maestro.sh \
 file://maestro.service \
 file://maestro-watcher.service \
@@ -52,7 +52,7 @@ file://maestro-watcher.path \
 "
 
 SRCREV_FORMAT="m"
-SRCREV_m="${AUTOREV}"
+SRCREV_m="d6ab0da4238bb4d8b767db3f70af71db909fae1c"
 
 GO_IMPORT = "github.com/armPelionEdge/maestro"
 
