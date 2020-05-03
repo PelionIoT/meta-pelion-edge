@@ -1,19 +1,19 @@
-From d85540836dd9dbf4be414bea921b5869faa8a592 Mon Sep 17 00:00:00 2001
-From: Nic Costa <nic.costa@gmail.com>
-Date: Sat, 9 Mar 2019 21:38:29 -0600
-Subject: [PATCH] fix CMake test Build Type Release
+From 83f3e0254f9a61d109420d23544c23f31f5fe765 Mon Sep 17 00:00:00 2001
+From: Yash Goyal <yash.goyal@arm.com>
+Date: Sun, 3 May 2020 02:36:01 -0500
+Subject: [PATCH 3/3] fix CMake test Build Type Release
 
 ---
  cmake/examples_configure.cmake | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/cmake/examples_configure.cmake b/cmake/examples_configure.cmake
-index 0094a97..8c9643d 100644
+index 5105e77..5e4d3f9 100644
 --- a/cmake/examples_configure.cmake
 +++ b/cmake/examples_configure.cmake
-@@ -3,7 +3,7 @@ if (NOT DEFINED TARGET_TOOLCHAIN)
-     include ("lib/${EDGE_SOURCES_DIR_NAME}/cmake/toolchains/${TARGET_TOOLCHAIN}.cmake")
- endif()
+@@ -14,7 +14,7 @@ if (DEFINED EDGE_CLIENT_REQUEST_TIMEOUT_THRESHOLD_MS)
+ endif ()
+ SET (EDGE_CLIENT_REQUEST_TIMEOUT_THRESHOLD_MS 60000) # one minute
  
 -if (NOT (CMAKE_BUILD_TYPE STREQUAL release))
 +if (NOT (CMAKE_BUILD_TYPE STREQUAL Release))
@@ -21,5 +21,5 @@ index 0094a97..8c9643d 100644
      SET (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0")
  endif ()
 -- 
-2.7.4
+2.24.0
 
