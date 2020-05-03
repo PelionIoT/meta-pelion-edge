@@ -15,8 +15,8 @@ PV = "1.0+git${SRCPV}"
 PKGV = "1.0+git${GITPKGV}"
 PR = "r5"
 
-SRCREV = "${AUTOREV}"
-SRC_URI = "git://git@github.com/armPelionEdge/edgeos-wd.git;protocol=ssh;branch=master \
+SRCREV = "0415f0887e050c1b1d78b2cdd73692f607e5e0af"
+SRC_URI = "git://git@github.com/armPelionEdge/edgeos-wd.git;protocol=ssh; \
 file://deviceOS-watchdog \
 file://deviceos-wd.service \
 "
