@@ -7,12 +7,12 @@ GO_LINKSHARED=""
 inherit go pkgconfig gitpkgv
 
 PR = "r5"
-SRC_URI = "git://git@github.com/armPelionEdge/devicedb.git;protocol=ssh;branch=master;name=ddb \
+SRC_URI = "git://git@github.com/armPelionEdge/devicedb.git;protocol=ssh;;name=ddb \
 file://devicedb \
 "
 
 SRCREV_FORMAT = "ddb"
-SRCREV_ddb = "${AUTOREV}"
+SRCREV_ddb = "cbc730dde216150ac8706b7509dea40babd1832f"
 GO_IMPORT = "github.com/armPelionEdge/devicedb/"
 
 DEPENDS = ""

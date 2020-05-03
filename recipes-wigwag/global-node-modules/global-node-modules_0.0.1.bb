@@ -9,8 +9,8 @@ PKGV = "1.0+git${GITPKGV}"
 PR = "r6"
 
 SRC_URI="git://git@github.com/armPelionEdge/edge-node-modules.git;protocol=ssh"
-SRCREV = "${AUTOREV}"
-SRCREV_devjs_prod_tools = "master"
+SRCREV = "a70efd3dd4c35904937c2707403313cc3023b025"
+SRCREV_devjs_prod_tools = "9f795d20bc68b0a49f4e1b004429aed6ba073a4b"
 
 S = "${WORKDIR}/git"
 WSYS= "${D}/wigwag/system"

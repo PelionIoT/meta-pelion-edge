@@ -9,7 +9,7 @@ PV = "1.0+git${SRCPV}"
 PKGV = "1.0+git${GITPKGV}"
 PR = "r1"
 
-SRCREV = "${AUTOREV}"
+SRCREV = "3f287272d965595c4d840ecbce59aab641599f73"
 SRC_URI="git://git@github.com/armPelionEdge/node-znp.git;protocol=ssh"
 
 S = "${WORKDIR}/git"
