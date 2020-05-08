@@ -7,7 +7,7 @@ This repository contains the package and recipes that make up the meta layer for
 
 
 ## Manual instructions
-This repository also includes instructions for [Building](BUILD.md) and [Flashing](https://github.com/armpelionedge/meta-pelion-edge/blob/master/FLASH.md) a complete firmware image.
+This repository also includes instructions for [Building](BUILD.md) and [Flashing](FLASH.md) a complete firmware image.
 
 
 ## Supported Platforms
@@ -47,7 +47,7 @@ WIGWAG_STUFF = " \
 Add a new line before the last quote containing the name of the recipe as defined in it's <recipe>.bb file.
 
 ## Contributing
-See [Contributing.md](https://github.com/armPelionEdge/meta-pelion-edge/CONTRIBUTING.md). We use [GitHub issues](https://github.com/armPelionEdge/meta-pelion-edge/issues) for tracking requests and bugs.
+See [Contributing.md](CONTRIBUTING.md). We use [GitHub issues](https://github.com/armPelionEdge/meta-pelion-edge/issues) for tracking requests and bugs.
 
 ## License
-[Apache License 2.0](https://github.com/armPelionEdge/meta-pelion-edge/LICENSE)
+[Apache License 2.0](LICENSE)
