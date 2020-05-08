@@ -47,4 +47,7 @@ WIGWAG_STUFF = " \
 Add a new line before the last quote containing the name of the recipe as defined in it's <recipe>.bb file.
 
 ## Contributing
-See (Contributing.md)[https://github.com/armPelionEdge/meta-pelion-edge/CONTRIBUTING.md].
+See [Contributing.md](https://github.com/armPelionEdge/meta-pelion-edge/CONTRIBUTING.md). We use [GitHub issues](https://github.com/armPelionEdge/meta-pelion-edge/issues) for tracking requests and bugs.
+
+## License
+[Apache License 2.0](https://github.com/armPelionEdge/meta-pelion-edge/LICENSE)
