@@ -1,13 +1,13 @@
 # Meta for Pelion Edge firmware
 
-This repository contains the package and recipes that make up the meta layer for Pelion Edge.  It is intended to be used as part of a Yocto Linux build.
+This repository contains the package and recipes that make up the meta layer for Pelion Edge. It is intended to be used as part of a Yocto Linux build.
+
+## Quickstart
+[Repo Manifest](https://github.com/armpelionedge/manifest-pelion-edge) can be used to manage all the repositories (including this one) used for a complete build. It automates lot of the manual steps and provides a simple guide to get you going.
+
+
+## Manual instructions
 This repository also includes instructions for [Building](BUILD.md) and [Flashing](https://github.com/armpelionedge/meta-pelion-edge/blob/master/FLASH.md) a complete firmware image.
-
-Optionally, there are two automation repositories for convenience.
-
-[Repo Manifest](https://github.com/armpelionedge/manifest-pelion-edge) can be used to manage all the repositories (including this one) used for a complete build.
-
-[Build Environment](https://github.com/armpelionedge/build-pelion-edge) provides a Docker container with all of the requirements for build and a Makefile for building using the make utility.
 
 
 ## Supported Platforms
@@ -45,3 +45,6 @@ WIGWAG_STUFF = " \
 ```
 
 Add a new line before the last quote containing the name of the recipe as defined in it's <recipe>.bb file.
+
+## Contributing
+See (Contributing.md)[https://github.com/armPelionEdge/meta-pelion-edge/CONTRIBUTING.md].
