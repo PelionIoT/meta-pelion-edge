@@ -4,13 +4,13 @@ The built image will be located in the build directory under `poky/build/tmp/dep
 
 ### To flash console-image-raspberrypi3-<timestamp>.rootfs.wic.gz:
 
-#### MAC OS X
+#### macOS
 Note: Make sure the SD card drive and its partition, if any, are all unmounted. This example assumes the SD card is enumerated as /dev/diskX and you should verify your device's path. To unmount all partitions run the following command -
 
 ```
 ls /dev/diskX?* | xargs -n1 diskutil umount
 ```
-To flash on Mac OS X, use dd -
+To flash on macOS, use dd -
 
 ```
 $ gunzip -c console-image-raspberrypi3-<timestamp>.rootfs.wic.gz | sudo dd bs=4m of=/dev/diskX conv=sync
