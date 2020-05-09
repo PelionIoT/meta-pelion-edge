@@ -66,7 +66,7 @@ If you enabled support for Pelion firmware updates in mbed-edge-core, copy your 
 
 To generate update_default_resources.c, run [manifest-tool](https://github.com/ARMmbed/manifest-tool).  See the documentation on [getting the update resources](https://github.com/ARMmbed/mbed-edge/blob/master/README.md#getting-the-update-resources).
 
-Note: To unlock the rich node features, such as gateway logs and gateway terminal in the Pelion web portal please specify the `vendor-id=42fa7b48-1a65-43aa-890f-8c704daade54`
+Note: To unlock the rich node features, such as gateway logs and gateway terminal in the Pelion web portal, please pass the command line parameter `-V 42fa7b48-1a65-43aa-890f-8c704daade54` to manifest-tool while generating the update_default_resources.c.
 
 ### Initialize the build directory
 
