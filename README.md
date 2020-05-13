@@ -2,6 +2,14 @@
 
 This repository contains the package and recipes that make up the metalayer for Pelion Edge. It is intended to be used as part of a Yocto Linux build.
 
+## Supported platforms
+
+Raspberry Pi 3B+
+
+## Additional hardware requirements
+- 8GB SD card
+- Ethernet cable to connect to network with Internet access
+
 ## Quick start
 
 You can use [repo manifest](https://github.com/armpelionedge/manifest-pelion-edge) to manage all the repositories (including this one) needed for a complete build. It automates many of the manual steps and provides a guide to get started.
@@ -9,10 +17,6 @@ You can use [repo manifest](https://github.com/armpelionedge/manifest-pelion-edg
 ## Manual instructions
 
 This repository also includes instructions for [Building](BUILD.md) and [Flashing](FLASH.md) a complete firmware image.
-
-## Supported platforms
-
-Raspberry Pi 3B+
 
 ## Images
 
