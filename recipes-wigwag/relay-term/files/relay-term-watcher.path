@@ -3,7 +3,7 @@ Description=Monitor the changes to identity.json file and restart relay-term
 
 [Path]
 PathChanged=/userdata/edge_gw_config/.ssl/client.cert.pem
-Unit=pelion-relay-term-watcher.service
+Unit=relay-term-watcher.service
 
 [Install]
 WantedBy=network.target
