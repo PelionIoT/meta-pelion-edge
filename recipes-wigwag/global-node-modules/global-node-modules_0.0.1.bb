@@ -39,7 +39,7 @@ do_configure() {
 	cp ${STAGING_INCDIR}/avahi-compat-libdns_sd/dns_sd.h ${STAGING_INCDIR}/
 	whereisgyp=$(which node-gyp) || :  #  force a return code of 0 always, so bitbake doesn't crash
 	if [[ $whereisgyp = "" ]]; then
-		oe_runnpm_native install -g node-gyp
+		oe_runnpm_native install -g node-gyp@5.1.1
 	fi
 
 	echo -en "{\n\"devjs-configurator\": \"http://github.com/armPelionEdge/devjs-configurator#master\"\n}\n" > ${WORKDIR}/overrides.json

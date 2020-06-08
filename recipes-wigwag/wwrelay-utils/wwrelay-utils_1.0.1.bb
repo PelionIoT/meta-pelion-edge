@@ -74,7 +74,7 @@ do_log(){
 }
 do_configure(){
 	echo "its a new build (erasing old log)" > /tmp/YOCTO_wwrelay-utils.log
-	oe_runnpm_native -g install node-gyp
+	oe_runnpm_native -g install node-gyp@5.1.1
 	do_log "node-gyp installed at: $(which node-gyp)"
 }
 

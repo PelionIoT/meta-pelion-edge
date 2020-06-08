@@ -33,7 +33,7 @@ INHIBIT_PACKAGE_STRIP = "1"
 TARGET_CFLAGS += "-D_GNU_SOURCE"
 
 do_configure(){
-	oe_runnpm_native install -g node-gyp
+	oe_runnpm_native install -g node-gyp@5.1.1
 
 }
 
