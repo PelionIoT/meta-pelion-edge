@@ -87,11 +87,13 @@ symphony:
     disable_sys_stats: true
     sys_stats_count_threshold: 15     # send if you have 15 or more stats queued
     sys_stats_time_threshold: 120000  # every 120 seconds send stuff, no matter what
-    client_cert: "{{ARCH_CLIENT_CERT_PEM}}"
-    client_key: "{{ARCH_CLIENT_KEY_PEM}}"
-    host: "{{ARCH_GW_SERVICES_RESRC}}"
-    url_logs: "{{ARCH_GW_SERVICES_URL}}/relay-logs/logs"
-    url_stats: "{{ARCH_GW_SERVICES_URL}}/relay-stats/stats_obj"
+    #client_cert: "{{ARCH_CLIENT_CERT_PEM}}"
+    #client_key: "{{ARCH_CLIENT_KEY_PEM}}"
+    no_tls: true
+    host: "gateways.local"
+    url_logs: "http://gateways.local:8080/relay-logs/logs"
+    url_stats: "http://gateways.local:8080/relay-stats/stats_obj"
+    send_time_threshold: 120000       # set the send time threshold to 2 minutes
     # port: "{{ARCH_RELAY_SERVICES_PORT}}"
 targets:
    - file: "/wigwag/log/devicejs.log"
@@ -262,11 +264,7 @@ jobs:
             "relayID": "{{ARCH_SERIAL_NUMBER}}",
             "mbedAPIKey": "ak_1MDE1ZDUwYTFmYmM2MDI0MjBhMDExMTA5MDAwMDAwMDA015e967fe74802420a01390300000000aJOhYRqzTXINzN9Aw2OkV5WrG0YwgmKS",
             "spawnEdgeCore": false,
-            "edgeExecCmd": ["/apps/mbed-cloud-edge-confidential-w/build/mcc-linux-x86/existing/bin/edge-core","/tmp/edge.sock","9101"],
-            "ssl":{
-              "key":"{{SSL_CERTS_PATH}}/client.key.pem",
-              "cert":"{{SSL_CERTS_PATH}}/client.cert.pem"
-            }
+            "edgeExecCmd": ["/apps/mbed-cloud-edge-confidential-w/build/mcc-linux-x86/existing/bin/edge-core","/tmp/edge.sock","9101"]
         }
    - job: "core-interfaces"
      immutable: true  # don't store in DB
@@ -290,14 +288,6 @@ jobs:
         {
           "cloudAddress":"{{ARCH_GW_SERVICES_URL}}",
           "relayID":"{{ARCH_SERIAL_NUMBER}}",
-          "ssl":{
-              "key":"{{SSL_CERTS_PATH}}/client.key.pem",
-              "cert":"{{SSL_CERTS_PATH}}/client.cert.pem",
-              "ca":[
-                  "{{SSL_CERTS_PATH}}/ca.cert.pem",
-                  "{{SSL_CERTS_PATH}}/intermediate.cert.pem"
-              ]
-          },
           "versionsFile":"{{RELAY_VERSIONS_FILE}}",
           "factoryVersionsFile": "{{FACTORY_VERSIONS_FILE}}",
           "userVersionsFile": "{{USER_VERSIONS_FILE}}",
