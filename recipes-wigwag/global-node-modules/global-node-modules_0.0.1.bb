@@ -9,7 +9,7 @@ PKGV = "1.0+git${GITPKGV}"
 PR = "r6"
 
 SRC_URI="git://git@github.com/armPelionEdge/edge-node-modules.git;protocol=ssh"
-SRCREV = "9eeecb12787a38d1ce85a8eb4d408ddfcb4ea76c"
+SRCREV = "122835410976f23b6694d925d993e72c50ced053"
 SRCREV_devjs_prod_tools = "9f795d20bc68b0a49f4e1b004429aed6ba073a4b"
 
 S = "${WORKDIR}/git"

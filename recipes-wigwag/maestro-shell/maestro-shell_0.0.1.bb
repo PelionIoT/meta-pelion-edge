@@ -7,12 +7,12 @@ inherit go pkgconfig gitpkgv
 
 PV = "1.0+git${SRCPV}"
 PKGV = "1.0+git${GITPKGV}"
-SRCREV = "6453fba93557fc7c4593c48022cf88395bd23a57"
+
+SRCREV = "e06b5e28d6beb46577710331168a84687bb4b370"
 
 PR = "r0"
 
-SRC_URI="git://git@github.com/armPelionEdge/maestro-shell.git;protocol=ssh"
-
+SRC_URI="git://git@github.com/armPelionEdge/maestro-shell.git;protocol=ssh;"
 S= "${WORKDIR}/git"
 GO_IMPORT = "github.com/armPelionEdge/maestro-shell"
 

@@ -10,7 +10,7 @@ PKGV = "1.0+git${GITPKGV}"
 SRCREV = "54ee3bd50b063425606ad76aefad4167780d8760"
 
 PR = "r0"
-SRC_URI="git://git@github.com/armPelionEdge/rallypointwatchdogs.git;protocol=ssh;branch=master"
+SRC_URI="git://git@github.com/armPelionEdge/rallypointwatchdogs.git;protocol=ssh;"
 GO_IMPORT = "github.com/armPelionEdge/rallypointwatchdogs"
 
 do_compile() {
