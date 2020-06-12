@@ -78,11 +78,13 @@ symphony:
     disable_sys_stats: true
     sys_stats_count_threshold: 15     # send if you have 15 or more stats queued
     sys_stats_time_threshold: 120000  # every 120 seconds send stuff, no matter what
-    client_cert: "{{ARCH_CLIENT_CERT_PEM}}"
-    client_key: "{{ARCH_CLIENT_KEY_PEM}}"
-    host: "{{ARCH_GW_SERVICES_RESRC}}"
-    url_logs: "{{ARCH_GW_SERVICES_URL}}/relay-logs/logs"
-    url_stats: "{{ARCH_GW_SERVICES_URL}}/relay-stats/stats_obj"
+    #client_cert: "{{ARCH_CLIENT_CERT_PEM}}"
+    #client_key: "{{ARCH_CLIENT_KEY_PEM}}"
+    no_tls: true
+    host: "gateways.local"
+    url_logs: "http://gateways.local:8080/relay-logs/logs"
+    url_stats: "http://gateways.local:8080/relay-stats/stats_obj"
+    send_time_threshold: 120000       # set the send time threshold to 2 minutes
     # port: "{{ARCH_RELAY_SERVICES_PORT}}"
 targets:
    - file: "/wigwag/log/devicejs.log"
