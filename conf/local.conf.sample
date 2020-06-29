@@ -17,7 +17,11 @@ PREFERRED_PROVIDER_jpeg = "libjpeg-turbo"
 PREFERRED_PROVIDER_jpeg-native = "libjpeg-turbo-native"
 
 PREFERRED_PROVIDER_udev = "eudev"
-VIRTUAL-RUNTIME_init_manager = "sysvinit"
+
+DISTRO_FEATURES_append = " systemd"
+VIRTUAL-RUNTIME_init_manager = "systemd" 
+VIRTUAL-RUNTIME_initscripts = "systemd-compat-units"
+DISTRO_FEATURES_BACKFILL_CONSIDERED = "sysvinit"
 
 MACHINE_FEATURES_remove = "apm"
 
@@ -60,7 +64,6 @@ INITRAMFS_IMAGE = "ww-console-image-initramfs"
 INITRAMFS_IMAGE_BUNDLE = "1"
 BOOT_SPACE = "1073741"
 INITRAMFS_MAXSIZE = "2600000"
-#IMAGE_FSTYPES_pn-${INITRAMFS_IMAGE} = "${INITRAMFS_FSTYPES}"
 
 
 DISTRO = "poky"
@@ -94,3 +97,5 @@ PATCHRESOLVE = "noop"
 RM_OLD_IMAGE = "1"
 INHERIT += "rm_work"
 CONF_VERSION = "1"
+
+export SSH_AUTH_SOCK

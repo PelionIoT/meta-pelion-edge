@@ -13,7 +13,7 @@ CORE_OS = " \
     kernel-modules \
     openssh openssh-keygen openssh-sftp-server \
     packagegroup-core-boot \
-    packagegroup-core-full-cmdline \    
+    packagegroup-core-full-cmdline \
     packagegroup-core-buildessential \
     term-prompt \
     tzdata \
@@ -87,6 +87,7 @@ EXTRA_TOOLS_INSTALL = " \
     util-linux \
     wget \
     zip \
+    jq \
 "
 
 RPI_STUFF = " \
@@ -167,6 +168,7 @@ WIGWAG_STUFF = " \
     deviceos-users \
     global-node-modules \
     wwrelay-utils \
+    relay-term \
 "
 
 OPENSSL_102 = " \

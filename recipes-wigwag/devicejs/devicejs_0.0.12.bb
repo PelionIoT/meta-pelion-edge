@@ -6,9 +6,9 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=1dece7821bf3fd70fe1309eaa37d52a2"
 inherit pkgconfig gitpkgv npm-base npm-install
 
 PR = "r4"
-SRC_URI = "git://git@github.com/armPelionEdge/devicejs-ng.git;protocol=ssh"
+SRC_URI = "git://git@github.com/armPelionEdge/devicejs-ng.git;protocol=ssh;"
 
-SRCREV = "5a6f1c38fcdaab4754af88f4ca7c71c293435e18"
+SRCREV = "5aa4eabdfac119a1f837c5ff2589d8104bc66997"
 
 S = "${WORKDIR}/git"
 
@@ -22,7 +22,7 @@ INHIBIT_PACKAGE_STRIP = "1"
 FILES_${PN} = "/wigwag/*"
 
 do_configure(){
-	oe_runnpm_native install -g node-gyp
+	oe_runnpm_native install -g node-gyp@5.1.1
 }
 
 do_compile() {

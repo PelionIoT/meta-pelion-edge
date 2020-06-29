@@ -1,0 +1,8 @@
+[Unit]
+Description=Post update install script
+ConditionPathExists=/userdata/postUpgrade.sh
+
+[Service]
+ExecStart=/userdata/postUpgrade.sh
+ExecStartPost=/bin/rm /userdata/postUpgrade.sh
+

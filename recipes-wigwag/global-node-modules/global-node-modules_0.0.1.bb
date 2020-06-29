@@ -9,7 +9,7 @@ PKGV = "1.0+git${GITPKGV}"
 PR = "r6"
 
 SRC_URI="git://git@github.com/armPelionEdge/edge-node-modules.git;protocol=ssh"
-SRCREV = "9eeecb12787a38d1ce85a8eb4d408ddfcb4ea76c"
+SRCREV = "122835410976f23b6694d925d993e72c50ced053"
 SRCREV_devjs_prod_tools = "9f795d20bc68b0a49f4e1b004429aed6ba073a4b"
 
 S = "${WORKDIR}/git"
@@ -18,7 +18,7 @@ WBIN= "${D}/wigwag/system/bin"
 
 BBCLASSEXTEND = "native"
 DEPENDS = "nodejs avahi udev nodejs-native"
-RDEPENDS_${PN} += " nodejs"
+RDEPENDS_${PN} += " nodejs bluez5"
 
 FILES_${PN} = "/wigwag/* /wigwag/wigwag-core-modules/* /wigwag/devicejs-core-modules/*"
 
@@ -39,7 +39,7 @@ do_configure() {
 	cp ${STAGING_INCDIR}/avahi-compat-libdns_sd/dns_sd.h ${STAGING_INCDIR}/
 	whereisgyp=$(which node-gyp) || :  #  force a return code of 0 always, so bitbake doesn't crash
 	if [[ $whereisgyp = "" ]]; then
-		oe_runnpm_native install -g node-gyp
+		oe_runnpm_native install -g node-gyp@5.1.1
 	fi
 
 	echo -en "{\n\"devjs-configurator\": \"http://github.com/armPelionEdge/devjs-configurator#master\"\n}\n" > ${WORKDIR}/overrides.json
@@ -108,7 +108,7 @@ do_install() {
     for f in $ALL_WigWag_Core_Modules; do
 		do_dirInstall ${S}/$f ${D}/wigwag/wigwag-core-modules/$f
     done
-    ALL_Devicejs_Core_Modules="rsmi zigbeeHA node_modules maestroRunner core-interfaces"
+    ALL_Devicejs_Core_Modules="rsmi zigbeeHA node_modules maestroRunner core-interfaces bluetoothlowenergy"
     for f in $ALL_Devicejs_Core_Modules; do
 		do_dirInstall ${S}/$f ${D}/wigwag/devicejs-core-modules/$f
     done

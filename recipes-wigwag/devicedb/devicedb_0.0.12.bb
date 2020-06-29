@@ -1,49 +1,28 @@
 DESCRIPTION = "devicedb distributed database"
 LICENSE = "Apache-2.0"
-LIC_FILES_CHKSUM = "file://ddb/LICENSE;md5=1dece7821bf3fd70fe1309eaa37d52a2"
+LIC_FILES_CHKSUM = "file://src/${GO_IMPORT}/LICENSE;md5=58b1e0eba1968eab8a0f46444674102a"
+# avoid the `-linkshared` option in this recipe as it causes a panic
+GO_LINKSHARED=""
 
 inherit go pkgconfig gitpkgv
 
 PR = "r5"
-# Why are we using the destsuffix= option in SRC_URI here? B/c qapprently in "thud", the golang bbclass is a bit naive and 
-# can't deal with SRCREV=hash or tags. This is do to some incomplete "help" it provides in the URI fetcher
-# you can see the half-working code here: https://github.com/openembedded/openembedded-core/blob/thud/meta/classes/go.bbclass
-SRC_URI = "git://git@github.com/armPelionEdge/devicejs-ng.git;protocol=ssh;name=ddb;destsuffix=git/ddb \
+SRC_URI = "git://git@github.com/armPelionEdge/devicedb.git;protocol=ssh;;name=ddb \
 file://devicedb \
 "
 
 SRCREV_FORMAT = "ddb"
-SRCREV_ddb = "5a6f1c38fcdaab4754af88f4ca7c71c293435e18"
-S = "${WORKDIR}/git"
+SRCREV_ddb = "cbc730dde216150ac8706b7509dea40babd1832f"
+GO_IMPORT = "github.com/armPelionEdge/devicedb/"
 
 DEPENDS = ""
 RDEPENDS_${PN} += " logrotate"
 
-FILES_${PN} = "/wigwag/system/bin/* /etc/logrotate.d/*"
-
-do_compile() {
-  cd ..
-  TOP=`pwd`
-  WORKSPACE="`pwd`/go-workspace"
-  mkdir -p go-workspace/bin
-  mkdir -p go-workspace/pkg
-  mkdir -p go-workspace/src      
-  
-  export GOPATH="$WORKSPACE"
-  cd go-workspace/src
-  rm -f devicedb; ln -s ../../git/ddb/deps/devicedb/src/devicedb devicedb   
-  cd $WORKSPACE
-  # Fix GOARCH - having to do this may be the result of our "fix" above for the fether not working.
-  export GOARCH=`echo $AR | awk -F '-' '{print $1}'`
-  go env
-  go build devicedb
-}
+FILES_${PN} = "/wigwag/system/bin/devicedb /etc/logrotate.d/devicedb"
 
 do_install() {
-  WORKSPACE=`pwd`/../go-workspace
   install -d "${D}/wigwag/system/bin"
-  install -m 0755 "${WORKSPACE}/devicedb" "${D}/wigwag/system/bin"
+  install -m 0755 "${B}/${GO_BUILD_BINDIR}/devicedb" "${D}/wigwag/system/bin"
   install -d "${D}${sysconfdir}/logrotate.d/"
   install -m 644 "${WORKDIR}/devicedb" "${D}${sysconfdir}/logrotate.d"
 }
-

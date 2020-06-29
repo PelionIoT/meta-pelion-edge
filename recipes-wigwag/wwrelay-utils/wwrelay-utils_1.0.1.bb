@@ -3,33 +3,61 @@ DESCRIPTION = "Utilities used by the WigWag Relay"
 LICENSE = "Apache-2.0"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=1dece7821bf3fd70fe1309eaa37d52a2"
 
-SRC_URI="git://git@github.com/armPelionEdge/edge-utils.git;protocol=ssh;name=wwrelay \
-git://git@github.com/armPelionEdge/edgeos-shell-scripts.git;protocol=ssh;name=dss;destsuffix=git/dss \
-file://wwrelay \
-file://BUILDMMU.txt \
-file://logrotate_directives/ \
+SRC_URI="\
+  git://git@github.com/armPelionEdge/edge-utils.git;protocol=ssh;name=wwrelay \
+  git://git@github.com/armPelionEdge/edgeos-shell-scripts.git;protocol=ssh;name=dss;destsuffix=git/dss \
+  git://git@github.com/armPelionEdge/node-i2c.git;protocol=ssh;name=node_i2c;destsuffix=git/tempI2C/node-i2c \
+  file://wwrelay \
+  file://BUILDMMU.txt \
+  file://wwrelay.service \
+  file://wait-for-pelion-identity.service \
+  file://do-post-upgrade.service \
+  file://logrotate_directives/ \
 "
 
 SRCREV_FORMAT = "wwrelay-dss"
-SRCREV_wwrelay = "c508f584f34540f98e9349bb919faf716902d560"
+SRCREV_wwrelay = "3342c0834042addb2716e48931d0f2118dca6356"
 SRCREV_dss = "04db833a43b80ecdfae07fd388bbe4e242771f38"
 SRCREV_node_i2c = "511b1f0beae55bd9067537b199d52381f6ac3e01"
 
-inherit pkgconfig gitpkgv npm-base update-rc.d
+inherit pkgconfig gitpkgv npm-base update-rc.d systemd
 
 INHIBIT_PACKAGE_STRIP = "1"
 
 INITSCRIPT_NAME = "wwrelay"
 INITSCRIPT_PARAMS = "defaults 80 20" 
 
+SYSTEMD_PACKAGES = "${PN}"
+SYSTEMD_SERVICE_${PN} = "wait-for-pelion-identity.service wwrelay.service do-post-upgrade.service"
+SYSTEMD_AUTO_ENABLE_${PN} = "enable"
+
 PV = "1.0+git${SRCPV}"
 PKGV = "1.0+git${GITPKGV}"
 PR = "r7"
 
 DEPENDS = "update-rc.d-native nodejs nodejs-native"
-RDEPENDS_${PN} += " bash nodejs openssl10"
+RDEPENDS_${PN} += " bash nodejs openssl10 global-node-modules"
 
-FILES_${PN} = "/wigwag/* /wigwag/etc /wigwag/etc/* /etc/logrotate.d/* /etc/init.d /etc/init.d/* /etc/wigwag /etc/wigwag/* /etc/rc?.d/* /usr/bin /usr/bin/* /etc/* /userdata /upgrades /localdata "
+FILES_${PN} = "\
+  /wigwag/*\
+  /wigwag/etc\
+  /wigwag/etc/*\
+  /etc/logrotate.d/*\
+  /etc/init.d\
+  /etc/init.d/*\
+  /etc/wigwag\
+  /etc/wigwag/*\
+  /etc/rc?.d/*\
+  /usr/bin\
+  /usr/bin/*\
+  /etc/*\
+  /userdata\
+  /upgrades\
+  /localdata\
+  ${systemd_system_unitdir}/wwrelay.service\
+  ${systemd_system_unitdir}/wait-for-pelion-identity.service\
+  ${systemd_system_unitdir}/do-post-upgrade.service\
+"
 
 S = "${WORKDIR}/git"
 S_MODPROBED="${S}/etc/modprobe.d"
@@ -46,7 +74,7 @@ do_log(){
 }
 do_configure(){
 	echo "its a new build (erasing old log)" > /tmp/YOCTO_wwrelay-utils.log
-	oe_runnpm_native -g install node-gyp
+	oe_runnpm_native -g install node-gyp@5.1.1
 	do_log "node-gyp installed at: $(which node-gyp)"
 }
 
@@ -84,16 +112,7 @@ do_compile() {
 	make all
 
 	do_log "I2c"
-	cd ${S}
-	cd ..
-	if [[ -e tempI2C ]]; then
-		rm -rf tempI2C/
-	fi
-	mkdir tempI2C
-	cd tempI2C
-	git clone -b master git@github.com:armPelionEdge/node-i2c.git
-	git -C node-i2c checkout ${SRCREV_node_i2c}
-	cd node-i2c
+	cd ${S}/tempI2C/node-i2c
 	do_log "in wwrelay-utils node-i2c"
 	oe_runnpm install --target_arch=arm --production
 	node-gyp configure
@@ -104,38 +123,35 @@ do_compile() {
 	sed -i -- "/node-i2c/d" package.json
 	oe_runnpm install  --target_arch=arm --production
 	cd node_modules
-	cp -r ${S}/../tempI2C/node-i2c/ i2c
+	cp -r ${S}/tempI2C/node-i2c/ i2c
 
 	do_log "GPIO"
 	cd ${S}/GPIO
 	oe_runnpm install --production
 	make
 
-do_log "slip-radio"
-cd ${S}/slip-radio
-oe_runnpm install --production
+  do_log "slip-radio"
+  cd ${S}/slip-radio
+  oe_runnpm install --production
 
-do_log "slipcoms"
-cd ${S}/slipcomms 
-make 
+  do_log "slipcoms"
+  cd ${S}/slipcomms
+  make
 
-do_log "cc2530prog"
-cd ${S}/cc2530prog
-make
+  do_log "cc2530prog"
+  cd ${S}/cc2530prog
+  make
 
-cd ${S}
+  cd ${S}
 
 }
-
-do_compile[nostamp] += "1"
 
 do_dirInstall(){
 	pushd . >> /dev/null
 	cd $1
 	find . -type d -exec install -d $2/{} \;
 	find . -type f -exec install -m 0755 {} $2/{} \; 
-#a more cleaver one:
-popd >> /dev/null
+  popd >> /dev/null
 }
 
 
@@ -153,16 +169,23 @@ do_install() {
 	install -d ${D}/etc/network
 	install -d ${D}/etc/udev
 	install -d ${D}/etc/udev/rules.d
+  install -d ${D}/wigwag/system/bin
 	do_dirInstall ${S}/wigwag/ ${D}/wigwag/
 	install -m 0755 ${S}/etc/dnsmasq.conf ${D}/etc/dnsmasq.conf
 	install -m 0755 ${S}/etc/dnsmasq.d/dnsmasq.conf ${D}/etc/dnsmasq.d/dnsmasq.conf
 	install -m 0755 ${S}/etc/modprobe.d/at24.conf ${D}/etc/modprobe.d/at24.conf
 	install -m 0755 ${S}/etc/profile.d/wigwagpath.sh ${D}/etc/profile.d/wigwagpath.sh
-	install -m 0755 ${S}/../wwrelay ${D}${INIT_D_DIR}
+	install -m 0755 ${WORKDIR}/wwrelay ${D}/wigwag/system/bin
 	install -m 0755 ${S}/etc/init.d/devjssupport ${D}${INIT_D_DIR}
 	install -m 0755 ${S}/etc/init.d/relayterm ${D}${INIT_D_DIR}
 	install -m 0755 ${S}/etc/init.d/wwfunctions ${D}${INIT_D_DIR}
 	update-rc.d -r ${D} relayterm defaults 85 20
+
+# Install systemd units
+  install -d ${D}${systemd_system_unitdir}
+  install -m 644 ${WORKDIR}/wwrelay.service ${D}${systemd_system_unitdir}/wwrelay.service
+  install -m 644 ${WORKDIR}/wait-for-pelion-identity.service ${D}${systemd_system_unitdir}/wait-for-pelion-identity.service
+  install -m 644 ${WORKDIR}/do-post-upgrade.service ${D}${systemd_system_unitdir}/do-post-upgrade.service
 
 	#spreadsheet work needed
 	#conf
@@ -188,7 +211,6 @@ do_install() {
 	install -m 755 ${S}/dev-tools/bin/ccommon.sh ${D}/wigwag/system/bin/
 	install -m 755 ${S}/dss/* ${D}/wigwag/system/bin/
 	install -m 755 ${S}/dev-tools/bin/stopwatchdog.sh ${D}/wigwag/system/bin/stopwatchdog
-	install -m 755 ${S}/dev-tools/scripts/restartjob.sh ${D}/wigwag/system/bin/restartjob.sh
 	rm -rf ${D}/wigwag/wwrelay-utils/dev-tools/bin/{stopwatchdog.sh,info.sh}
 
 	#all of GPIO

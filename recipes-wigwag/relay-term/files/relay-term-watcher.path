@@ -1,0 +1,9 @@
+[Unit]
+Description=Monitor the changes to identity.json file and restart relay-term
+
+[Path]
+PathChanged=/userdata/edge_gw_config/.ssl/client.cert.pem
+Unit=relay-term-watcher.service
+
+[Install]
+WantedBy=network.target
