@@ -8,17 +8,16 @@ BBPATH = "${TOPDIR}"
 BBFILES ?= ""
 
 BBLAYERS ?= " \
-    ${OEROOT}/meta-pelion-edge/meta \
-    ${OEROOT}/meta \
-    ${OEROOT}/meta-poky \
-    ${OEROOT}/meta-openembedded/meta-oe \
-    ${OEROOT}/meta-openembedded/meta-filesystems \
-    ${OEROOT}/meta-openembedded/meta-networking \
-    ${OEROOT}/meta-virtualization \
-    ${OEROOT}/meta-openembedded/meta-perl \
-    ${OEROOT}/meta-openembedded/meta-python \
-    ${OEROOT}/meta-raspberrypi \
-    ${OEROOT}/meta-security \
-    ${OEROOT}/meta-pelion-edge \
-    ${OEROOT}/meta-nodejs \
+    ##OEROOT##/meta-pelion-edge \
+    ##OEROOT##/meta \
+    ##OEROOT##/meta-poky \
+    ##OEROOT##/meta-openembedded/meta-oe \
+    ##OEROOT##/meta-openembedded/meta-filesystems \
+    ##OEROOT##/meta-openembedded/meta-networking \
+    ##OEROOT##/meta-openembedded/meta-perl \
+    ##OEROOT##/meta-openembedded/meta-python \
+    ##OEROOT##/meta-virtualization \
+    ##OEROOT##/meta-raspberrypi \
+    ##OEROOT##/meta-security \
+    ##OEROOT##/meta-nodejs \
 "
