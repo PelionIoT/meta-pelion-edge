@@ -8,6 +8,7 @@ BBPATH = "${TOPDIR}"
 BBFILES ?= ""
 
 BBLAYERS ?= " \
+    ##OEROOT##/meta-pelion-edge \
     ##OEROOT##/meta \
     ##OEROOT##/meta-poky \
     ##OEROOT##/meta-openembedded/meta-oe \
@@ -17,6 +18,5 @@ BBLAYERS ?= " \
     ##OEROOT##/meta-openembedded/meta-python \
     ##OEROOT##/meta-raspberrypi \
     ##OEROOT##/meta-security \
-    ##OEROOT##/meta-pelion-edge \
     ##OEROOT##/meta-nodejs \
 "
