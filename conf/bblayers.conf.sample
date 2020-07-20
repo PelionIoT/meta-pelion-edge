@@ -16,6 +16,7 @@ BBLAYERS ?= " \
     ##OEROOT##/meta-openembedded/meta-networking \
     ##OEROOT##/meta-openembedded/meta-perl \
     ##OEROOT##/meta-openembedded/meta-python \
+    ##OEROOT##/meta-virtualization \
     ##OEROOT##/meta-raspberrypi \
     ##OEROOT##/meta-security \
     ##OEROOT##/meta-nodejs \
