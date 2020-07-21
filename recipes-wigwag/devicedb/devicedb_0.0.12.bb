@@ -7,7 +7,7 @@ GO_LINKSHARED=""
 inherit go pkgconfig gitpkgv
 
 PR = "r5"
-SRC_URI = "git://git@github.com/armPelionEdge/devicedb.git;protocol=ssh;;name=ddb \
+SRC_URI = "git://git@github.com/armPelionEdge/devicedb.git;protocol=ssh;name=ddb \
 file://devicedb \
 "
 
