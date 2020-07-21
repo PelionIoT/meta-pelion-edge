@@ -1,0 +1,4 @@
+{
+	"graph": "/userdata/docker",
+	"storage-driver": "overlay2"
+}

@@ -154,6 +154,8 @@ WIGWAG_STUFF = " \
     fftw \
     edge-proxy \
     imagemagick \
+    kubelet \
+    tini \
     lcms \
     virtual/mbed-edge-core \
     mbed-edge-examples \
