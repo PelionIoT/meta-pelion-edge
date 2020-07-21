@@ -152,6 +152,7 @@ WIGWAG_STUFF = " \
     deviceoswd \
     emacs \
     fftw \
+    edge-proxy \
     imagemagick \
     lcms \
     virtual/mbed-edge-core \
