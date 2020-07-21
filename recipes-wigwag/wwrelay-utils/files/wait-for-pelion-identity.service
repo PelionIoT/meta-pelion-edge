@@ -1,5 +1,6 @@
 [Unit]
 Description=Wait for a connection to Pelion and create credentials
+Requires=edge-core.service
 After=edge-core.service
 
 [Service]
