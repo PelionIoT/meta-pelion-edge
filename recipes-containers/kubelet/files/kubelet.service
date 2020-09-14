@@ -1,7 +1,7 @@
 [Unit]
 Descritpion=Kubelet
 Requires=wait-for-pelion-identity.service
-After=edge-proxy.service
+Requires=edge-proxy.service
 
 [Service]
 Restart=always

@@ -5,16 +5,20 @@ LIC_FILES_CHKSUM = "file://src/${GO_IMPORT}/LICENSE;md5=86d3f3a95c324c9479bd8986
 inherit go pkgconfig gitpkgv systemd
 
 PR = "r0"
-SRC_URI = "git://git@github.com/armPelionEdge/edge-proxy.git;protocol=ssh;name=ep;depth=1\
-           file://edge-proxy.service\
-           file://edge-proxy-watcher.service\
-           file://edge-proxy.path\
-           file://launch-edge-proxy.sh\
-           file://edge-proxy.conf.json\
+SRC_URI = "git://git@github.com/armPelionEdge/edge-proxy.git;protocol=ssh;name=ep;depth=1 \
+           file://edge-proxy.service \
+           file://edge-proxy-watcher.service \
+           file://edge-proxy.path \
+           file://launch-edge-proxy.sh \
+           file://edge-proxy.conf.json \
            "
 
 SYSTEMD_PACKAGES = "${PN}"
-SYSTEMD_SERVICE_${PN} = "edge-proxy.service"
+SYSTEMD_SERVICE_${PN} = "edge-proxy.service \
+edge-proxy.path \
+edge-proxy-watcher.service \
+"
+
 SYSTEMD_AUTO_ENABLE_${PN} = "enable"
 
 SRCREV_FORMAT = "ep"
