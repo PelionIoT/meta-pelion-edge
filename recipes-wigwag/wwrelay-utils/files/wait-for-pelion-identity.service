@@ -2,6 +2,7 @@
 Description=Wait for a connection to Pelion and create credentials
 Requires=edge-core.service
 After=edge-core.service
+Before=edge-proxy.service
 
 [Service]
 Restart=on-failure
