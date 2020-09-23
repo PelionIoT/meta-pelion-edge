@@ -1,5 +1,5 @@
 # Changelog
-# Pelion Edge 2.1.0 - September 2020
+## Pelion Edge 2.1.0 - September 2020
 
 The primary feature in this release is the addition of container orchestration:
 
@@ -13,7 +13,6 @@ The primary feature in this release is the addition of container orchestration:
 - [docker] Adds Docker via rdepends in [edge-kubelet](https://github.com/armPelionEdge/meta-pelion-edge/pull/161/files#diff-a60a51806a69d10af75c2d0a4c752698). Docker's default storage location is moved to [/userdata/Docker](xxxx) to take advantage of /userdata's single (non-overlay) ext4 partition, enabling Docker to use the more performant overfs2.
 - [cni] Adds container networking interfaces [cni](https://github.com/armPelionEdge/meta-pelion-edge/pull/161/files#diff-8d44f3bb16ba9ff316e2e3622366d386) to enable container network communication.
 
-
 ### Bug fixes
 
 - General syntax and whitespace changes in bitbake recipes.
@@ -24,13 +23,13 @@ The primary feature in this release is the addition of container orchestration:
 - When conducting back-to-back production factory flow with the Pelion Edge Provisioner, the mcc_config directory sometimes is not written correctly and upon reboot, Edge-Core does not connect properly. Workaround: Run the provisioner again.
 - After production factory flow, if you run the info command before Edge core pairs with the cloud, the info command shows N/A for the deviceID while displaying connected. Workaround: Delete the file /wigwag/system/lib/bash/relaystatics.sh, and rerun the info command.
 - Portal is not correctly updated after a firmware campaign in some instances.
+
+### Limitations
+
 - The maximum translated devices behind the edge gateway is 100.
+- Devices behind Pelion Edge do not support [auto-observation.](https://www.pelion.com/docs/device-management/current/connecting/device-guidelines.html#auto-observation)
+- Pelion Device Management Client enabled devices must first boostrap to the Pelion Device Management Cloud before connecting to Pelion Edge.
 - No moving devices are supported. (Device would be moving from Edge to another Edge device.)
-- Assumption is that no development is needed in device multiplexing code in Connect.
-- Device Echo is not supported. (Automatic grouping is not supported.)
-- No end-to-end security to translated device. Trust is between Edge and Pelion Device Management.
-- No bootstrapping for translated devices.
-- Registration on observation is not supported.
 
 ### Important note
 
