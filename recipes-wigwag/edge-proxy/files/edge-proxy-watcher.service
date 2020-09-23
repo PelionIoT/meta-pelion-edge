@@ -1,0 +1,9 @@
+[Unit]
+Description=edge-proxy restarter
+
+[Service]
+Type=oneshot
+ExecStart=/bin/systemctl restart edge-proxy.service
+
+[Install]
+WantedBy=network.target

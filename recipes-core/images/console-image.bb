@@ -152,7 +152,10 @@ WIGWAG_STUFF = " \
     deviceoswd \
     emacs \
     fftw \
+    edge-proxy \
     imagemagick \
+    kubelet \
+    tini \
     lcms \
     virtual/mbed-edge-core \
     mbed-edge-examples \

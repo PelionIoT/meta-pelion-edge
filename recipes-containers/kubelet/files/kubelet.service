@@ -1,0 +1,12 @@
+[Unit]
+Descritpion=Kubelet
+Requires=wait-for-pelion-identity.service
+Requires=edge-proxy.service
+
+[Service]
+Restart=always
+RestartSec=5
+ExecStart=/wigwag/system/bin/launch-kubelet.sh
+
+[Install]
+WantedBy=network.target

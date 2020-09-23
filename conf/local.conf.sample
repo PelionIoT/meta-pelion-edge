@@ -9,7 +9,7 @@ RPI_USE_U_BOOT = "1"
 #DISABLE_RPI_BOOT_LOGO = "1"
 #IMAGE_FEATURES_remove = "splash"
 
-DISTRO_FEATURES = "ext2 opengl usbhost ${DISTRO_FEATURES_LIBC}"
+DISTRO_FEATURES = "ext2 opengl usbhost ${DISTRO_FEATURES_LIBC} virtualization k8s"
 
 DISTRO_FEATURES_BACKFILL_CONSIDERED += "pulseaudio"
 
@@ -88,6 +88,9 @@ PREFERRED_PROVIDER_node = "nodejs"
 PREFERRED_VERSION_nodejs = "8.11.2"
 PREFERRED_VERSION_nodejs-native = "8.11.2"
 
+# force golang 1.14% compiler
+# from poky master branch (newer than dunfell) see file: tcmode-default.inc
+GOVERSION = "1.14%"
 PREFERRED_PROVIDER_openssl = "openssl10"
 PREFERRED_PROVIDER_openssl-native = "openssl10-native"
 PREFERRED_VERSION_openssl10 = "1.0.2%"
