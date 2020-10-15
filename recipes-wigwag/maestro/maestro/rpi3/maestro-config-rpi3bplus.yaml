@@ -46,8 +46,8 @@ var_defs:
    - key: "UPGRADE_VERSIONS_FILE"
      value: "/mnt/.overlay/upgrade/wigwag/etc/versions.json"
 devicedb_conn_config:
-    devicedb_uri: "https://{{ARCH_DEVICE_ID}}:9000" #default uri
-    devicedb_prefix: "maestro.configs" #default prefix
+    devicedb_uri: "http://localhost:{{LOCAL_DEVICEDB_PORT}}" #default uri
+    devicedb_prefix: "configs.device" #default prefix
     devicedb_bucket: "lww" #default bucket
     relay_id: "{{ARCH_DEVICE_ID}}" #default relay id  
 mdns:
