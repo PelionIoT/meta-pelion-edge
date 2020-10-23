@@ -14,7 +14,7 @@ PR = "r0"
 
 SRCREV = "dc3862efd6e7b3cbc6f10f34673c76e6fd968a3a"
 
-SRC_URI = "git://git@github.com/ARMmbed/factory-configurator-client-example.git;protocol=ssh;; \
+SRC_URI = "git://git@github.com/ARMmbed/factory-configurator-client-example.git;protocol=https;; \
 file://0001-fix-build-getting-cross-compiler-iface-setting-to-et.patch \
 "
 S = "${WORKDIR}/git"

@@ -12,7 +12,7 @@ SRCREV = "e06b5e28d6beb46577710331168a84687bb4b370"
 
 PR = "r0"
 
-SRC_URI="git://git@github.com/armPelionEdge/maestro-shell.git;protocol=ssh;"
+SRC_URI="git://git@github.com/armPelionEdge/maestro-shell.git;protocol=https;"
 S= "${WORKDIR}/git"
 GO_IMPORT = "github.com/armPelionEdge/maestro-shell"
 

@@ -8,8 +8,8 @@ PV = "1.0+git${SRCPV}"
 PKGV = "1.0+git${GITPKGV}"
 PR = "r6"
 
-SRC_URI="git://git@github.com/armPelionEdge/edge-node-modules.git;protocol=ssh"
-SRCREV = "122835410976f23b6694d925d993e72c50ced053"
+SRC_URI="git://git@github.com/armPelionEdge/edge-node-modules.git;protocol=https"
+SRCREV = "274f7bffe63af30fee6e765485bbd40a0a8456be"
 SRCREV_devjs_prod_tools = "9f795d20bc68b0a49f4e1b004429aed6ba073a4b"
 
 S = "${WORKDIR}/git"
@@ -42,13 +42,13 @@ do_configure() {
 		oe_runnpm_native install -g node-gyp@5.1.1
 	fi
 
-	echo -en "{\n\"devjs-configurator\": \"http://github.com/armPelionEdge/devjs-configurator#master\"\n}\n" > ${WORKDIR}/overrides.json
+	echo -en "{\n\"devjs-configurator\": \"https://github.com/armPelionEdge/devjs-configurator#master\"\n}\n" > ${WORKDIR}/overrides.json
 
 	#--------------------devjs-production-tools-----------------------------------------------------------
 	cd ${S}/../
 	if [[ ! -e devjs-production-tools ]]; then
 		echo "devjs-production-tools does not exist" >> /tmp/global-node-modules.log
-		git clone git@github.com:armPelionEdge/devjs-production-tools.git
+		git clone https://github.com/armPelionEdge/devjs-production-tools.git
 		git -C devjs-production-tools checkout ${SRCREV_devjs_prod_tools}
 	else
 		echo "devjs-production-tools exists, lets pull" >>/tmp/global-node-modules.log

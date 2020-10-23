@@ -13,7 +13,7 @@ PR = "r3"
 
 SRCREV = "937224c9eab964877b445da3522e144a7a2c58ac"
 
-SRC_URI = "git://git@github.com/armPelionEdge/tsb-c.git;protocol=ssh"
+SRC_URI = "git://git@github.com/armPelionEdge/tsb-c.git;protocol=https"
 
 S = "${WORKDIR}/git"
 
