@@ -12,7 +12,7 @@ MBED_EDGE_CORE_CONFIG_BYOC_MODE ?= "OFF"
 # Patches for quilt goes to files directory
 FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
 
-SRC_URI = "git://git@github.com/ARMmbed/mbed-edge.git;protocol=ssh; \
+SRC_URI = "git://git@github.com/ARMmbed/mbed-edge.git;protocol=https; \
            file://edge-core.init \
            file://edge-core.service \
            file://edge-core.logrotate \

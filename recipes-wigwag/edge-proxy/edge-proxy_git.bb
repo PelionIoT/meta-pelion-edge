@@ -5,7 +5,7 @@ LIC_FILES_CHKSUM = "file://src/${GO_IMPORT}/LICENSE;md5=86d3f3a95c324c9479bd8986
 inherit go pkgconfig gitpkgv systemd
 
 PR = "r0"
-SRC_URI = "git://git@github.com/armPelionEdge/edge-proxy.git;protocol=ssh;name=ep;depth=1 \
+SRC_URI = "git://git@github.com/armPelionEdge/edge-proxy.git;protocol=https;name=ep;depth=1 \
            file://edge-proxy.service \
            file://edge-proxy-watcher.service \
            file://edge-proxy.path \

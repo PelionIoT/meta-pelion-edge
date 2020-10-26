@@ -44,7 +44,7 @@ FILES_${PN} += "\
     ${systemd_system_unitdir}/maestro-watcher.path\
     "
 
-SRC_URI="git://git@github.com/armPelionEdge/maestro.git;protocol=ssh;;name=m \
+SRC_URI="git://git@github.com/armPelionEdge/maestro.git;protocol=https;;name=m \
 file://maestro.sh \
 file://maestro.service \
 file://maestro-watcher.service \

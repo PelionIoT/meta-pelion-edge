@@ -1,4 +1,9 @@
 # Changelog
+
+## Pelion Edge 2.1.0-1 - October 2020
+
+Updated package source file protocol from SSH to HTTPS.
+
 ## Pelion Edge 2.1.0 - September 2020
 
 The primary feature in this release is the addition of container orchestration:

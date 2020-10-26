@@ -4,9 +4,9 @@ LICENSE = "Apache-2.0"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=1dece7821bf3fd70fe1309eaa37d52a2"
 
 SRC_URI="\
-  git://git@github.com/armPelionEdge/edge-utils.git;protocol=ssh;name=wwrelay \
-  git://git@github.com/armPelionEdge/edgeos-shell-scripts.git;protocol=ssh;name=dss;destsuffix=git/dss \
-  git://git@github.com/armPelionEdge/node-i2c.git;protocol=ssh;name=node_i2c;destsuffix=git/tempI2C/node-i2c \
+  git://git@github.com/armPelionEdge/edge-utils.git;protocol=https;name=wwrelay \
+  git://git@github.com/armPelionEdge/edgeos-shell-scripts.git;protocol=https;name=dss;destsuffix=git/dss \
+  git://git@github.com/armPelionEdge/node-i2c.git;protocol=https;name=node_i2c;destsuffix=git/tempI2C/node-i2c \
   file://wwrelay \
   file://BUILDMMU.txt \
   file://wwrelay.service \
