@@ -1,0 +1,13 @@
+diff --git a/vendor/github.com/armPelionEdge/greasego/deps/src/greaseLib/deps/gperftools-2.4/src/stacktrace.cc b/vendor/github.com/armPelionEdge/greasego/deps/src/greaseLib/deps/gperftools-2.4/src/stacktrace.cc
+index 999863c..f458c16 100644
+--- a/src/github.com/armPelionEdge/maestro/vendor/github.com/armPelionEdge/greasego/deps/src/greaseLib/deps/gperftools-2.4/src/stacktrace.cc
++++ b/src/github.com/armPelionEdge/maestro/vendor/github.com/armPelionEdge/greasego/deps/src/greaseLib/deps/gperftools-2.4/src/stacktrace.cc
+@@ -123,7 +123,7 @@ struct GetStackImplementation {
+ #define HAVE_GST_ppc
+ #endif
+ 
+-#if defined(__arm__)
++#if defined(__arm__) || defined(__aarch64__)
+ #define STACKTRACE_INL_HEADER "stacktrace_arm-inl.h"
+ #define GST_SUFFIX arm
+ #include "stacktrace_impl_setup-inl.h"
