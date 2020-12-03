@@ -4,8 +4,8 @@ LICENSE = "Apache-2.0"
 LIC_FILES_CHKSUM = "file://src/${GO_IMPORT}/LICENSE;md5=1dece7821bf3fd70fe1309eaa37d52a2"
 
 
-DEPENDS = "deviceos-users"
-RDEPENDS_${PN} += "bash twlib"
+DEPENDS = "deviceos-users libuv"
+RDEPENDS_${PN} += "bash"
 
 GO_LINKSHARED = ""
 CGO_LDFLAGS = "-Lsrc/github.com/armPelionEdge/maestro/vendor/github.com/armPelionEdge/greasego/deps/lib"
