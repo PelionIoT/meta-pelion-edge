@@ -1,5 +1,6 @@
 SUMMARY = "A console development image with some C/C++ dev tools"
 
+IMAGE_FEATURES[validitems] += "tools-debug tools-sdk"
 IMAGE_FEATURES += "package-management splash"
 IMAGE_LINGUAS = "en-us"
 
