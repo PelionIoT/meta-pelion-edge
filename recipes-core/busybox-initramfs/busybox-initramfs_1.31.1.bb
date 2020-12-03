@@ -2,7 +2,7 @@ require busybox.inc
 
 S = "${WORKDIR}/busybox-${PV}"
 
-SRC_URI = "http://www.busybox.net/downloads/busybox-${PV}.tar.bz2;name=tarball \
+SRC_URI = "https://busybox.net/downloads/busybox-${PV}.tar.bz2;name=tarball \
            file://busybox-udhcpc-no_deconfig.patch \
            file://find-touchscreen.sh \
            file://busybox-cron \
@@ -11,7 +11,6 @@ SRC_URI = "http://www.busybox.net/downloads/busybox-${PV}.tar.bz2;name=tarball \
            file://default.script \
            file://simple.script \
            file://hwclock.sh \
-           file://mount.busybox \
            file://syslog \
            file://syslog-startup.conf \
            file://syslog.conf \
@@ -19,7 +18,6 @@ SRC_URI = "http://www.busybox.net/downloads/busybox-${PV}.tar.bz2;name=tarball \
            file://mdev \
            file://mdev.conf \
            file://mdev-mount.sh \
-           file://umount.busybox \
            file://defconfig \
            file://busybox-syslog.service.in \
            file://busybox-klogd.service.in \
@@ -39,13 +37,24 @@ SRC_URI = "http://www.busybox.net/downloads/busybox-${PV}.tar.bz2;name=tarball \
            ${@["", "file://init.cfg"][(d.getVar('VIRTUAL-RUNTIME_init_manager') == 'busybox')]} \
            ${@["", "file://mdev.cfg"][(d.getVar('VIRTUAL-RUNTIME_dev_manager') == 'busybox-mdev')]} \
            file://syslog.cfg \
-           file://inittab \
+           file://unicode.cfg \
            file://rcS \
            file://rcK \
            file://makefile-libbb-race.patch \
            file://initramfs_extras.cfg \
+           file://0001-testsuite-check-uudecode-before-using-it.patch \
+           file://0001-testsuite-use-www.example.org-for-wget-test-cases.patch \
+           file://0001-du-l-works-fix-to-use-145-instead-of-144.patch \
+           file://0001-date-Use-64-prefix-syscall-if-we-have-to.patch \
+           file://0001-time-Use-64-prefix-syscall-if-we-have-to.patch \
+           file://0003-runsv-Use-64-prefix-syscall-if-we-have-to.patch \
+           file://0001-Remove-syscall-wrappers-around-clock_gettime-closes-.patch \
+           file://0001-Remove-stime-function-calls.patch \
+           file://0001-sysctl-ignore-EIO-of-stable_secret-below-proc-sys-ne.patch \
+           file://busybox-CVE-2018-1000500.patch \
+           file://0001-hwclock-make-glibc-2.31-compatible.patch \
 "
 SRC_URI_append_libc-musl = " file://musl.cfg "
 
-SRC_URI[tarball.md5sum] = "0a367e19cdfd157e8258d87f893ee516"
-SRC_URI[tarball.sha256sum] = "97648636e579462296478e0218e65e4bc1e9cd69089a3b1aeb810bff7621efb7"
+SRC_URI[tarball.md5sum] = "70913edaf2263a157393af07565c17f0"
+SRC_URI[tarball.sha256sum] = "d0f940a72f648943c1f2211e0e3117387c31d765137d92bd8284a3fb9752a998"
