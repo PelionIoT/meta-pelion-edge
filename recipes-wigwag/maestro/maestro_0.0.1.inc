@@ -36,6 +36,8 @@ FILESEXTRAPATHS_prepend := "${THISDIR}/maestro:"
 FILES_${PN} += "\
     /wigwag/system/bin/*\
     /wigwag/system/lib/*\
+    ${libdir}/libgrease.so.1 \
+    ${bindir}/maestro \
     /${RUN_CONFIG_DIR}/*\
     /${TEMPLATE_CONFIG_DIR}/*\
     ${INIT_D_DIR}/*\
@@ -122,12 +124,17 @@ do_install() {
   install -d ${D}/${WSL}
   install -d ${D}/${INIT_D_DIR}
   install -d ${D}${systemd_system_unitdir}
+  install -d ${D}/${bindir}
+  install -d ${D}/${libdir}
   install -m 0755 ${WORKDIR}/maestro.sh ${D}${INIT_D_DIR}/maestro.sh
   install -m 0755 "${B}/${GO_BUILD_BINDIR}/maestro" "${D}/${WSB}"
+  ln -sf /${WSB}/maestro ${D}/${bindir}/maestro
   install -m 0755 "${B}/${CGREASE_SRC}/grease_echo" "${D}/${WSB}"
   install -m 0755 "${B}/${CGREASE_SRC}/standalone_test_logsink" "${D}/${WSB}"
   install -m 0755 -o deviceos -g deviceos ${B}/${GREASE_SRC}/deps/lib/libgrease.so ${D}/${WSL}
   install -m 0755 -o deviceos -g deviceos ${B}/${GREASE_SRC}/deps/lib/libgrease.so.1 ${D}/${WSL}
+  ln -sf ../../${WSL}/libgrease.so ${D}/${libdir}/libgrease.so.1
+
   install -m 0644 ${WORKDIR}/maestro.service ${D}${systemd_system_unitdir}/maestro.service
   install -m 0644 ${WORKDIR}/maestro-watcher.service ${D}${systemd_system_unitdir}/maestro-watcher.service
   install -m 0644 ${WORKDIR}/maestro-watcher.path ${D}${systemd_system_unitdir}/maestro-watcher.path
