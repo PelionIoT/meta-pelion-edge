@@ -89,10 +89,6 @@ EXTRA_TOOLS_INSTALL = " \
     jq \
 "
 
-RPI_STUFF = " \
-    userland \
-"
-
 EXTRA_WW = " \
 cmake \
 curl \
@@ -159,8 +155,6 @@ WIGWAG_STUFF = " \
     mbed-fcc \
     panic \
     pps-tools \
-    pwgen \
-    twlib \
     devicedb \
     maestro \
     deviceos-users \
@@ -172,7 +166,6 @@ IMAGE_INSTALL += " \
     ${DEV_SDK_INSTALL} \
     ${DEV_EXTRAS} \
     ${EXTRA_TOOLS_INSTALL} \
-    ${RPI_STUFF} \
     ${WIFI_SUPPORT} \
     ${BLUETOOTH_SUPPORT} \
     ${EXTRA_WW} \
