@@ -64,9 +64,10 @@ CGREASE_SRC = "${GREASE_SRC}/deps/src/greaseLib"
 
 do_configure_append() {
   # build dependencies of greaseGo
-  pushd ${GREASE_SRC}/deps/src/greaseLib/deps/
+  entry_dir=$(pwd)
+  cd ${GREASE_SRC}/deps/src/greaseLib/deps/
     export LD="${CXX}"
-    if [ "${TARGET_ARCH}" = "arm" ]; then
+    if [ "${TARGET_ARCH}" = "arm" ] || [ "${TARGET_ARCH}" = "aarch64" ] ; then
       CONFIG_OPTIONS="--host=arm ${ARCHFLAGS}"
     elif [ "${TARGET_ARCH}" = "x86_64" ]; then
       CONFIG_OPTIONS="--host=x64 ${ARCHFLAGS}"
@@ -75,18 +76,19 @@ do_configure_append() {
     fi
     export CONFIG_OPTIONS="${CONFIG_OPTIONS}"
     ./install-deps.sh
-  popd
+  cd $entry_dir
 
   # build greaseGo
-  pushd ${CGREASE_SRC}
+  cd ${CGREASE_SRC}
     rm -f *.o *.a
     make libgrease.a-server
     make libgrease.so.1
     make grease_echo
     make standalone_test_logsink
-  popd
+  cd $entry_dir
 
-  mkdir -p ${GREASE_SRC}/deps/{lib,include}
+  mkdir -p ${GREASE_SRC}/deps/lib
+  mkdir -p ${GREASE_SRC}/deps/include
 
   # migrate all of the greaseGo dependencies up to the folder Go will use
   cp -r ${CGREASE_SRC}/deps/build/lib/* ${GREASE_SRC}/deps/lib
@@ -94,21 +96,21 @@ do_configure_append() {
   cp ${CGREASE_SRC}/deps/libuv-v1.10.1/include/uv* ${GREASE_SRC}/deps/include
   cp ${CGREASE_SRC}/libgrease.so.1 ${GREASE_SRC}/deps/lib
   cp ${CGREASE_SRC}/*.h ${GREASE_SRC}/deps/include
-  pushd ${GREASE_SRC}/deps/lib
+  cd ${GREASE_SRC}/deps/lib
     ln -sf libgrease.so.1 libgrease.so
-  popd
+  cd $entry_dir
 
   # Build greaseGo bindings
-  pushd ${GREASE_SRC}
+  cd ${GREASE_SRC}
     DEBUG=1 ./build.sh preprocess_only
     rm -rf src
     make bindings.a
-  popd
+  cd $entry_dir
 
   # Put version information into 2 go files
-  pushd src/${GO_IMPORT}
+  cd src/${GO_IMPORT}
     ./build.sh preprocess_only
-  popd
+  cd $entry_dir
 }
 
 do_compile() {
