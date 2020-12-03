@@ -1,0 +1,29 @@
+--- git/arch/arm/dts/bcm2837-rpi-3-b.dts	2020-11-12 14:32:51.337943522 +0200
++++ git/arch/arm/dts/bcm2837-rpi-3-b.dts	2020-11-12 14:37:21.222919410 +0200
+@@ -127,26 +127,6 @@
+ 	hpd-gpios = <&expgpio 4 GPIO_ACTIVE_LOW>;
+ };
+ 
+-/* uart0 communicates with the BT module */
+-&uart0 {
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&uart0_gpio32 &gpclk2_gpio43>;
+-	status = "okay";
+-
+-	bluetooth {
+-		compatible = "brcm,bcm43438-bt";
+-		max-speed = <2000000>;
+-		shutdown-gpios = <&expgpio 0 GPIO_ACTIVE_HIGH>;
+-	};
+-};
+-
+-/* uart1 is mapped to the pin header */
+-&uart1 {
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&uart1_gpio14>;
+-	status = "okay";
+-};
+-
+ /* SDHCI is used to control the SDIO for wireless */
+ &sdhci {
+ 	#address-cells = <1>;
