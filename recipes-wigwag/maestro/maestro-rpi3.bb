@@ -11,6 +11,9 @@ SRC_URI += "file://maestro-config-rpi3bplus.yaml \
             file://devicedb.template.conf \
             file://radioProfile.template.json \
             file://relayTerm.template.json \
+            file://0001-aarch64-arm.patch \
+            file://0002-eventfd2.patch \
+            file://0003-build-with-autoconf.patch \
             "
 
 do_install_append() {
