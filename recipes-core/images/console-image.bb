@@ -52,7 +52,6 @@ DEV_SDK_INSTALL = " \
     libtool \
     ltrace \
     make \
-    nodejs \
     pkgconfig \
     python3-modules \
     strace \
@@ -148,9 +147,7 @@ xz \
 "
 
 WIGWAG_STUFF = " \
-    devicejs \
     deviceoswd \
-    emacs \
     fftw \
     edge-proxy \
     imagemagick \
@@ -159,9 +156,7 @@ WIGWAG_STUFF = " \
     lcms \
     virtual/mbed-edge-core \
     mbed-edge-examples \
-    mbed-devicejs-bridge \
     mbed-fcc \
-    node-hotplug \
     panic \
     pps-tools \
     pwgen \
@@ -169,17 +164,7 @@ WIGWAG_STUFF = " \
     devicedb \
     maestro \
     deviceos-users \
-    global-node-modules \
     wwrelay-utils \
-    relay-term \
-"
-
-OPENSSL_102 = " \
-    libcrypto10 \
-    libssl10 \
-    openssl10 \
-    openssl \
-    openssl-bin \
 "
 
 IMAGE_INSTALL += " \
@@ -192,7 +177,6 @@ IMAGE_INSTALL += " \
     ${BLUETOOTH_SUPPORT} \
     ${EXTRA_WW} \
     ${WIGWAG_STUFF} \
-    ${OPENSSL_102} \
     ${MACHINE_EXTRA_RRECOMMENDS} \
 "
 
