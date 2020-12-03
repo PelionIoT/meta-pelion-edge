@@ -9,7 +9,7 @@ Restart=on-failure
 RestartSec=5s
 RemainAfterExit=true
 Environment=NODE_PATH=/wigwag/devicejs-core-modules/node_modules
-ExecStart=/wigwag/wwrelay-utils/debug_scripts/create-new-eeprom-with-self-signed-certs.sh
+ExecStart=/wigwag/wwrelay-utils/identity-tools/generate-identity.sh 9101 /userdata/edge_gw_config
 
 [Install]
 WantedBy=network.target
