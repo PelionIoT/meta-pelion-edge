@@ -14,9 +14,10 @@ SRC_URI="git://git@github.com/armPelionEdge/rallypointwatchdogs.git;protocol=htt
 GO_IMPORT = "github.com/armPelionEdge/rallypointwatchdogs"
 
 do_compile() {
-  pushd src/${GO_IMPORT}
+  entry_dir=$(pwd)
+  cd src/${GO_IMPORT}
    ./build.sh
-  popd
+  cd $entry_dir
 }
 
 WLIB="/wigwag/system/lib"
