@@ -9,16 +9,7 @@ watchdog:
     opt1: "/var/deviceOSkeepalive"
     opt2: "30"
 network:
-    interfaces:
-        - if_name: eth0
-          clear_addresses: true
-          dhcpv4: true
-          # set the mac addresses for this interface also:
-          hw_addr: "{{ARCH_ETHERNET_MAC}}"
-        - if_name: wlan0
-          clear_addresses: true
-          dhcpv4: true
-          hw_addr: "{{ARCH_ETHERNET_MAC}}"
+    disable: true
 processes:
     reaper_interval: 1500
 platform_readers:
