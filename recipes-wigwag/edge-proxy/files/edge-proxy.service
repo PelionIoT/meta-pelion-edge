@@ -1,5 +1,5 @@
 [Unit]
-Descritpion=Tunneling Proxy for gateways
+Description=Tunneling Proxy for gateways
 Requires=wait-for-pelion-identity.service
 After=wait-for-pelion-identity.service
 

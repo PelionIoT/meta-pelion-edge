@@ -1,5 +1,6 @@
 SUMMARY = "A console development image with some C/C++ dev tools"
 
+IMAGE_FEATURES[validitems] += "tools-debug tools-sdk"
 IMAGE_FEATURES += "package-management splash"
 IMAGE_LINGUAS = "en-us"
 
@@ -52,7 +53,6 @@ DEV_SDK_INSTALL = " \
     libtool \
     ltrace \
     make \
-    nodejs \
     pkgconfig \
     python3-modules \
     strace \
@@ -90,10 +90,6 @@ EXTRA_TOOLS_INSTALL = " \
     jq \
 "
 
-RPI_STUFF = " \
-    userland \
-"
-
 EXTRA_WW = " \
 cmake \
 curl \
@@ -125,18 +121,16 @@ ncurses-dev \
 perl \
 parted \
 ppp \
-python-pip \
+python3-pip \
 python3 \
 readline \
 rsync \
 screen \
 setserial \
 socat \
-start-stop-daemon \
 sysstat \
 tmux \
 update-rc.d \
-usb-modeswitch \
 usbutils \
 util-linux-agetty \
 util-linux-bash-completion \
@@ -148,9 +142,7 @@ xz \
 "
 
 WIGWAG_STUFF = " \
-    devicejs \
     deviceoswd \
-    emacs \
     fftw \
     edge-proxy \
     imagemagick \
@@ -159,27 +151,13 @@ WIGWAG_STUFF = " \
     lcms \
     virtual/mbed-edge-core \
     mbed-edge-examples \
-    mbed-devicejs-bridge \
     mbed-fcc \
-    node-hotplug \
     panic \
     pps-tools \
-    pwgen \
-    twlib \
     devicedb \
     maestro \
     deviceos-users \
-    global-node-modules \
     wwrelay-utils \
-    relay-term \
-"
-
-OPENSSL_102 = " \
-    libcrypto10 \
-    libssl10 \
-    openssl10 \
-    openssl \
-    openssl-bin \
 "
 
 IMAGE_INSTALL += " \
@@ -187,12 +165,10 @@ IMAGE_INSTALL += " \
     ${DEV_SDK_INSTALL} \
     ${DEV_EXTRAS} \
     ${EXTRA_TOOLS_INSTALL} \
-    ${RPI_STUFF} \
     ${WIFI_SUPPORT} \
     ${BLUETOOTH_SUPPORT} \
     ${EXTRA_WW} \
     ${WIGWAG_STUFF} \
-    ${OPENSSL_102} \
     ${MACHINE_EXTRA_RRECOMMENDS} \
 "
 

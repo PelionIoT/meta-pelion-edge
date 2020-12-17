@@ -4,10 +4,6 @@ linuxKernelLog: true
 httpUnixSocket: /tmp/maestroapi.sock
 configDBPath: /userdata/etc/maestroConfig.db
 clientId: "{{ARCH_SERIAL_NUMBER}}"
-watchdog:
-    path: "/wigwag/system/lib/rp100wd.so"
-    opt1: "/var/deviceOSkeepalive"
-    opt2: "30"
 network:
     disable: true
 processes:
@@ -117,18 +113,9 @@ targets:
        - levels: error
          format_pre: "{"     # you will wrap this output with { "log": [ OUTPUT ] }
 static_file_generators:
-   - name: "devicejs"
-     template_file: "/wigwag/etc/template/devicejs.template.conf"
-     output_file: "/wigwag/etc/devicejs/devicejs.conf"
    - name: "devicedb"
      template_file: "/wigwag/etc/template/devicedb.template.conf"
      output_file: "/wigwag/etc/devicejs/devicedb.yaml"
-   - name: "relayTerm"
-     template_file: "/wigwag/etc/template/relayTerm.template.json"
-     output_file: "/wigwag/wigwag-core-modules/relay-term/config/config.json"
-   - name: "radioProfile"
-     template_file: "/wigwag/etc/template/radioProfile.template.json"
-     output_file: "/wigwag/devicejs-core-modules/rsmi/radioProfile.config.json"
    - name: "ca_pem"
      template: "{{ARCH_CA_CERT_PEM}}"
      output_file: "{{SSL_CERTS_PATH}}/ca.cert.pem"
@@ -160,7 +147,7 @@ container_templates:
      die_on_parent_death: true
      inherit_env: true
      add_env:
-        - "LD_PRELOAD=/usr/lib/libcrypto.so.1.0.2"
+        - "LD_PRELOAD=/usr/lib/libcrypto.so.1.1"
         - "DEVJS_ROOT={{DEVICEJS_ROOT}}"
         - "DEVJS_CONFIG_FILE=/wigwag/etc/devicejs/devicejs.conf"
         - "NODE_PATH={{WIGWAG_NODE_PATH}}"
@@ -184,7 +171,7 @@ container_templates:
      die_on_parent_death: true
      inherit_env: true
      add_env:
-        - "LD_PRELOAD=/usr/lib/libcrypto.so.1.0.2"
+        - "LD_PRELOAD=/usr/lib/libcrypto.so.1.1"
         - "DEVJS_ROOT={{DEVICEJS_ROOT}}"
         - "DEVJS_CONFIG_FILE=/wigwag/etc/devicejs/devicejs.conf"
         - "NODE_PATH={{WIGWAG_NODE_PATH}}"

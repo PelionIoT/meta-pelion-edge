@@ -1,5 +1,5 @@
 [Unit]
-Descritpion=Maestro: Network, Config, DeviceJS manager
+Description=Maestro: Network, Config, DeviceJS manager
 
 [Service]
 Restart=always

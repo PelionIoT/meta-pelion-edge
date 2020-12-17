@@ -4,8 +4,8 @@ LICENSE = "Apache-2.0"
 LIC_FILES_CHKSUM = "file://src/${GO_IMPORT}/LICENSE;md5=1dece7821bf3fd70fe1309eaa37d52a2"
 
 
-DEPENDS = "deviceos-users"
-RDEPENDS_${PN} += "bash twlib"
+DEPENDS = "deviceos-users libuv"
+RDEPENDS_${PN} += "bash"
 
 GO_LINKSHARED = ""
 CGO_LDFLAGS = "-Lsrc/github.com/armPelionEdge/maestro/vendor/github.com/armPelionEdge/greasego/deps/lib"
@@ -36,6 +36,8 @@ FILESEXTRAPATHS_prepend := "${THISDIR}/maestro:"
 FILES_${PN} += "\
     /wigwag/system/bin/*\
     /wigwag/system/lib/*\
+    ${libdir}/libgrease.so.1 \
+    ${bindir}/maestro \
     /${RUN_CONFIG_DIR}/*\
     /${TEMPLATE_CONFIG_DIR}/*\
     ${INIT_D_DIR}/*\
@@ -62,9 +64,10 @@ CGREASE_SRC = "${GREASE_SRC}/deps/src/greaseLib"
 
 do_configure_append() {
   # build dependencies of greaseGo
-  pushd ${GREASE_SRC}/deps/src/greaseLib/deps/
+  entry_dir=$(pwd)
+  cd ${GREASE_SRC}/deps/src/greaseLib/deps/
     export LD="${CXX}"
-    if [ "${TARGET_ARCH}" = "arm" ]; then
+    if [ "${TARGET_ARCH}" = "arm" ] || [ "${TARGET_ARCH}" = "aarch64" ] ; then
       CONFIG_OPTIONS="--host=arm ${ARCHFLAGS}"
     elif [ "${TARGET_ARCH}" = "x86_64" ]; then
       CONFIG_OPTIONS="--host=x64 ${ARCHFLAGS}"
@@ -73,18 +76,19 @@ do_configure_append() {
     fi
     export CONFIG_OPTIONS="${CONFIG_OPTIONS}"
     ./install-deps.sh
-  popd
+  cd $entry_dir
 
   # build greaseGo
-  pushd ${CGREASE_SRC}
+  cd ${CGREASE_SRC}
     rm -f *.o *.a
     make libgrease.a-server
     make libgrease.so.1
     make grease_echo
     make standalone_test_logsink
-  popd
+  cd $entry_dir
 
-  mkdir -p ${GREASE_SRC}/deps/{lib,include}
+  mkdir -p ${GREASE_SRC}/deps/lib
+  mkdir -p ${GREASE_SRC}/deps/include
 
   # migrate all of the greaseGo dependencies up to the folder Go will use
   cp -r ${CGREASE_SRC}/deps/build/lib/* ${GREASE_SRC}/deps/lib
@@ -92,21 +96,21 @@ do_configure_append() {
   cp ${CGREASE_SRC}/deps/libuv-v1.10.1/include/uv* ${GREASE_SRC}/deps/include
   cp ${CGREASE_SRC}/libgrease.so.1 ${GREASE_SRC}/deps/lib
   cp ${CGREASE_SRC}/*.h ${GREASE_SRC}/deps/include
-  pushd ${GREASE_SRC}/deps/lib
+  cd ${GREASE_SRC}/deps/lib
     ln -sf libgrease.so.1 libgrease.so
-  popd
+  cd $entry_dir
 
   # Build greaseGo bindings
-  pushd ${GREASE_SRC}
+  cd ${GREASE_SRC}
     DEBUG=1 ./build.sh preprocess_only
     rm -rf src
     make bindings.a
-  popd
+  cd $entry_dir
 
   # Put version information into 2 go files
-  pushd src/${GO_IMPORT}
+  cd src/${GO_IMPORT}
     ./build.sh preprocess_only
-  popd
+  cd $entry_dir
 }
 
 do_compile() {
@@ -122,12 +126,17 @@ do_install() {
   install -d ${D}/${WSL}
   install -d ${D}/${INIT_D_DIR}
   install -d ${D}${systemd_system_unitdir}
+  install -d ${D}/${bindir}
+  install -d ${D}/${libdir}
   install -m 0755 ${WORKDIR}/maestro.sh ${D}${INIT_D_DIR}/maestro.sh
   install -m 0755 "${B}/${GO_BUILD_BINDIR}/maestro" "${D}/${WSB}"
+  ln -sf /${WSB}/maestro ${D}/${bindir}/maestro
   install -m 0755 "${B}/${CGREASE_SRC}/grease_echo" "${D}/${WSB}"
   install -m 0755 "${B}/${CGREASE_SRC}/standalone_test_logsink" "${D}/${WSB}"
   install -m 0755 -o deviceos -g deviceos ${B}/${GREASE_SRC}/deps/lib/libgrease.so ${D}/${WSL}
   install -m 0755 -o deviceos -g deviceos ${B}/${GREASE_SRC}/deps/lib/libgrease.so.1 ${D}/${WSL}
+  ln -sf ../../${WSL}/libgrease.so ${D}/${libdir}/libgrease.so.1
+
   install -m 0644 ${WORKDIR}/maestro.service ${D}${systemd_system_unitdir}/maestro.service
   install -m 0644 ${WORKDIR}/maestro-watcher.service ${D}${systemd_system_unitdir}/maestro-watcher.service
   install -m 0644 ${WORKDIR}/maestro-watcher.path ${D}${systemd_system_unitdir}/maestro-watcher.path

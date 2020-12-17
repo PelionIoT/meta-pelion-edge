@@ -20,4 +20,5 @@ BBLAYERS ?= " \
     ##OEROOT##/meta-raspberrypi \
     ##OEROOT##/meta-security \
     ##OEROOT##/meta-nodejs \
+    ##OEROOT##/meta-mbed-edge \
 "
