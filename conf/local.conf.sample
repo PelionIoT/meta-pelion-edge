@@ -83,14 +83,7 @@ EXTRA_USERS_PARAMS = "usermod -P redmbed root; "
 INHERIT += "chageusers"
 CHAGE_USERS_PARAMS = "chage -d0 root; "
 
-PREFERRED_PROVIDER_node-native = "nodejs-native"
-PREFERRED_PROVIDER_node = "nodejs"
-PREFERRED_VERSION_nodejs = "8.11.2"
-PREFERRED_VERSION_nodejs-native = "8.11.2"
 
-PREFERRED_PROVIDER_openssl = "openssl10"
-PREFERRED_PROVIDER_openssl-native = "openssl10-native"
-PREFERRED_VERSION_openssl10 = "1.0.2%"
 
 USER_CLASSES = "image-mklibs image-prelink"
 PATCHRESOLVE = "noop"
