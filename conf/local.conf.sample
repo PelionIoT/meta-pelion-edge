@@ -88,9 +88,6 @@ PREFERRED_PROVIDER_node = "nodejs"
 PREFERRED_VERSION_nodejs = "8.11.2"
 PREFERRED_VERSION_nodejs-native = "8.11.2"
 
-# force golang 1.14% compiler
-# from poky master branch (newer than dunfell) see file: tcmode-default.inc
-GOVERSION = "1.14%"
 PREFERRED_PROVIDER_openssl = "openssl10"
 PREFERRED_PROVIDER_openssl-native = "openssl10-native"
 PREFERRED_VERSION_openssl10 = "1.0.2%"
