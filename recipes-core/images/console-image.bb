@@ -150,7 +150,6 @@ WIGWAG_STUFF = " \
     mbed-edge-examples \
     mbed-fcc \
     panic \
-    pps-tools \
     devicedb \
     maestro \
     deviceos-users \
