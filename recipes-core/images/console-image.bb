@@ -146,7 +146,6 @@ WIGWAG_STUFF = " \
     imagemagick \
     kubelet \
     tini \
-    lcms \
     virtual/mbed-edge-core \
     mbed-edge-examples \
     mbed-fcc \
