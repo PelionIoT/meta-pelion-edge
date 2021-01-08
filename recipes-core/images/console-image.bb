@@ -142,7 +142,6 @@ xz \
 "
 
 WIGWAG_STUFF = " \
-    fftw \
     edge-proxy \
     imagemagick \
     kubelet \
