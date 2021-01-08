@@ -142,7 +142,6 @@ xz \
 "
 
 WIGWAG_STUFF = " \
-    deviceoswd \
     fftw \
     edge-proxy \
     imagemagick \
