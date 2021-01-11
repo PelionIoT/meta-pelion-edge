@@ -1,0 +1,9 @@
+[Unit]
+Description=Monitor the changes to identity.json file and restart relay-term
+
+[Path]
+PathChanged=/etc/td-agent-bit/td-agent-bit.conf
+Unit=td-agent-bit-watcher.service
+
+[Install]
+WantedBy=network.target
