@@ -142,18 +142,14 @@ xz \
 "
 
 WIGWAG_STUFF = " \
-    deviceoswd \
-    fftw \
     edge-proxy \
     imagemagick \
     kubelet \
     tini \
-    lcms \
     virtual/mbed-edge-core \
     mbed-edge-examples \
     mbed-fcc \
     panic \
-    pps-tools \
     devicedb \
     maestro \
     deviceos-users \
