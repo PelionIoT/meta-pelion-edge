@@ -29,10 +29,10 @@ var_defs:
      value: "/wigwag/devicejs-ng"
    - key: "DEVJS_CORE_MODULES"
      value: "/wigwag/devicejs-core-modules"
+   - key: "FOG_PROXY_ADDR"
+     value: "gateways.local:8080"
    - key: "MAESTRO_RUNNER_DIR"
      value: "/wigwag/devicejs-core-modules/maestroRunner"
-   - key: "SSL_CERTS_PATH"
-     value: "/userdata/edge_gw_config/.ssl"
    - key: "LOCAL_DEVICEDB_PORT"
      value: 9000
    - key: "LOCAL_DATABASE_STORAGE_DIRECTORY"
@@ -46,11 +46,10 @@ var_defs:
    - key: "UPGRADE_VERSIONS_FILE"
      value: "/mnt/.overlay/upgrade/wigwag/etc/versions.json"
 devicedb_conn_config:
-    devicedb_uri: "https://{{ARCH_DEVICE_ID}}:9000" #default uri
-    devicedb_prefix: "maestro.configs" #default prefix
+    devicedb_uri: "http://localhost:{{LOCAL_DEVICEDB_PORT}}" #default uri
+    devicedb_prefix: "configs.device" #default prefix
     devicedb_bucket: "lww" #default bucket
-    relay_id: "{{ARCH_DEVICE_ID}}" #default relay id
-    ca_chain: "{{SSL_CERTS_PATH}}/ca-chain.cert.pem" #default chain cert file name     
+    relay_id: "{{ARCH_DEVICE_ID}}" #default relay id  
 mdns:
   # disable: true
   static_records:
@@ -78,11 +77,13 @@ symphony:
     disable_sys_stats: true
     sys_stats_count_threshold: 15     # send if you have 15 or more stats queued
     sys_stats_time_threshold: 120000  # every 120 seconds send stuff, no matter what
-    client_cert: "{{ARCH_CLIENT_CERT_PEM}}"
-    client_key: "{{ARCH_CLIENT_KEY_PEM}}"
-    host: "{{ARCH_GW_SERVICES_RESRC}}"
-    url_logs: "{{ARCH_GW_SERVICES_URL}}/relay-logs/logs"
-    url_stats: "{{ARCH_GW_SERVICES_URL}}/relay-stats/stats_obj"
+    #client_cert: "{{ARCH_CLIENT_CERT_PEM}}"
+    #client_key: "{{ARCH_CLIENT_KEY_PEM}}"
+    no_tls: true
+    host: "gateways.local"
+    url_logs: "http://{{FOG_PROXY_ADDR}}/relay-logs/logs"
+    url_stats: "http://{{FOG_PROXY_ADDR}}/relay-stats/stats_obj"
+    send_time_threshold: 120000       # set the send time threshold to 2 minutes
     # port: "{{ARCH_RELAY_SERVICES_PORT}}"
 targets:
    - file: "/wigwag/log/devicejs.log"
@@ -129,27 +130,6 @@ static_file_generators:
    - name: "radioProfile"
      template_file: "/wigwag/etc/template/radioProfile.template.json"
      output_file: "/wigwag/devicejs-core-modules/rsmi/radioProfile.config.json"
-   - name: "ca_pem"
-     template: "{{ARCH_CA_CERT_PEM}}"
-     output_file: "{{SSL_CERTS_PATH}}/ca.cert.pem"
-   - name: "intermediate_pem"
-     template: "{{ARCH_INTERMEDIATE_CERT_PEM}}"
-     output_file: "{{SSL_CERTS_PATH}}/intermediate.cert.pem"
-   - name: "client_key"
-     template: "{{ARCH_CLIENT_KEY_PEM}}"
-     output_file: "{{SSL_CERTS_PATH}}/client.key.pem"
-   - name: "client_cert"
-     template: "{{ARCH_CLIENT_CERT_PEM}}"
-     output_file: "{{SSL_CERTS_PATH}}/client.cert.pem"
-   - name: "server_key"
-     template: "{{ARCH_SERVER_KEY_PEM}}"
-     output_file: "{{SSL_CERTS_PATH}}/server.key.pem"
-   - name: "server_cert"
-     template: "{{ARCH_SERVER_CERT_PEM}}"
-     output_file: "{{SSL_CERTS_PATH}}/server.cert.pem"
-   - name: "ca_chain"
-     template: "{{ARCH_CA_CHAIN_CERT_PEM}}"
-     output_file: "{{SSL_CERTS_PATH}}/ca-chain.cert.pem"
 container_templates:
    - name: "deviceJS_process"
      immutable: true  # don't store in DB

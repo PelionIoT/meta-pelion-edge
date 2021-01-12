@@ -1,6 +1,6 @@
 {
-	"cloud": "{{ARCH_GW_SERVICES_URL}}/relay-term",
+	"cloud": "http://{{FOG_PROXY_ADDR}}/relay-term",
 	"noValidate": true,
-	"certificate": "{{SSL_CERTS_PATH}}/client.cert.pem",
-	"key": "{{SSL_CERTS_PATH}}/client.key.pem"
+	"certificate": "",
+	"key": ""
 }
