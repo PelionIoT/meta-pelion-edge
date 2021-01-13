@@ -1,7 +1,0 @@
---- a/etc/profile.d/wigwagpath.sh	2020-10-22 14:50:56.168080502 +0300
-+++ b/etc/profile.d/wigwagpath.sh	2020-10-22 14:53:08.820560164 +0300
-@@ -35,4 +35,3 @@ export LD_PRELOAD="/usr/lib/libcrypto.so
- export PATH="/wigwag/system/bin:/wigwag/system/lib:/wigwag/system/lib/bash:$PATH"
- export LD_LIBRARY_PATH="/wigwag/system/lib:/wigwag/system/lib/bash:$LD_LIBRARY_PATH"
- export BASHLIBS="/wigwag/system/lib/bash/:$BASHLIBS"
--export PYTHONHOME="/usr/lib/python2.7/"

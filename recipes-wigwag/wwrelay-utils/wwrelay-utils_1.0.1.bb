@@ -8,8 +8,6 @@ SRC_URI="\
   git://git@github.com/armPelionEdge/edgeos-shell-scripts.git;protocol=https;name=dss;destsuffix=git/dss \
   git://git@github.com/armPelionEdge/node-i2c.git;protocol=https;name=node_i2c;destsuffix=git/tempI2C/node-i2c \
   git://git@github.com/armPelionEdge/pe-utils.git;protocol=ssh;name=pe-utils;destsuffix=git/pe-utils \
-  file://ld_preload.patch \
-  file://pythonhome.patch \
   file://BUILDMMU.txt \
   file://wait-for-pelion-identity.service \
   file://do-post-upgrade.service \
@@ -17,7 +15,7 @@ SRC_URI="\
 "
 
 SRCREV_FORMAT = "wwrelay-dss"
-SRCREV_wwrelay = "7020d6bd0d3a486299d33e20be3f11b61372ebeb"
+SRCREV_wwrelay = "7c0339f63c3cd0c6d53787b730d1c0693445037c"
 SRCREV_dss = "04db833a43b80ecdfae07fd388bbe4e242771f38"
 SRCREV_node_i2c = "511b1f0beae55bd9067537b199d52381f6ac3e01"
 SRCREV_pe-utils = "a712d9f0f01bec9a9aa70dda7153cff2f2ba1f3f"
