@@ -19,10 +19,16 @@
 
 EDGE_K8S_ADDRESS=$(jq -r .edgek8sServicesAddress /userdata/edge_gw_config/identity.json)
 GATEWAYS_ADDRESS=$(jq -r .gatewayServicesAddress /userdata/edge_gw_config/identity.json)
+DEVICE_ID=$(jq -r .deviceID ${SNAP_DATA}/userdata/edge_gw_identity/identity.json)
 EDGE_PROXY_URI_RELATIVE_PATH=$(jq -r .edge_proxy_uri_relative_path /wigwag/etc/edge-proxy.conf.json)
 
+if ! grep -q "gateways.local" /etc/hosts; then
+    echo "127.0.0.1 gateways.local" >> /etc/hosts
+fi
 
-
+if ! grep -q "$DEVICE_ID" /etc/hosts; then
+    echo "127.0.0.1 $DEVICE_ID" >> /etc/hosts
+fi
 
 exec /wigwag/system/bin/edge-proxy \
 -proxy-uri=${EDGE_K8S_ADDRESS} \
