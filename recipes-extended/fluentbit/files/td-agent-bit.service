@@ -1,0 +1,10 @@
+[Unit]
+Description=fast log collector
+
+[Service]
+Restart=always
+RestartSec=5s
+ExecStart=/usr/bin/td-agent-bit -c /etc/td-agent-bit/td-agent-bit.conf
+
+[Install]
+WantedBy=network.target
