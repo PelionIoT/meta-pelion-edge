@@ -16,9 +16,11 @@ FILES_${PN} += "\
     ${systemd_system_unitdir}/${FB_PKG_NAME}-watcher.service\
     ${systemd_system_unitdir}/${FB_PKG_NAME}.path\
     "
-SRC_URI += "file://${FB_PKG_NAME}.conf \
-file://${FB_PKG_NAME}-watcher.service \
-file://${FB_PKG_NAME}.path"
+
+SRC_URI = "http://fluentbit.io/releases/1.3/fluent-bit-${PV}.tar.gz \
+            file://${FB_PKG_NAME}.conf \
+            file://${FB_PKG_NAME}-watcher.service \
+            file://${FB_PKG_NAME}.path"
 
 SYSTEMD_PACKAGES = "${PN}"
 SYSTEMD_SERVICE_${PN} += "${FB_PKG_NAME}-watcher.service \
