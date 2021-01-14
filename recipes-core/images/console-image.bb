@@ -155,6 +155,7 @@ WIGWAG_STUFF = " \
     deviceos-users \
     wwrelay-utils \
     fluentbit \
+    relay-term \
 "
 
 IMAGE_INSTALL += " \
