@@ -110,7 +110,6 @@ do_install() {
 	install -d ${D}/userdata
 	install -d ${D}/upgrades
 	install -d ${D}/etc
-	install -d ${D}/etc/profile.d
 	install -d ${D}/etc/modprobe.d
 	install -d ${D}/etc/network
 	install -d ${D}/etc/udev
@@ -118,7 +117,6 @@ do_install() {
   install -d ${D}/wigwag/system/bin
 	do_dirInstall ${S}/wigwag/ ${D}/wigwag/
 	install -m 0755 ${S}/etc/modprobe.d/at24.conf ${D}/etc/modprobe.d/at24.conf
-	install -m 0755 ${S}/etc/profile.d/wigwagpath.sh ${D}/etc/profile.d/wigwagpath.sh
 
 # Install systemd units
   install -d ${D}${systemd_system_unitdir}
