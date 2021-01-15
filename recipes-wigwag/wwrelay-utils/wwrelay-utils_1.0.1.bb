@@ -110,7 +110,6 @@ do_install() {
 	install -d ${D}/userdata
 	install -d ${D}/upgrades
 	install -d ${D}/etc
-	install -d ${D}/etc/dnsmasq.d
 	install -d ${D}/etc/profile.d
 	install -d ${D}/etc/modprobe.d
 	install -d ${D}/etc/network
@@ -118,8 +117,6 @@ do_install() {
 	install -d ${D}/etc/udev/rules.d
   install -d ${D}/wigwag/system/bin
 	do_dirInstall ${S}/wigwag/ ${D}/wigwag/
-	install -m 0755 ${S}/etc/dnsmasq.conf ${D}/etc/dnsmasq.conf
-	install -m 0755 ${S}/etc/dnsmasq.d/dnsmasq.conf ${D}/etc/dnsmasq.d/dnsmasq.conf
 	install -m 0755 ${S}/etc/modprobe.d/at24.conf ${D}/etc/modprobe.d/at24.conf
 	install -m 0755 ${S}/etc/profile.d/wigwagpath.sh ${D}/etc/profile.d/wigwagpath.sh
 
