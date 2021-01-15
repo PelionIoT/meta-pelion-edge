@@ -43,4 +43,12 @@ do_install() {
 
     install -d ${D}/wigwag/wigwag-core-modules
     cp -r ${S} ${D}/wigwag/wigwag-core-modules/relay-term
+
+    # Reference - https://www.yoctoproject.org/docs/3.0.1/dev-manual/dev-manual.html#npm-package-creation-requirements
+    # devtool cannot detect native libraries in module dependencies. Consequently, you must manually add packages to your recipe.
+    # While deploying NPM packages, devtool cannot determine which dependent packages are missing on the target (e.g. the node runtime nodejs).
+    # Consequently, you need to find out what files are missing and be sure they are on the target.
+
+    install -d ${D}/wigwag/wigwag-core-modules/relay-term/node_modules/node-pty/build
+    cp -r ${S}/../../npm-build/lib/node_modules/relay-term/node_modules/node-pty/build/* ${D}/wigwag/wigwag-core-modules/relay-term/node_modules/node-pty/build/
 }
