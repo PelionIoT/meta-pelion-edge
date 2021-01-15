@@ -2,7 +2,7 @@
 Description=Monitor the changes to identity.json file and restart relay-term
 
 [Path]
-PathChanged=/userdata/edge_gw_config/.ssl/client.cert.pem
+PathChanged=/wigwag/wigwag-core-modules/relay-term/config/config.json
 Unit=relay-term-watcher.service
 
 [Install]
