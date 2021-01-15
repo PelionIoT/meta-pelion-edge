@@ -54,7 +54,7 @@ file://maestro-watcher.path \
 "
 
 SRCREV_FORMAT="m"
-SRCREV_m="458a91f7278e8431ab446c3b751500e2b390c262"
+SRCREV_m="fefa83bfe64f3505f043c73302aef337215b07f8"
 
 GO_IMPORT = "github.com/armPelionEdge/maestro"
 
