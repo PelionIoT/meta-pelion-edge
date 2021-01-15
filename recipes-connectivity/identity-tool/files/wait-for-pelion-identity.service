@@ -8,7 +8,6 @@ Before=edge-proxy.service
 Restart=on-failure
 RestartSec=5s
 RemainAfterExit=true
-Environment=NODE_PATH=/wigwag/devicejs-core-modules/node_modules
 ExecStart=/wigwag/wwrelay-utils/identity-tools/generate-identity.sh 9101 /userdata/edge_gw_config
 
 [Install]
