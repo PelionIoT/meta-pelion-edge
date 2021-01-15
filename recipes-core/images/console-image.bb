@@ -154,6 +154,7 @@ WIGWAG_STUFF = " \
     maestro \
     deviceos-users \
     wwrelay-utils \
+    fluentbit \
 "
 
 IMAGE_INSTALL += " \
