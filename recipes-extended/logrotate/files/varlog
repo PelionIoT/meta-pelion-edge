@@ -1,0 +1,33 @@
+/var/log/syslog
+/var/log/auth.log {
+        rotate 5
+        daily
+        size 2M
+        nodateext
+}
+
+/var/log/daemon.log
+/var/log/debug {
+        rotate 0
+        daily
+        size 50K
+        nodateext
+}
+
+/var/log/boot
+/var/log/dmesg
+/var/log/kern.log
+/var/log/lastlog
+/var/log/lpr.log
+/var/log/mail*
+/var/log/messages
+/var/log/news*
+/var/log/oom.log
+/var/log/panic.log
+/var/log/sqa.log
+/var/log/user.log {
+        rotate 5
+        daily
+        size 50K
+        nodateext
+}
