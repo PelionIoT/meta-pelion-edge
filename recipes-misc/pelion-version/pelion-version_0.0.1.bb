@@ -9,6 +9,13 @@ PR = "r0"
 
 S = "${WORKDIR}"
 
+FILES_${PN} = " \
+/wigwag \
+/wigwag/wwrelay-utils \
+/wigwag/wwrelay-utils/conf \
+/wigwag/etc \
+"
+
 do_compile() {
 	BUILDMMU=$(cat ${S}/BUILDMMU.txt)
 	VER_FILE=${S}/version.json
@@ -35,5 +42,4 @@ do_install() {
 	install -m 0755 ${S}/version.json ${D}/wigwag/etc/versions.json
 }
 
-FILES_${PN} = "${sysconfdir}"
 
