@@ -20,7 +20,7 @@ file://${BPN}-watcher.service \
 file://${BPN}-watcher.path \
 "
 
-SRCREV = "b72acd69a13c4cb474e6ff96eb78bb9de7e99c45"
+SRCREV = "784f5aa18c70c257ef965bdc64aa560833ec7f53"
 
 inherit pkgconfig systemd npm
 
