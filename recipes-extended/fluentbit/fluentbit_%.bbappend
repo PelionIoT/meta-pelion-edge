@@ -18,12 +18,14 @@ FILES_${PN} += "\
     "
 
 SRC_URI = "http://fluentbit.io/releases/1.3/fluent-bit-${PV}.tar.gz \
+            file://${FB_PKG_NAME}.service \
             file://${FB_PKG_NAME}.conf \
             file://${FB_PKG_NAME}-watcher.service \
             file://${FB_PKG_NAME}.path"
 
 SYSTEMD_PACKAGES = "${PN}"
-SYSTEMD_SERVICE_${PN} += "${FB_PKG_NAME}-watcher.service \
+SYSTEMD_SERVICE_${PN} = "${FB_PKG_NAME}.service \
+${FB_PKG_NAME}-watcher.service \
 ${FB_PKG_NAME}.path"
 
 do_install_append() {
@@ -33,4 +35,5 @@ do_install_append() {
     install -d ${D}${systemd_system_unitdir}
     install -m 0644 ${WORKDIR}/${FB_PKG_NAME}-watcher.service ${D}${systemd_system_unitdir}/${FB_PKG_NAME}-watcher.service
     install -m 0644 ${WORKDIR}/${FB_PKG_NAME}.path ${D}${systemd_system_unitdir}/${FB_PKG_NAME}.path
+    install -m 0644 ${WORKDIR}/${FB_PKG_NAME}.service ${D}${systemd_system_unitdir}/${FB_PKG_NAME}.service
 }
