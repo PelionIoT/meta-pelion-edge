@@ -1,5 +1,6 @@
 [Unit]
 Description=relay terminal for remote terminals in pelion cloud
+Wants=maestro.service
 After=maestro.service
 
 [Service]

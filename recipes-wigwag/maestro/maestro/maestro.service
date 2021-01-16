@@ -1,5 +1,7 @@
 [Unit]
 Description=Maestro: Network, Config, DeviceJS manager
+Wants=edge-proxy.service
+After=edge-proxy.service
 
 [Service]
 Restart=always
