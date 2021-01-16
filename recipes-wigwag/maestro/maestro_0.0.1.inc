@@ -31,6 +31,7 @@ PR = "r0"
 
 RUN_CONFIG_DIR="wigwag/etc/run"
 TEMPLATE_CONFIG_DIR="wigwag/etc/template"
+MAESTRO_JOBS_LOG_DIR="wigwag/log"
 
 FILESEXTRAPATHS_prepend := "${THISDIR}/maestro:"
 FILES_${PN} += "\
@@ -40,6 +41,7 @@ FILES_${PN} += "\
     ${bindir}/maestro \
     /${RUN_CONFIG_DIR}/*\
     /${TEMPLATE_CONFIG_DIR}/*\
+    /${MAESTRO_JOBS_LOG_DIR}/*\
     ${INIT_D_DIR}/*\
     ${systemd_system_unitdir}/maestro.service\
     ${systemd_system_unitdir}/maestro-watcher.service\
@@ -128,6 +130,7 @@ do_install() {
   install -d ${D}${systemd_system_unitdir}
   install -d ${D}/${bindir}
   install -d ${D}/${libdir}
+  install -d ${D}/${MAESTRO_JOBS_LOG_DIR}
   install -m 0755 ${WORKDIR}/maestro.sh ${D}${INIT_D_DIR}/maestro.sh
   install -m 0755 "${B}/${GO_BUILD_BINDIR}/maestro" "${D}/${WSB}"
   ln -sf /${WSB}/maestro ${D}/${bindir}/maestro
