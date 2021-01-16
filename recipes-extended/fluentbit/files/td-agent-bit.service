@@ -1,5 +1,6 @@
 [Unit]
 Description=Fast log collector
+Wants=edge-proxy.service
 After=edge-proxy.service
 
 [Service]
