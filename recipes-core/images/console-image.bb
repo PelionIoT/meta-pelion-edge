@@ -156,6 +156,7 @@ WIGWAG_STUFF = " \
     wwrelay-utils \
     fluentbit \
     relay-term \
+    identity-tool \
 "
 
 IMAGE_INSTALL += " \

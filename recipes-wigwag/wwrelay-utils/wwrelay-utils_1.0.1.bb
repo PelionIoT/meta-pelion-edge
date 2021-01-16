@@ -9,7 +9,6 @@ SRC_URI="\
   git://git@github.com/armPelionEdge/node-i2c.git;protocol=https;name=node_i2c;destsuffix=git/tempI2C/node-i2c \
   git://git@github.com/armPelionEdge/pe-utils.git;protocol=ssh;name=pe-utils;destsuffix=git/pe-utils \
   file://BUILDMMU.txt \
-  file://wait-for-pelion-identity.service \
   file://do-post-upgrade.service \
   file://logrotate_directives/ \
 "
@@ -25,7 +24,7 @@ inherit pkgconfig gitpkgv systemd
 INHIBIT_PACKAGE_STRIP = "1"
 
 SYSTEMD_PACKAGES = "${PN}"
-SYSTEMD_SERVICE_${PN} = "wait-for-pelion-identity.service do-post-upgrade.service"
+SYSTEMD_SERVICE_${PN} = "do-post-upgrade.service"
 SYSTEMD_AUTO_ENABLE_${PN} = "enable"
 
 PV = "1.0+git${SRCPV}"
@@ -53,7 +52,6 @@ FILES_${PN} = "\
   /userdata\
   /upgrades\
   /localdata\
-  ${systemd_system_unitdir}/wait-for-pelion-identity.service\
   ${systemd_system_unitdir}/do-post-upgrade.service\
 "
 
@@ -122,7 +120,6 @@ do_install() {
 
 # Install systemd units
   install -d ${D}${systemd_system_unitdir}
-  install -m 644 ${WORKDIR}/wait-for-pelion-identity.service ${D}${systemd_system_unitdir}/wait-for-pelion-identity.service
   install -m 644 ${WORKDIR}/do-post-upgrade.service ${D}${systemd_system_unitdir}/do-post-upgrade.service
 
 	#spreadsheet work needed
@@ -159,7 +156,6 @@ do_install() {
 		install -m 644 "${WORKDIR}/logrotate_directives/$f" "${D}${sysconfdir}/logrotate.d"
 	done 
 
-    cp -r ${S}/pe-utils/identity-tools ${D}/wigwag/wwrelay-utils/
 }
 
 
