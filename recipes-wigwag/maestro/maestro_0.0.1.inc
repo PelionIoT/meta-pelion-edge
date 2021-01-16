@@ -41,7 +41,7 @@ FILES_${PN} += "\
     ${bindir}/maestro \
     /${RUN_CONFIG_DIR}/*\
     /${TEMPLATE_CONFIG_DIR}/*\
-    /${MAESTRO_JOBS_LOG_DIR}/*\
+    /${MAESTRO_JOBS_LOG_DIR}\
     ${INIT_D_DIR}/*\
     ${systemd_system_unitdir}/maestro.service\
     ${systemd_system_unitdir}/maestro-watcher.service\
