@@ -158,6 +158,7 @@ WIGWAG_STUFF = " \
     identity-tool \
     info-tool \
     path-set \
+    pelion-version \
 "
 
 IMAGE_INSTALL += " \
