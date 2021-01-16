@@ -8,7 +8,6 @@ SRC_URI="\
   git://git@github.com/armPelionEdge/edgeos-shell-scripts.git;protocol=https;name=dss;destsuffix=git/dss \
   git://git@github.com/armPelionEdge/node-i2c.git;protocol=https;name=node_i2c;destsuffix=git/tempI2C/node-i2c \
   git://git@github.com/armPelionEdge/pe-utils.git;protocol=ssh;name=pe-utils;destsuffix=git/pe-utils \
-  file://BUILDMMU.txt \
   file://do-post-upgrade.service \
   file://logrotate_directives/ \
 "
@@ -72,24 +71,7 @@ do_configure(){
 	echo "its a new build (erasing old log)" > /tmp/YOCTO_wwrelay-utils.log
 }
 
-do_compile() {
-	BUILDMMU=$(cat ${S}/../BUILDMMU.txt)
-	VER_FILE=${S}/version.json
-	if [ -e $VER_FILE ] ; then
-		rm $VER_FILE
-	fi
-	echo  "{" > $VER_FILE
-	echo  "   "  \"version\" ":" \"0.0.1\", >> $VER_FILE
-	echo  "   "  \"packages\" ":" [{ >> $VER_FILE
-	echo  "      "  \"name\" ":" \"WigWag-Firmware\", >> $VER_FILE
-	echo  "      "  \"version\" ":" \"${BUILDMMU}\", >> $VER_FILE
-	echo  "      "  \"description\" ":" \"Base Factory deviceOS\", >> $VER_FILE
-	echo  "      "  \"node_module_hash\" ":" \"\", >> $VER_FILE
-	echo  "      "  \"ww_module_hash\" ":" \"\" >> $VER_FILE
-	echo  "   "  }]  >> $VER_FILE
-	echo  "}" >> $VER_FILE
 
-}
 
 do_dirInstall(){
     entry_dir=$(pwd)
@@ -124,9 +106,6 @@ do_install() {
 	#conf
 	cp -r ${S}/conf ${D}/wigwag/wwrelay-utils/
 	
-	#version
-	install -m 0755 ${S}/version.json ${D}/wigwag/wwrelay-utils/conf/versions.json
-	install -m 0755 ${S}/version.json ${D}/wigwag/etc/versions.json
 	
     install -m 0755 ${S}/initscripts/UDEV/96-local.rules ${D}/etc/udev/rules.d/96-local.rules
 
