@@ -153,10 +153,11 @@ WIGWAG_STUFF = " \
     devicedb \
     maestro \
     deviceos-users \
-    wwrelay-utils \
     fluentbit \
     relay-term \
     identity-tool \
+    info-tool \
+    path-set \
 "
 
 IMAGE_INSTALL += " \
