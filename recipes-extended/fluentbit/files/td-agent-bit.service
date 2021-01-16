@@ -1,5 +1,6 @@
 [Unit]
-Description=fast log collector
+Description=Fast log collector
+After=edge-proxy.service
 
 [Service]
 Restart=always
