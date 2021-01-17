@@ -1,5 +1,46 @@
 # Changelog
 
+## Pelion Edge 2.2 - January 2021
+
+The primary features in this release:
+
+* [edge-core] Updated Edge Core to [0.15.0](https://github.com/PelionIoT/mbed-edge/blob/master/CHANGELOG.md#release-0150-2021-1-12)
+  * The new FOTA update framework library is supported on platforms - `imx8mmevk` and `uz3eg-iocc`, not on `raspberrypi3`. To compile with this library, add following Bitbake parameters to local.conf - `MBED_EDGE_CORE_CONFIG_FIRMWARE_UPDATE="ON"`, `MBED_EDGE_CORE_CONFIG_FOTA_ENABLE="ON"` and `MBED_EDGE_CORE_CONFIG_CURL_DYNAMIC_LINK="ON"`.
+  * The old firmware update library - Update Client (UC) hub is only supported on `raspberrypi3` platform. To enable that add following parameter to local.conf - `MBED_EDGE_CORE_CONFIG_FIRMWARE_UPDATE="ON"`.
+* [maestro] Updated maestro to [v2.9.0](https://github.com/PelionIoT/maestro/releases/tag/v2.9.0)
+  * Gateway capabilities - Allows gateways to advertise the features supported by the platform. Maestro utilizes Edge Core's GRM JSON-RPC APIs to add to the gateway device's LwM2M resources. The registered resources are added under Pelion's reserved FeatureMgmt LwM2M object - 33457 with 3 resources - 0 - featureID, 1 - enabled, 2 - config.
+  * Remote config management via LwM2M - FeatureMgmt config resource allows users to remotely view the current configuration of the feature and also push a config update using the LwM2M cloud service APIs. Maestro, on receiving an update, writes the content to the file path specified in the respective parameter config_filepath.
+  * Removed parsing and generation of self-signed certificates. Also removed the platforms rp200 and wwrelay which are no longer supported.
+
+* [meta-nodejs] Removed the dependency on node v8.x. Upgraded the node packages to work with default nodejs version of Dunfell.
+* [relay-term] Upgraded relay-term to work with node v12.x. Established its on recipe and removed the dependency on global-node-modules.
+* [fluentbit] Added recipe to install Fluentbit 1.3.5 on the gateway for providing an open source Log Processor and Forwarder solution.
+  * By default, fluentbit is configured with following input endpoints - CPU, MEM, Systemd services - edge-core, edge-proxy, pelion-relay-term, maestro, kubelet, docker and wait-for-pelion-identity and Tail for /wigwag/log/devicejs.log.
+  * The output endpoint is posting the logs at API `http://gateways.local:8080/v3/devicejs-logs` (routing through edge-proxy).
+* [journald] Enabled Forward Secure Sealing (FSS) feature of systemd journal. This will help detect gateway logs file tampering.
+  * To configure Pelion Edge gateway with sealing key and to keep track of verification key in production setup, use Pelion Edge Provisioner (pep) tool [v2.3.0](https://github.com/PelionIoT/pelion-edge-provisioner/releases/tag/v2.3.0).
+* Configured systemd to manage the network. By default, disabled Maestro's network management feature.
+* Removed deprecated services - devicejs-ng and compatible protocol translators.
+
+### Bug fixes
+
+### Known issues
+
+- When conducting back-to-back production factory flow with the Pelion Edge Provisioner, the mcc_config directory sometimes is not written correctly and upon reboot, Edge-Core does not connect properly. Workaround: Run the provisioner again.
+- After production factory flow, if you run the info command before Edge core pairs with the cloud, the info command shows N/A for the deviceID while displaying connected. Workaround: Delete the file /wigwag/system/lib/bash/relaystatics.sh, and rerun the info command.
+- Portal is not correctly updated after a firmware campaign in some instances.
+
+### Limitations
+
+- The maximum translated devices behind the edge gateway is 100.
+- Devices behind Pelion Edge do not support [auto-observation.](https://www.pelion.com/docs/device-management/current/connecting/device-guidelines.html#auto-observation)
+- Pelion Device Management Client enabled devices must first boostrap to the Pelion Device Management Cloud before connecting to Pelion Edge.
+- No moving devices are supported. (Device would be moving from Edge to another Edge device.)
+
+### Important note
+
+While provisioning your gateway, please use `vendor-id=42fa7b48-1a65-43aa-890f-8c704daade54` to unlock the rich node features, such as gateway logs and gateway terminal in the Pelion web portal.
+
 ## Pelion Edge 2.1.1 - December 2020
 
 Pinned dependency that broke 'mbed_fcc' build dependency.
