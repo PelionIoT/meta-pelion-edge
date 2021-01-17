@@ -9,7 +9,7 @@ file://wait-for-pelion-identity.service \
 "
 
 #SRCREV_FORMAT = "wwrelay-dss"
-SRCREV_pe-utils = "6ffa9bd0fc66a5a44026265ab6c8b7aaa415a011"
+SRCREV_pe-utils = "365c21002df48f310c286b21a01c496d31929df7"
 
 inherit pkgconfig gitpkgv systemd
 
