@@ -7,7 +7,6 @@ In this release of Pelion Edge 2.2, we introduce support for two additional plat
    - [FOTA Update] Pelion Edge on Poky OS continues to use overlayFS for upgrades as it did in previous releases. Pelion Edge on LMP OS uses a new mechanism called [OSTree](https://ostreedev.github.io/ostree/).
 
 The primary features in this release:
-
 - [edge-core] Updated Edge Core to [0.15.0](https://github.com/PelionIoT/mbed-edge/blob/master/CHANGELOG.md#release-0150-2021-1-12):
    - Moved the mbed-edge-core recipe to its own meta layer: [meta-mbed-edge](https://github.com/PelionIoT/meta-mbed-edge).
    - The new FOTA update framework library is supported on platforms `imx8mmevk` and `uz3eg-iocc` but not on `raspberrypi3`. To compile with this library, add the `MBED_EDGE_CORE_CONFIG_FIRMWARE_UPDATE="ON"`, `MBED_EDGE_CORE_CONFIG_FOTA_ENABLE="ON"` and `MBED_EDGE_CORE_CONFIG_CURL_DYNAMIC_LINK="ON"` Bitbake parameters to local.conf.  (Note: The location for local.conf is specific to each platform, so we recommend following the quick start guide in the documentation in detail.) 
@@ -66,6 +65,8 @@ The primary features in this release:
 - Removed the dependency on hardcoded `vendor-id=42fa7b48-1a65-43aa-890f-8c704daade54` required while provisioning your gateway. To view the gateway logs and gateway terminal in the Pelion portal, enable the Gateway capabilities through Maestro configuration. (By default, logs and terminal are configured for supported platforms.)
 
 ### Bug fixes
+- After production factory flow, if you run the info command before Edge core pairs with the cloud, the info command shows N/A for the deviceID while displaying connected. This has been fixed.
+ - Streamlined the startup sequence of Pelion Edge programs in order to remove the cyclic dependency, which caused many starts and stops of processes in certain conditions.
 
 - After production factory flow, if you ran the `info` command before Edge Core paired with the cloud, the `info` command showed `N/A` for the deviceID while displaying connected. This has been fixed.
 - Streamlined the startup sequence of Pelion Edge programs to remove the cyclic dependency, which caused many starts and stops of processes in certain conditions.
@@ -93,6 +94,7 @@ The primary features in this release:
 ## Pelion Edge 2.1.2 - January 2021
 
 Updated 'pip' download url to download specific verson.
+
 
 ## Pelion Edge 2.1.1 - December 2020
 
