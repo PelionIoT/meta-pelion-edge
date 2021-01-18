@@ -1,6 +1,6 @@
-SUMMARY = "A console development image with some C/C++ dev tools"
+SUMMARY = "A console enabled image with minimal additions to run all of Pelion"
 
-IMAGE_FEATURES[validitems] += "tools-debug tools-sdk"
+IMAGE_FEATURES[validitems] += ""
 IMAGE_FEATURES += "package-management splash"
 IMAGE_LINGUAS = "en-us"
 
@@ -10,168 +10,65 @@ DEPENDS += "deviceos-users"
 
 IMAGE_BOOT_FILES += "ww-console-image-initramfs-raspberrypi3.cpio.gz.u-boot;initramfs.img"
 
+
+
 CORE_OS = " \
-    kernel-modules \
-    openssh openssh-keygen openssh-sftp-server \
-    packagegroup-core-boot \
-    packagegroup-core-full-cmdline \
-    packagegroup-core-buildessential \
-    term-prompt \
-    tzdata \
+openssh \
+packagegroup-core-boot \
+packagegroup-core-full-cmdline \
 "
 
-WIFI_SUPPORT = " \
-    crda \
-    iw \
-    wpa-supplicant \
+#mbed-edge-core is currently dependant on deviceos-users "developer"
+PELION_BASE_REQUIRED = " \
+deviceos-users \
+virtual/mbed-edge-core \
+identity-tool \
+path-set \
+pelion-version \
+"
+PELION_BASE_OPTIONAL = " \
+mbed-fcc \
 "
 
-BLUETOOTH_SUPPORT = " \
-    bluez5 \
+PELION_SYSTEMS_MANAGEMENT = "\
+edge-proxy \
+maestro \
+devicedb \
+info-tool \
+relay-term \
+fluentbit \
 "
 
-DEV_SDK_INSTALL = " \
-    binutils \
-    binutils-symlinks \
-    coreutils \
-    cpp \
-    cpp-symlinks \
-    diffutils \
-    elfutils elfutils-binutils \
-    file \
-    g++ \
-    g++-symlinks \
-    gcc \
-    gcc-symlinks \
-    gdb \
-    gdbserver \
-    gettext \
-    git \
-    ldd \
-    libstdc++ \
-    libstdc++-dev \
-    libtool \
-    ltrace \
-    make \
-    pkgconfig \
-    python3-modules \
-    strace \
-    openssl-dev \
-    zlib-dev \
+PELION_PROTOCOL_TRANSLATION = " \
+mbed-edge-examples \
 "
 
-DEV_EXTRAS = " \
+PELION_CONTAINER_ORCHESTRATION = " \
+kubelet \
+edge-proxy \
 "
 
-EXTRA_TOOLS_INSTALL = " \
-    bzip2 \
-    devmem2 \
-    dosfstools \
-    ethtool \
-    fbset \
-    findutils \
-    grep \
-    i2c-tools \
-    iperf3 \
-    iproute2 \
-    iptables \
-    less \
-    nano \
-    netcat-openbsd \
-    nmap \
-    ntp ntp-tickadj \
-    procps \
-    rng-tools \
-    sysfsutils \
-    unzip \
-    util-linux \
-    wget \
-    zip \
-    jq \
+PELION_TESTING = " \
+git \
+panic \
 "
 
-EXTRA_WW = " \
-cmake \
-curl \
-daemontools \
-dhcp-client \
-e2fsprogs \
-bash-completion \
-git-perltools \
-glibc-gconvs \
-glibc-utils \
-gnutls-openssl \
-hostapd \
-go \
-iputils-ping \
-jansson \
-jansson-dev \
-kernel-dev \
-libevent \
-libevent-dev \
-liblockfile \
-libmbim \
-libnss-mdns \
-libuv \
-lsof \
-ltp \
-modemmanager \
-minicom \
-ncurses-dev \
-perl \
-parted \
-ppp \
-python3-pip \
-python3 \
-readline \
-rsync \
-screen \
-setserial \
-socat \
-sysstat \
-tmux \
-update-rc.d \
-usbutils \
-util-linux-agetty \
-util-linux-bash-completion \
-util-linux-uuidd \
-valgrind \
-wget-locale-zh-cn \
-wget-locale-zh-tw \
-xz \
-"
-
-WIGWAG_STUFF = " \
-    edge-proxy \
-    imagemagick \
-    kubelet \
-    tini \
-    virtual/mbed-edge-core \
-    mbed-edge-examples \
-    mbed-fcc \
-    panic \
-    devicedb \
-    maestro \
-    deviceos-users \
-    fluentbit \
-    relay-term \
-    identity-tool \
-    info-tool \
-    path-set \
-    pelion-version \
+RPI_EXTRA = " \
+wpa-supplicant \
 "
 
 IMAGE_INSTALL += " \
-    ${CORE_OS} \
-    ${DEV_SDK_INSTALL} \
-    ${DEV_EXTRAS} \
-    ${EXTRA_TOOLS_INSTALL} \
-    ${WIFI_SUPPORT} \
-    ${BLUETOOTH_SUPPORT} \
-    ${EXTRA_WW} \
-    ${WIGWAG_STUFF} \
-    ${MACHINE_EXTRA_RRECOMMENDS} \
+${CORE_OS} \
+${PELION_BASE_REQUIRED} \
+${PELION_BASE_OPTIONAL} \
+${PELION_PROTOCOL_TRANSLATION} \
+${PELION_SYSTEMS_MANAGEMENT} \
+${PELION_CONTAINER_ORCHESTRATION} \
+${PELION_TESTING} \
+${RPI_EXTRA} \
+${MACHINE_EXTRA_RRECOMMENDS} \
 "
+
 
 set_local_timezone() {
     ln -sf /usr/share/zoneinfo/EST5EDT ${IMAGE_ROOTFS}/etc/localtime
