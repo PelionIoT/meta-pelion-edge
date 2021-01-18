@@ -17,7 +17,7 @@ The primary features in this release:
 * [meta-nodejs] Removed the dependency on node v8.x. Upgraded the node packages to work with default nodejs version of Dunfell.
 * [relay-term] Upgraded relay-term to work with node v12.x. Established an independent recipe from wwrelay-utils and removed the dependency on global-node-modules.
 * [fluentbit] Added recipe to install Fluentbit 1.3.5 on the gateway for providing an open source Log Processor and Forwarder solution.
-  * By default, fluentbit is configured with following input endpoints - CPU, MEM, Systemd services - edge-core, edge-proxy, pelion-relay-term, maestro, kubelet, docker and wait-for-pelion-identity and Tail for /wigwag/log/devicejs.log. And an output endpoint HTTP to publish logs at API endpoint - `http://gateways.local:8080/v3/devicejs-logs` (routing through edge-proxy).
+  * By default, fluentbit is configured with following input endpoints - CPU, MEM, Systemd services - edge-core, edge-proxy, pelion-relay-term, maestro, kubelet, docker and wait-for-pelion-identity and Tail for /wigwag/log/devicejs.log. And an output endpoint HTTP to publish logs at API endpoint - `http://gateways.local:8080/v3/device-logs` (routing through edge-proxy).
 * [journald] Enabled Forward Secure Sealing (FSS) feature of systemd journal. This will help detect gateway logs file tampering.
   * To configure Pelion Edge gateway with sealing key and to keep track of verification key in production setup, use Pelion Edge Provisioner (pep) tool [v2.3.0](https://github.com/PelionIoT/pelion-edge-provisioner/releases/tag/v2.3.0).
   * Provides the means to make logging persistent. Documentation on how to do this is updated.
