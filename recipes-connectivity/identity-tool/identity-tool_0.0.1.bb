@@ -40,7 +40,6 @@ do_install() {
 	install -d ${PU}/developer_identity
 	install -m 0755 ${S}/pe-utils/identity-tools/generate-identity.sh ${PU}/
 	install -m 0755 ${S}/pe-utils/identity-tools/developer_identity/create-dev-identity.sh ${PU}/developer_identity/
-	install -m 0755 ${S}/pe-utils/identity-tools/developer_identity/generate_self_signed_certs.sh ${PU}/developer_identity/
 	install -m 0755 ${S}/pe-utils/identity-tools/developer_identity/radioProfile.template.json ${PU}/developer_identity/
 	install -m 0755 ${S}/pe-utils/identity-tools/developer_identity/common.sh ${PU}/developer_identity/
 
