@@ -81,7 +81,7 @@ symphony:
     url_stats: "{{ARCH_GW_SERVICES_URL}}/relay-stats/stats_obj"
     # port: "{{ARCH_RELAY_SERVICES_PORT}}"
 targets:
-   - file: "/wigwag/log/devicejs.log"
+   - file: "/wigwag/log/maestro-gw.log"
      rotate:
          max_files: 4
          max_file_size: 10000000  # 10MB max file size
