@@ -6,6 +6,7 @@ After=wait-for-pelion-identity.service
 [Service]
 Restart=always
 RestartSec=5
+ExecCondition=sh -c '[ -f /userdata/edge_gw_config/identity.json ]'
 ExecStart=/wigwag/system/bin/launch-edge-proxy.sh
 
 [Install]
