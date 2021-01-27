@@ -17,6 +17,8 @@
 # limitations under the License.
 # ----------------------------------------------------------------------------
 
+EDGE_PROXY_DEBUG=false
+
 EDGE_K8S_ADDRESS=$(jq -r .edgek8sServicesAddress /userdata/edge_gw_config/identity.json)
 GATEWAYS_ADDRESS=$(jq -r .gatewayServicesAddress /userdata/edge_gw_config/identity.json)
 DEVICE_ID=$(jq -r .deviceID /userdata/edge_gw_config/identity.json)
@@ -28,6 +30,13 @@ fi
 
 if ! grep -q "$DEVICE_ID" /etc/hosts; then
     echo "127.0.0.1 $DEVICE_ID" >> /etc/hosts
+fi
+
+if [[ $EDGE_PROXY_DEBUG = "false" ]]; then
+    echo "edge-proxy logging is disabled.  To see logs, run \"sed -i 's/EDGE_PROXY_DEBUG=false/EDGE_PROXY_DEBUG=true/g' /wigwag/system/bin/launch-edge-proxy.sh\" and restart edge-proxy"
+    # this is known as bash exec redirection.
+    # see https://www.tldp.org/LDP/abs/html/x17974.html
+    exec >/dev/null 2>&1
 fi
 
 exec /wigwag/system/bin/edge-proxy \
