@@ -6,6 +6,7 @@ After=maestro.service
 [Service]
 Restart=always
 RestartSec=5s
+ExecCondition=sh -c '[ -f /userdata/edge_gw_config/identity.json ]'
 ExecStart=/usr/bin/node /wigwag/wigwag-core-modules/relay-term/src/index.js start /wigwag/wigwag-core-modules/relay-term/config/config.json
 
 [Install]
