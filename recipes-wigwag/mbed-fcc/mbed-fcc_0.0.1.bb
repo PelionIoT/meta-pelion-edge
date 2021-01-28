@@ -12,7 +12,7 @@ PV = "1.0+git${SRCPV}"
 PKGV = "1.0+git${GITPKGV}"
 PR = "r0"
 
-SRCREV = "dc3862efd6e7b3cbc6f10f34673c76e6fd968a3a"
+SRCREV = "cbad9f99477dbd4f071ce3e31ab8623004cd70a3"
 
 SRC_URI = "git://git@github.com/ARMmbed/factory-configurator-client-example.git;protocol=https;; \
 file://0001-fix-build-getting-cross-compiler-iface-setting-to-et.patch \
@@ -25,7 +25,7 @@ do_configure () {
 	cd ${S}
 	export PYTHONPATH=$PYTHONPATH:`pwd`/recipe-sysroot-native/usr/lib/python3.8
 	export PATH=$PYTHONPATH:$PATH
-	pip3 install mbed-cli click==7.0 requests pyopenssl==19.1.0
+	pip3 install mbed-cli==1.10.5 click==7.1.2 requests pyopenssl==20.0.1
 }
 
 do_compile() {
