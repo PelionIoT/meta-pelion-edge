@@ -22,7 +22,7 @@ SYSTEMD_AUTO_ENABLE_${PN} = "enable"
 SRCREV = "83b266ae6939012883611d6dbda745f2490a67c4"
 PR = "r1"
 
-DEPENDS = "libseccomp bash-native"
+DEPENDS = "libseccomp"
 RDEPENDS_${PN} += " docker libseccomp cni bash"
 
 bindir = "/wigwag/system/bin"
@@ -46,6 +46,8 @@ do_compile() {
   export TMPDIR="${GOTMPDIR}"
   # KUBE_GO_PACKAGE is expected to be set by the version.sh script
   export KUBE_GO_PACKAGE=${GO_IMPORT}
+  # sh doesn't like variable names with '::' in them. Replace all '::' occurrences with '_'
+  eval "$(cat ${GOPATH}/src/${GO_IMPORT}/hack/lib/version.sh | sed --expression 's/::/_/g')"
   echo "${GO} install -v -ldflags=\"$GO_RPATH $GO_LINKMODE -extldflags '$GO_EXTLDFLAGS' $(kube_version_ldflags)\" ${GO_PACKAGES}" > /tmp/gostuff
   ${GO} install -v -ldflags="$GO_RPATH $GO_LINKMODE -extldflags '$GO_EXTLDFLAGS' $(kube_version_ldflags)" ${GO_PACKAGES}
 }
