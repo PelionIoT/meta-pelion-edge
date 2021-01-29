@@ -12,47 +12,39 @@ platform_readers:
   - platform: "fsonly"
     params:
       identityPath: "/userdata/edge_gw_config/identity.json"
+gateway_capabilities:
+  edge_core_socketpath: "/tmp/edge.sock"
+  lwm2m_objectid: 33457
+  gateway_resources:
+  - name: "urn:fid:pelion.com:log:1.0.0"
+    enable: true
+    config_filepath: "/etc/td-agent-bit/td-agent-bit.conf"
+  - name: "urn:fid:pelion.com:terminal:1.0.0"
+    enable: true
+    config_filepath: "/wigwag/wigwag-core-modules/relay-term/config/config.json"
+  - name: "urn:fid:pelion.com:kaas:1.0.0"
+    enable: true
+    config_filepath: "/wigwag/system/var/lib/kubelet/kubeconfig"
 var_defs:
    - key: "TMP_DIR"
      value: "/tmp"
-   - key: "WIGWAG_NODE_PATH"
-     value: "/wigwag/devicejs-core-modules/node_modules"
-   - key: "WIGWAG_DIR"
-     value: "/wigwag"
-   - key: "NODE_EXEC"
-     value: "/usr/bin/node"
-   - key: "DEVICEJS_ROOT"
-     value: "/wigwag/devicejs-ng"
-   - key: "DEVJS_CORE_MODULES"
-     value: "/wigwag/devicejs-core-modules"
+   - key: "FOG_PROXY_ADDR"
+     value: "gateways.local:8080"
    - key: "MAESTRO_RUNNER_DIR"
      value: "/wigwag/devicejs-core-modules/maestroRunner"
-   - key: "SSL_CERTS_PATH"
-     value: "/userdata/edge_gw_config/.ssl"
    - key: "LOCAL_DEVICEDB_PORT"
      value: 9000
    - key: "LOCAL_DATABASE_STORAGE_DIRECTORY"
      value: "/userdata/etc/devicejs/db"
-   - key: "RELAY_VERSIONS_FILE"
-     value: "/wigwag/etc/versions.json"
-   - key: "FACTORY_VERSIONS_FILE"
-     value: "/mnt/.overlay/factory/wigwag/etc/versions.json"
-   - key: "USER_VERSIONS_FILE"
-     value: "/mnt/.overlay/user/slash/wigwag/etc/versions.json"
-   - key: "UPGRADE_VERSIONS_FILE"
-     value: "/mnt/.overlay/upgrade/wigwag/etc/versions.json"
 devicedb_conn_config:
-    devicedb_uri: "https://{{ARCH_DEVICE_ID}}:9000" #default uri
-    devicedb_prefix: "maestro.configs" #default prefix
+    devicedb_uri: "http://localhost:{{LOCAL_DEVICEDB_PORT}}" #default uri
+    devicedb_prefix: "configs.device" #default prefix
     devicedb_bucket: "lww" #default bucket
-    relay_id: "{{ARCH_DEVICE_ID}}" #default relay id
-    ca_chain: "{{SSL_CERTS_PATH}}/ca-chain.cert.pem" #default chain cert file name     
+    relay_id: "{{ARCH_DEVICE_ID}}" #default relay id  
 mdns:
-  # disable: true
   static_records:
    - name: "WigWagRelay"
      service: "_wwservices._tcp"  # normally something like https or ftp
-     # domain: "local"     # local is default
      interfaces: "eth0"
      not_interfaces: "Witap0"
      port: 3131
@@ -61,25 +53,21 @@ mdns:
      hostname: "wigwaggateway"
    - name: "WigWagRelay_{{ARCH_SERIAL_NUMBER}}"
      service: "_wwservices._tcp"  # normally something like https or ftp
-     # domain: "local"     # local is default
      interfaces: "eth0"
      not_interfaces: "Witap0"
      port: 3131
      text:
       - "wwid={{ARCH_SERIAL_NUMBER}}"
      hostname: "{{ARCH_SERIAL_NUMBER}}"
-symphony:
-# symphony system management APIs
-    # defaults to 10:
+symphony: # symphony system management APIs
     disable_sys_stats: true
     sys_stats_count_threshold: 15     # send if you have 15 or more stats queued
     sys_stats_time_threshold: 120000  # every 120 seconds send stuff, no matter what
-    client_cert: "{{ARCH_CLIENT_CERT_PEM}}"
-    client_key: "{{ARCH_CLIENT_KEY_PEM}}"
-    host: "{{ARCH_GW_SERVICES_RESRC}}"
-    url_logs: "{{ARCH_GW_SERVICES_URL}}/relay-logs/logs"
-    url_stats: "{{ARCH_GW_SERVICES_URL}}/relay-stats/stats_obj"
-    # port: "{{ARCH_RELAY_SERVICES_PORT}}"
+    no_tls: true
+    host: "gateways.local"
+    url_logs: "http://{{FOG_PROXY_ADDR}}/relay-logs/logs"
+    url_stats: "http://{{FOG_PROXY_ADDR}}/relay-stats/stats_obj"
+    send_time_threshold: 120000       # set the send time threshold to 2 minutes
 targets:
    - file: "/wigwag/log/maestro_gw.log"
      rotate:
@@ -116,86 +104,9 @@ static_file_generators:
    - name: "devicedb"
      template_file: "/wigwag/etc/template/devicedb.template.conf"
      output_file: "/wigwag/etc/devicejs/devicedb.yaml"
-   - name: "ca_pem"
-     template: "{{ARCH_CA_CERT_PEM}}"
-     output_file: "{{SSL_CERTS_PATH}}/ca.cert.pem"
-   - name: "intermediate_pem"
-     template: "{{ARCH_INTERMEDIATE_CERT_PEM}}"
-     output_file: "{{SSL_CERTS_PATH}}/intermediate.cert.pem"
-   - name: "client_key"
-     template: "{{ARCH_CLIENT_KEY_PEM}}"
-     output_file: "{{SSL_CERTS_PATH}}/client.key.pem"
-   - name: "client_cert"
-     template: "{{ARCH_CLIENT_CERT_PEM}}"
-     output_file: "{{SSL_CERTS_PATH}}/client.cert.pem"
-   - name: "server_key"
-     template: "{{ARCH_SERVER_KEY_PEM}}"
-     output_file: "{{SSL_CERTS_PATH}}/server.key.pem"
-   - name: "server_cert"
-     template: "{{ARCH_SERVER_CERT_PEM}}"
-     output_file: "{{SSL_CERTS_PATH}}/server.cert.pem"
-   - name: "ca_chain"
-     template: "{{ARCH_CA_CHAIN_CERT_PEM}}"
-     output_file: "{{SSL_CERTS_PATH}}/ca-chain.cert.pem"
-container_templates:
-   - name: "deviceJS_process"
-     immutable: true  # don't store in DB
-     depends_on:
-        - "devicejs"
-     cgroup:                 # will implement later
-        mem_limit: 10000000
-     die_on_parent_death: true
-     inherit_env: true
-     add_env:
-        - "LD_PRELOAD=/usr/lib/libcrypto.so.1.1"
-        - "DEVJS_ROOT={{DEVICEJS_ROOT}}"
-        - "DEVJS_CONFIG_FILE=/wigwag/etc/devicejs/devicejs.conf"
-        - "NODE_PATH={{WIGWAG_NODE_PATH}}"
-     exec_cmd: "{{NODE_EXEC}}"        # will use PATH if not absolute path (as per execvp())
-     send_composite_jobs_to_stdin: true
-     send_grease_origin_id: true
-     exec_pre_args:
-        - "--max-old-space-size=128"
-        - "--max-semi-space-size=1"
-        - "{{MAESTRO_RUNNER_DIR}}/index.js"
-     composite_config: >
-        {
-           "debug":true
-        }
-   - name: "ble_node_process"
-     immutable: true  # don't store in DB
-     depends_on:
-        - "devicejs"
-     cgroup:                 # will implement later
-        mem_limit: 10000000
-     die_on_parent_death: true
-     inherit_env: true
-     add_env:
-        - "LD_PRELOAD=/usr/lib/libcrypto.so.1.1"
-        - "DEVJS_ROOT={{DEVICEJS_ROOT}}"
-        - "DEVJS_CONFIG_FILE=/wigwag/etc/devicejs/devicejs.conf"
-        - "NODE_PATH={{WIGWAG_NODE_PATH}}"
-     exec_cmd: "{{NODE_EXEC}}"        # will use PATH if not absolute path (as per execvp())
-     send_composite_jobs_to_stdin: true
-     send_grease_origin_id: true
-     exec_pre_args:
-        - "--max-old-space-size=1024"
-        - "--max-semi-space-size=1"
-        - "{{MAESTRO_RUNNER_DIR}}/index.js"
-     composite_config: >
-        {
-           "debug":true
-        }
-   - name: "node_process"
-     die_on_parent_death: true
-     immutable: true  # don't store in DB
-     cgroup:                 # will implement later
-        mem_limit: 10000000
-     inherit_env: true
-     exec_cmd: "{{NODE_EXEC}}"        # will use PATH if not absolute path (as per execvp())
-     exec_pre_args:
-        - "--max-old-space-size=128"
-        - "--max-semi-space-size=1"
+   - name: "relayTerm"
+     template_file: "/wigwag/etc/template/relayTerm.template.json"
+     output_file: "/wigwag/wigwag-core-modules/relay-term/config/config.json"
 jobs:
    - job: "devicedb"
      immutable: true
