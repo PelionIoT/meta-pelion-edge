@@ -1,10 +1,20 @@
+From ddc65697cbe153bdd430da704c6400e0c4bd3438 Mon Sep 17 00:00:00 2001
+From: Yash Goyal <ygoyal@wigwag.com>
+Date: Thu, 28 Jan 2021 20:12:39 -0800
+Subject: [PATCH] build with autoconf
+
+---
+ .../greasego/deps/src/greaseLib/deps/install-deps.sh       | 7 ++++---
+ .../deps/src/greaseLib/deps/libuv-v1.10.1/Makefile.am      | 4 ++--
+ 2 files changed, 6 insertions(+), 5 deletions(-)
+
 diff --git a/vendor/github.com/armPelionEdge/greasego/deps/src/greaseLib/deps/install-deps.sh b/vendor/github.com/armPelionEdge/greasego/deps/src/greaseLib/deps/install-deps.sh
 index 6cba89b..33baba1 100755
---- a/src/github.com/armPelionEdge/maestro/vendor/github.com/armPelionEdge/greasego/deps/src/greaseLib/deps/install-deps.sh
-+++ b/src/github.com/armPelionEdge/maestro/vendor/github.com/armPelionEdge/greasego/deps/src/greaseLib/deps/install-deps.sh
+--- a/vendor/github.com/armPelionEdge/greasego/deps/src/greaseLib/deps/install-deps.sh
++++ b/vendor/github.com/armPelionEdge/greasego/deps/src/greaseLib/deps/install-deps.sh
 @@ -71,9 +71,10 @@ if [[ "$platform" == 'darwin' ]]; then
-        xcodebuild -ARCHS="x86_64" -project uv.xcodeproj -configuration Release -target All
-        cp ./build/Release/libuv.a $DEPS_DIR/build/lib
+ 	xcodebuild -ARCHS="x86_64" -project uv.xcodeproj -configuration Release -target All
+ 	cp ./build/Release/libuv.a $DEPS_DIR/build/lib
  else
 -	./gyp_uv.py -f make
 -	make -C out
@@ -18,8 +28,8 @@ index 6cba89b..33baba1 100755
  popd
 diff --git a/vendor/github.com/armPelionEdge/greasego/deps/src/greaseLib/deps/libuv-v1.10.1/Makefile.am b/vendor/github.com/armPelionEdge/greasego/deps/src/greaseLib/deps/libuv-v1.10.1/Makefile.am
 index c232b6d..8842825 100644
---- a/src/github.com/armPelionEdge/maestro/vendor/github.com/armPelionEdge/greasego/deps/src/greaseLib/deps/libuv-v1.10.1/Makefile.am
-+++ b/src/github.com/armPelionEdge/maestro/vendor/github.com/armPelionEdge/greasego/deps/src/greaseLib/deps/libuv-v1.10.1/Makefile.am
+--- a/vendor/github.com/armPelionEdge/greasego/deps/src/greaseLib/deps/libuv-v1.10.1/Makefile.am
++++ b/vendor/github.com/armPelionEdge/greasego/deps/src/greaseLib/deps/libuv-v1.10.1/Makefile.am
 @@ -357,13 +357,13 @@ endif
  
  if LINUX
@@ -36,3 +46,6 @@ index c232b6d..8842825 100644
  endif
  
  if NETBSD
+-- 
+2.17.1
+
