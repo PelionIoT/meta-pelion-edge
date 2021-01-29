@@ -1,5 +1,9 @@
 # Changelog
 
+## Pelion Edge 2.1.2 - January 2021
+
+Updated 'pip' download url to download specific verson.
+
 ## Pelion Edge 2.1.1 - December 2020
 
 Pinned dependency that broke 'mbed_fcc' build dependency.
