@@ -9,7 +9,7 @@ file://wait-for-pelion-identity.service \
 "
 
 #SRCREV_FORMAT = "wwrelay-dss"
-SRCREV_pe-utils = "365c21002df48f310c286b21a01c496d31929df7"
+SRCREV_pe-utils = "810b73f3dcfd15a21b179bc58319d68f11aaa838"
 
 inherit pkgconfig gitpkgv systemd
 
@@ -24,7 +24,7 @@ PKGV = "1.0+git${GITPKGV}"
 PR = "r0"
 
 DEPENDS = ""
-RDEPENDS_${PN} += " bash curl"
+RDEPENDS_${PN} += " bash curl jq"
 
 RM_WORK_EXCLUDE += "${PN}"
 
