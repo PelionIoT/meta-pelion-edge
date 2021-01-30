@@ -18,6 +18,7 @@ FILES_${PN} += "\
     "
 
 SRC_URI = "http://fluentbit.io/releases/1.3/fluent-bit-${PV}.tar.gz \
+            ${@bb.utils.contains('DISTRO_FEATURES','usrmerge','file://0001-support-usrmerge.patch','',d)} \
             file://${FB_PKG_NAME}.service \
             file://${FB_PKG_NAME}.conf \
             file://${FB_PKG_NAME}-watcher.service \
