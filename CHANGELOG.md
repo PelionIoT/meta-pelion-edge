@@ -4,32 +4,47 @@
 
 The primary features in this release:
 * [edge-core] Updated Edge Core to [0.15.0](https://github.com/PelionIoT/mbed-edge/blob/master/CHANGELOG.md#release-0150-2021-1-12)
+  * Moved the mbed-edge-core recipe to its own meta layer - [meta-mbed-edge](https://github.com/PelionIoT/meta-mbed-edge).
   * The new FOTA update framework library will be supported on platforms - `imx8mmevk` and `uz3eg-iocc`, (Feb 2021 release) not on `raspberrypi3`. To compile with this library, add following Bitbake parameters to local.conf - `MBED_EDGE_CORE_CONFIG_FIRMWARE_UPDATE="ON"`, `MBED_EDGE_CORE_CONFIG_FOTA_ENABLE="ON"` and `MBED_EDGE_CORE_CONFIG_CURL_DYNAMIC_LINK="ON"`.
   * The old firmware update library - Update Client (UC) hub is only supported on `raspberrypi3` platform. To enable that add following parameter to local.conf - `MBED_EDGE_CORE_CONFIG_FIRMWARE_UPDATE="ON"`.
 * [maestro] Updated maestro to [v2.9.0](https://github.com/PelionIoT/maestro/releases/tag/v2.9.0)
   * Gateway capabilities - Allows gateways to advertise the features supported by the platform. Maestro utilizes Edge Core's GRM JSON-RPC APIs to add to the gateway device's LwM2M resources. The registered resources are added under Pelion's reserved FeatureMgmt LwM2M object - 33457 with 3 resources - 0 - featureID, 1 - enabled, 2 - config.
   * Remote config management via LwM2M - FeatureMgmt config resource allows users to remotely view the current configuration of the feature and also push a config update using the LwM2M cloud service APIs. Maestro, on receiving an update, writes the content to the file path specified in the respective parameter config_filepath.
   * Removed parsing and generation of self-signed certificates. Also removed the platforms rp200 and wwrelay which are no longer supported.
-  * Maestro traffic now routed through edge-proxy instead of directly connecting to the Pelion Cloud
+  * Maestro traffic now routed through edge-proxy instead of directly connecting to the Pelion Cloud.
+  * By default, disabled the maestro's gateway logging feature in the configuration file for platforms - `imx8mmevk`, `uz3eg-iocc` and `raspberrypi3`. Gateway logging feature is supported through fluentbit.
 * [logrotate] Added bbappend file to install a configuration which rotates the logs of files under `/var/log`.
-* [wait-for-pelion-identity] Converted the node program to bash. Removed the generation of self-signed certificate.
+* [logrotate] Removed crontab method to call logrotate every 5 mins. Instead configured systemd logrotate timer to 5 mins.
+* [identity-tool] Established an independent recipe under recipes-connectivity and removed the dependency on wwrelay-utils.
+  * Converted the identity node program to bash which now lives in a new project called pe-utils.
+  * Installed v2.0.4 of identity-tool, which majorly removes the generation of self-signed certificate.
 * [edge-proxy] Configured services gateway logs (maestro), gateway stats (maestro), relay-term, fluentbit http endpoint to route traffic through edge-proxy and not consume self-signed certificate.
 * [meta-nodejs] Removed the dependency on node v8.x. Upgraded the node packages to work with default nodejs version of Dunfell.
 * [relay-term] Upgraded relay-term to work with node v12.x. Established an independent recipe from wwrelay-utils and removed the dependency on global-node-modules.
+* [mbed-fcce] Upgraded factory-configurator-client-example to v4.7.0 and pinned its respective dependencies.
 * [fluentbit] Added recipe to install Fluentbit 1.3.5 on the gateway for providing an open source Log Processor and Forwarder solution.
-  * By default, fluentbit is configured with following input endpoints - CPU, MEM, Systemd services - edge-core, edge-proxy, pelion-relay-term, maestro, kubelet, docker and wait-for-pelion-identity and Tail for /wigwag/log/maestro_gw.log. And an output endpoint HTTP to publish logs at API endpoint - `http://gateways.local:8080/v3/device-logs` (routing through edge-proxy).
+  * By default, fluentbit is configured with following input endpoints - CPU, MEM, Systemd services - edge-core, edge-proxy, pelion-relay-term, maestro, kubelet, docker and wait-for-pelion-identity. And an output endpoint HTTP to publish logs at API endpoint - `http://gateways.local:8080/v3/device-logs` (routing through edge-proxy).
 * [journald] Enabled Forward Secure Sealing (FSS) feature of systemd journal. This will help detect gateway logs file tampering.
   * To configure Pelion Edge gateway with sealing key and to keep track of verification key in production setup, use Pelion Edge Provisioner (pep) tool [v2.3.0](https://github.com/PelionIoT/pelion-edge-provisioner/releases/tag/v2.3.0).
-  * Provides the means to make logging persistent. Documentation on how to do this is updated.
+  * By default, gateway is configured with persistent journal logging. To disable that, set flag `VOLATILE_LOG_DIR = "no"` in `local.conf` and also update the `Storage` in recipes-core/systemd/systemd-conf/journald.conf. Note, if you disable persistent logging then FSS feature will not work.
 * [systemd] Configured to manage the network. By default, disabled Maestro's network management feature.
+* [systemd] Updated the unit startup sequence and changed `Requires` directive to `Wants`. This was done in order to make system more robust when dealing with failing services.
+  ```
+  network-online --> edge-core --> wait-for-pelion-identity --> edge-proxy
+                                                            --> edge-kubelet
+                                                            --> fluentbit (td-agent-bit)
+                                                            --> pelion-relay-term
+                                                            --> maestro --> devicedb
+  ```
 * [depreciation] Removed deprecated services.
   * - devicejs-ng
   * - compatible devicejs-ng protocol translators.
 * [image improvements] The "raspberrypi" supported image "console-image" has been simplified and thereby improved.
   * console-image previously, version 1.0 through 2.1, contained Pelion Edge + development tools including but not limited to: compliers, editors, analysis tools, stress tools, and SQA tools.  Pelion Edge version 2.2's console-image contains a minimized set of accompany software for running and testing all of Pelion Edge's software and features.  Important to note, it is not a bare minimal image that strips common Linux tools, but more so what you might expect to find on a heavy embedded device.  With this new strategy, users of the Pelion Edge image can customize the image more easily to their liking.  It is very possible to strip the image more making a more lightweight embedded OS or add more packages to make it more like the image provide previously.
   * meta-pelion-edge itself as a yocto layer is now easier to incorporate with other layers, allowing other yocto projects to incorporate Pelion Edge.
+  * Updated the splash screen banner from "DeviceOS by WigWag" to "Pelion".
   * [recipe removals]
-    * wwrelay-utils recipe is removed.  Previously this bitbake recipe did many functions which are now replaced.  Reference the recipe additions section below.
+    * wwrelay-utils recipe is removed. Previously this bitbake recipe did many functions which are now replaced. Reference the recipe additions section below.
     * strace-plus recipe is removed as the image is no longer ships with developer tools enabled.
     * tsb recipe is removed as the old wigwag relay is no longer supported.
     * pps-tools recipe is removed as the image is no longer ships with developer tools enabled.
@@ -39,15 +54,16 @@ The primary features in this release:
     * emacs recipe is removed as the image is no longer ships with developer tools enabled.
     * dnsmasq recipe is removed as Pelion Edge programs no longer need these features.
     * deviceOSWD recipe is removed as the old wigwag relay is no longer supported.
+    * maestro-watchdog recipe is removed as the old wigwag relay is no longer supported
 
 
 ### Bug fixes
 - After production factory flow, if you run the info command before Edge core pairs with the cloud, the info command shows N/A for the deviceID while displaying connected. This has been fixed.
- - Streamlined the startup sequence of Pelion Edge programs in order to remove the cyclic dependency, which caused many starts and stops of processes in certain conditions.
+- Streamlined the startup sequence of Pelion Edge programs in order to remove the cyclic dependency, which caused many starts and stops of processes in certain conditions.
+- When conducting back-to-back production factory flow with the Pelion Edge Provisioner, the mcc_config directory sometimes is not written correctly and upon reboot, Edge-Core does not connect properly. This has been fixed.
 
 ### Known issues
 
-- When conducting back-to-back production factory flow with the Pelion Edge Provisioner, the mcc_config directory sometimes is not written correctly and upon reboot, Edge-Core does not connect properly. Workaround: Run the provisioner again.
 - Portal is not correctly updated after a firmware campaign in some instances.
 - [maestro] The FeatureMgmt config resource is initialized with max 3.8KB of file content. The remaining file content is truncated during initialization. This is most likely due to limitation of gorilla/websocket library, but needs further investigation. Although, Pelion DM users can still push a file size of max 64KB via cloud service APIs.
 
