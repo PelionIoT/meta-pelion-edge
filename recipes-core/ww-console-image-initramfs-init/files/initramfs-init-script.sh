@@ -533,24 +533,15 @@ displayBanner(){
 	clear
 
 	echo "${LBLUE}"
-	echo " ____             _           ___  ____"
-	echo "|  _ \  _____   _(_) ___ ___ / _ \/ ___|"
-	echo "| | | |/ _ \ \ / / |/ __/ _ \ | | \___ \ "
-	echo "| |_| |  __/\ V /| | (_|  __/ |_| |___) |"
-	echo "|____/ \___| \_/ |_|\___\___|\___/|____/"
-	echo "${WHITE}              _"
-	echo "             | |__  _   _"
-	echo "             | '_ \| | | |"
-	echo "             | |_) | |_| |"
-echo "             |_.__/ \__, |"
-echo "                    |___/"
-
-echo "${LBLUE}__        ___     __        __"
-echo "\ \      / (_) __ \ \      / /_ _  __ _"
-echo " \ \ /\ / /| |/ _  \ \ /\ / / _  |/ _  |"
-echo "  \ V  V / | | (_| |\ V  V / (_| | (_| |"
-	echo "   \_/\_/  |_|\__, | \_/\_/ \__,_|\__, |"
-	echo "              |___/               |___/"
+	echo "#-----------------------------------------------------------------------------------------------------#"
+	echo "#                                      ____      _ _                                                  #"
+	echo "#                                     |  _ \ ___| (_) ___  _ __                                       #"
+	echo "#                                     | |_) / _ \ | |/ _ \| '_ \                                      #"
+	echo "#                                     |  __/  __/ | | (_) | | | |                                     #"
+	echo "#                                     |_|   \___|_|_|\___/|_| |_|                                     #"
+	echo "#                                                                                                     #"
+	echo "#                   A unique combination of IoT connectivity and device management                    #"
+	echo "#-----------------------------------------------------------------------------------------------------#"
 	echo "${NORM}"
 	typeit "   initRamfs initializer version:${LBLUE} "  .02 0
 	typeit " $master_initscript_version.$master_sub_version" .02 0
@@ -1147,16 +1138,16 @@ check_OSmessages() {
 		say_update "Received an upgrade message from the OS"
 		watchdog 1200
 	#if [[ -e $UGscript  && -e $UGtarball ]]; then
-	cp $UGscript /
-	source /upgrade.sh
-	_decho "DONE: sourced /upgrade.sh, lets erase the upgrade file $ERASETHEUPGRADEFILES"
-	erase_UPGRADEFILES
-	rebootit
-else
-	umountuser
-	say_update "No messages from DeviceOS"
-fi
-_decho "done with check_OSmessages"
+		cp $UGscript /
+		source /upgrade.sh
+		_decho "DONE: sourced /upgrade.sh, lets erase the upgrade file $ERASETHEUPGRADEFILES"
+		erase_UPGRADEFILES
+		rebootit
+	else
+		umountuser
+		say_update "No messages from DeviceOS"
+	fi
+	_decho "done with check_OSmessages"
 }
 
 #/	Desc:	xxx
@@ -2008,7 +1999,7 @@ echo "initGPIO would run here"
 #	if [[ $lastbutton -eq 0 ]]; then
 #		bname="depressed"
 #	fi
-        lastbutton=1
+lastbutton=1
 }
 
 #/	Desc:	xxx
@@ -2103,8 +2094,8 @@ initFS() {
         #for now, explicitly making /proc and /sys before mount - they instead should be part of the fs
         mkdir -p /proc
         mkdir -p /sys
-	mount -t proc proc /proc
-	mount -t sysfs sysfs /sys
+        mount -t proc proc /proc
+        mount -t sysfs sysfs /sys
 	#mount -t devtmpfs devtmpfs /dev
 	#Disable kernel messages from popping onto the screen
 	echo 0 > /proc/sys/kernel/printk
@@ -2391,20 +2382,20 @@ recovery() {
 	locked=1;
 	firstenteredlock=0;
 	while [ $elapsed -lt $timout ]; do 
-	secnow=$(date +%s)
-	if [[ "$state" = "starting" || "$state" = "pausedbegin" ]]; then
-		elapsed=0
-	else
-		elapsed=$(( $secnow - $event_start ))
-	fi
-	newbutton=$(cat /sys/class/gpio/gpio236/value)
-	if [[ $newbutton -ne $lastbutton ]]; then
-		lastbutton=$newbutton
-		event_start=$secnow
-		if [[ $newbutton -eq 1 ]]; then
-			button_up
-			buttoncount=$(( $buttoncount + 1 ))
+		secnow=$(date +%s)
+		if [[ "$state" = "starting" || "$state" = "pausedbegin" ]]; then
+			elapsed=0
+		else
+			elapsed=$(( $secnow - $event_start ))
 		fi
+		newbutton=$(cat /sys/class/gpio/gpio236/value)
+		if [[ $newbutton -ne $lastbutton ]]; then
+			lastbutton=$newbutton
+			event_start=$secnow
+			if [[ $newbutton -eq 1 ]]; then
+				button_up
+				buttoncount=$(( $buttoncount + 1 ))
+			fi
 			#echo "got a button, starting timer over ($elapsed)"
 		fi
 	done
@@ -2529,7 +2520,7 @@ fullpivot() {
 	umount /sys /proc
 	say_init "Switching to the new root"
 	exec switch_root $newr "${init}"
-	fi
+fi
 }
 
 #---------------------------------------------------------------------------------------------------------------------------
