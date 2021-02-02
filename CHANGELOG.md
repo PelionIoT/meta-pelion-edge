@@ -66,7 +66,8 @@ The primary features in this release:
 
 ### Bug fixes
 - After production factory flow, if you run the info command before Edge core pairs with the cloud, the info command shows N/A for the deviceID while displaying connected. This has been fixed.
- - Streamlined the startup sequence of Pelion Edge programs in order to remove the cyclic dependency, which caused many starts and stops of processes in certain conditions.
+- Streamlined the startup sequence of Pelion Edge programs in order to remove the cyclic dependency, which caused many starts and stops of processes in certain conditions.
+- When conducting back-to-back production factory flow with the Pelion Edge Provisioner, the mcc_config directory sometimes is not written correctly and upon reboot, Edge-Core does not connect properly. This has been fixed.
 
 - After production factory flow, if you ran the `info` command before Edge Core paired with the cloud, the `info` command showed `N/A` for the deviceID while displaying connected. This has been fixed.
 - Streamlined the startup sequence of Pelion Edge programs to remove the cyclic dependency, which caused many starts and stops of processes in certain conditions.
