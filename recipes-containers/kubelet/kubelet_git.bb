@@ -23,7 +23,7 @@ SRCREV = "83b266ae6939012883611d6dbda745f2490a67c4"
 PR = "r1"
 
 DEPENDS = "libseccomp"
-RDEPENDS_${PN} += " docker libseccomp cni bash"
+RDEPENDS_${PN} += " docker libseccomp cni bash jq"
 
 bindir = "/wigwag/system/bin"
 confdir = "/wigwag/system/var/lib/kubelet"
