@@ -52,6 +52,7 @@ edge-proxy \
 maestro \
 devicedb \
 info-tool \
+relay-term \
 fluentbit \
 "
 
