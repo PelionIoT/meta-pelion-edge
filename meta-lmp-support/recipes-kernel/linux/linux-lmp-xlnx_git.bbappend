@@ -1,3 +1,3 @@
 FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
  
-SRC_URI_append_uz3eg-iocc = " file://xilinx_cpu_idle.cfg"
+SRC_URI_append_uz = " file://xilinx_cpu_idle.cfg"
