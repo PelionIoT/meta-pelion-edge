@@ -1,0 +1,20 @@
+--- NetworkManager-1.22.14/libnm-core/nm-setting-ip6-config.c	2020-05-29 17:21:10.000000000 +0300
++++ NetworkManager-1.22.14/libnm-core/nm-setting-ip6-config.c	2020-12-03 13:51:54.130978404 +0200
+@@ -92,7 +92,7 @@ NMSettingIP6ConfigAddrGenMode
+ nm_setting_ip6_config_get_addr_gen_mode (NMSettingIP6Config *setting)
+ {
+ 	g_return_val_if_fail (NM_IS_SETTING_IP6_CONFIG (setting),
+-	                      NM_SETTING_IP6_CONFIG_ADDR_GEN_MODE_STABLE_PRIVACY);
++	                      NM_SETTING_IP6_CONFIG_ADDR_GEN_MODE_EUI64);
+ 
+ 	return NM_SETTING_IP6_CONFIG_GET_PRIVATE (setting)->addr_gen_mode;
+ }
+@@ -834,7 +834,7 @@ nm_setting_ip6_config_class_init (NMSett
+ 	obj_properties[PROP_ADDR_GEN_MODE] =
+ 	    g_param_spec_int (NM_SETTING_IP6_CONFIG_ADDR_GEN_MODE, "", "",
+ 	                      G_MININT, G_MAXINT,
+-	                      NM_SETTING_IP6_CONFIG_ADDR_GEN_MODE_STABLE_PRIVACY,
++	                      NM_SETTING_IP6_CONFIG_ADDR_GEN_MODE_EUI64,
+ 	                      G_PARAM_READWRITE |
+ 	                      G_PARAM_CONSTRUCT |
+ 	                      G_PARAM_STATIC_STRINGS);
