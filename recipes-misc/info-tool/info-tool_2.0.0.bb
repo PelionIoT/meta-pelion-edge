@@ -8,7 +8,7 @@ git://git@github.com/armPelionEdge/pe-utils.git;protocol=ssh;name=pe-utils;dests
 "
 
 #SRCREV_FORMAT = "wwrelay-dss"
-SRCREV_pe-utils = "9e3fd4b1e015443bb8fb6ff1df36a7a285a60dec"
+SRCREV_pe-utils = "6a436d6986c67f36936a40d31f43462c97b6f615"
 
 inherit pkgconfig gitpkgv 
 
