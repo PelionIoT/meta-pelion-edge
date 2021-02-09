@@ -2,11 +2,13 @@
 
 ## Pelion Edge 2.2 - February 2021
 
-The primary features in this release:
+In this release of Pelion Edge 2.2 we introduce support for two additional platforms and one additional yocto distrobution operating system:  Now supported by Pelion Edge is the Linux microPlatform (LMP) OS, running on a NXP's imx8 development platform `imx8mmevk` and the Xilinx Zynq® UltraScale development platform `uz3eg-iocc`.  Pelion Edge continues support of Yocto's Poky OS on the Raspberry PI3.  [Quickstart Guides](https://developer.pelion.com/docs/device-management-edge/2.2/quick-start/index.html) are avaiable for all three platforms and should be followed individually as the build systems have differences.  meta-pelion-edge and meta-mbed-edge are the baisis for all Pelion Edge programs.  While the OS's are different in support models, Pelion Edge has been tested to perform and operate the same within both OS environements.  Moreover, both OS's have the same feature set, other than the following difference:
+  * [FOTA Update] Pelion Edge on Poky OS continues to use overlayFS for upgrades as it did in previous releases.  Pelion Edge on LMP OS uses a new mechanism called [OSTree](https://ostreedev.github.io/ostree/).
 
+The primary features in this release:
 * [edge-core] Updated Edge Core to [0.15.0](https://github.com/PelionIoT/mbed-edge/blob/master/CHANGELOG.md#release-0150-2021-1-12).
   * Moved the mbed-edge-core recipe to its own meta layer - [meta-mbed-edge](https://github.com/PelionIoT/meta-mbed-edge).
-  * The new FOTA update framework library is supported on platforms `imx8mmevk` and `uz3eg-iocc` but not on `raspberrypi3`. To compile with this library, add the `MBED_EDGE_CORE_CONFIG_FIRMWARE_UPDATE="ON"`, `MBED_EDGE_CORE_CONFIG_FOTA_ENABLE="ON"` and `MBED_EDGE_CORE_CONFIG_CURL_DYNAMIC_LINK="ON"` Bitbake parameters to local.conf.
+  * The new FOTA update framework library is supported on platforms `imx8mmevk` and `uz3eg-iocc` but not on `raspberrypi3`. To compile with this library, add the `MBED_EDGE_CORE_CONFIG_FIRMWARE_UPDATE="ON"`, `MBED_EDGE_CORE_CONFIG_FOTA_ENABLE="ON"` and `MBED_EDGE_CORE_CONFIG_CURL_DYNAMIC_LINK="ON"` Bitbake parameters to local.conf.  (note: The location for local.conf is specific to each platform, thus following the quicksart guide in the documentation in detail is recommended.) 
   * The old firmware update library, Update Client (UC) hub, is only supported on the `raspberrypi3` platform. To enable that, add the `MBED_EDGE_CORE_CONFIG_FIRMWARE_UPDATE="ON"` parameter to local.conf.
 * [maestro] Updated Maestro to [v2.9.0](https://github.com/PelionIoT/maestro/releases/tag/v2.9.0).
   * [Gateway capabilities](https://developer.pelion.com/docs/device-management-edge/2.2/managing/maestro.html#gateway-capabilities) - Allows gateways to advertise the features supported by the platform. Maestro uses Edge Core's GRM JSON-RPC APIs to add to the gateway device's LwM2M resources. The registered resources are added under Pelion's reserved FeatureMgmt LwM2M object - 33457 with three resources - 0 - featureID, 1 - enabled, 2 - config.
@@ -44,6 +46,7 @@ The primary features in this release:
    * compatible devicejs-ng protocol translators.
 * [image improvements] The "raspberrypi" supported image "console-image" has been simplified and improved.
    * console-image previously, version 1.0 through 2.1, contained Pelion Edge + development tools including but not limited to: compliers, editors, analysis tools, stress tools, and SQA tools.  Pelion Edge version 2.2's console-image contains a minimized set of accompany software for running and testing all of Pelion Edge's software and features.  Important to note, it is not a bare minimal image that strips common Linux tools, but more so what you might expect to find on a heavy embedded device.  With this new strategy, users of the Pelion Edge image can customize the image more easily to their liking.  It is very possible to strip the image more making a more lightweight embedded OS or add more packages to make it more like the image provide previously.
+      * LMP's equivelent image is named `lmp-console-image`
    * meta-pelion-edge itself as a yocto layer is now easier to incorporate with other layers, allowing other yocto projects to incorporate Pelion Edge.
    * Updated the splash screen banner from "DeviceOS by WigWag" to "Pelion".
    * [recipe removals]
@@ -82,7 +85,7 @@ The primary features in this release:
 - Devices behind Pelion Edge do not support [auto-observation](https://www.pelion.com/docs/device-management/current/connecting/device-guidelines.html#auto-observation).
 - Pelion Device Management Client enabled devices must first boostrap to the Pelion Device Management Cloud before connecting to Pelion Edge.
 - No moving devices are supported. (Device would be moving from Edge to another Edge device.)
-
+- LMP's base partation table is set above 10GB's to support 3 upgrade images in OSTree.  Thus for the `imx8mmevk` and the `uz3eg-iocc` we only support SD card installation (vs supporting onboard EMMC or NAND).
 
 ## Pelion Edge 2.1.2 - January 2021
 
