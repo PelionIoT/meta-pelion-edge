@@ -16,6 +16,7 @@ CORE_OS = " \
 openssh \
 packagegroup-core-boot \
 packagegroup-core-full-cmdline \
+nano \
 "
 
 #mbed-edge-core is currently dependant on deviceos-users "developer"
