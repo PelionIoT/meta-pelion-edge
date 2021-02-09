@@ -1,8 +1,7 @@
 # Changelog
 
 ## Pelion Edge 2.2 - February 2021
-
-In this release of Pelion Edge 2.2 we introduce support for two additional platforms and one additional yocto distrobution operating system:  Now supported by Pelion Edge is the Linux microPlatform (LMP) OS, running on a NXP's imx8 development platform `imx8mmevk` and the Xilinx Zynq® UltraScale development platform `uz3eg-iocc`.  Pelion Edge continues support of Yocto's Poky OS on the Raspberry PI3.  [Quickstart Guides](https://developer.pelion.com/docs/device-management-edge/2.2/quick-start/index.html) are avaiable for all three platforms and should be followed individually as the build systems have differences.  meta-pelion-edge and meta-mbed-edge are the baisis for all Pelion Edge programs.  While the OS's are different in support models, Pelion Edge has been tested to perform and operate the same within both OS environements.  Moreover, both OS's have the same feature set, other than the following difference:
+In this release of Pelion Edge 2.2 we introduce support for two additional platforms and one additional yocto distribution operating system:  Now supported by Pelion Edge is the Linux microPlatform (LMP) OS, running on a NXP's imx8 development platform `imx8mmevk` and the Xilinx Zynq® UltraScale development platform `uz3eg-iocc`.  Pelion Edge continues support of Yocto's Poky OS on the Raspberry PI3.  [Quickstart Guides](https://developer.pelion.com/docs/device-management-edge/2.2/quick-start/index.html) are available for all three platforms and should be followed individually as the build systems have differences.  meta-pelion-edge and meta-mbed-edge are the basis for all Pelion Edge programs.  While the OS's are different in support models, Pelion Edge has been tested to perform and operate the same within both OS environments.  Moreover, both OS's have the same feature set, other than the following difference:
   * [FOTA Update] Pelion Edge on Poky OS continues to use overlayFS for upgrades as it did in previous releases.  Pelion Edge on LMP OS uses a new mechanism called [OSTree](https://ostreedev.github.io/ostree/).
 
 The primary features in this release:
@@ -46,7 +45,7 @@ The primary features in this release:
    * compatible devicejs-ng protocol translators.
 * [image improvements] The "raspberrypi" supported image "console-image" has been simplified and improved.
    * console-image previously, version 1.0 through 2.1, contained Pelion Edge + development tools including but not limited to: compliers, editors, analysis tools, stress tools, and SQA tools.  Pelion Edge version 2.2's console-image contains a minimized set of accompany software for running and testing all of Pelion Edge's software and features.  Important to note, it is not a bare minimal image that strips common Linux tools, but more so what you might expect to find on a heavy embedded device.  With this new strategy, users of the Pelion Edge image can customize the image more easily to their liking.  It is very possible to strip the image more making a more lightweight embedded OS or add more packages to make it more like the image provide previously.
-      * LMP's equivelent image is named `lmp-console-image`
+      * LMP's equivalent image is named `lmp-console-image`
    * meta-pelion-edge itself as a yocto layer is now easier to incorporate with other layers, allowing other yocto projects to incorporate Pelion Edge.
    * Updated the splash screen banner from "DeviceOS by WigWag" to "Pelion".
    * [recipe removals]
@@ -61,7 +60,7 @@ The primary features in this release:
       * dnsmasq recipe is removed because Pelion Edge programs no longer need these features.
       * deviceOSWD recipe is removed because the old wigwag relay is no longer supported.
       * maestro-watchdog recipe is removed because the old wigwag relay is no longer supported.
-* Removed the dependency on hardcoded `vendor-id=42fa7b48-1a65-43aa-890f-8c704daade54` required while provisioning your gateway. In order to view the gateway logs and gateway terminal in the Pelion Portal, make sure to enable the Gateway capabilities in maestro configuration (by default they are configured for supported platfroms).
+* Removed the dependency on hardcoded `vendor-id=42fa7b48-1a65-43aa-890f-8c704daade54` required while provisioning your gateway. In order to view the gateway logs and gateway terminal in the Pelion Portal, make sure to enable the Gateway capabilities in maestro configuration (by default they are configured for supported platforms).
 
 ### Bug fixes
 
@@ -85,9 +84,10 @@ The primary features in this release:
 - Devices behind Pelion Edge do not support [auto-observation](https://www.pelion.com/docs/device-management/current/connecting/device-guidelines.html#auto-observation).
 - Pelion Device Management Client enabled devices must first boostrap to the Pelion Device Management Cloud before connecting to Pelion Edge.
 - No moving devices are supported. (Device would be moving from Edge to another Edge device.)
-- LMP's base partation table is set above 10GB's to support 3 upgrade images in OSTree.  Thus for the `imx8mmevk` and the `uz3eg-iocc` we only support SD card installation (vs supporting onboard EMMC or NAND).
+- LMP's base partition table is set above 10GB's to support 3 upgrade images in OSTree.  Thus for the `imx8mmevk` and the `uz3eg-iocc` we only support SD card installation (vs supporting onboard EMMC or NAND).
 
 ## Pelion Edge 2.1.2 - January 2021
+
 
 Updated 'pip' download url to download specific verson.
 
