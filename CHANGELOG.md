@@ -1,6 +1,6 @@
 # Changelog
 
-## Pelion Edge 2.2 - January 2021
+## Pelion Edge 2.2 - February 2021
 
 The primary features in this release:
 
@@ -9,7 +9,7 @@ The primary features in this release:
   * The new FOTA update framework library is supported on platforms `imx8mmevk` and `uz3eg-iocc` but not on `raspberrypi3`. To compile with this library, add the `MBED_EDGE_CORE_CONFIG_FIRMWARE_UPDATE="ON"`, `MBED_EDGE_CORE_CONFIG_FOTA_ENABLE="ON"` and `MBED_EDGE_CORE_CONFIG_CURL_DYNAMIC_LINK="ON"` Bitbake parameters to local.conf.
   * The old firmware update library, Update Client (UC) hub, is only supported on the `raspberrypi3` platform. To enable that, add the `MBED_EDGE_CORE_CONFIG_FIRMWARE_UPDATE="ON"` parameter to local.conf.
 * [maestro] Updated Maestro to [v2.9.0](https://github.com/PelionIoT/maestro/releases/tag/v2.9.0).
-  * Gateway capabilities - Allows gateways to advertise the features supported by the platform. Maestro uses Edge Core's GRM JSON-RPC APIs to add to the gateway device's LwM2M resources. The registered resources are added under Pelion's reserved FeatureMgmt LwM2M object - 33457 with three resources - 0 - featureID, 1 - enabled, 2 - config.
+  * [Gateway capabilities](https://developer.pelion.com/docs/device-management-edge/2.2/managing/maestro.html#gateway-capabilities) - Allows gateways to advertise the features supported by the platform. Maestro uses Edge Core's GRM JSON-RPC APIs to add to the gateway device's LwM2M resources. The registered resources are added under Pelion's reserved FeatureMgmt LwM2M object - 33457 with three resources - 0 - featureID, 1 - enabled, 2 - config.
   * Remote config management through LwM2M - FeatureMgmt config resource allows you to remotely view the current configuration of the feature and also push a config update using the LwM2M cloud service APIs. Maestro, on receiving an update, writes the content to the file path specified in the respective parameter config_filepath.
   * Removed parsing and generation of self-signed certificates. Also removed the platforms rp200 and wwrelay, which are no longer supported.
   * Maestro traffic now routed through edge-proxy instead of directly connecting to the Pelion cloud.
@@ -23,7 +23,7 @@ The primary features in this release:
 * [meta-nodejs] Removed the dependency on node v8.x. Upgraded the node packages to work with default nodejs version of Dunfell.
 * [relay-term] Upgraded relay-term to work with node v12.x. Established an independent recipe from wwrelay-utils and removed the dependency on global-node-modules.
 * [mbed-fcce] Upgraded factory-configurator-client-example to v4.7.0 and pinned its dependencies.
-* [fluentbit] Added recipe to install Fluentbit 1.3.5 on the gateway for providing an open source log processor and forwarder solution.
+* [fluentbit] Added recipe to install Fluent Bit 1.3.5 on the gateway for providing an open source log processor and forwarder solution.
   * By default, Fluent Bit is configured with following input endpoints - CPU, MEM, Systemd services - edge-core, edge-proxy, pelion-relay-term, maestro, kubelet, docker and wait-for-pelion-identity. And an output endpoint HTTP to publish logs at API endpoint - `http://gateways.local:8080/v3/device-logs` (routing through edge-proxy).
 * [journald] Enabled Forward Secure Sealing (FSS) feature of systemd journal. This helps detect gateway logs file tampering.
   * To configure Pelion Edge gateway with a sealing key and to keep track of the verification key in production setup, use Pelion Edge Provisioner (PEP) tool [v2.3.0](https://github.com/PelionIoT/pelion-edge-provisioner/releases/tag/v2.3.0).
@@ -58,6 +58,7 @@ The primary features in this release:
       * dnsmasq recipe is removed because Pelion Edge programs no longer need these features.
       * deviceOSWD recipe is removed because the old wigwag relay is no longer supported.
       * maestro-watchdog recipe is removed because the old wigwag relay is no longer supported.
+* Removed the dependency on hardcoded `vendor-id=42fa7b48-1a65-43aa-890f-8c704daade54` required while provisioning your gateway. In order to view the gateway logs and gateway terminal in the Pelion Portal, make sure to enable the Gateway capabilities in maestro configuration (by default they are configured for supported platfroms).
 
 ### Bug fixes
 
@@ -82,10 +83,10 @@ The primary features in this release:
 - Pelion Device Management Client enabled devices must first boostrap to the Pelion Device Management Cloud before connecting to Pelion Edge.
 - No moving devices are supported. (Device would be moving from Edge to another Edge device.)
 
-### Important note
 
-While provisioning your gateway, please use `vendor-id=42fa7b48-1a65-43aa-890f-8c704daade54` to unlock the rich node features, such as gateway logs and gateway terminal in the Pelion web portal.
+## Pelion Edge 2.1.2 - January 2021
 
+Updated 'pip' download url to download specific verson.
 
 ## Pelion Edge 2.1.1 - December 2020
 
