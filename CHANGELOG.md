@@ -158,7 +158,7 @@ The primary features in this release:
 
 #### Xilinx ZU3EG
 
-- LmP release including PetaLinux 2020.2 will not work in stable manner, if you enable kernel configurations [CPU_IDLE](https://cateee.net/lkddb/web-lkddb/CPU_IDLE.html) and [PREEMPT](https://cateee.net/lkddb/web-lkddb/PREEMPT.html). Our default configuration has those disabled. If you have any issues with those configurations - please get in touch with Xilinx support.
+If you enable kernel configurations [CPU_IDLE](https://cateee.net/lkddb/web-lkddb/CPU_IDLE.html) and [PREEMPT](https://cateee.net/lkddb/web-lkddb/PREEMPT.html), the LmP release including PetaLinux 2020.2 does not work in stable manner. Our default configuration has those disabled. If you have any issues with those configurations, please contact Xilinx support.
 
 ### Limitations
 
