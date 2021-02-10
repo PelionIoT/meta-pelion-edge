@@ -72,6 +72,7 @@ The primary features in this release:
 
 - Portal is not correctly updated after a firmware campaign in some instances.
 - [maestro] The FeatureMgmt config resource is initialized with a maximum 3.8KB of file content. The remaining file content is truncated during initialization. This is most likely due to the limitation of the gorilla/websocket library but needs further investigation. However, Pelion Device Management users can still push a file size of a maximum of 64KB through cloud service APIs.
+- [pt-example] `cpu-temperature` device reports random values as default CPU temperature file is not the same on Yocto and LmP.
 
 ### Limitations
 
