@@ -77,6 +77,10 @@ The primary features in this release:
 - [maestro] The FeatureMgmt config resource is initialized with a maximum 3.8KB of file content. The remaining file content is truncated during initialization. This is most likely due to the limitation of the gorilla/websocket library but needs further investigation. However, Pelion Device Management users can still push a file size of a maximum of 64KB through cloud service APIs.
 - [pt-example] `cpu-temperature` device reports random values because the default CPU temperature file is not the same on Yocto and LmP.
 
+#### Xilinx ZU3EG
+
+If you enable kernel configurations [CPU_IDLE](https://cateee.net/lkddb/web-lkddb/CPU_IDLE.html) and [PREEMPT](https://cateee.net/lkddb/web-lkddb/PREEMPT.html), the LmP release including PetaLinux 2020.2 does not work in a stable manner. Our default configuration has those disabled. If you have any issues with those configurations, please contact Xilinx support.
+
 ### Limitations
 
 - There is a maximum size limit to the full registration message, which limits the number of devices Edge can host:
@@ -147,10 +151,10 @@ While provisioning your gateway, please use `vendor-id=42fa7b48-1a65-43aa-890f-8
 * [mbed-devicejs-bridge] Mapped new device function - accelerometer, gravity sensor, magnetometer, pressure, TVOC, gyroscope, signal strength, tap detection, CO2, step counter, Euler angles and heading to LwM2M objects and resources.
 * [relay-term] Added websocket ping-pong handler for relay-term.
 * [ble-pt] Added features to BLE protocol translator:
-	* APIs to scan the gateway for BLE devices and report the MAC address, name and RSSI of all discovered devices.
-	* APIs to allow users to dynamically onboard a BLE device found in the response of the above API.
-	* Disabled the static whitelist of BLE service UUIDs.
-	* Added support for Nordic Thingy and Embedded Planet Agora board.
+  * APIs to scan the gateway for BLE devices and report the MAC address, name and RSSI of all discovered devices.
+  * APIs to allow users to dynamically onboard a BLE device found in the response of the above API.
+  * Disabled the static whitelist of BLE service UUIDs.
+  * Added support for Nordic Thingy and Embedded Planet Agora board.
 * [os] Switched init system from SysVinit to SystemD.
 * [os] Introduced `gai.conf` to control the sorting order of the addresses resolved by libc library. By default, IPv4 is preferred over IPv6.
 * [os] Removed the cronjob, which periodically restarted the gateway services.
