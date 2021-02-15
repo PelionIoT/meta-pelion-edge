@@ -1,7 +1,0 @@
-/wigwag/log/edge-core {
-rotate 5
-size 10M
-nodateext
-copytruncate
-missingok
-}

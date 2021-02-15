@@ -1,0 +1,50 @@
+From b4b13161a36f80bbb5235cf0bf64d04b34b86e2d Mon Sep 17 00:00:00 2001
+From: Ari Parkkila <ari.parkkila@pelion.com>
+Date: Mon, 25 Jan 2021 07:14:03 +0200
+Subject: [PATCH] Disable-1V8-on-usdhc2-for-SDMUX-kernel
+
+---
+ arch/arm64/boot/dts/freescale/imx8mm-evk-root.dts | 1 +
+ arch/arm64/boot/dts/freescale/imx8mm-evk.dts      | 1 +
+ arch/arm64/boot/dts/freescale/imx8mm.dtsi         | 1 +
+ 3 files changed, 3 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/freescale/imx8mm-evk-root.dts b/arch/arm64/boot/dts/freescale/imx8mm-evk-root.dts
+index c414dd91c95e..2876e910b96c 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mm-evk-root.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mm-evk-root.dts
+@@ -84,6 +84,7 @@
+ };
+ 
+ &usdhc2 {
++	no-1-8-v;
+ 	/* sdhc3 is used by 2nd linux, configure the pin */
+ 	pinctrl-0 = <&pinctrl_usdhc3>, <&pinctrl_usdhc2>, <&pinctrl_usdhc2_gpio>;
+ 	pinctrl-1 = <&pinctrl_usdhc3>, <&pinctrl_usdhc2_100mhz>, <&pinctrl_usdhc2_gpio>;
+diff --git a/arch/arm64/boot/dts/freescale/imx8mm-evk.dts b/arch/arm64/boot/dts/freescale/imx8mm-evk.dts
+index 50487c7f49cd..713e33376fc2 100755
+--- a/arch/arm64/boot/dts/freescale/imx8mm-evk.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mm-evk.dts
+@@ -376,6 +376,7 @@
+ };
+ 
+ &usdhc2 {
++	no-1-8-v;
+ 	pinctrl-names = "default", "state_100mhz", "state_200mhz";
+ 	pinctrl-0 = <&pinctrl_usdhc2>, <&pinctrl_usdhc2_gpio>;
+ 	pinctrl-1 = <&pinctrl_usdhc2_100mhz>, <&pinctrl_usdhc2_gpio>;
+diff --git a/arch/arm64/boot/dts/freescale/imx8mm.dtsi b/arch/arm64/boot/dts/freescale/imx8mm.dtsi
+index f22417f4abbf..fe3eaa06352b 100755
+--- a/arch/arm64/boot/dts/freescale/imx8mm.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mm.dtsi
+@@ -1023,6 +1023,7 @@
+ 			};
+ 
+ 			usdhc2: mmc@30b50000 {
++				no-1-8-v;
+ 				compatible = "fsl,imx8mm-usdhc", "fsl,imx7d-usdhc";
+ 				reg = <0x30b50000 0x10000>;
+ 				interrupts = <GIC_SPI 23 IRQ_TYPE_LEVEL_HIGH>;
+-- 
+2.17.1
+

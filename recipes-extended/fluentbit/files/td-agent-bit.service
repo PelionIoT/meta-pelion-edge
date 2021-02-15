@@ -1,0 +1,13 @@
+[Unit]
+Description=Fast log collector
+Wants=edge-proxy.service
+After=edge-proxy.service
+
+[Service]
+Restart=always
+RestartSec=5s
+ExecCondition=sh -c '[ -f /userdata/edge_gw_config/identity.json ]'
+ExecStart=/usr/bin/td-agent-bit -c /etc/td-agent-bit/td-agent-bit.conf
+
+[Install]
+WantedBy=network.target

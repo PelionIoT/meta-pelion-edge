@@ -1,0 +1,9 @@
+[Unit]
+Description=Fluent-bit restart service
+
+[Service]
+Type=oneshot
+ExecStart=/bin/systemctl restart td-agent-bit.service
+
+[Install]
+WantedBy=network.target

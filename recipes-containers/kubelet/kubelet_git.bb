@@ -23,7 +23,7 @@ SRCREV = "83b266ae6939012883611d6dbda745f2490a67c4"
 PR = "r1"
 
 DEPENDS = "libseccomp"
-RDEPENDS_${PN} += " docker libseccomp cni"
+RDEPENDS_${PN} += " docker libseccomp cni bash jq"
 
 bindir = "/wigwag/system/bin"
 confdir = "/wigwag/system/var/lib/kubelet"
@@ -46,10 +46,13 @@ do_compile() {
   export TMPDIR="${GOTMPDIR}"
   # KUBE_GO_PACKAGE is expected to be set by the version.sh script
   export KUBE_GO_PACKAGE=${GO_IMPORT}
-  # sh doesn't like variable names with '::' in them. Replace all '::' occurrences with '_'
-  eval "$(cat ${GOPATH}/src/${GO_IMPORT}/hack/lib/version.sh | sed --expression 's/::/_/g')"
-  echo "${GO} install -v -ldflags=\"$GO_RPATH $GO_LINKMODE -extldflags '$GO_EXTLDFLAGS' $(kube_version_ldflags)\" ${GO_PACKAGES}" > /tmp/gostuff
-  ${GO} install -v -ldflags="$GO_RPATH $GO_LINKMODE -extldflags '$GO_EXTLDFLAGS' $(kube_version_ldflags)" ${GO_PACKAGES}
+  #note: reference 2.1 Tag for the bash only method to add version information
+    
+  #bash and dash version:
+  timestamp="$(date ${buildDate} -u +'%Y-%m-%dT%H:%M:%SZ')"
+  ldflagsstring="-X 'k8s.io/kubernetes/pkg/version.buildDate=${timestamp}' -X 'k8s.io/kubernetes/vendor/k8s.io/client-go/pkg/version.buildDate=${timestamp}' -X 'k8s.io/kubernetes/pkg/version.gitVersion=v1.13.2-argus' -X 'k8s.io/kubernetes/vendor/k8s.io/client-go/pkg/version.gitVersion=v1.13.2-argus' -X 'k8s.io/kubernetes/pkg/version.gitMajor=1' -X 'k8s.io/kubernetes/vendor/k8s.io/client-go/pkg/version.gitMajor=1' -X 'k8s.io/kubernetes/pkg/version.gitMinor=13' -X 'k8s.io/kubernetes/vendor/k8s.io/client-go/pkg/version.gitMinor=13' "
+  ${GO} install -v -ldflags="$GO_RPATH $GO_LINKMODE -extldflags '$GO_EXTLDFLAGS' ${ldflagsstring}" ${GO_PACKAGES}
+
 }
 
 do_install() {

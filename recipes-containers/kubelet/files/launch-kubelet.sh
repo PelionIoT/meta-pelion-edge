@@ -18,7 +18,7 @@
 # ----------------------------------------------------------------------------
 
 DEVICE_ID=`jq -r .deviceID /userdata/edge_gw_config/identity.json`
-if [ $? -ne 0 ]; then
+if [[ $? -ne 0 ]] || [[ $DEVICE_ID == null ]]; then
     echo "Unable to extract device ID from identity.json"
     exit 1
 fi

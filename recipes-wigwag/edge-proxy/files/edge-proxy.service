@@ -1,11 +1,12 @@
 [Unit]
-Descritpion=Tunneling Proxy for gateways
-Requires=wait-for-pelion-identity.service
+Description=Tunneling Proxy for gateways
+Wants=wait-for-pelion-identity.service
 After=wait-for-pelion-identity.service
 
 [Service]
 Restart=always
 RestartSec=5
+ExecCondition=sh -c '[ -f /userdata/edge_gw_config/identity.json ]'
 ExecStart=/wigwag/system/bin/launch-edge-proxy.sh
 
 [Install]

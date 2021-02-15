@@ -1,0 +1,13 @@
+[Unit]
+Description=Wait for a connection to Pelion and create credentials
+Wants=edge-core.service
+After=edge-core.service
+
+[Service]
+Restart=on-failure
+RestartSec=5s
+RemainAfterExit=true
+ExecStart=/wigwag/wwrelay-utils/identity-tools/generate-identity.sh 9101 /userdata/edge_gw_config
+
+[Install]
+WantedBy=network.target

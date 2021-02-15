@@ -1,13 +1,13 @@
 SUMMARY = "Tiny versions of many common UNIX utilities in a single small executable"
 DESCRIPTION = "BusyBox combines tiny versions of many common UNIX utilities into a single small executable. It provides minimalist replacements for most of the utilities you usually find in GNU fileutils, shellutils, etc. The utilities in BusyBox generally have fewer options than their full-featured GNU cousins; however, the options that are included provide the expected functionality and behave very much like their GNU counterparts. BusyBox provides a fairly complete POSIX environment for any small or embedded system."
-HOMEPAGE = "http://www.busybox.net"
+HOMEPAGE = "https://www.busybox.net"
 BUGTRACKER = "https://bugs.busybox.net/"
 
 DEPENDS += "kern-tools-native virtual/crypt"
 
 # bzip2 applet in busybox is based on lightly-modified bzip2 source
 # the GPL is version 2 only
-LICENSE = "GPLv2 & bzip2"
+LICENSE = "GPLv2 & bzip2-1.0.6"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=de10de48642ab74318e893a61105afbb"
 
 SECTION = "base"
@@ -53,6 +53,9 @@ RDEPENDS_${PN} = "${@["", "busybox-inittab"][(d.getVar('VIRTUAL-RUNTIME_init_man
 
 inherit cml1 systemd update-rc.d ptest
 
+# busybox's unzip test case needs zip command, which busybox itself does not provide
+RDEPENDS_${PN}-ptest = "zip"
+
 # internal helper
 def busybox_cfg(feature, tokens, cnf, rem):
     if type(tokens) == type(""):
@@ -72,8 +75,7 @@ def features_to_busybox_settings(d):
     busybox_cfg(bb.utils.contains('DISTRO_FEATURES', 'nls', True, False, d), 'CONFIG_LOCALE_SUPPORT', cnf, rem)
     busybox_cfg(bb.utils.contains('DISTRO_FEATURES', 'ipv4', True, False, d), 'CONFIG_FEATURE_IFUPDOWN_IPV4', cnf, rem)
     busybox_cfg(bb.utils.contains('DISTRO_FEATURES', 'ipv6', True, False, d), 'CONFIG_FEATURE_IFUPDOWN_IPV6', cnf, rem)
-    busybox_cfg(bb.utils.contains('DISTRO_FEATURES', 'wifi', True, False, d), 'CONFIG_RFKILL', cnf, rem)
-    busybox_cfg(bb.utils.contains('DISTRO_FEATURES', 'bluetooth', True, False, d), 'CONFIG_RFKILL', cnf, rem)
+    busybox_cfg(bb.utils.contains_any('DISTRO_FEATURES', 'bluetooth wifi', True, False, d), 'CONFIG_RFKILL', cnf, rem)
     return "\n".join(cnf), "\n".join(rem)
 
 # X, Y = ${@features_to_busybox_settings(d)}
@@ -126,20 +128,13 @@ do_prepare_config () {
 		${S}/.config.oe-tmp > ${S}/.config
 	fi
 	sed -i 's/CONFIG_IFUPDOWN_UDHCPC_CMD_OPTIONS="-R -n"/CONFIG_IFUPDOWN_UDHCPC_CMD_OPTIONS="-R -b"/' ${S}/.config
-	sed -i 's|${DEBUG_PREFIX_MAP}||g' ${S}/.config
+	if [ -n "${DEBUG_PREFIX_MAP}" ]; then
+		sed -i 's|${DEBUG_PREFIX_MAP}||g' ${S}/.config
+	fi
 }
 
-# returns all the elements from the src uri that are .cfg files
-def find_cfgs(d):
-    sources=src_patches(d, True)
-    sources_list=[]
-    for s in sources:
-        if s.endswith('.cfg'):
-            sources_list.append(s)
-
-    return sources_list
-
 do_configure () {
+	set -x
 	do_prepare_config
 	merge_config.sh -m .config ${@" ".join(find_cfgs(d))}
 	cml1_do_configure
@@ -314,8 +309,8 @@ do_install () {
 		fi
 	fi
 	if grep -q "CONFIG_INIT=y" ${B}/.config; then
-		install -D -m 0777 ${WORKDIR}/rcS ${D}${sysconfdir}/init.d/rcS
-		install -D -m 0777 ${WORKDIR}/rcK ${D}${sysconfdir}/init.d/rcK
+		install -D -m 0755 ${WORKDIR}/rcS ${D}${sysconfdir}/init.d/rcS
+		install -D -m 0755 ${WORKDIR}/rcK ${D}${sysconfdir}/init.d/rcK
 	fi
 
 	if ${@bb.utils.contains('DISTRO_FEATURES','systemd','true','false',d)}; then
@@ -345,9 +340,13 @@ do_install () {
 	fi
 }
 
+PTEST_BINDIR = "1"
+
 do_install_ptest () {
 	cp -r ${B}/testsuite ${D}${PTEST_PATH}/
-	cp ${B}/.config      ${D}${PTEST_PATH}/
+        # These access the internet which is not guaranteed to work on machines running the tests
+        rm -rf ${D}${PTEST_PATH}/testsuite/wget
+	sort ${B}/.config > ${D}${PTEST_PATH}/.config
 	ln -s /bin/busybox   ${D}${PTEST_PATH}/busybox
 }
 
@@ -388,35 +387,67 @@ python do_package_prepend () {
         set_alternative_vars("${sysconfdir}/busybox.links.suid", "${base_bindir}/busybox.suid")
 }
 
-pkg_postinst_${PN} () {
-	# This part of code is dedicated to the on target upgrade problem.
-	# It's known that if we don't make appropriate symlinks before update-alternatives calls,
-	# there will be errors indicating missing commands such as 'sed'.
-	# These symlinks will later be updated by update-alternatives calls.
-	test -n 2 > /dev/null || alias test='busybox test'
-	if test "x$D" = "x"; then
-		# Remove busybox.nosuid if it's a symlink, because this situation indicates
-		# that we're installing or upgrading to a one-binary busybox.
-		if test -h ${base_bindir}/busybox.nosuid; then
-			rm -f ${base_bindir}/busybox.nosuid
-		fi
-		for suffix in "" ".nosuid" ".suid"; do
-			if test -e ${sysconfdir}/busybox.links$suffix; then
-				while read link; do
-					if test ! -e "$link"; then
-						# we can use busybox here because even if we are using splitted busybox
-						# we've made a symlink from /bin/busybox to /bin/busybox.nosuid.
-						busybox rm -f $link
-						busybox ln -s "${base_bindir}/busybox$suffix" $link
-					fi
-				done < ${sysconfdir}/busybox.links$suffix
-			fi
-		done
-	fi
-	if grep -q "^${base_bindir}/bash$" $D${sysconfdir}/busybox.links*; then
-		grep -q "^${base_bindir}/bash$" $D${sysconfdir}/shells || echo ${base_bindir}/bash >> $D${sysconfdir}/shells
-	fi
+# This part of code is dedicated to the on target upgrade problem.  It's known
+# that if we don't make appropriate symlinks before update-alternatives calls,
+# there will be errors indicating missing commands such as 'sed'.
+# These symlinks will later be updated by update-alternatives calls.
+# The update-alternatives.bbclass' postinst script runs firstly before other
+# postinst, but this part of code needs run firstly, so add this funtion.
+python populate_packages_updatealternatives_append() {
+    postinst = """
+test -n 2 > /dev/null || alias test='busybox test'
+if test "x$D" = "x"; then
+    # Remove busybox.nosuid if it's a symlink, because this situation indicates
+    # that we're installing or upgrading to a one-binary busybox.
+    if test -h ${base_bindir}/busybox.nosuid; then
+        rm -f ${base_bindir}/busybox.nosuid
+    fi
+    for suffix in "" ".nosuid" ".suid"; do
+        if test -e ${sysconfdir}/busybox.links$suffix; then
+            while read link; do
+                if test ! -e "$link"; then
+                    # we can use busybox here because even if we are using splitted busybox
+                    # we've made a symlink from /bin/busybox to /bin/busybox.nosuid.
+                    busybox rm -f $link
+                    busybox ln -s "${base_bindir}/busybox$suffix" $link
+                fi
+            done < ${sysconfdir}/busybox.links$suffix
+        fi
+    done
+fi
+if grep -q "^${base_bindir}/bash$" $D${sysconfdir}/busybox.links*; then
+    grep -q "^${base_bindir}/bash$" $D${sysconfdir}/shells || echo ${base_bindir}/bash >> $D${sysconfdir}/shells
+fi
+
+"""
+    d.prependVar('pkg_postinst_%s' % pkg, postinst)
 }
+
+pkg_postinst_${PN}_prepend () {
+        # Need path to saved utils, but they may have be removed on upgrade of busybox
+        # Only use shell to get paths. Also capture if busybox was saved.
+        BUSYBOX=""
+        if [ "x$D" = "x" ] ; then 
+           for busybox_rmdir in /tmp/busyboxrm-*; do
+               if [ "$busybox_rmdir" != '/tmp/busyboxrm-*' ] ; then
+                  export PATH=$busybox_rmdir:$PATH
+                  if [ -e $busybox_rmdir/busybox* ] ; then
+                    BUSYBOX="$busybox_rmdir/busybox*"
+                  fi
+               fi
+           done
+        fi
+}
+
+pkg_postinst_${PN}_append () {
+        # If busybox exists in the remove directory it is because it was the only shell left.
+        if [ "x$D" = "x" ] ; then
+           if [ "x$BUSYBOX" != "x" ] ; then
+              update-alternatives --remove sh $BUSYBOX
+              rm -f $BUSYBOX
+           fi
+        fi
+} 
 
 pkg_prerm_${PN} () {
 	# This is so you can make busybox commit suicide - removing busybox with no other packages
@@ -438,9 +469,26 @@ pkg_prerm_${PN} () {
 	ln -s ${base_bindir}/busybox $tmpdir/grep
 	ln -s ${base_bindir}/busybox $tmpdir/tail
 	export PATH=$PATH:$tmpdir
+
+        # If busybox is the shell, we need to save it since its the lowest priority shell
+        # Register saved bitbake as the lowest priority shell possible as back up.
+        if [ -n "$(readlink -f /bin/sh | grep busybox)" ] ; then
+           BUSYBOX=$(readlink -f /bin/sh)
+           cp $BUSYBOX $tmpdir/$(basename $BUSYBOX)
+           update-alternatives --install /bin/sh sh $tmpdir/$(basename $BUSYBOX) 1 
+        fi
 }
 
 pkg_postrm_${PN} () {
+        # Add path to remove dir in case we removed our only grep
+        if [ "x$D" = "x" ] ; then
+           for busybox_rmdir in /tmp/busyboxrm-*; do
+               if [ "$busybox_rmdir" != '/tmp/busyboxrm-*' ] ; then
+                  export PATH=$busybox_rmdir:$PATH
+               fi
+           done
+        fi
+
 	if grep -q "^${base_bindir}/bash$" $D${sysconfdir}/busybox.links* && [ ! -e $D${base_bindir}/bash ]; then
 		printf "$(grep -v "^${base_bindir}/bash$" $D${sysconfdir}/shells)\n" > $D${sysconfdir}/shells
 	fi
@@ -455,4 +503,4 @@ pkg_prerm_${PN}-syslog () {
 	fi
 }
 
-RPROVIDES_${PN} += "${@bb.utils.contains('DISTRO_FEATURES', 'usrmerge', '/bin/sh', '', d)}"
+RPROVIDES_${PN} += "${@bb.utils.contains('DISTRO_FEATURES', 'usrmerge', '/bin/sh /bin/ash', '', d)}"

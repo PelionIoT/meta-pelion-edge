@@ -83,17 +83,14 @@ EXTRA_USERS_PARAMS = "usermod -P redmbed root; "
 INHERIT += "chageusers"
 CHAGE_USERS_PARAMS = "chage -d0 root; "
 
-PREFERRED_PROVIDER_node-native = "nodejs-native"
-PREFERRED_PROVIDER_node = "nodejs"
-PREFERRED_VERSION_nodejs = "8.11.2"
-PREFERRED_VERSION_nodejs-native = "8.11.2"
 
 # force golang 1.14% compiler
 # from poky master branch (newer than dunfell) see file: tcmode-default.inc
 GOVERSION = "1.14%"
-PREFERRED_PROVIDER_openssl = "openssl10"
-PREFERRED_PROVIDER_openssl-native = "openssl10-native"
-PREFERRED_VERSION_openssl10 = "1.0.2%"
+
+# if persistent /var/log is desired, set the following to "no"
+# persistent logging is required to enable Journald's Forware Secure Sealing (FSS) feature
+VOLATILE_LOG_DIR = "no"
 
 USER_CLASSES = "image-mklibs image-prelink"
 PATCHRESOLVE = "noop"
@@ -102,3 +99,5 @@ INHERIT += "rm_work"
 CONF_VERSION = "1"
 
 export SSH_AUTH_SOCK
+
+DISABLE_VC4GRAPHICS = "1"

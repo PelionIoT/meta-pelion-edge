@@ -1,10 +1,13 @@
 [Unit]
-Descritpion=Maestro: Network, Config, DeviceJS manager
+Description=Maestro: Network, Config, DeviceJS manager
+Wants=edge-proxy.service
+After=edge-proxy.service
 
 [Service]
 Restart=always
 RestartSec=5s
 Environment="LD_LIBRARY_PATH=/wigwag/system/lib"
+ExecCondition=sh -c '[ -f /userdata/edge_gw_config/identity.json ]'
 ExecStartPre=mkdir -p /userdata/etc/
 ExecStart=env GODEBUG=madvdontneed=1 /wigwag/system/bin/maestro -config /wigwag/etc/run/maestro-config.yaml
 

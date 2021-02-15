@@ -1,0 +1,16 @@
+/var/log/syslog
+/var/log/auth.log {
+        rotate 5
+        daily
+        size 2M
+        nodateext
+}
+/var/log/kern.log
+/var/log/lastlog
+/var/log/mail*
+/var/log/messages {
+        rotate 5
+        daily
+        size 50K
+        nodateext
+}
