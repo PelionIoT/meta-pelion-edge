@@ -20,7 +20,7 @@ index 6cba89b..33baba1 100755
 -	make -C out
 -	cp ./out/Debug/libuv.a $DEPS_DIR/build/lib
 +    sh autogen.sh
-+    ./configure --host=aarch64-lmp-linux-gnu
++    ./configure --host=$TARGET_SYS
 +    make -B
 +    cp ./.libs/libuv.a $DEPS_DIR/build/lib
  fi
