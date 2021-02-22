@@ -77,7 +77,7 @@ do_configure_append() {
       CONFIG_OPTIONS="--host=ia32 ${ARCHFLAGS}"
     fi
     export CONFIG_OPTIONS="${CONFIG_OPTIONS}"
-    ./install-deps.sh
+    TARGET_SYS=${TARGET_SYS} ./install-deps.sh
   cd $entry_dir
 
   # build greaseGo
