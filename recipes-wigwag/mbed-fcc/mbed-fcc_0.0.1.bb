@@ -25,11 +25,15 @@ do_configure () {
 	cd ${S}
 	export PYTHONPATH=$PYTHONPATH:`pwd`/recipe-sysroot-native/usr/lib/python3.8
 	export PATH=$PYTHONPATH:$PATH
+	export HTTP_PROXY=${HTTP_PROXY}
+	export HTTPS_PROXY=${HTTPS_PROXY}
 	pip3 install mbed-cli==1.10.5 click==7.1.2 requests pyopenssl==20.0.1
 }
 
 do_compile() {
 	cd ${S}
+	export HTTP_PROXY=${HTTP_PROXY}
+	export HTTPS_PROXY=${HTTPS_PROXY}
 	BUILD_TYPE=${1:-DEBUG}
 	mbedpath=$(which mbed);
 	python3 $mbedpath deploy
