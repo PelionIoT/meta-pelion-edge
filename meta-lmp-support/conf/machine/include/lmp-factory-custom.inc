@@ -1,4 +1,4 @@
-WKS_FILE_mx8mm_sota = "sdimage-imx8-sota-config.wks.in"
+WKS_FILE_mx8mm_sota = "sdimage-imx8-spl-sota-config.wks.in"
 
 #Use ttyAMA0 instead of ttyS0 that is set in meta-lmp
 KERNEL_SERIAL_rpi = "${@oe.utils.conditional("ENABLE_UART", "1", "console=ttyAMA0,115200", "", d)}"
