@@ -20,4 +20,6 @@ BBLAYERS ?= " \
     ##OEROOT##/meta-raspberrypi \
     ##OEROOT##/meta-security \
     ##OEROOT##/meta-mbed-edge \
+    ##OEROOT##/meta-rust \
+    ##OEROOT##/meta-clang \
 "
