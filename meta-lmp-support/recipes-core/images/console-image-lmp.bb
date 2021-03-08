@@ -2,11 +2,8 @@ SUMMARY = "Linux microPlatform image running Pelion Edge"
 
 require recipes-samples/images/lmp-image-common.inc
 
-require recipes-samples/images/lmp-feature-factory.inc
-require recipes-samples/images/lmp-feature-wireguard.inc
 require recipes-samples/images/lmp-feature-docker.inc
 require recipes-samples/images/lmp-feature-wifi.inc
-require recipes-samples/images/lmp-feature-ota-utils.inc
 require recipes-samples/images/lmp-feature-sbin-path-helper.inc
 
 IMAGE_FEATURES[validitems] += "tools-debug tools-sdk"
