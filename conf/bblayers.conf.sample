@@ -23,4 +23,5 @@ BBLAYERS ?= " \
     ##OEROOT##/meta-mbed-edge \
     ##OEROOT##/meta-rust \
     ##OEROOT##/meta-clang \
+    ##OEROOT##/meta-parsec \
 "
