@@ -58,6 +58,19 @@ RPI_EXTRA = " \
 wpa-supplicant \
 "
 
+PARSEC_SERVICE = " \
+parsec-service-tpm \
+"
+
+SOFTWARE_TPM = " \
+swtpm-service \
+ibmswtpm2 \
+tpm2-tools \
+tpm2-tss \
+libtss2 \
+libtss2-tcti-mssim \
+"
+
 IMAGE_INSTALL += " \
 ${CORE_OS} \
 ${PELION_BASE_REQUIRED} \
@@ -68,6 +81,8 @@ ${PELION_CONTAINER_ORCHESTRATION} \
 ${PELION_TESTING} \
 ${RPI_EXTRA} \
 ${MACHINE_EXTRA_RRECOMMENDS} \
+${PARSEC_SERVICE} \
+${SOFTWARE_TPM} \
 "
 
 
