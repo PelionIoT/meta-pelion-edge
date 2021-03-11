@@ -64,11 +64,7 @@ parsec-service-tpm \
 
 SOFTWARE_TPM = " \
 swtpm-service \
-ibmswtpm2 \
 tpm2-tools \
-tpm2-tss \
-libtss2 \
-libtss2-tcti-mssim \
 "
 
 IMAGE_INSTALL += " \
