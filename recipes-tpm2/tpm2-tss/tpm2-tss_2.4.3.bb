@@ -15,7 +15,7 @@ PACKAGECONFIG ??= ""
 PACKAGECONFIG[oxygen] = ",--disable-doxygen-doc, "
 PACKAGECONFIG[fapi] = "--enable-fapi,--disable-fapi,json-c "
 
-EXTRA_OECONF += "--enable-static --with-udevrulesdir=${base_prefix}/lib/udev/rules.d/"
+EXTRA_OECONF += "--enable-static --with-udevrulesdir=${nonarch_base_libdir}/udev/rules.d/"
 EXTRA_OECONF_remove = " --disable-static"
 
 
