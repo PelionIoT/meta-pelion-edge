@@ -28,7 +28,7 @@ path-set \
 pelion-version \
 "
 PELION_BASE_OPTIONAL = " \
-mbed-fcc \
+mbed-fcce \
 "
 
 PELION_SYSTEMS_MANAGEMENT = "\
