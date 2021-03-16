@@ -1,6 +1,6 @@
-From 3904a9ccb468999c17883857af1869329713b155 Mon Sep 17 00:00:00 2001
-From: Yash Goyal <ygoyal@wigwag.com>
-Date: Sun, 14 Mar 2021 13:50:19 -0700
+From f06acc1ff0df91d265de03b19702292e24ed08a5 Mon Sep 17 00:00:00 2001
+From: Yash Goyal <yash.goyal@pelion.com>
+Date: Tue, 16 Mar 2021 00:04:27 -0700
 Subject: [PATCH] Added trusted storage to Yocto target
 
 parsec-se-driver will be added as DEPENDS in the recipe as its a rust
