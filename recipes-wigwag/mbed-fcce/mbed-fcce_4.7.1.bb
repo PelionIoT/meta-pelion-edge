@@ -18,6 +18,8 @@ git://github.com/parallaxsecond/parsec-se-driver.git;protocol=https;name=parsec;
 git://git@github.com/ARMmbed/factory-configurator-client-example.git;protocol=https; \
 file://0001-Added-trusted-storage-to-Yocto-target.patch \
 file://0001-fix-build-getting-cross-compiler-iface-setting-to-et.patch \
+file://0001-fix-arm_uc_pal_linux_extensions.manual_patch \
+file://0001-fix-mcc_common_setup.patch \
 file://linux-se-config.cmake \
 "
 
@@ -53,6 +55,9 @@ do_compile() {
 
     python3 pal-platform/pal-platform.py -v deploy --target=Yocto_Generic_YoctoLinux_mbedtls generate
 
+    # applying 0001-fix-arm_uc_pal_linux_extensions.manual_patch
+    git -C mbed-cloud-client apply ../../0001-fix-arm_uc_pal_linux_extensions.manual_patch
+
     if [ ${MBED_EDGE_CORE_CONFIG_PARSEC_TPM_SE_SUPPORT} == "ON" ]; then
 
         # Manually adding the parsec-se-driver Middleware
@@ -87,6 +92,5 @@ do_install() {
     install -d ${D}/wigwag
     install -d ${D}/wigwag/wwrelay-utils
     install -d ${D}/wigwag/wwrelay-utils/I2C
-    install -m 755 ${S}/__Yocto_Generic_YoctoLinux_mbedtls/factory-configurator-client-example.elf ${D}/wigwag/wwrelay-utils/I2C/factory-configurator-client-armcompiled.elf
-
+    install -m 755 ${S}/__Yocto_Generic_YoctoLinux_mbedtls/Debug/factory-configurator-client-example.elf ${D}/wigwag/wwrelay-utils/I2C/factory-configurator-client-armcompiled.elf
 }
