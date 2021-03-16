@@ -62,6 +62,10 @@ PARSEC_SERVICE = " \
 parsec-service-tpm \
 "
 
+PARSEC_TOOL = " \
+parsec-tool \
+"
+
 SOFTWARE_TPM = " \
 swtpm-service \
 tpm2-tools \
@@ -78,6 +82,7 @@ ${PELION_TESTING} \
 ${RPI_EXTRA} \
 ${MACHINE_EXTRA_RRECOMMENDS} \
 ${PARSEC_SERVICE} \
+${PARSEC_TOOL} \
 ${SOFTWARE_TPM} \
 "
 
