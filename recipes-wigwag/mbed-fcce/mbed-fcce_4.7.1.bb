@@ -14,7 +14,7 @@ RDEPENDS_${PN} += "bash python3 python3-core"
 inherit cmake pkgconfig gitpkgv distutils3 setuptools3 python3native
 
 SRC_URI = " \
-git://github.com/parallaxsecond/parsec-se-driver.git;protocol=https;name=parsec;destsuffix=parsec-se-driver \
+git://github.com/parallaxsecond/parsec-se-driver.git;protocol=https;name=parsec;destsuffix=parsec-se-driver;branch=main \
 git://git@github.com/ARMmbed/factory-configurator-client-example.git;protocol=https; \
 file://0001-Added-trusted-storage-to-Yocto-target.patch \
 file://0001-fix-build-getting-cross-compiler-iface-setting-to-et.patch \
