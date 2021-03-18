@@ -21,6 +21,7 @@ file://0001-fix-build-getting-cross-compiler-iface-setting-to-et.patch \
 file://0001-fix-arm_uc_pal_linux_extensions.manual_patch \
 file://0001-fix-mcc_common_setup.patch \
 file://linux-se-config.cmake \
+file://0001-fix_psa_storage_location.patch \
 "
 
 SRCREV_pn-${PN} = "${PV}"
