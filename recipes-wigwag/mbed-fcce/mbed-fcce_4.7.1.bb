@@ -19,7 +19,7 @@ git://git@github.com/ARMmbed/factory-configurator-client-example.git;protocol=ht
 file://0001-Added-trusted-storage-to-Yocto-target.patch \
 file://0001-fix-build-getting-cross-compiler-iface-setting-to-et.patch \
 file://0001-fix-arm_uc_pal_linux_extensions.manual_patch \
-file://0001-fix-mcc_common_setup.patch \
+file://0001-fix-mcc_common_setup.manual_patch \
 file://linux-se-config.cmake \
 "
 
@@ -55,16 +55,16 @@ do_compile() {
 
     python3 pal-platform/pal-platform.py -v deploy --target=Yocto_Generic_YoctoLinux_mbedtls generate
 
-    # applying 0001-fix-arm_uc_pal_linux_extensions.manual_patch
-    git -C mbed-cloud-client apply ../../0001-fix-arm_uc_pal_linux_extensions.manual_patch
+    if [ "${MBED_EDGE_CORE_CONFIG_PARSEC_TPM_SE_SUPPORT}" = "ON" ]; then
 
-    if [ ${MBED_EDGE_CORE_CONFIG_PARSEC_TPM_SE_SUPPORT} == "ON" ]; then
+        git -C mbed-cloud-client apply ${WORKDIR}/0001-fix-arm_uc_pal_linux_extensions.manual_patch
+        git apply ${WORKDIR}/0001-fix-mcc_common_setup.manual_patch
 
         # Manually adding the parsec-se-driver Middleware
         cp -R ${WORKDIR}/parsec-se-driver ${S}/pal-platform/Middleware/parsec_se_driver/parsec_se_driver
 
         # Place the precompiled parsec-se-driver static library
-        if [ ${MBED_EDGE_CMAKE_BUILD_TYPE} == "Debug" ]; then
+        if [ "${MBED_EDGE_CMAKE_BUILD_TYPE}" = "Debug" ]; then
             mkdir -p ${S}/pal-platform/Middleware/parsec_se_driver/parsec_se_driver/target/debug
             cp ${PKG_CONFIG_SYSROOT_DIR}/usr/lib/libparsec_se_driver.a ${S}/pal-platform/Middleware/parsec_se_driver/parsec_se_driver/target/debug/
         else
@@ -77,7 +77,7 @@ do_compile() {
 
     export ARMGCC_DIR=$(realpath $(pwd)/../../recipe-sysroot-native/usr/)
 
-    if [ ${MBED_EDGE_CORE_CONFIG_PARSEC_TPM_SE_SUPPORT} == "ON" ]; then
+    if [ "${MBED_EDGE_CORE_CONFIG_PARSEC_TPM_SE_SUPPORT}" = "ON" ]; then
         cmake -G 'Unix Makefiles' -DCMAKE_BUILD_TYPE="${MBED_EDGE_CMAKE_BUILD_TYPE}" -DCMAKE_TOOLCHAIN_FILE=../pal-platform/Toolchain/POKY-GLIBC/POKY-GLIBC.cmake -DPARSEC_TPM_SE_SUPPORT=ON -DEXTARNAL_DEFINE_FILE=../../linux-se-config.cmake
     else
         cmake -G 'Unix Makefiles' -DCMAKE_BUILD_TYPE="${MBED_EDGE_CMAKE_BUILD_TYPE}" -DCMAKE_TOOLCHAIN_FILE=../pal-platform/Toolchain/POKY-GLIBC/POKY-GLIBC.cmake -DEXTARNAL_DEFINE_FILE=../linux-config.cmake
