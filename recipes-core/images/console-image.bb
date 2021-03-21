@@ -28,7 +28,7 @@ path-set \
 pelion-version \
 "
 PELION_BASE_OPTIONAL = " \
-mbed-fcc \
+mbed-fcce \
 "
 
 PELION_SYSTEMS_MANAGEMENT = "\
@@ -58,6 +58,19 @@ RPI_EXTRA = " \
 wpa-supplicant \
 "
 
+PARSEC_SERVICE = " \
+parsec-service-tpm \
+"
+
+PARSEC_TOOL = " \
+parsec-tool \
+"
+
+SOFTWARE_TPM = " \
+swtpm-service \
+tpm2-tools \
+"
+
 IMAGE_INSTALL += " \
 ${CORE_OS} \
 ${PELION_BASE_REQUIRED} \
@@ -68,6 +81,9 @@ ${PELION_CONTAINER_ORCHESTRATION} \
 ${PELION_TESTING} \
 ${RPI_EXTRA} \
 ${MACHINE_EXTRA_RRECOMMENDS} \
+${PARSEC_SERVICE} \
+${PARSEC_TOOL} \
+${SOFTWARE_TPM} \
 "
 
 

@@ -41,7 +41,7 @@ path-set \
 pelion-version \
 "
 PELION_BASE_OPTIONAL = " \
-mbed-fcc \
+mbed-fcce \
 "
 
 PELION_SYSTEMS_MANAGEMENT = "\
@@ -67,6 +67,19 @@ git \
 panic \
 "
 
+PARSEC_SERVICE = " \
+parsec-service-tpm \
+"
+
+PARSEC_TOOL = " \
+parsec-tool \
+"
+
+SOFTWARE_TPM = " \
+swtpm-service \
+tpm2-tools \
+"
+
 IMAGE_INSTALL += " \
 ${CORE_OS} \
 ${PELION_BASE_REQUIRED} \
@@ -76,6 +89,9 @@ ${PELION_SYSTEMS_MANAGEMENT} \
 ${PELION_CONTAINER_ORCHESTRATION} \
 ${PELION_TESTING} \
 ${MACHINE_EXTRA_RRECOMMENDS} \
+${PARSEC_SERVICE} \
+${PARSEC_TOOL} \
+${SOFTWARE_TPM} \
 "
 
 set_local_timezone() {
