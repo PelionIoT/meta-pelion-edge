@@ -87,6 +87,23 @@ ${SOFTWARE_TPM} \
 "
 
 
+# Create a parsec user and then set permissions on the parsec components to control access.
+# Create the parsec user.
+inherit extrausers
+EXTRA_USERS_PARAMS += "\
+    useradd parsec;\
+"
+
+# modify the ownership of the folders and files that only the parsec user needs access to.
+
+ROOTFS_POSTPROCESS_COMMAND_append = " \
+  setup_parsec_files; \
+"
+setup_parsec_files() {
+    chown -R parsec:parsec ${IMAGE_ROOTFS}/etc/parsec
+    chown -R parsec:parsec ${IMAGE_ROOTFS}/usr/libexec/parsec
+    chown parsec:parsec ${IMAGE_ROOTFS}/usr/bin/swtpm.sh
+}
 set_local_timezone() {
     ln -sf /usr/share/zoneinfo/EST5EDT ${IMAGE_ROOTFS}/etc/localtime
 }
