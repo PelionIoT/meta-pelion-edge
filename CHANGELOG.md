@@ -6,7 +6,7 @@ This release adds features to the Linux microPlatform (LmP) OS, which supports N
 
 - [TPM] Introduces [Secure Pelion Edge with the Trusted Platform Module (TPM) v2.0](https://developer.pelion.com/docs/device-management-edge/latest/secure-with-tpm.html):
    - [meta-parsec] Leverages [Platfrom Abstraction for Security (Parsec)](https://parallaxsecond.github.io/parsec-book/index.html) to interface with TPM and adds a [new meta layer](https://github.com/PelionIoT/meta-parsec) to build `parsec` service 0.6.0.
-   - [swtpm] meta parsec layer also brings in [IBM's software TPM](https://sourceforge.net/projects/ibmswtpm2/) `swtpm` package. If your hardware supports physical TPM, we recommend you comment out this package from the `console-image-lmp.bb` file.
+   - [swtpm] `meta-parsec` layer also brings in [IBM's software TPM](https://sourceforge.net/projects/ibmswtpm2/) `swtpm` package. If your hardware supports physical TPM, we recommend you comment out this package from the `console-image-lmp.bb` file.
    - [parsec-se-driver] Adds a recipe to build [Parsec Secure Element driver](https://github.com/parallaxsecond/parsec-se-driver) 0.4.0, which is a dependency of Edge Core and mbed-fcce package when compiled with `MBED_EDGE_CORE_CONFIG_PARSEC_TPM_SE_SUPPORT=ON`.
    - Adds `meta-rust`, `meta-clang` and `meta-security/meta-tpm`, which are prerequisites to build Parsec and related packages.
    - [parsec-tool] Adds a recipe to build [Parsec Tool](https://github.com/parallaxsecond/parsec-tool), a command-line utility to debug and cross-validate the working of Parsec service and TPM.
