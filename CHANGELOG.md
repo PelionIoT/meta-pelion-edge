@@ -34,9 +34,10 @@ This release adds features to the Linux microPlatform (LmP) OS, which supports N
 - [info] The `info` command must be run with `sudo` on LMP-based boards (UltraZed-EG IOCC and i.MX 8M Mini EVK).
 - [info] The `info` command on the UltraZed-EG IOCC attempts to read the CPU temperature when the temperature file does not exist. This results in a cat error message.
 
-#### Xilinx ZU3EG
+#### AVNET ZU3EG
 
-If you enable kernel configurations [CPU_IDLE](https://cateee.net/lkddb/web-lkddb/CPU_IDLE.html) and [PREEMPT](https://cateee.net/lkddb/web-lkddb/PREEMPT.html), the LmP release including PetaLinux 2020.2 does not work in a stable manner. Our default configuration has those disabled. If you have any issues with those configurations, please contact Xilinx support.
+- If you enable kernel configurations [CPU_IDLE](https://cateee.net/lkddb/web-lkddb/CPU_IDLE.html) and [PREEMPT](https://cateee.net/lkddb/web-lkddb/PREEMPT.html), the LmP release including PetaLinux 2020.2 does not work in a stable manner. Our default configuration has those disabled. If you have any issues with those configurations, please contact Xilinx support.
+- You cannot do firmware update from Edge 2.2 to Edge 2.3 on the AVNET ZU3EG board due to LmP v79 release FPGA-support changes. The changes have interdepencies between the BOOT image and kernel image and as in the current update you can only update ther kernel image it fails to boot up correctly with the Edge 2.2 based BOOT image (as it does not supply the required updated device tree/FPGA files etc.). So, update to Edge 2.3 image must be done with manual flashing on ZU3EG targets.
 
 ### Limitations
 
