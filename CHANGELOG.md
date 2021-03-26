@@ -1,3 +1,59 @@
+# Pelion Edge 2.3.0 - March 2021
+
+### New features
+
+In this release the features are added to the Linux microPlatform (LmP) OS which supports NXP's i.MX8 development platform `imx8mmevk` and AVNet's Xilinx MPSoC Starter kit `uz3eg-iocc` and not to Yocto's Poky OS for RPi 3B+.
+
+- [TPM] Introducing [Secure Pelion Edge with the Trusted Platform Module (TPM) v2.0](https://developer.pelion.com/docs/device-management-edge/latest/secure-with-tpm.html):
+   - [meta-parsec] Leveraging [Platfrom Abstraction for Security (Parsec)](https://parallaxsecond.github.io/parsec-book/index.html) to interface with TPM. Added [new meta layer](https://github.com/PelionIoT/meta-parsec) to build `parsec` service 0.6.0.
+   - [swtpm] meta parsec layer also brings in [IBM's software TPM](https://sourceforge.net/projects/ibmswtpm2/) `swtpm` package. If you hardware supports physical TPM then we recommend you to comment out this package from the `console-image-lmp.bb` file.
+   - [parsec-se-driver] Added recipe to build [Parsec Secure Element driver](https://github.com/parallaxsecond/parsec-se-driver) 0.4.0 which is a dependency to edge-core and mbed-fcce package when compiled with `MBED_EDGE_CORE_CONFIG_PARSEC_TPM_SE_SUPPORT=ON`.
+   - Added `meta-rust`, `meta-clang` and `meta-security/meta-tpm`, prerequisites to build Parsec and related packages.
+   - [parsec-tool] Added a recipe to build [Parsec tool](https://github.com/parallaxsecond/parsec-tool), a command line utility to debug and cross-validate the working of Parsec service and TPM.
+- [edge-core] Updated Edge Core to [0.16.1](https://github.com/PelionIoT/mbed-edge/blob/master/CHANGELOG.md#release-0160-2021-3-15).
+   - Reduced the default log level to WARN.
+   - Added `mbed_cloud_client_user_config.h` to allow Pelion Edge OS users to set the values as per their use case. This overwrites the default config options set by edge-core. The default lifetime value is set to 1800 seconds (30 minutes).
+   - Explicitly defined HTTP_PROXY and HTTPS_PROXY environment variables.
+- [edge-examples] Updated examples to [0.16.0](https://github.com/PelionIoT/mbed-edge-examples/blob/master/CHANGELOG.md#release-0160-2021-03-15).
+- [mbed-fcce] Upgraded factory-configurator-client-example to v4.7.1.
+   - Renamed the package name from `mbed-fcc` to `mbed-fcce`.
+   - Explicitly defined HTTP_PROXY and HTTPS_PROXY environment variables.
+- [verified-logging] By default, the gateway is configured with persistent journal logging for LMP `uz3eg-iocc` and `imx8mmevk`. To disable persistent logging, set flag `VOLATILE_LOG_DIR = "no"` in `local.conf`, and update the `Storage` in recipes-core/systemd/systemd-conf/journald.conf. Note: If you disable persistent logging, the FSS feature won't work.
+- Updated `identity-tool`, `kubelet` and `info-tool` package source file protocol from SSH to HTTPS.
+
+### Bug fixes
+- [pt-example] in 2.2 release were at 0.13.0 which wasn't compatible with 0.15.0 version of edge-core. This has been fixed by upgrading it to 0.16.0.
+- In 2.2 release, the `imx8mmevk` in production mode with firmware update enabled failed with a FOTA_ASSERT after the reboot. This has been fixed.
+
+### Known issues
+
+- The Pelion Device Management portal is not correctly updated after a firmware campaign in some instances.
+- [maestro] The FeatureMgmt config resource is initialized with a maximum 3.8KB of file content. The remaining file content is truncated during initialization. This is most likely due to the limitation of the gorilla/websocket library but needs further investigation. However, Pelion Device Management users can still push a file size of a maximum of 64KB through cloud service APIs.
+- [pt-example] `cpu-temperature` device reports random values because the default CPU temperature file is not the same on Yocto and LmP.
+- [info] The `info` command must be ran with `sudo` on LMP based boards (uz3eg-iocc & imx8mmevk)
+- [info] The `info` command on the `uz3eg-iocc` attempts to read the cpu temperature when the temperature file does not exist. This results in a cat error message.
+
+#### Xilinx ZU3EG
+
+If you enable kernel configurations [CPU_IDLE](https://cateee.net/lkddb/web-lkddb/CPU_IDLE.html) and [PREEMPT](https://cateee.net/lkddb/web-lkddb/PREEMPT.html), the LmP release including PetaLinux 2020.2 does not work in a stable manner. Our default configuration has those disabled. If you have any issues with those configurations, please contact Xilinx support.
+
+### Limitations
+
+- There is a maximum size limit to the full registration message, which limits the number of devices Edge can host:
+   - Maximum registration message size is 64KB.
+   - Hosted devices with five typical Resources consume ~280B (the exact size depends, for example, on the length of resource paths). This limits the maximum number to 270 devices.
+   - The more Resources you have, the fewer devices can be supported.
+   - The Pelion Edge device Resources are also included in the same registration message.
+   - **Test the limits with your configuration, and set guidance accordingly.**
+- Devices behind Pelion Edge do not support [auto-observation](https://www.pelion.com/docs/device-management/current/connecting/device-guidelines.html#auto-observation).
+- Pelion Device Management Client enabled devices must first boostrap to the Pelion Device Management cloud before connecting to Pelion Edge.
+- No moving devices are supported (such as the device moving from Pelion Edge to another edge device.)
+- LmP's base partition table is set above 10GB to support three upgrade images in OSTree. Therefore, we only support SD card installation (compared to supporting onboard EMMC or NAND) for the `imx8mmevk` and the `uz3eg-iocc`.
+
+### Important note
+
+While provisioning your gateway, please use `vendor-id=42fa7b48-1a65-43aa-890f-8c704daade54` to unlock the rich node features, such as gateway logs and gateway terminal in the Pelion web portal.
+
 # Pelion Edge 2.2.0 - February 2021
 
 ## New features
