@@ -1,5 +1,5 @@
 
-COMPATIBLE_MACHINE = "raspberrypi3"
+COMPATIBLE_MACHINE = "^rpi$"
 
 do_deploy_append() {
     if [ -z "${MENDER_ARTIFACT_NAME}" ]; then
