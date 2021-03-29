@@ -34,6 +34,7 @@ This release adds features to the Linux microPlatform (LmP) OS, which supports N
 - [pt-example] `cpu-temperature` device reports random values because the default CPU temperature file is not the same on Yocto and LmP.
 - [info] The `info` command must be run with `sudo` on LMP-based boards (UltraZed-EG IOCC and i.MX 8M Mini EVK).
 - [info] The `info` command on the UltraZed-EG IOCC attempts to read the CPU temperature when the temperature file does not exist. This results in a cat error message.
+- The LmP build will enable SW TPM and Parsec stacks by default in all configuration, including developer certificate configurations. However, as it will not be used or set up in those configurations the logs will show some TPM related errors - those logs can be ignored.
 
 #### AVNET ZU3EG
 
