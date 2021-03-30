@@ -1,11 +1,11 @@
-From 639eb84dad63d917b325b25fabefebb4f610e3ec Mon Sep 17 00:00:00 2001
+From 536709ded5ff28f82c42bdc04a1378255a3a0371 Mon Sep 17 00:00:00 2001
 From: Ari Parkkila <ari.parkkila@pelion.com>
-Date: Wed, 24 Feb 2021 15:50:45 +0200
-Subject: [PATCH] Read MAC from EEPROM on Xilinx
+Date: Tue, 30 Mar 2021 11:10:45 +0300
+Subject: [PATCH] Read EMAC from EEPROM on uz3eg-iocc
 
 
 diff --git a/meta-lmp-bsp/dynamic-layers/xilinx/recipes-bsp/device-tree/device-tree/uz3eg-iocc/system-board.dtsi b/meta-lmp-bsp/dynamic-layers/xilinx/recipes-bsp/device-tree/device-tree/uz3eg-iocc/system-board.dtsi
-index 99eced2..353a111 100644
+index 1750937..7b01a4b 100644
 --- a/meta-lmp-bsp/dynamic-layers/xilinx/recipes-bsp/device-tree/device-tree/uz3eg-iocc/system-board.dtsi
 +++ b/meta-lmp-bsp/dynamic-layers/xilinx/recipes-bsp/device-tree/device-tree/uz3eg-iocc/system-board.dtsi
 @@ -30,6 +30,11 @@
