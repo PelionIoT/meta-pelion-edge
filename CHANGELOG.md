@@ -1,4 +1,4 @@
-# Pelion Edge 2.3.0 - March 2021
+# Pelion Edge 2.3.0 - 1st April 2021
 
 ### New features
 
