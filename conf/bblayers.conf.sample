@@ -19,5 +19,9 @@ BBLAYERS ?= " \
     ##OEROOT##/meta-virtualization \
     ##OEROOT##/meta-raspberrypi \
     ##OEROOT##/meta-security \
+    ##OEROOT##/meta-security/meta-tpm \
     ##OEROOT##/meta-mbed-edge \
+    ##OEROOT##/meta-rust \
+    ##OEROOT##/meta-clang \
+    ##OEROOT##/meta-parsec \
 "

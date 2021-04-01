@@ -98,6 +98,4 @@ RM_OLD_IMAGE = "1"
 INHERIT += "rm_work"
 CONF_VERSION = "1"
 
-export SSH_AUTH_SOCK
-
 DISABLE_VC4GRAPHICS = "1"
