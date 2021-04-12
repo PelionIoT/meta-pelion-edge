@@ -1,6 +1,6 @@
 inherit cargo
 
-SRC_URI = "git://github.com/parallaxsecond/parsec-tool;rev=bae78ec41e03540ba5e96b1d4980f3445ab7d7af;protocol=https;branch=main"
+SRC_URI = "git://github.com/parallaxsecond/parsec-tool;protocol=https;branch=main"
 
 LIC_FILES_CHKSUM = "file://${WORKDIR}/git/LICENSE;md5=3b83ef96387f14655fc854ddc3c6bd57"
 
