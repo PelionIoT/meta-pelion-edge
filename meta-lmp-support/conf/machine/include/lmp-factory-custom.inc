@@ -1,3 +1,4 @@
+WKS_FILE_sota_uz = "sdimage-uz-spl-sota-config.wks.in"
 WKS_FILE_sota_mx8mm = "sdimage-imx8-spl-sota-config.wks.in"
 WKS_FILE_sota_rpi = "sdimage-rpi3-spl-sota-config.wks.in"
 
