@@ -1,3 +1,4 @@
+WKS_FILE_sota_uz = "sdimage-uz-spl-sota-config.wks.in"
 WKS_FILE_sota_mx8mm = "sdimage-imx8-spl-sota-config.wks.in"
 
 #Use ttyAMA0 instead of ttyS0 that is set in meta-lmp
