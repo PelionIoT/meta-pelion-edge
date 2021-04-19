@@ -1,8 +1,3 @@
 # Image partition layout for Raspberry PI3B+ supporting Pelion Edge update
 part /boot --source bootimg-partition --ondisk mmcblk --fstype=vfat --label boot --active --align 4096 --fixed-size 128
-part / --source otaimage --ondisk mmcblk --fstype=ext4 --align 4096 --size 8000M
-part /mnt/config --size 10M --ondisk mmcblk --fstype=ext4 --label config --align 4096
-part /mnt/flags --size 10M --ondisk mmcblk --fstype=ext4 --label flags --align 4096
-part /mnt/cache --size 10M --ondisk mmcblk --fstype=ext4 --label cache --align 4096
-part /userdata --size 1024 --ondisk mmcblk --fstype=ext4 --label userdata
-
+part / --source otaimage --ondisk mmcblk --fstype=ext4 --align 4096
