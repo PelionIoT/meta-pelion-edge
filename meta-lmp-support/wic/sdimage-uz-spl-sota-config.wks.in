@@ -1,3 +1,0 @@
-# Image partition layout for AVNET ZU3EG supporting Pelion Edge update
-part /boot --source bootimg-partition --ondisk mmcblk --fstype=vfat --label boot --active --align 4096 --size 20
-part / --source otaimage --ondisk mmcblk --fstype=ext4 --align 4096
