@@ -16,7 +16,7 @@ DEPENDS += "deviceos-users"
 
 CORE_IMAGE_BASE_INSTALL += " \
     kernel-modules \
-    networkmanager-nmtui \
+    networkmanager-nmcli \
     git \
     vim \
     rng-tools \
