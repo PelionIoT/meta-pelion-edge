@@ -1,0 +1,40 @@
+From 2bee8fd7246f91cd1b67ae5ad8110f69c6751cd4 Mon Sep 17 00:00:00 2001
+From: Michael Walle <michael@walle.cc>
+Date: Sat, 23 Nov 2019 00:25:32 +0100
+Subject: [PATCH 2/2] ASoC: wm8904: fix automatic sysclk configuration
+
+The simple-card tries to signal the codec to disable rate constraints,
+see commit 2458adb8f92a ("SoC: simple-card-utils: set 0Hz to sysclk when
+shutdown"). This wasn't handled by the codec, instead it would set the
+FLL frequency to 0Hz which isn't working. Since we don't have any rate
+constraints just ignore this request.
+
+Fixes: 13409d27cb39 ("ASoC: wm8904: configure sysclk/FLL automatically")
+Signed-off-by: Michael Walle <michael@walle.cc>
+Acked-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Link: https://lore.kernel.org/r/20191122232532.22258-1-michael@walle.cc
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ sound/soc/codecs/wm8904.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/sound/soc/codecs/wm8904.c b/sound/soc/codecs/wm8904.c
+index 7d7ea15d73e0..5ffbaddd6e49 100644
+--- a/sound/soc/codecs/wm8904.c
++++ b/sound/soc/codecs/wm8904.c
+@@ -1806,6 +1806,12 @@ static int wm8904_set_sysclk(struct snd_soc_dai *dai, int clk_id,
+ 
+ 	switch (clk_id) {
+ 	case WM8904_CLK_AUTO:
++		/* We don't have any rate constraints, so just ignore the
++		 * request to disable constraining.
++		 */
++		if (!freq)
++			return 0;
++
+ 		mclk_freq = clk_get_rate(priv->mclk);
+ 		/* enable FLL if a different sysclk is desired */
+ 		if (mclk_freq != freq) {
+-- 
+2.31.1
+
