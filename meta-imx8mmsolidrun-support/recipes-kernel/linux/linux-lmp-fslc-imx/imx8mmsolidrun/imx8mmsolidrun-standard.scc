@@ -1,0 +1,7 @@
+define KMACHINE imx8mmsolidrun
+define KARCH aarch64
+define KTYPE standard
+
+include ktypes/standard/standard.scc
+
+include bsp/imx/imx8mmevk.scc
