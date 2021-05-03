@@ -1,0 +1,9 @@
+[Unit]
+Description=coredns-resolv-author restarter after a change to resolv.conf
+
+[Service]
+Type=oneshot
+ExecStart=EDGE_BIN/coredns-resolv-author.sh
+
+[Install]
+WantedBy=network.target

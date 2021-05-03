@@ -1,0 +1,9 @@
+[Unit]
+Description=kube-router restarter
+
+[Service]
+Type=oneshot
+ExecStart=/bin/systemctl restart kube-router.service
+
+[Install]
+WantedBy=network.target

@@ -29,8 +29,9 @@ GO_IMPORT = "import"
 
 PV = "0.7.1+git${SRCREV_cni}"
 
-inherit go
-inherit goarch
+inherit go goarch edge
+
+FILES_${PN} += "${libexecdir}cni/* /opt/cni/* /wigwag/system/opt/cni/bin"
 
 do_compile() {
 	mkdir -p ${S}/src/github.com/containernetworking
@@ -72,7 +73,6 @@ do_install() {
     install -m 755 -o root -g root ${WORKDIR}/c2d-inner ${D}/${localbindir}
 }
 
-FILES_${PN} += "${libexecdir}cni/* /opt/cni/* /wigwag/system/opt/cni/bin"
 
 INSANE_SKIP_${PN} += "ldflags already-stripped"
 

@@ -1,6 +1,5 @@
 #!/bin/bash
 # ----------------------------------------------------------------------------
-# Copyright (c) 2021, Pelion and affiliates.
 # Copyright (c) 2020, Arm Limited and affiliates.
 #
 # SPDX-License-Identifier: Apache-2.0
@@ -24,21 +23,18 @@ if [[ $? -ne 0 ]] || [[ $DEVICE_ID == null ]]; then
 	exit 1
 fi
 
+POD_CIDR=EDGE_PODCIDR
 
-exec EDGE_BIN/kubelet \
---v=4 \
---root-dir=EDGE_KUBELET_STATE \
---offline-cache-path=EDGE_KUBELET_STATE/store \
---fail-swap-on=false \
---image-pull-progress-deadline=2m \
+exec KUBE_ROUTER_CNI_CONF_FILE=EDGE_CNI/10-kuberouter.conflist \
+EDGE_BIN/kube-router \
+--v=1 \
+--kubeconfig=${EDGE_KUBELET_STATE}/kubelet.kubeconfig \
+--run-firewall=true \
+--run-service-proxy=false \
+--run-router=true \
+--master=127.0.0.1:10355 \
+--enable-overlay=false \
+--enable-ibgp=false \
 --hostname-override=${DEVICE_ID} \
---kubeconfig=EDGE_KUBELET_STATE/kubeconfig \
---cni-bin-dir=EDGE_OPT/cni/bin \
---cni-conf-dir=EDGE_CNI \
---network-plugin=cni \
---register-node=true \
---node-status-update-frequency=150s \
---runtime-cgroups=/systemd/system.slice \
---kubelet-cgroups=/systemd/system.slice \
---resolv-conf=EDGE_RUN/coredns/resolv.conf \
---hosts-path=EDGE_RUN/coredns/hosts
+--pod-cidr=${POD_CIDR}
+

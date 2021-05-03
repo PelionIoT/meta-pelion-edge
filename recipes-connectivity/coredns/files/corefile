@@ -1,0 +1,13 @@
+.:EDGE_NODEDNSPORT {                   
+    log                        
+    errors
+    hosts EDGE_RUN/coredns/hosts { 
+        ttl 3600
+        no_reverse
+        reload 1s
+    }
+    prometheus :9153
+    cache 30
+    loop
+    loadbalance
+}
