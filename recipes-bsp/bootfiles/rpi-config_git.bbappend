@@ -22,7 +22,7 @@ do_deploy_append() {
         echo "" >> ${DEPLOYDIR}/${BOOTFILES_DIR_NAME}/config.txt
         echo "#meta-pelion-edge changes default tty to one used by bt by default, either disable ble or use to miniuart-bt" >> ${DEPLOYDIR}/${BOOTFILES_DIR_NAME}/config.txt
         echo "#dtoverlay=disable-bt" >> ${DEPLOYDIR}/${BOOTFILES_DIR_NAME}/config.txt
-        echo "dtoverlay=miniuart-bt" >> ${DEPLOYDIR}/${BOOTFILES_DIR_NAME}/config.txt
+        echo "#dtoverlay=miniuart-bt" >> ${DEPLOYDIR}/${BOOTFILES_DIR_NAME}/config.txt
     fi
 
     # match the u-boot.bin install name set in IMAGE_BOOT_FILES by meta-raspberrypi/conf/machine/include/rpi-base.inc
