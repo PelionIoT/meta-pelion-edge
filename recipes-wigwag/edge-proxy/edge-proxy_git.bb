@@ -25,7 +25,7 @@ SRCREV_FORMAT = "ep"
 SRCREV_ep = "d2e0fcdab1481487cab243c0ed3b4dc41febc49f"
 GO_IMPORT = "github.com/PelionIoT/edge-proxy"
 
-RDEPENDS_${PN} = "jq"
+RDEPENDS_${PN} = "jq bash"
 
 wbindir = "/wigwag/system/bin"
 wetcdir = "/wigwag/etc"
@@ -50,4 +50,3 @@ do_install () {
   install -m 0644 ${WORKDIR}/edge-proxy.path ${D}${systemd_system_unitdir}
 }
 
-do_package_qa[noexec] = "1"
