@@ -1,6 +1,6 @@
 #!/bin/bash
 # ----------------------------------------------------------------------------
-# Copyright (c) 2020, Arm Limited and affiliates.
+# Copyright (c) 2021, Pelion and affiliates.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -17,4 +17,14 @@
 # limitations under the License.
 # ----------------------------------------------------------------------------
 
-docker network inspect edgenet &>/dev/null || docker network create --subnet=10.0.0.0/24 --gateway=10.0.0.1 edgenet
+DEVICE_ID=`jq -r .deviceID /userdata/edge_gw_config/identity.json`
+if [[ $? -ne 0 ]] || [[ $DEVICE_ID == null ]]; then
+	echo "Unable to extract device ID from identity.json"
+	exit 1
+fi
+
+
+exec EDGE_BIN/coredns-rules.sh EDGE_PODCIDR EDGE_NODEIP EDGE_NODEDNSPORT
+exec EDGE_BIN/coredns-resolv-author.sh EDGE_NODEIP
+
+exec EDGE_BIN/coredns -conf EDGE_STATE/coredns/corefile

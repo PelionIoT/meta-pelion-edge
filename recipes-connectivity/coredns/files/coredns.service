@@ -1,0 +1,12 @@
+[Unit]
+Description=cordns
+Wants=kubelet.service
+After=kubelet.service
+
+[Service]
+Restart=always
+RestartSec=5
+ExecStart=EDGE_BIN/launch-coredns.sh
+
+[Install]
+WantedBy=network.target
