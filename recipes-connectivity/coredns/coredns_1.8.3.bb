@@ -51,7 +51,7 @@ do_compile(){
 
   cd ${S}/../
   edge_replace_vars corefile launch-coredns.sh coredns.service coredns-resolv-watcher.service coredns-resolv-author.sh
-#}
+}
 
 do_install() {
   install -d ${D}${EDGE_BIN}

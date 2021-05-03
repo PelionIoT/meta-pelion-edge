@@ -61,7 +61,7 @@ PELION_CONTAINER_ORCHESTRATION = " \
 kubelet \
 edge-proxy \
 kube-router \
-core-dns \
+coredns \
 "
 
 PELION_TESTING = " \

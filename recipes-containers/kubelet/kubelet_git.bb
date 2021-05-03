@@ -10,7 +10,6 @@ file://kubeconfig \
 file://kubelet.service \
 file://kubelet-watcher.service \
 file://kubelet.path \
-file://launch-edgenet.sh \
 file://launch-kubelet.sh \
   "
 
@@ -29,7 +28,6 @@ RDEPENDS_${PN} += " docker libseccomp cni bash jq"
 FILES_${PN} =  "\
     ${EDGE_BIN}/kubelet\
     ${EDGE_BIN}/launch-kubelet.sh\
-    ${EDGE_BIN}/launch-edgenet.sh\
     ${EDGE_KUBELET_STATE}/kubeconfig\
     ${EDGE_CNI}/10-c2d.conf\
     ${EDGE_CNI}/99-loopback.conf\
