@@ -49,7 +49,7 @@ EDGE_OPT = "/wigwag/system/opt"
 
 EDGE_CNI = "${EDGE_ETC}/cni/net.d"
 EDGE_KUBELET_STATE = "${EDGE_STATE}/kubelet"
-
+EDGE_COREDNS_STATE = "${EDGE_STATE}/coredns"
 #-----------------------------------------------------------------------------------------------------#
 #                                              _       _     _                                        #
 #                             __   ____ _ _ __(_) __ _| |__ | | ___  ___                              #
@@ -75,6 +75,13 @@ edge_replace_vars() {
 	    sed -i  "s/EDGE_STATE/$(echo ${EDGE_STATE} | sed -e 's/\\/\\\\/g; s/\//\\\//g; s/&/\\\&/g')/g" "$file"
 	    sed -i  "s/EDGE_OPT/$(echo ${EDGE_OPT} | sed -e 's/\\/\\\\/g; s/\//\\\//g; s/&/\\\&/g')/g" "$file"
 	    sed -i  "s/EDGE_RUN/$(echo ${EDGE_RUN} | sed -e 's/\\/\\\\/g; s/\//\\\//g; s/&/\\\&/g')/g" "$file"
-		sed -i  "s/EDGE_NODEIP/$(echo ${EDGE_NODEIP} | sed -e 's/\\/\\\\/g; s/\//\\\//g; s/&/\\\&/g')/g" "$file"
+	    
+	    sed -i  "s/EDGE_CNI/$(echo ${EDGE_CNI} | sed -e 's/\\/\\\\/g; s/\//\\\//g; s/&/\\\&/g')/g" "$file"
+	    sed -i  "s/EDGE_KUBELET_STATE/$(echo ${EDGE_KUBELET_STATE} | sed -e 's/\\/\\\\/g; s/\//\\\//g; s/&/\\\&/g')/g" "$file"
+	    sed -i  "s/EDGE_COREDNS_STATE/$(echo ${EDGE_COREDNS_STATE} | sed -e 's/\\/\\\\/g; s/\//\\\//g; s/&/\\\&/g')/g" "$file"
+	    
+	   	sed -i  "s/EDGE_NODEIP/$(echo ${EDGE_NODEIP} | sed -e 's/\\/\\\\/g; s/\//\\\//g; s/&/\\\&/g')/g" "$file"
+	   	sed -i  "s/EDGE_PODCIDR/$(echo ${EDGE_PODCIDR} | sed -e 's/\\/\\\\/g; s/\//\\\//g; s/&/\\\&/g')/g" "$file"
+	   	sed -i  "s/EDGE_NODEDNSPORT/$(echo ${EDGE_NODEDNSPORT} | sed -e 's/\\/\\\\/g; s/\//\\\//g; s/&/\\\&/g')/g" "$file"
 	done
 }
