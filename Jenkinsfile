@@ -1,4 +1,4 @@
 #!/usr/bin/env groovy
-@Library('edge-ci@lmp') _
+@Library('edge-ci') _
 
 metaPelionEdge()
