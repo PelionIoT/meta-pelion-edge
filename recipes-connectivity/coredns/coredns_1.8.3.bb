@@ -23,32 +23,37 @@ SRCREV = "v${PV}"
 
 PR = "r1"
 
-DEPENDS = "git"
-RDEPENDS_${PN} += "bash kubelet kube-router"
+DEPENDS = "git "
+RDEPENDS_${PN} += "bash "
 
 
-FILES_${PN} =  "\
+FILES_${PN} =  " \
     ${EDGE_BIN}/coredns\
-    ${EDGE_COREDNS_STATE}/corefile\
-    ${EDGE_BIN}/launch-coredns.sh\
-    ${EDGE_BIN}/coredns-rules.sh\
-    ${systemd_system_unitdir}/coredns.service\
-    ${systemd_system_unitdir}/coredns-resolv-watcher.service\
-    ${systemd_system_unitdir}/coredns-resolv.path\
+    ${EDGE_BIN}/launch-coredns.sh \
+    ${EDGE_BIN}/coredns-rules.sh \
+    ${EDGE_BIN}/coredns-resolv-author.sh \
+    ${EDGE_COREDNS_STATE}/corefile \
+    ${systemd_system_unitdir}/coredns.service \
+    ${systemd_system_unitdir}/coredns-resolv-watcher.service \
+    ${systemd_system_unitdir}/coredns-resolv.path \
     "
 
 do_configure(){
   cd ../coredns-1.8.3/src/github.com/coredns/coredns/
   GOARCH=${GOHOSTARCH} CGO_ENABLED=0 go generate 
+  #next 2 lines: workaround for permission error during yocto cleanup
   cd ${B}
   chmod -R u+w *
 }
 do_compile(){
   export TMPDIR="${GOTMPDIR}"
-  export KUBE_GO_PACKAGE=${GO_IMPORT}
   cd ../coredns-1.8.3/src/github.com/coredns/coredns/
-  make coredns BINARY=coredns SYSTEM="GOOS=${GOOS} GOARCH=${GOARCH}" CHECKS="" BUILDOPS=""
-
+  GITCOMMIT="$(git describe --tags --dirty)"
+  BUILDTIME="$(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+  CGO_ENABLED=$(CGO_ENABLED) SYSTEM="GOOS=${GOOS} GOARCH=${GOARCH}" go build $(BUILDOPTS) -ldflags="-X github.com/coredns/coredns/coremain.GitCommit=${GITCOMMIT} -X github.com/coredns/coredns/coremain.gitShortStat=${BUILDTIME}" -o coredns
+  #next 2 lines: workaround for permission error during yocto cleanup
+  cd ${B}
+  chmod -R u+w *
   cd ${S}/../
   edge_replace_vars corefile launch-coredns.sh coredns.service coredns-resolv-watcher.service coredns-resolv-author.sh
 }
@@ -61,11 +66,8 @@ do_install() {
   install -m 0755 ${S}/../coredns-rules.sh ${D}${EDGE_BIN}/coredns-rules.sh
   install -m 0755 ${S}/../launch-coredns.sh ${D}${EDGE_BIN}/launch-coredns.sh
   install -m 0755 ${S}/../coredns-resolv-author.sh ${D}${EDGE_BIN}/coredns-resolv-author.sh
-  install -m 0644 ${S}/../corefile ${D}${systemd_system_unitdir}/coredns.service
-  install -m 0644 ${S}/../coredns.service ${D}${EDGE_COREDNS_STATE}/corefile
+  install -m 0644 ${S}/../coredns.service ${D}${systemd_system_unitdir}/coredns.service
+  install -m 0644 ${S}/../corefile ${D}${EDGE_COREDNS_STATE}/corefile
   install -m 0644 ${S}/../coredns-resolv-watcher.service ${D}${systemd_system_unitdir}/coredns-resolv-watcher.service
   install -m 0644 ${S}/../coredns-resolv.path ${D}${systemd_system_unitdir}/coredns-resolv.path
-  #next 2 lines worksaround a permission error when cleanup runs
-  cd ${B}
-  chmod -R 777 *
 }
