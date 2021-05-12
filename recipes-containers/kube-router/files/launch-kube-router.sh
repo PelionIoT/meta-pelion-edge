@@ -25,10 +25,9 @@ fi
 
 POD_CIDR=EDGE_PODCIDR
 
-exec KUBE_ROUTER_CNI_CONF_FILE=EDGE_CNI/10-kuberouter.conflist \
-EDGE_BIN/kube-router \
+exec env KUBE_ROUTER_CNI_CONF_FILE=EDGE_CNI/10-kuberouter.conflist EDGE_BIN/kube-router \
 --v=1 \
---kubeconfig=${EDGE_KUBELET_STATE}/kubelet.kubeconfig \
+--kubeconfig=EDGE_KUBELET_STATE/kubeconfig \
 --run-firewall=true \
 --run-service-proxy=false \
 --run-router=true \

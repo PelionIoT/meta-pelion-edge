@@ -24,7 +24,7 @@ if [[ $? -ne 0 ]] || [[ $DEVICE_ID == null ]]; then
 fi
 
 
-exec EDGE_BIN/coredns-rules.sh EDGE_PODCIDR EDGE_NODEIP EDGE_NODEDNSPORT
+exec EDGE_BIN/coredns-rules.sh add EDGE_PODCIDR EDGE_NODEDNSPORT
 exec EDGE_BIN/coredns-resolv-author.sh EDGE_NODEIP
 
 exec EDGE_BIN/coredns -conf EDGE_STATE/coredns/corefile

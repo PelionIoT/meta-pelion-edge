@@ -1,6 +1,8 @@
 [Unit]
 Description=cordns
 Wants=kubelet.service
+Requires=network-online.target
+After=network-online.target
 After=kubelet.service
 
 [Service]
