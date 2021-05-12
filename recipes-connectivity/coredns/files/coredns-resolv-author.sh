@@ -29,7 +29,7 @@ if ! [ "$(id -u)" -eq 0 ]; then
 	echo "Must be run as root"
 	exit
 fi
-​
+
 if [ $# -ne 1 ]; then
 	usage
 fi

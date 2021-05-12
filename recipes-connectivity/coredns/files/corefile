@@ -1,6 +1,7 @@
 .:EDGE_NODEDNSPORT {                   
     log                        
     errors
+    bind kube-bridge
     hosts EDGE_RUN/coredns/hosts { 
         ttl 3600
         no_reverse

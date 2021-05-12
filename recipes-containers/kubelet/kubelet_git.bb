@@ -3,7 +3,7 @@ LICENSE = "Apache-2.0"
 LIC_FILES_CHKSUM = "file://src/${GO_IMPORT}/LICENSE;md5=3b83ef96387f14655fc854ddc3c6bd57"
 
 inherit go pkgconfig gitpkgv systemd edge
-SRC_URI = "git://git@github.com/armPelionEdge/edge-kubelet.git;protocol=https;branch=master;depth=1 \
+SRC_URI = "git://git@github.com/armPelionEdge/edge-kubelet.git;protocol=https;branch=kube-router-support;depth=1 \
 file://10-c2d.conf \
 file://99-loopback.conf \
 file://kubeconfig \
@@ -18,7 +18,7 @@ SYSTEMD_SERVICE_${PN} = "kubelet.service"
 SYSTEMD_AUTO_ENABLE_${PN} = "enable"
 
 #SRCREV = "${AUTOREV}"
-SRCREV = "83b266ae6939012883611d6dbda745f2490a67c4"
+SRCREV = "a53d297e7e74e03628471bea4aedf59d0565f277"
 PR = "r1"
 
 DEPENDS = "libseccomp"

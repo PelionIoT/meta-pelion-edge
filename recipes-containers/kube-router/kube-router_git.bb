@@ -17,7 +17,7 @@ SYSTEMD_PACKAGES = "${PN}"
 SYSTEMD_SERVICE_${PN} = "kube-router.service"
 SYSTEMD_AUTO_ENABLE_${PN} = "enable"
 
-SRCREV = "44bc09d4b6047b08fcebb9503257a7868ea37451"
+SRCREV = "533593ebd47315dff4cdcd1433567bc8d341b8ed"
 
 PR = "r1"
 
