@@ -30,6 +30,7 @@ CORE_OS = " \
 openssh \
 packagegroup-core-boot \
 packagegroup-core-full-cmdline \
+pc-ble-driver \
 "
 
 #mbed-edge-core is currently dependant on deviceos-users "developer"
