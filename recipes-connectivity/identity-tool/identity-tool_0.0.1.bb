@@ -9,7 +9,7 @@ file://wait-for-pelion-identity.service \
 "
 
 #SRCREV_FORMAT = "wwrelay-dss"
-SRCREV_pe-utils = "810b73f3dcfd15a21b179bc58319d68f11aaa838"
+SRCREV_pe-utils = "2.0.5"
 
 inherit pkgconfig gitpkgv systemd
 
@@ -42,6 +42,7 @@ do_install() {
 	install -m 0755 ${S}/pe-utils/identity-tools/developer_identity/create-dev-identity.sh ${PU}/developer_identity/
 	install -m 0755 ${S}/pe-utils/identity-tools/developer_identity/radioProfile.template.json ${PU}/developer_identity/
 	install -m 0755 ${S}/pe-utils/identity-tools/developer_identity/common.sh ${PU}/developer_identity/
+	install -m 0755 ${S}/pe-utils/identity-tools/developer_identity/VERSION ${PU}/developer_identity/
 
 	# Install systemd units
 	install -d ${D}${systemd_system_unitdir}
