@@ -29,6 +29,10 @@ if ! grep -q "gateways.local" /etc/hosts; then
     echo "127.0.0.1 gateways.local" >> /etc/hosts
 fi
 
+if ! grep -q "containers.local" /etc/hosts; then
+    echo "127.0.0.1 containers.local" >> /etc/hosts
+fi
+
 if ! grep -q "$DEVICE_ID" /etc/hosts; then
     echo "127.0.0.1 $DEVICE_ID" >> /etc/hosts
 fi
