@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # ----------------------------------------------------------------------------
 # Copyright (c) 2021, Pelion and affiliates.
 #
@@ -16,8 +16,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # ----------------------------------------------------------------------------
-
-
-EDGE_BIN/coredns-rules.sh add EDGE_PODCIDR EDGE_NODEDNSPORT
-
-exec EDGE_BIN/coredns -conf EDGE_STATE/coredns/corefile
+if [[ ! -e /sys/class/net/kube-bridge ]]; then
+	echo "kube-bridge does not exist"
+	exit 2
+fi
+state=$(cat /sys/class/net/kube-bridge/operstate)
+if [[ $state = "down" ]]; then
+	echo "kube-bridge down, awaiting container deployment"
+	exit 1
+fi

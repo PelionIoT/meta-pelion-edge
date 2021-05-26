@@ -1,14 +1,17 @@
 [Unit]
-Description=cordns
+Description=coredns
 Wants=kubelet.service
+After=kubelet.service
 Requires=network-online.target
 After=network-online.target
-After=kubelet.service
+BindsTo=sys-devices-virtual-net-kube\x2dbridge.device
+After=sys-devices-virtual-net-kube\x2dbridge.device
 
 [Service]
 Restart=always
 RestartSec=5
+ExecStartPre=EDGE_BIN/kube-bridge-ready.sh
 ExecStart=EDGE_BIN/launch-coredns.sh
 
 [Install]
-WantedBy=network.target
+WantedBy=multi-user.target

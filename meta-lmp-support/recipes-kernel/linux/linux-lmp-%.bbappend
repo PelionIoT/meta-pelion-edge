@@ -1,3 +1,3 @@
 FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
  
-SRC_URI_append = " file://xilinx_cpu_idle.cfg"
+SRC_URI_append = " file://enable_IP_set.cfg"
