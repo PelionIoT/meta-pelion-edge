@@ -21,6 +21,7 @@ EDGE_PROXY_DEBUG=false
 
 EDGE_K8S_ADDRESS=$(jq -r .edgek8sServicesAddress /userdata/edge_gw_config/identity.json)
 GATEWAYS_ADDRESS=$(jq -r .gatewayServicesAddress /userdata/edge_gw_config/identity.json)
+CONTAINERS_ADDRESS=$(jq -r .containerServicesAddress /userdata/edge_gw_config/identity.json)
 DEVICE_ID=$(jq -r .deviceID /userdata/edge_gw_config/identity.json)
 EDGE_PROXY_URI_RELATIVE_PATH=$(jq -r .edge_proxy_uri_relative_path /wigwag/etc/edge-proxy.conf.json)
 
@@ -48,4 +49,4 @@ exec /wigwag/system/bin/edge-proxy \
 -cert-strategy-options=path=/1/pt \
 -cert-strategy-options=device-cert-name=mbed.LwM2MDeviceCert \
 -cert-strategy-options=private-key-name=mbed.LwM2MDevicePrivateKey \
--forwarding-addresses={\"gateways.local\":\"${GATEWAYS_ADDRESS#"https://"}\"}
+-forwarding-addresses={\"gateways.local\":\"${GATEWAYS_ADDRESS#"https://"}\",\"containers.local\":\"${CONTAINERS_ADDRESS#"https://"}\"}
