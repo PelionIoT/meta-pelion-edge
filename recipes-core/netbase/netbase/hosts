@@ -1,6 +1,5 @@
 127.0.0.1       localhost.localdomain           localhost
-127.0.0.1       gateways.local
-127.0.0.1       containers.local
+127.0.0.1		gateways.local
 
 # The following lines are desirable for IPv6 capable hosts
 ::1     localhost ip6-localhost ip6-loopback
