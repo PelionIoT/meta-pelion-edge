@@ -4,8 +4,6 @@ LIC_FILES_CHKSUM = "file://src/${GO_IMPORT}/LICENSE;md5=3b83ef96387f14655fc854dd
 
 inherit go pkgconfig gitpkgv systemd edge
 SRC_URI = "git://git@github.com/armPelionEdge/edge-kubelet.git;protocol=https;branch=kube-router-support;depth=1 \
-file://10-c2d.conf \
-file://99-loopback.conf \
 file://kubeconfig \
 file://kubelet.service \
 file://kubelet-watcher.service \
@@ -29,8 +27,6 @@ FILES_${PN} =  "\
     ${EDGE_BIN}/kubelet\
     ${EDGE_BIN}/launch-kubelet.sh\
     ${EDGE_KUBELET_STATE}/kubeconfig\
-    ${EDGE_CNI}/10-c2d.conf\
-    ${EDGE_CNI}/99-loopback.conf\
     ${systemd_system_unitdir}/kubelet.service\
     ${systemd_system_unitdir}/kubelet-watcher.service\
     ${systemd_system_unitdir}/kubelet.path\
@@ -55,13 +51,10 @@ do_compile() {
 do_install() {
   install -d ${D}${EDGE_BIN}
   install -d ${D}${EDGE_KUBELET_STATE}
-  install -d ${D}${EDGE_CNI}
   install -d ${D}${systemd_system_unitdir}
   install -m 0755 ${B}/${GO_BUILD_BINDIR}/kubelet ${D}${EDGE_BIN}/kubelet
   install -m 0755 ${S}/../launch-kubelet.sh ${D}${EDGE_BIN}/launch-kubelet.sh
   install -m 0644 ${S}/../kubeconfig ${D}${EDGE_KUBELET_STATE}/kubeconfig
-  install -m 0644 ${S}/../10-c2d.conf ${D}${EDGE_CNI}/10-c2d.conf
-  install -m 0644 ${S}/../99-loopback.conf ${D}${EDGE_CNI}/99-loopback.conf
   install -m 0644 ${S}/../kubelet.service ${D}${systemd_system_unitdir}/kubelet.service
   install -m 0644 ${S}/../kubelet-watcher.service ${D}${systemd_system_unitdir}/kubelet-watcher.service
   install -m 0644 ${S}/../kubelet.path ${D}${systemd_system_unitdir}/kubelet.path

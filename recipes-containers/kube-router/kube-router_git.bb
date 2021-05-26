@@ -28,7 +28,7 @@ RDEPENDS_${PN} += "bash kubelet ipset"
 FILES_${PN} =  "\
     ${EDGE_BIN}/kube-router \
     ${EDGE_BIN}/launch-kube-router.sh \
-    ${EDGE_CNI}/10-kuberouter.conflist \
+    ${EDGE_CNI_CONF}/10-kuberouter.conflist \
     ${systemd_system_unitdir}/kube-router.service \
     ${systemd_system_unitdir}/kube-router-watcher.service \
     ${systemd_system_unitdir}/kube-router.path \
@@ -52,11 +52,11 @@ do_compile() {
 
 do_install() {
   install -d ${D}${EDGE_BIN}
-  install -d ${D}${EDGE_CNI}
+  install -d ${D}${EDGE_CNI_CONF}
   install -d ${D}${systemd_system_unitdir}
   install -m 0755 ${S}/src/${GO_IMPORT}/kube-router ${D}${EDGE_BIN}/kube-router
   install -m 0755 ${S}/../launch-kube-router.sh ${D}${EDGE_BIN}/launch-kube-router.sh
-  install -m 0644 ${S}/../10-kuberouter.conflist ${D}${EDGE_CNI}/10-kuberouter.conflist
+  install -m 0644 ${S}/../10-kuberouter.conflist ${D}${EDGE_CNI_CONF}/10-kuberouter.conflist
   install -m 0644 ${S}/../kube-router.service ${D}${systemd_system_unitdir}/kube-router.service
   install -m 0644 ${S}/../kube-router-watcher.service ${D}${systemd_system_unitdir}/kube-router-watcher.service
   install -m 0644 ${S}/../kube-router.path ${D}${systemd_system_unitdir}/kube-router.path

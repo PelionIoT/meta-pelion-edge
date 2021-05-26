@@ -47,7 +47,8 @@ EDGE_STATE = "/wigwag/system/var/lib"
 EDGE_OPT = "/wigwag/system/opt"
 #END TEMPORARY
 
-EDGE_CNI = "${EDGE_ETC}/cni/net.d"
+EDGE_CNI_CONF = "${EDGE_ETC}/cni/net.d"
+EDGE_CNI_BIN = "${EDGE_OPT}/cni/bin"
 EDGE_KUBELET_STATE = "${EDGE_STATE}/kubelet"
 EDGE_COREDNS_STATE = "${EDGE_STATE}/coredns"
 #-----------------------------------------------------------------------------------------------------#
@@ -59,7 +60,7 @@ EDGE_COREDNS_STATE = "${EDGE_STATE}/coredns"
 #                                                                                                     #
 #-----------------------------------------------------------------------------------------------------#
 EDGE_NODEIP = "10.240.0.1"
-EDGE_PODCIDR = "10.240.0.1/24"
+EDGE_PODCIDR = "10.240.0.0/24"
 EDGE_NODEDNSPORT = "53"
 
 
@@ -76,7 +77,8 @@ edge_replace_vars() {
 	    sed -i  "s/EDGE_OPT/$(echo ${EDGE_OPT} | sed -e 's/\\/\\\\/g; s/\//\\\//g; s/&/\\\&/g')/g" "$file"
 	    sed -i  "s/EDGE_RUN/$(echo ${EDGE_RUN} | sed -e 's/\\/\\\\/g; s/\//\\\//g; s/&/\\\&/g')/g" "$file"
 	    
-	    sed -i  "s/EDGE_CNI/$(echo ${EDGE_CNI} | sed -e 's/\\/\\\\/g; s/\//\\\//g; s/&/\\\&/g')/g" "$file"
+	    sed -i  "s/EDGE_CNI_CONF/$(echo ${EDGE_CNI_CONF} | sed -e 's/\\/\\\\/g; s/\//\\\//g; s/&/\\\&/g')/g" "$file"
+	    sed -i  "s/EDGE_CNI_CONF/$(echo ${EDGE_CNI_BIN} | sed -e 's/\\/\\\\/g; s/\//\\\//g; s/&/\\\&/g')/g" "$file"
 	    sed -i  "s/EDGE_KUBELET_STATE/$(echo ${EDGE_KUBELET_STATE} | sed -e 's/\\/\\\\/g; s/\//\\\//g; s/&/\\\&/g')/g" "$file"
 	    sed -i  "s/EDGE_COREDNS_STATE/$(echo ${EDGE_COREDNS_STATE} | sed -e 's/\\/\\\\/g; s/\//\\\//g; s/&/\\\&/g')/g" "$file"
 	    

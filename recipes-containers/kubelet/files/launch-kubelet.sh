@@ -24,6 +24,59 @@ if [[ $? -ne 0 ]] || [[ $DEVICE_ID == null ]]; then
 	exit 1
 fi
 
+RCONF=EDGE_RUN/coredns/resolv.conf
+
+write_resolv_conf(){
+	usage (){
+		echo "Constructs a resolv.conf file used by kubelet"
+		echo "  $0 <NODEIP>"
+		echo "Example"
+		echo "  $0 10.0.2.15"
+		exit
+	}
+	
+	if ! [ "$(id -u)" -eq 0 ]; then
+		echo "Must be run as root"
+		exit
+	fi
+
+	if [ $# -ne 1 ]; then
+		usage
+	fi
+	NODEIP="$1"
+	searchLine="hostname.local "
+	
+	grabSearch(){
+		local file="$1"
+		if [[ -e "$file" ]]; then
+			searchLine+="$(cat $file |  egrep ^search | sed 's/[^ ]* *//' )"
+		fi
+	}
+
+	addNS(){
+		local file="$1"
+		if [[ -e $file ]]; then
+			cat $file | grep nameserver | head -1 >> $RCONF
+		fi
+		grabSearch "$file"
+	}
+
+	write(){
+		if [[ ! -e EDGE_RUN/coredns ]]; then
+			mkdir -p EDGE_RUN/coredns
+		fi
+
+		echo "nameserver ${NODEIP}" > $RCONF
+		addNS cat/etc/resolv.conf
+		addNS /etc/resolv-conf.NetworkManager
+		echo "search $searchLine" >> $RCONF
+	}
+	write
+}
+
+
+
+write_resolv_conf EDGE_NODEIP
 
 exec EDGE_BIN/kubelet \
 --v=4 \
@@ -34,7 +87,7 @@ exec EDGE_BIN/kubelet \
 --hostname-override=${DEVICE_ID} \
 --kubeconfig=EDGE_KUBELET_STATE/kubeconfig \
 --cni-bin-dir=EDGE_OPT/cni/bin \
---cni-conf-dir=EDGE_CNI \
+--cni-conf-dir=EDGE_CNI_CONF \
 --network-plugin=cni \
 --register-node=true \
 --node-status-update-frequency=150s \

@@ -7,12 +7,10 @@ LIC_FILES_CHKSUM = "file://src/${GO_IMPORT}/LICENSE;md5=dbc4913e3e1413855af21786
 inherit go pkgconfig gitpkgv systemd edge
 SRC_URI = "git://${GO_IMPORT};protocol=https;branch=master;tag=v${PV};depth=1 \
 file://coredns.service \
-file://coredns-resolv-watcher.service \
-file://coredns-resolv-author.sh \
 file://corefile \
 file://coredns-rules.sh \
-file://coredns-resolv.path \
 file://launch-coredns.sh \
+file://kube-bridge-ready.sh \
   "
 
 SYSTEMD_PACKAGES = "${PN}"
@@ -30,12 +28,10 @@ RDEPENDS_${PN} += "bash "
 FILES_${PN} =  " \
     ${EDGE_BIN}/coredns\
     ${EDGE_BIN}/launch-coredns.sh \
+    ${EDGE_BIN}/kube-bridge-ready.sh \
     ${EDGE_BIN}/coredns-rules.sh \
-    ${EDGE_BIN}/coredns-resolv-author.sh \
     ${EDGE_COREDNS_STATE}/corefile \
     ${systemd_system_unitdir}/coredns.service \
-    ${systemd_system_unitdir}/coredns-resolv-watcher.service \
-    ${systemd_system_unitdir}/coredns-resolv.path \
     "
 
 do_configure(){
@@ -55,7 +51,7 @@ do_compile(){
   cd ${B}
   chmod -R u+w *
   cd ${S}/../
-  edge_replace_vars corefile launch-coredns.sh coredns.service coredns-resolv-watcher.service coredns-resolv-author.sh
+  edge_replace_vars corefile launch-coredns.sh coredns.service
 }
 
 do_install() {
@@ -64,10 +60,8 @@ do_install() {
   install -d ${D}${systemd_system_unitdir}
   install -m 0755 ${S}/src/${GO_IMPORT}/coredns ${D}${EDGE_BIN}/coredns
   install -m 0755 ${S}/../coredns-rules.sh ${D}${EDGE_BIN}/coredns-rules.sh
+  install -m 0755 ${S}/../kube-bridge-ready.sh ${D}${EDGE_BIN}/kube-bridge-ready.sh  
   install -m 0755 ${S}/../launch-coredns.sh ${D}${EDGE_BIN}/launch-coredns.sh
-  install -m 0755 ${S}/../coredns-resolv-author.sh ${D}${EDGE_BIN}/coredns-resolv-author.sh
   install -m 0644 ${S}/../coredns.service ${D}${systemd_system_unitdir}/coredns.service
   install -m 0644 ${S}/../corefile ${D}${EDGE_COREDNS_STATE}/corefile
-  install -m 0644 ${S}/../coredns-resolv-watcher.service ${D}${systemd_system_unitdir}/coredns-resolv-watcher.service
-  install -m 0644 ${S}/../coredns-resolv.path ${D}${systemd_system_unitdir}/coredns-resolv.path
 }
