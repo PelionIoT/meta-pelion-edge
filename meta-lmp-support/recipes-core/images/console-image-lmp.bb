@@ -125,3 +125,5 @@ ROOTFS_POSTPROCESS_COMMAND += " \
 "
 
 export IMAGE_BASENAME = "console-image-lmp"
+
+dqwjdqwjdojqdiojdqwiodjqio
