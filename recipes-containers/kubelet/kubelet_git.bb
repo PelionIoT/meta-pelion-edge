@@ -16,7 +16,7 @@ SYSTEMD_SERVICE_${PN} = "kubelet.service"
 SYSTEMD_AUTO_ENABLE_${PN} = "enable"
 
 #SRCREV = "${AUTOREV}"
-SRCREV = "a53d297e7e74e03628471bea4aedf59d0565f277"
+SRCREV = "f8ebb1afd620f6a29691a21656a1bc3b54283906"
 PR = "r1"
 
 DEPENDS = "libseccomp"
