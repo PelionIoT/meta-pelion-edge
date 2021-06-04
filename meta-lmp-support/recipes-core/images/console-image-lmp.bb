@@ -60,6 +60,8 @@ mbed-edge-examples \
 PELION_CONTAINER_ORCHESTRATION = " \
 kubelet \
 edge-proxy \
+kube-router \
+coredns \
 "
 
 PELION_TESTING = " \
