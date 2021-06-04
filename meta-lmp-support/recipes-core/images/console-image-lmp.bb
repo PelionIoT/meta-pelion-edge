@@ -39,6 +39,7 @@ virtual/mbed-edge-core \
 identity-tool \
 path-set \
 pelion-version \
+edge-tool \
 "
 PELION_BASE_OPTIONAL = " \
 mbed-fcce \
