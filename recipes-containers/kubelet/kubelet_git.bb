@@ -3,7 +3,7 @@ LICENSE = "Apache-2.0"
 LIC_FILES_CHKSUM = "file://src/${GO_IMPORT}/LICENSE;md5=3b83ef96387f14655fc854ddc3c6bd57"
 
 inherit go pkgconfig gitpkgv systemd edge
-SRC_URI = "git://git@github.com/armPelionEdge/edge-kubelet.git;protocol=https;branch=kube-router-support;depth=1 \
+SRC_URI = "git://git@github.com/armPelionEdge/edge-kubelet.git;protocol=https;nobranch=1;depth=1 \
 file://kubeconfig \
 file://kubelet.service \
 file://kubelet-watcher.service \

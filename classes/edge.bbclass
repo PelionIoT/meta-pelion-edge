@@ -1,14 +1,15 @@
-#class for Pelion Edge varibles and functionality
-#Linux Foundatation Filesystem Hierachy Standard: https://refspecs.linuxfoundation.org/FHS_3.0/fhs-3.0.html
+#class for Pelion Edge variables and functionality
+#Linux Foundation Filesystem Hierarchy Standard: https://refspecs.linuxfoundation.org/FHS_3.0/fhs-3.0.html
 #
-#Example usege found in edge-proxy.bb 
+#Example usage found in edge-proxy.bb 
 #    inherit edge
-#    do_install function delectlaration
+#    do_install function declaration
 #       install -d ${D}${EDGE_BIN}
 #       install -m 0755 ${B}/${GO_BUILD_BINDIR}/edge-proxy ${D}${EDGE_BIN}/
 #
 #
-  
+#
+#
 #-----------------------------------------------------------------------------------------------------#
 #                                                  _   _                                              #
 #                                      _ __   __ _| |_| |__  ___                                      #
@@ -65,7 +66,7 @@ EDGE_NODEDNSPORT = "53"
 
 
 
-#*Note: comments examplifying paths assume a standard version of yocto with an unmodified bitbake.conf
+#*Note: comments exemplifying paths assume a standard version of yocto with an unmodified bitbake.conf
 
 edge_replace_vars() {
 	for file in "$@"; do
