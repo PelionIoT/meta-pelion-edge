@@ -26,7 +26,6 @@ virtual/mbed-edge-core \
 identity-tool \
 path-set \
 pelion-version \
-edge-tool \
 "
 PELION_BASE_OPTIONAL = " \
 mbed-fcce \
@@ -85,6 +84,11 @@ ${MACHINE_EXTRA_RRECOMMENDS} \
 ${PARSEC_SERVICE} \
 ${PARSEC_TOOL} \
 ${SOFTWARE_TPM} \
+"
+
+# Only install edge-tool when compiling in BYOC_MODE
+IMAGE_INSTALL += "\
+    ${@bb.utils.contains('MBED_EDGE_CORE_CONFIG_BYOC_MODE','ON','edge-tool','',d)} \
 "
 
 
