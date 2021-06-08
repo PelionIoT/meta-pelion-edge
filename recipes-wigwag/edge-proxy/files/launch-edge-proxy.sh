@@ -53,4 +53,4 @@ exec /wigwag/system/bin/edge-proxy \
 -cert-strategy-options=path=/1/pt \
 -cert-strategy-options=device-cert-name=mbed.LwM2MDeviceCert \
 -cert-strategy-options=private-key-name=mbed.LwM2MDevicePrivateKey \
--forwarding-addresses={\"gateways.local\":\"${GATEWAYS_ADDRESS#"https://"}\",\"containers.local\":\"${CONTAINERS_ADDRESS#"https://"}\"}
+-forwarding-addresses={\"gateways.local\":\"${GATEWAYS_ADDRESS#"https://"}\"\,\"containers.local\":\"${CONTAINERS_ADDRESS#"https://"}\"}
