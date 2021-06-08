@@ -1,6 +1,6 @@
 #!/bin/bash
 # ----------------------------------------------------------------------------
-# Copyright (c) 2020, Arm Limited and affiliates.
+# Copyright (c) 2021, Pelion Ltd.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -36,4 +36,3 @@ exec env KUBE_ROUTER_CNI_CONF_FILE=EDGE_CNI_CONF/10-kuberouter.conflist EDGE_BIN
 --enable-ibgp=false \
 --hostname-override=${DEVICE_ID} \
 --pod-cidr=${POD_CIDR}
-
