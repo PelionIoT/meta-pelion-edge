@@ -20,7 +20,7 @@ SRCREV = "f8ebb1afd620f6a29691a21656a1bc3b54283906"
 PR = "r1"
 
 DEPENDS = "libseccomp"
-RDEPENDS_${PN} += " docker libseccomp cni bash jq"
+RDEPENDS_${PN} += " docker libseccomp cni bash jq kube-router coredns"
 
 
 FILES_${PN} =  "\
