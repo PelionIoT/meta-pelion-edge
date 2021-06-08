@@ -79,7 +79,7 @@ write_resolv_conf(){
 write_resolv_conf EDGE_NODEIP
 
 exec EDGE_BIN/kubelet \
---v=4 \
+--v=2 \
 --root-dir=EDGE_KUBELET_STATE \
 --offline-cache-path=EDGE_KUBELET_STATE/store \
 --fail-swap-on=false \
