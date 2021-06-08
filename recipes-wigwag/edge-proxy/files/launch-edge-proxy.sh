@@ -25,6 +25,10 @@ CONTAINERS_ADDRESS=$(jq -r .containerServicesAddress /userdata/edge_gw_config/id
 DEVICE_ID=$(jq -r .deviceID /userdata/edge_gw_config/identity.json)
 EDGE_PROXY_URI_RELATIVE_PATH=$(jq -r .edge_proxy_uri_relative_path /wigwag/etc/edge-proxy.conf.json)
 
+      if ! grep -q "containers.local" /etc/hosts; then
+          echo "127.0.0.1 containers.local" >> /etc/hosts
+      fi
+
 if ! grep -q "gateways.local" /etc/hosts; then
     echo "127.0.0.1 gateways.local" >> /etc/hosts
 fi
