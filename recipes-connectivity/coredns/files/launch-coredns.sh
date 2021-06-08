@@ -1,6 +1,6 @@
 #!/bin/bash
 # ----------------------------------------------------------------------------
-# Copyright (c) 2020, Arm Limited and affiliates.
+# Copyright (c) 2021, Pelion and affiliates.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -17,4 +17,7 @@
 # limitations under the License.
 # ----------------------------------------------------------------------------
 
-docker network inspect edgenet &>/dev/null || docker network create --subnet=10.0.0.0/24 --gateway=10.0.0.1 edgenet
+
+EDGE_BIN/coredns-rules.sh add EDGE_PODCIDR EDGE_NODEDNSPORT
+
+exec EDGE_BIN/coredns -conf EDGE_STATE/coredns/corefile

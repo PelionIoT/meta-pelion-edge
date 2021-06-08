@@ -1,13 +1,13 @@
 [Unit]
 Description=Kubelet
-Wants=edge-proxy.service
-After=edge-proxy.service
+Wants=kubelet.service
+After=kubelet.service
 
 [Service]
 Restart=always
 RestartSec=5
 ExecCondition=sh -c '[ -f EDGE_DATA/edge_gw_config/identity.json ]'
-ExecStart=EDGE_BIN/launch-kubelet.sh
+ExecStart=EDGE_BIN/launch-kube-router.sh
 
 [Install]
 WantedBy=network.target

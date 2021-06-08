@@ -1,5 +1,6 @@
 #!/bin/bash
 # ----------------------------------------------------------------------------
+# Copyright (c) 2021, Pelion and affiliates.
 # Copyright (c) 2020, Arm Limited and affiliates.
 #
 # SPDX-License-Identifier: Apache-2.0
@@ -19,24 +20,78 @@
 
 DEVICE_ID=`jq -r .deviceID /userdata/edge_gw_config/identity.json`
 if [[ $? -ne 0 ]] || [[ $DEVICE_ID == null ]]; then
-    echo "Unable to extract device ID from identity.json"
-    exit 1
+	echo "Unable to extract device ID from identity.json"
+	exit 1
 fi
 
-/wigwag/system/bin/launch-edgenet.sh
-if [ $? -ne 0 ]; then
-    echo "Unable to create edgenet docker network"
-    exit 2
-fi
+RCONF=EDGE_RUN/coredns/resolv.conf
 
-exec /wigwag/system/bin/kubelet \
---root-dir=/var/lib/kubelet \
---offline-cache-path=/wigwag/system/var/lib/kubelet/store \
+write_resolv_conf(){
+	usage (){
+		echo "Constructs a resolv.conf file used by kubelet"
+		echo "  $0 <NODEIP>"
+		echo "Example"
+		echo "  $0 10.0.2.15"
+		exit
+	}
+	
+	if ! [ "$(id -u)" -eq 0 ]; then
+		echo "Must be run as root"
+		exit
+	fi
+
+	if [ $# -ne 1 ]; then
+		usage
+	fi
+	NODEIP="$1"
+	searchLine="hostname.local "
+	
+	grabSearch(){
+		local file="$1"
+		if [[ -e "$file" ]]; then
+			searchLine+="$(cat $file |  egrep ^search | sed 's/[^ ]* *//' )"
+		fi
+	}
+
+	addNS(){
+		local file="$1"
+		if [[ -e $file ]]; then
+			cat $file | grep nameserver | head -1 >> $RCONF
+		fi
+		grabSearch "$file"
+	}
+
+	write(){
+		if [[ ! -e EDGE_RUN/coredns ]]; then
+			mkdir -p EDGE_RUN/coredns
+		fi
+
+		echo "nameserver ${NODEIP}" > $RCONF
+		addNS cat/etc/resolv.conf
+		addNS /etc/resolv-conf.NetworkManager
+		echo "search $searchLine" >> $RCONF
+	}
+	write
+}
+
+
+
+write_resolv_conf EDGE_NODEIP
+
+exec EDGE_BIN/kubelet \
+--v=2 \
+--root-dir=EDGE_KUBELET_STATE \
+--offline-cache-path=EDGE_KUBELET_STATE/store \
 --fail-swap-on=false \
 --image-pull-progress-deadline=2m \
 --hostname-override=${DEVICE_ID} \
---kubeconfig=/wigwag/system/var/lib/kubelet/kubeconfig \
---cni-bin-dir=/wigwag/system/opt/cni/bin \
---cni-conf-dir=/wigwag/system/etc/cni/net.d \
+--kubeconfig=EDGE_KUBELET_STATE/kubeconfig \
+--cni-bin-dir=EDGE_OPT/cni/bin \
+--cni-conf-dir=EDGE_CNI_CONF \
 --network-plugin=cni \
---register-node=true
+--register-node=true \
+--node-status-update-frequency=150s \
+--runtime-cgroups=/systemd/system.slice \
+--kubelet-cgroups=/systemd/system.slice \
+--resolv-conf=EDGE_RUN/coredns/resolv.conf \
+--hosts-path=EDGE_RUN/coredns/hosts
