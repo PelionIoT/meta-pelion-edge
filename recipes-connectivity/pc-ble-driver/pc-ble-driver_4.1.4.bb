@@ -23,19 +23,14 @@
 
 # Licenses digged out by recipetool, remove comments when clarified.
 #
-# WARNING: the following LICENSE and LIC_FILES_CHKSUM values are best guesses - it is
-# your responsibility to verify that the values are complete and correct.
+#   LICENSE - Nordic-5-Clause license is used.
 #
-# The following license files were not able to be identified and are
-# represented as "Unknown" below, you will need to check them yourself:
-#   LICENSE
 #   hex/sd_api_v2/s132_nrf52_2.0.1_license-agreement.txt
 #   hex/sd_api_v2/s130_nrf51_2.0.1_license-agreement.txt
 #   hex/sd_api_v5/s132_nrf52_5.1.0_license-agreement.txt
 #   hex/sd_api_v3/s132_nrf52_3.1.0_license-agreement.txt
 
-# TODO: find out what on earth to use on this, as there are many of them?
-LICENSE = "Unknown"
+LICENSE = "Nordic-5-Clause"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=772c3f93b8a2f4f2dec94ef7b9f434fb \
                     file://hex/sd_api_v2/s132_nrf52_2.0.1_license-agreement.txt;md5=322efcbf6eca7c4aa0ad3c9939c042b2 \
                     file://hex/sd_api_v2/s130_nrf51_2.0.1_license-agreement.txt;md5=322efcbf6eca7c4aa0ad3c9939c042b2 \
