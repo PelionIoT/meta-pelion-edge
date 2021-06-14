@@ -13,7 +13,7 @@ PV = "20201214"
 
 S = "${WORKDIR}/git"
 
-# CYPRESS_CONFLICT_PACKAGE ?= "bcm43455"
+CYPRESS_CONFLICT_PACKAGE ?= "bcm43455"
 CYPRESS_PART_BT ?= "4345C0"
 CYPRESS_MODEL ?= "1MW"
 
@@ -39,11 +39,13 @@ FILES_${PN} = " \
     ${sysconfdir}/firmware \
 "
 
-# RCONFLICTS_${PN} = "\
-#     linux-firmware-${CYPRESS_CONFLICT_PACKAGE} \
-#     linux-firmware-raspbian-${CYPRESS_CONFLICT_PACKAGE} \
-# "
-# RREPLACES_${PN} = "\
-#     linux-firmware-${CYPRESS_CONFLICT_PACKAGE} \
-#     linux-firmware-raspbian-${CYPRESS_CONFLICT_PACKAGE} \
-# "
+RCONFLICTS_${PN} = "\
+    linux-firmware-${CYPRESS_CONFLICT_PACKAGE} \
+    linux-firmware-raspbian-${CYPRESS_CONFLICT_PACKAGE} \
+"
+RREPLACES_${PN} = "\
+    linux-firmware-${CYPRESS_CONFLICT_PACKAGE} \
+    linux-firmware-raspbian-${CYPRESS_CONFLICT_PACKAGE} \
+"
+
+COMPATIBLE_MACHINE_imx8mmsolidrun = ".*"

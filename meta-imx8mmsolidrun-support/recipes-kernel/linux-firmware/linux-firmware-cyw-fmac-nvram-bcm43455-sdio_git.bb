@@ -28,3 +28,5 @@ FILES_${PN} = " \
     ${nonarch_base_libdir}/firmware/LICENCE.cyw-fmac-nvram \
     ${nonarch_base_libdir}/firmware/brcm/brcmfmac${CYPRESS_PART}.txt \
 "
+
+COMPATIBLE_MACHINE_imx8mmsolidrun = ".*"

@@ -30,3 +30,5 @@ FILES_${PN} = " \
     ${nonarch_base_libdir}/firmware/brcm/brcmfmac${CYPRESS_PART}.bin \
     ${nonarch_base_libdir}/firmware/brcm/brcmfmac${CYPRESS_PART}.clm_blob \
 "
+
+COMPATIBLE_MACHINE_imx8mmsolidrun = ".*"

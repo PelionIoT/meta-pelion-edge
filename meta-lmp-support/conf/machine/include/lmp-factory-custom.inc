@@ -24,7 +24,7 @@ IMAGE_BOOT_FILES_append_lmp-base_imx8mmsolidrun = " \
 
 # Add additional firmware for Wifi/BT
 MACHINE_FIRMWARE_append_imx8mmsolidrun = " \
-       linux-firmware-cyw-fmac-fw \
-       linux-firmware-cyw-fmac-nvram \
-       linux-firmware-cyw-bt-patch \
+       linux-firmware-cyw-fmac-fw-bcm43455-sdio \
+       linux-firmware-cyw-fmac-nvram-bcm43455-sdio \
+       linux-firmware-cyw-bt-patch-bcm43455 \
 "
