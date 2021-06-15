@@ -3,7 +3,6 @@
 #
 
 # TODO:
-# * clarify the license declaration; is there a label for them?
 # * separate the examples out from library build;
 #     Q: is a separate recipe commonly used or what?
 #     A: cmake class pushes these to dev package.
@@ -20,22 +19,14 @@
 # * nrftool?
 #     ** it is available from PIP repo, but required only for HEX build
 
-
-# Licenses digged out by recipetool, remove comments when clarified.
+# LICENSE - Nordic-5-Clause license is used.
 #
-#   LICENSE - Nordic-5-Clause license is used.
+# You need to have a a Nordic chip with the SoftDevice running in it.
+# You should likely use the latest API version, i.e. sd_api_v6 (as of writing this).
+# Yocto build will not use the softdevice, it will use only PC-BLE-driver.
 #
-#   hex/sd_api_v2/s132_nrf52_2.0.1_license-agreement.txt
-#   hex/sd_api_v2/s130_nrf51_2.0.1_license-agreement.txt
-#   hex/sd_api_v5/s132_nrf52_5.1.0_license-agreement.txt
-#   hex/sd_api_v3/s132_nrf52_3.1.0_license-agreement.txt
-
 LICENSE = "Nordic-5-Clause"
-LIC_FILES_CHKSUM = "file://LICENSE;md5=772c3f93b8a2f4f2dec94ef7b9f434fb \
-                    file://hex/sd_api_v2/s132_nrf52_2.0.1_license-agreement.txt;md5=322efcbf6eca7c4aa0ad3c9939c042b2 \
-                    file://hex/sd_api_v2/s130_nrf51_2.0.1_license-agreement.txt;md5=322efcbf6eca7c4aa0ad3c9939c042b2 \
-                    file://hex/sd_api_v5/s132_nrf52_5.1.0_license-agreement.txt;md5=c9d192fce740e93619dc42332d2af845 \
-                    file://hex/sd_api_v3/s132_nrf52_3.1.0_license-agreement.txt;md5=322efcbf6eca7c4aa0ad3c9939c042b2"
+LIC_FILES_CHKSUM = "file://LICENSE;md5=772c3f93b8a2f4f2dec94ef7b9f434fb"
 
 # Fetch a tagged release
 SRC_URI = "git://github.com/NordicSemiconductor/pc-ble-driver.git;protocol=https;tag=v${PV}"
