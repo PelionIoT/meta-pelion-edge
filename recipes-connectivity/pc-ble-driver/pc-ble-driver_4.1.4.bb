@@ -19,13 +19,13 @@
 # * nrftool?
 #     ** it is available from PIP repo, but required only for HEX build
 
-# LICENSE - Nordic-5-Clause license is used.
+# LICENSE - proprietary Nordic Semiconductor 5-Clause
 #
 # You need to have a a Nordic chip with the SoftDevice running in it.
 # You should likely use the latest API version, i.e. sd_api_v6 (as of writing this).
 # Yocto build will not use the softdevice, it will use only PC-BLE-driver.
 #
-LICENSE = "Nordic-5-Clause"
+LICENSE = "Nordic-Semiconductor-5-Clause"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=772c3f93b8a2f4f2dec94ef7b9f434fb"
 
 # Fetch a tagged release
