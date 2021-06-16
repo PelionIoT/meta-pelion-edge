@@ -22,6 +22,6 @@ if [[ ! -e /sys/class/net/kube-bridge ]]; then
 fi
 state=$(cat /sys/class/net/kube-bridge/operstate)
 if [[ $state = "down" ]]; then
-	echo "kube-bridge down, awaiting container deployment"
+	echo "kube-bridge down, awaiting pod deployment. (This log message is expected to repeat. Everything is healthy.)"
 	exit 1
 fi

@@ -74,12 +74,21 @@ write_resolv_conf(){
 	write
 }
 
+setup_local_kaas_network(){
+	IP="${1}"
+	ip link add kaas0 type dummy
+	ip addr add ${IP}/24 dev kaas0
+	ip route add ${IP}/24 dev kaas0
+	ip link set dev kaas0 up
+}
 
 
-write_resolv_conf EDGE_NODEIP
+write_resolv_conf EDGE_PODCIDR_GW
+setup_local_kaas_network EDGE_NODEIP
 
 exec EDGE_BIN/kubelet \
 --v=2 \
+--node-ip=EDGE_NODEIP \
 --root-dir=EDGE_KUBELET_STATE \
 --offline-cache-path=EDGE_KUBELET_STATE/store \
 --fail-swap-on=false \

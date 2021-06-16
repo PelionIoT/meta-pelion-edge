@@ -40,4 +40,3 @@ do_install() {
 	install -m 0755 ${S}/pe-utils/info-tool/math.sh ${LIBLOCATION}/
 	install -m 0755 ${S}/pe-utils/info-tool/json.sh ${LIBLOCATION}/
 }
-
