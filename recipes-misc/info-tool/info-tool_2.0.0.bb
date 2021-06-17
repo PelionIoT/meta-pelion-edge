@@ -7,8 +7,7 @@ SRC_URI="\
 git://git@github.com/armPelionEdge/pe-utils.git;protocol=https;name=pe-utils;destsuffix=git/pe-utils \
 "
 
-#SRCREV_FORMAT = "wwrelay-dss"
-SRCREV_pe-utils = "2.0.7"
+SRCREV_pe-utils = "2.0.8"
 
 inherit pkgconfig gitpkgv edge
 
@@ -17,25 +16,25 @@ PKGV = "1.0+git${GITPKGV}"
 PR = "r0"
 
 DEPENDS = ""
-RDEPENDS_${PN} += " bash curl bc"
+RDEPENDS_${PN} += " bash curl bc jq"
 
 RM_WORK_EXCLUDE += "${PN}"
 
 FILES_${PN} = "\
- ${EDGE_BIN} \
- ${EDGE_LIB}/bash \
+${EDGE_BIN}/ \
+/etc/tmpfiles.d/userdatai-tmpfiles.conf \
 "
 
 S = "${WORKDIR}/git"
 
+do_compile() {
+	cd ${S}/pe-utils/info-tool
+	edge_replace_vars info
+}
+
 do_install() {
 	install -d ${D}${EDGE_BIN}
-	install -d ${D}${EDGE_LIB}/bash
-	install -m 0755 -o fio -g fio -d ${D}${EDGE_DATA}/info
-	install -m 0755 ${S}/pe-utils/info-tool/info ${EDGE_BIN}/
-	install -m 0755 ${S}/pe-utils/info-tool/procinfo ${EDGE_BIN}/
-	install -m 0755 ${S}/pe-utils/info-tool/json2sh ${EDGE_BIN}/
-	install -m 0755 ${S}/pe-utils/info-tool/common.sh ${EDGE_LIB}/bash/
-	install -m 0755 ${S}/pe-utils/info-tool/math.sh ${EDGE_LIB}/bash/
-	install -m 0755 ${S}/pe-utils/info-tool/json.sh ${EDGE_LIB}/bash/
+	install -m 0755 ${S}/pe-utils/info-tool/info ${D}/${EDGE_BIN}/
+	install -d "${D}/etc/tmpfiles.d"
+    echo "d ${EDGE_DATA}/info 0777 root root -" >> "${D}/etc/tmpfiles.d/userdatai-tmpfiles.conf"
 }
