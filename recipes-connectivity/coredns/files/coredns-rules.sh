@@ -27,27 +27,30 @@ getGatewayAddress() {
     echo $gat
 }
 
+
 # -------- START OF PROGRAM ----------
+
 OP=$1
 CIDR=$2
 DNSPORT=$3
 
+
 # Allow traffic to CoreDNS even if kube-router has created egress rules (must be on top in iptables)
 gateway=`getGatewayAddress $CIDR`
-ALLOW_TO_COREDNS="PREROUTING -s $CIDR -d $gateway -p udp --dport ${DNSPORT} -j MARK --set-mark 0x10000 -m comment --comment \"pelion-edge allow traffic to CoreDNS\""
+ALLOW_TO_COREDNS="PREROUTING -s $CIDR -d $gateway -p udp -m udp --dport ${DNSPORT} -j MARK --set-mark 0x10000/0x10000 -m comment --comment \"pelion-edge allow traffic to CoreDNS\""
 
 add (){
-    eval "iptables -t nat -C $ALLOW_TO_COREDNS" > /dev/null 2>&1
+    eval "iptables -t mangle -C $ALLOW_TO_COREDNS" > /dev/null 2>&1
     if ! [ $? -eq 0 ]; then
-        eval "iptables -t nat -I $ALLOW_TO_COREDNS"
+        eval "iptables -t mangle -I $ALLOW_TO_COREDNS"
     fi
-    
+
     echo "Done adding iptable rules"
 }
 
 del (){
     echo "Del $ALLOW_TO_COREDNS"
-    eval "iptables -t nat -D $ALLOW_TO_COREDNS"
+    eval "iptables -t mangle -D $ALLOW_TO_COREDNS"
 }
 
 if [ "$OP" = "add" ]; then

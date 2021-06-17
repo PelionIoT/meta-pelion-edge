@@ -85,6 +85,7 @@ edge_replace_vars() {
 	    sed -i  "s/EDGE_COREDNS_STATE/$(echo ${EDGE_COREDNS_STATE} | sed -e 's/\\/\\\\/g; s/\//\\\//g; s/&/\\\&/g')/g" "$file"
 	    
 	   	sed -i  "s/EDGE_NODEIP/$(echo ${EDGE_NODEIP} | sed -e 's/\\/\\\\/g; s/\//\\\//g; s/&/\\\&/g')/g" "$file"
+		sed -i  "s/EDGE_PODCIDR_GW/$(echo ${EDGE_PODCIDR_GW} | sed -e 's/\\/\\\\/g; s/\//\\\//g; s/&/\\\&/g')/g" "$file"
 	   	sed -i  "s/EDGE_PODCIDR/$(echo ${EDGE_PODCIDR} | sed -e 's/\\/\\\\/g; s/\//\\\//g; s/&/\\\&/g')/g" "$file"
 	   	sed -i  "s/EDGE_NODEDNSPORT/$(echo ${EDGE_NODEDNSPORT} | sed -e 's/\\/\\\\/g; s/\//\\\//g; s/&/\\\&/g')/g" "$file"
 	done
