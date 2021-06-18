@@ -18,6 +18,6 @@
 # ----------------------------------------------------------------------------
 
 
-EDGE_BIN/coredns-rules.sh add EDGE_PODCIDR 
+EDGE_BIN/coredns-rules.sh add EDGE_PODCIDR EDGE_NODEDNSPORT
 
 exec EDGE_BIN/coredns -conf EDGE_STATE/coredns/corefile
