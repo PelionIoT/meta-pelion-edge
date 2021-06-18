@@ -7,7 +7,7 @@ SRC_URI="\
 git://git@github.com/armPelionEdge/pe-utils.git;protocol=https;name=pe-utils;destsuffix=git/pe-utils \
 "
 
-SRCREV_pe-utils = "2.0.8"
+SRCREV_pe-utils = "2.0.9"
 
 inherit pkgconfig gitpkgv edge
 
