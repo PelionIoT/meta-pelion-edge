@@ -89,7 +89,7 @@ setup_local_kaas_network EDGE_NODEIP
 exec EDGE_BIN/kubelet \
 --v=2 \
 --node-ip=EDGE_NODEIP \
---root-dir=EDGE_KUBELET_STATE \
+--root-dir=/var/lib/kubelet \
 --offline-cache-path=EDGE_KUBELET_STATE/store \
 --fail-swap-on=false \
 --image-pull-progress-deadline=2m \
