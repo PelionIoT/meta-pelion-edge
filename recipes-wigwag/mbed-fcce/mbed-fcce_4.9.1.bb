@@ -18,8 +18,6 @@ git://github.com/parallaxsecond/parsec-se-driver.git;protocol=https;name=parsec;
 git://git@github.com/ARMmbed/factory-configurator-client-example.git;protocol=https; \
 file://0001-Added-trusted-storage-to-Yocto-target.patch \
 file://0001-fix-build-getting-cross-compiler-iface-setting-to-et.patch \
-file://0001-fix-arm_uc_pal_linux_extensions.manual_patch \
-file://0001-fix-mcc_common_setup.manual_patch \
 file://linux-se-config.cmake \
 file://0001-fix_psa_storage_location.patch \
 "
@@ -58,8 +56,6 @@ do_compile() {
 
     if [ "${MBED_EDGE_CORE_CONFIG_PARSEC_TPM_SE_SUPPORT}" = "ON" ]; then
 
-        git -C mbed-cloud-client apply ${WORKDIR}/0001-fix-arm_uc_pal_linux_extensions.manual_patch
-        git apply ${WORKDIR}/0001-fix-mcc_common_setup.manual_patch
 
         # Manually adding the parsec-se-driver Middleware
         cp -R ${WORKDIR}/parsec-se-driver ${S}/pal-platform/Middleware/parsec_se_driver/parsec_se_driver
