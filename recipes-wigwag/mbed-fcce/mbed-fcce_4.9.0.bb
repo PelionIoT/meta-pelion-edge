@@ -23,10 +23,12 @@ file://0001-fix_psa_storage_location.patch \
 "
 
 SRCREV_pn-${PN} = "${PV}"
-SRCREV_parsec = "0.4.0"
+SRCREV_parsec = "0.5.0"
 
 S = "${WORKDIR}/git"
 FILES_${PN} = "/wigwag/wwrelay-utils/I2C/*"
+
+lcl_maybe_fortify = '-D_FORTIFY_SOURCE=0'
 
 do_configure() {
 
