@@ -1,0 +1,17 @@
+diff --git a/source/platform/Linux/mcc_common_setup.c b/source/platform/Linux/mcc_common_setup.c
+index 7078ab2..f220b9d 100644
+--- a/source/platform/Linux/mcc_common_setup.c
++++ b/source/platform/Linux/mcc_common_setup.c
+@@ -22,9 +22,11 @@
+ #include <stdio.h>
+ #include <unistd.h>
+ #include <errno.h>
++#include <asm-generic/signal.h>
+ #include <signal.h>
+ #include <sys/stat.h>
+ #include <sys/types.h>
++#include <linux/time.h>
+ #include <time.h>
+ #include "mcc_common_setup.h"
+ #include "mcc_common_config.h"
+
