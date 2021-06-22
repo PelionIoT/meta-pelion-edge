@@ -1,0 +1,13 @@
+diff --git a/update-client-hub/modules/pal-filesystem/source/arm_uc_pal_linux_extensions.c b/update-client-hub/modules/pal-filesystem/source/arm_uc_pal_linux_extensions.c
+index 3308512..41bd370 100644
+--- a/update-client-hub/modules/pal-filesystem/source/arm_uc_pal_linux_extensions.c
++++ b/update-client-hub/modules/pal-filesystem/source/arm_uc_pal_linux_extensions.c
+@@ -32,6 +32,8 @@
+ #include <stdlib.h>
+ #include <inttypes.h>
++#include <bits/local_lim.h>
++#include <pthread.h>
+ #include <limits.h>
+ #include <stdio.h>
+ #include <unistd.h>
+
