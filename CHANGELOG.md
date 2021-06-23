@@ -4,13 +4,16 @@
 
 - Updated [LmP version to 81](https://foundries.io/products/releases/81/).
 - Secure Edge container application with Parsec and the Trust Platform Module (TPM) v2.0.
+   - Access TPM resource through Parsec APIs from within the container application.
+   - The storage of secure assets, such as keys, is separated on a per-client basis: Assets created by one client can't be accessed by another.
+   - Use `securityContext` in the Pod specifications to restrict the privileges and access control of an application to system resources.
 - [edge-core] Updated Edge Core to [0.18.0](https://github.com/PelionIoT/mbed-edge/releases/tag/0.18.0).
-   - During boot start edge-core only after network is connected.
-   - Restrict access to mbed configuration, setting permissions to 700 with owner=root
-- [byoc-mode] Create and publish generic PE dev builds with BYOC_MODE
+   - Start edge-core service `After=network-online.target` which is after gateway acquires routeable IP address.
+   - Restrict access to mbed configuration `/userdata/mbed`, setting permissions to 700 with owner=root.
+   - Added BYOC_MODE build flow. This enables you to inject the certificates into the image at runtime rather than compile time hence enabling you to create generic developer builds.
 - [edge-tool] Added [Edge tool v0.2.0](https://github.com/PelionIoT/mbed-edge/tree/master/edge-tool).
    - Installed only when build with `BYOC_MODE=ON`.
-   - Converts the development certificate to CBOR configuration object which is then provided to Edge Core as command line argument. This enables users to inject the certificate into the build at runtime rather than compile time hence enabling you to build generic developer builds.
+   - Converts the development certificate to CBOR configuration object which is then provided to Edge Core as command line argument.
 - [TBC] LmP RPi3/4 support.
 - [TBC] Add support for Hummingboard Solid with booting from SD card.
 - [TBC] Network policy
