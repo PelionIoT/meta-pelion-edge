@@ -1,3 +1,80 @@
+# Pelion Edge 2.4.0 - 24th June 2021
+
+### New features
+
+- Updated [LmP version to 81](https://foundries.io/products/releases/81/).
+- Secure Edge container application with Parsec and the Trust Platform Module (TPM) v2.0.
+- [edge-core] Updated Edge Core to [0.18.0](https://github.com/PelionIoT/mbed-edge/releases/tag/0.18.0).
+   - During boot start edge-core only after network is connected.
+   - Restrict access to mbed configuration, setting permissions to 700 with owner=root
+- [byoc-mode] Create and publish generic PE dev builds with BYOC_MODE
+- [edge-tool] Added [Edge tool v0.2.0](https://github.com/PelionIoT/mbed-edge/tree/master/edge-tool).
+   - Installed only when build with `BYOC_MODE=ON`.
+   - Converts the development certificate to CBOR configuration object which is then provided to Edge Core as command line argument. This enables users to inject the certificate into the build at runtime rather than compile time hence enabling you to build generic developer builds.
+- [TBC] LmP RPi3/4 support.
+- [TBC] Add support for Hummingboard Solid with booting from SD card.
+- [TBC] Network policy
+   - allows kubelet and kube-router to function without external network. Supports offline cache mode
+- [TBC] UZ - align wks.in file usage with i.mx8
+- [TBC] Change default image file name for MFG tool - `MFGTOOL_FLASH_IMAGE = "console-image-lmp"`.
+- [TBC] Removed meta-arm-autonomy layer.
+- [TBC] add dependency to pc-ble-driver into config, default off
+- Enable `wifi` by default for all targets.
+- Added imx8mmsolidrun meta layer.
+- [TBC] Added support for full image update.
+- [TBC] Prevent duplicate deployment. 
+   - Modifed to check if the commit has been deployed before making the deployment. This will prevent an issue where a previous deploy can get over-written which in turn would break the rollback functionality.
+- [parsec] Upgraded parsec-se-driver to 0.5.0, parsec-service to 0.7.2 and parsec-tool to 0.3.0.
+   - Set the parsec sock directory permission to 0750
+- [TBC] Simplified the partition layout - https://github.com/PelionIoT/meta-mbed-edge/pull/51 
+- [TBC] Generic `mx8mm` support - Instead of using the imx8mmevk target, let's use mx8mm to generalize the support as the current changed should run on all targets. Generalizing thus to the SoC level target `mx8mm`.
+- [TBC] Removed `networkmanager-nmtui` and instead installed `networkmanager-nmcli`.
+- [TBC] use miniuart bt dtoverlay to enable bluetooth
+   - just use standard console and ble settings
+- [TBC] Use standard tty config, fixes ble
+- [TBC] removes golang overrides to use native version 1.15.8 provided by current yocto branch
+- [edge-proxy] Modified `edge-proxy` configuration to add new forwarding address for containers domain. 
+   - Added `containers.local` to the list of known hosts.
+- Updated `info` utility to v2.0.9 and `identity-tool` to v2.0.8.
+- [fluentbit] Reduced the default FluentBit logging level to warning.
+- [mbed-fcce] Upgrades factory-configurator-client-example to v4.9.0.
+- No longer required to specify this `vendor-id=42fa7b48-1a65-43aa-890f-8c704daade54` to unlock the rich node features in Pelion web portal. Portal now reads the Gateway capabilities from gateway's FeatureMgmt LwM2M object 33457 and then enable/disable the UI associated to the feature.
+
+### Bug fixes
+
+- [info] The `info` command must be run with `sudo` on LMP-based boards (UltraZed-EG IOCC and i.MX 8M Mini EVK).
+- [info] The `info` command on the UltraZed-EG IOCC attempts to read the CPU temperature when the temperature file does not exist. This results in a cat error message.
+- The LmP updates don't accept firmware updates with numbers 10 and 100. By default, the tenth update you perform is version 0.0.10, which fails. To work around this problem, avoid software version numbers with 10 and 100:
+   - For example, you can go from 0.0.9 to 0.0.11 by editing the `MAIN` component version information in a file called `~/Pelion_Edge_Credentials/.manifest-dev-tool$ cat update.version.yaml`. Change `MAIN: 0.0.10` to `MAIN: 0.0.11`.
+
+### Known issues
+
+- The Pelion Device Management portal is not correctly updated after a firmware campaign in some instances.
+- [maestro] The FeatureMgmt config resource is initialized with a maximum 3.8KB of file content. The remaining file content is truncated during initialization. This is most likely due to the limitation of the gorilla/websocket library but needs further investigation. However, you can still push a file size of a maximum of 64KB through cloud service APIs.
+- [pt-example] `cpu-temperature` device reports random values because the default CPU temperature file is not the same on Yocto and LmP.
+- The LmP build will enable SW TPM and Parsec stacks by default in all configuration, including developer certificate configurations. However, as it will not be used or set up in those configurations the logs will show some TPM related errors - those logs can be ignored.
+
+#### AVNET ZU3EG
+
+- If you enable kernel configurations [CPU_IDLE](https://cateee.net/lkddb/web-lkddb/CPU_IDLE.html) and [PREEMPT](https://cateee.net/lkddb/web-lkddb/PREEMPT.html), the LmP release including PetaLinux 2020.2 does not work in a stable manner. Our default configuration has those disabled. If you have any issues with those configurations, please contact Xilinx support.
+- You cannot do firmware update from Edge 2.2 to Edge 2.3 on the AVNET ZU3EG board due to LmP v79 release FPGA-support changes. The changes have interdepencies between the BOOT image and kernel image and as in the current update you can only update ther kernel image it fails to boot up correctly with the Edge 2.2 based BOOT image (as it does not supply the required updated device tree/FPGA files etc.). So, update to Edge 2.3 image must be done with manual flashing on ZU3EG targets.
+- You can program the Ethernet MAC address to the EEPROM on the board. Please see [the Xilinx support documentation](https://www.xilinx.com/support/answers/70176.html) on how to do this with the `i2c` commands.
+
+### Limitations
+
+- There is a maximum size limit to the full registration message, which limits the number of devices Edge can host:
+   - Maximum registration message size is 64KB.
+   - Hosted devices with five typical Resources consume ~280B (the exact size depends, for example, on the length of resource paths). This limits the maximum number to 270 devices.
+   - The more Resources you have, the fewer devices can be supported.
+   - The Pelion Edge device Resources are also included in the same registration message.
+   - **Test the limits with your configuration, and set guidance accordingly.**
+- Devices behind Pelion Edge don't support [auto-observation](https://www.pelion.com/docs/device-management/current/connecting/device-guidelines.html#auto-observation).
+- Pelion Device Management Client enabled devices must first boostrap to the Pelion Device Management cloud before connecting to Pelion Edge.
+- No moving devices are supported (such as the device moving from Pelion Edge to another edge device.)
+- LmP's base partition table is set above 10GB to support three upgrade images in OSTree. Therefore, we only support SD card installation (compared to supporting onboard EMMC or NAND) for the i.MX 8M Mini EVK and the UltraZed-EG IOCC.
+- Software TPM is [not designed to be resilient](https://sourceforge.net/p/ibmswtpm2/discussion/general/thread/fc5f4e0daf/) against power failures. Instead of disconnecting the power supply to the gateway, always perform a graceful shutdown of the edge device when using software TPM. To resolve this, follow the troubleshooting section of [our documentation about using Pelion Edge with TPM](../security/security-tpm.html#troubleshooting).
+
+
 # Pelion Edge 2.3.0 - 1st April 2021
 
 ### New features
