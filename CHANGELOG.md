@@ -3,7 +3,7 @@
 ### New features
 
 - Updated [LmP version to 81](https://foundries.io/products/releases/81/).
-- Secure Edge container application with Parsec and the Trust Platform Module (TPM) v2.0.
+- Secure Edge container applications with Parsec and the Trust Platform Module (TPM) v2.0.
    - Access TPM resource through Parsec APIs from within the container application.
    - The storage of secure assets, such as keys, is separated on a per-client basis: Assets created by one client can't be accessed by another.
    - Use `securityContext` in the Pod specifications to restrict the privileges and access control of an application to system resources.
