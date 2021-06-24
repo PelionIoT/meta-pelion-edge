@@ -56,6 +56,7 @@
 - [maestro] The FeatureMgmt config resource is initialized with a maximum 3.8KB of file content. The remaining file content is truncated during initialization. This is most likely due to the limitation of the gorilla/websocket library but needs further investigation. However, you can still push a file size of a maximum of 64KB through cloud service APIs.
 - [pt-example] `cpu-temperature` device reports random values because the default CPU temperature file is not the same on Yocto and LmP.
 - The LmP build will enable SW TPM and Parsec stacks by default in all configuration, including developer certificate configurations. However, as it will not be used or set up in those configurations the logs will show some TPM related errors - those logs can be ignored.
+- [Container integration with Parsec](https://developer.pelion.com/docs/device-management-edge/v2.4/container/security-parsec-container.html) doesn't work on the the Raspberry Pi 3 Model B+.
 
 #### AVNET ZU3EG
 
