@@ -73,6 +73,7 @@
 
 ### Limitations
 
+- Firmware update from Edge 2.2 to Edge 2.3, from Edge 2.3 to Edge 2.4, and from Edge 2.2 to Edge 2.4 is not possible on any of the supported platforms.  Partition table changes and in some cases FPGA support changes prevent the upgrading between these versions.   To update between these versions, manual flashing is required.  OTA update is still supported within the versions.  
 - There is a maximum size limit to the full registration message, which limits the number of devices Edge can host:
    - Maximum registration message size is 64KB.
    - Hosted devices with five typical Resources consume ~280B (the exact size depends, for example, on the length of resource paths). This limits the maximum number to 270 devices.
