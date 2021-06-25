@@ -40,7 +40,7 @@
 - [OS general] 
     - Removed `networkmanager-nmtui` and instead installed `networkmanager-nmcli`.
     - Enable `wifi` by default for all targets.
-- [TBC] removes golang overrides to use native version 1.15.8 provided by current yocto branch
+- [golang] removes golang overrides (1.14.4) to use native version 1.15.8 provided by current yocto branch.
 - [edge-proxy] Modified `edge-proxy` configuration to add new forwarding address for containers domain. 
    - Added `containers.local` to the list of known hosts.
 - Updated `info` utility to v2.0.9 and `identity-tool` to v2.0.8.
