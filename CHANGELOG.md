@@ -61,7 +61,6 @@
 #### AVNET ZU3EG
 
 - If you enable kernel configurations [CPU_IDLE](https://cateee.net/lkddb/web-lkddb/CPU_IDLE.html) and [PREEMPT](https://cateee.net/lkddb/web-lkddb/PREEMPT.html), the LmP release including PetaLinux 2020.2 does not work in a stable manner. Our default configuration has those disabled. If you have any issues with those configurations, please contact Xilinx support.
-- You cannot do firmware update from Edge 2.2 to Edge 2.3 on the AVNET ZU3EG board due to LmP v79 release FPGA-support changes. The changes have interdepencies between the BOOT image and kernel image and as in the current update you can only update ther kernel image it fails to boot up correctly with the Edge 2.2 based BOOT image (as it does not supply the required updated device tree/FPGA files etc.). So, update to Edge 2.3 image must be done with manual flashing on ZU3EG targets.
 - You can program the Ethernet MAC address to the EEPROM on the board. Please see [the Xilinx support documentation](https://www.xilinx.com/support/answers/70176.html) on how to do this with the `i2c` commands.
 
 ### Limitations
