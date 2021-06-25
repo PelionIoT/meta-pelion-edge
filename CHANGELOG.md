@@ -35,7 +35,7 @@
     - Prevent duplicate deployment. Modifed to check if the commit has been deployed before making the deployment. This will prevent an issue where a previous deploy can get over-written which in turn would break the rollback functionality.
 - [parsec] Upgraded parsec-se-driver to 0.5.0, parsec-service to 0.7.2 and parsec-tool to 0.3.0.
    - Set the parsec socket directory permission to 0750.
-- [Image] Simplified the partition layout - https://github.com/PelionIoT/meta-mbed-edge/pull/51 .
+- [Image] [Simplified the partition layout](https://github.com/PelionIoT/meta-mbed-edge/pull/51).
 - [build process] Generic `mx8mm` support - Instead of using the imx8mmevk target, let's use mx8mm to generalize the support as the current changed should run on all targets. Generalizing thus to the SoC level target `mx8mm`.
 - [OS general] 
     - Removed `networkmanager-nmtui` and instead installed `networkmanager-nmcli`.
@@ -61,15 +61,13 @@
 - [pt-example] `cpu-temperature` device reports random values because the default CPU temperature file is not the same on Yocto and LmP.
 - The LmP build will enable SW TPM and Parsec stacks by default in all configuration, including developer certificate configurations. However, as it will not be used or set up in those configurations the logs will show some TPM related errors - those logs can be ignored.
 - [Container integration with Parsec](https://developer.pelion.com/docs/device-management-edge/v2.4/container/security-parsec-container.html) doesn't work on the the Raspberry Pi 3 Model B+.
-
-#### AVNET ZU3EG
-
-- If you enable kernel configurations [CPU_IDLE](https://cateee.net/lkddb/web-lkddb/CPU_IDLE.html) and [PREEMPT](https://cateee.net/lkddb/web-lkddb/PREEMPT.html), the LmP release including PetaLinux 2020.2 does not work in a stable manner. Our default configuration has those disabled. If you have any issues with those configurations, please contact Xilinx support.
-- You can program the Ethernet MAC address to the EEPROM on the board. Please see [the Xilinx support documentation](https://www.xilinx.com/support/answers/70176.html) on how to do this with the `i2c` commands.
+- When using the Notification service API, if you subscribe to translated device's LwM2M resources which are registered with operation write (PUT) or execute (POST), you will not receive notification of the device state change.
+- [AVNet ZU3EG] If you enable kernel configurations [CPU_IDLE](https://cateee.net/lkddb/web-lkddb/CPU_IDLE.html) and [PREEMPT](https://cateee.net/lkddb/web-lkddb/PREEMPT.html), the LmP release including PetaLinux 2020.2 does not work in a stable manner. Our default configuration has those disabled. If you have any issues with those configurations, please contact Xilinx support.
+- [AVNet ZU3EG] You can program the Ethernet MAC address to the EEPROM on the board. Please see [the Xilinx support documentation](https://www.xilinx.com/support/answers/70176.html) on how to do this with the `i2c` commands.
 
 ### Limitations
 
-- Firmware update from Edge 2.2 to Edge 2.3, from Edge 2.3 to Edge 2.4, and from Edge 2.2 to Edge 2.4 is not possible on any of the supported platforms.  Partition table changes and in some cases FPGA support changes prevent the upgrading between these versions.   To update between these versions, manual flashing is required.  OTA update is still supported within the versions.  
+- Firmware update from Edge 2.2 to Edge 2.3, from Edge 2.3 to Edge 2.4, and from Edge 2.2 to Edge 2.4 is not possible on any of the supported platforms. Partition table changes and in some cases FPGA support changes prevent the upgrading between these versions. To update between these versions, manual flashing is required.  OTA update is still supported within the versions.  
 - There is a maximum size limit to the full registration message, which limits the number of devices Edge can host:
    - Maximum registration message size is 64KB.
    - Hosted devices with five typical Resources consume ~280B (the exact size depends, for example, on the length of resource paths). This limits the maximum number to 270 devices.
