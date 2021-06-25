@@ -17,17 +17,17 @@
 - [new board support] The following boards are now supported in LmP.
     - RPi3b+
     - RPi4
-    - SolidRun Hummingboard when booting from SD card.
+    - SolidRun Hummingboard Ripple & Pulse when booting from SD card via `imx8mmsolidrun` meta layer.
            - Added imx8mmsolidrun meta layer.
 - [Container Orchestration] Network policy controller 
    - Adds [kube-router](https://github.com/PelionIoT/kube-router), [coredns](https://coredns.io/), and removes older edge-net to support sophisticated networking policies between containers and the host
    - Allows kubelet and kube-router to function without external network. Supports offline cache mode.
 - [Board specific improvements] 
     - UZ3EG - align wks.in file usage with i.mx8
-    - RPI - use miniurt bt dtoverlay to enable bluetooth 
-             - use standard tty console config
-             - fixes ble to work properly
-    - Boards with Nordic nRF5: dependency to pc-ble-driver into local.conf config, default **off** 
+    - RPI - use miniUART  BT dtoverlay to enable bluetooth.
+             - Use standard TTY console config.
+             - BLE now work correctly.
+    - New recipe for Nordic Semiconductor´s `pc-ble-driver`, configuration in `local.conf` which defaults to **off** .
 - [Other] Change default image file name for MFG tool - `MFGTOOL_FLASH_IMAGE = "console-image-lmp"`.
 - [Space conservation] Removed meta-arm-autonomy layer.
 - [Upgrades]
@@ -36,22 +36,22 @@
 - [parsec] Upgraded parsec-se-driver to 0.5.0, parsec-service to 0.7.2 and parsec-tool to 0.3.0.
    - Set the parsec socket directory permission to 0750.
 - [Image] [Simplified the partition layout](https://github.com/PelionIoT/meta-mbed-edge/pull/51).
-- [build process] Generic `mx8mm` support - Instead of using the imx8mmevk target, let's use mx8mm to generalize the support as the current changed should run on all targets. Generalizing thus to the SoC level target `mx8mm`.
+- [build process] Generic `mx8mm` support - Instead of using the imx8mmevk target, let's use mx8mm to generalize the support as the current changes should run on all targets. Generalizing thus to the SoC level target `mx8mm`.
 - [OS general] 
-    - Removed `networkmanager-nmtui` and instead installed `networkmanager-nmcli`.
-    - Enable `wifi` by default for all targets.
-- [golang] removes golang overrides (1.14.4) to use native version 1.15.8 provided by current yocto branch.
+    - Replaced `networkmanager-nmtui` with `networkmanager-nmcli`.
+    - Enable Wi-Fi by default for all targets.
+- [golang] Removed golang overrides (1.14.4) to use native version 1.15.8 provided by current Yocto branch.
 - [edge-proxy] Modified `edge-proxy` configuration to add new forwarding address for containers domain. 
    - Added `containers.local` to the list of known hosts.
 - Updated `info` utility to v2.0.9 and `identity-tool` to v2.0.8.
 - [fluentbit] Reduced the default FluentBit logging level to warning.
 - [mbed-fcce] Upgrades factory-configurator-client-example to v4.9.0.
-- No longer required to specify this `vendor-id=42fa7b48-1a65-43aa-890f-8c704daade54` to unlock the rich node features in Pelion web portal. Portal now reads the Gateway capabilities from gateway's FeatureMgmt LwM2M object 33457 and then enable/disable the UI associated to the feature.
+- It is no longer required to specify `vendor-id=42fa7b48-1a65-43aa-890f-8c704daade54` to unlock the rich node features in Pelion web portal. Portal now reads the Gateway capabilities from gateway's FeatureMgmt LwM2M object 33457 and then enables the UI associated to the features.
 
 ### Bug fixes
 
-- [info] Fixed issue whereby info-command required root access on all LmP supported boards.
-- [info] Fixed issue whereby the `info` command on the UltraZed-EG IOCC attempts to read the CPU temperature when the temperature file does not exist. This resulted in a cat error message.
+- [info] Fixed issue whereby `info`-command required `root` access on all LmP supported boards.
+- [info] Fixed issue whereby the `info` command on the UltraZed-EG IOCC attempted to read the default Linux thermal zones, which do not exist in Xilinx BSPs.  Added support for [Xilinx AMS](https://xilinx-wiki.atlassian.net/wiki/spaces/A/pages/18842163/Zynq+UltraScale+MPSoC+AMS) feature for correct temperature reading.
 - Fixed issue whereby the LmP updates did not accept firmware updates with numbers 10 and 100. 
 
 ### Known issues
