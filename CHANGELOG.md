@@ -19,8 +19,9 @@
     - RPi4
     - SolidRun Hummingboard when booting from SD card.
            - Added imx8mmsolidrun meta layer.
-- [TBC] Network policy
-   - allows kubelet and kube-router to function without external network. Supports offline cache mode
+- [Container Orchestration] Network policy controller 
+   - Adds [kube-router](https://github.com/PelionIoT/kube-router), [coredns](https://coredns.io/), and removes older edge-net to support sophisticated networking policies between containers and the host
+   - Allows kubelet and kube-router to function without external network. Supports offline cache mode.
 - [Board specific improvements] 
     - UZ3EG - align wks.in file usage with i.mx8
     - RPI - use miniurt bt dtoverlay to enable bluetooth 
