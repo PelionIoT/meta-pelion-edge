@@ -28,22 +28,18 @@
              - use standard tty console config
              - fixes ble to work properly
     - Boards with Nordic nRF5: dependency to pc-ble-driver into local.conf config, default **off** 
-- [TBC] Change default image file name for MFG tool - `MFGTOOL_FLASH_IMAGE = "console-image-lmp"`.
-- [TBC] Removed meta-arm-autonomy layer.
-- [TBC] add dependency to pc-ble-driver into config, default off
-- Enable `wifi` by default for all targets.
-- Added imx8mmsolidrun meta layer.
-- [TBC] Added support for full image update.
-- [TBC] Prevent duplicate deployment. 
-   - Modifed to check if the commit has been deployed before making the deployment. This will prevent an issue where a previous deploy can get over-written which in turn would break the rollback functionality.
+- [Other] Change default image file name for MFG tool - `MFGTOOL_FLASH_IMAGE = "console-image-lmp"`.
+- [Space conservation] Removed meta-arm-autonomy layer.
+- [Upgrades]
+    - Added support for full image update.
+    - Prevent duplicate deployment. Modifed to check if the commit has been deployed before making the deployment. This will prevent an issue where a previous deploy can get over-written which in turn would break the rollback functionality.
 - [parsec] Upgraded parsec-se-driver to 0.5.0, parsec-service to 0.7.2 and parsec-tool to 0.3.0.
-   - Set the parsec sock directory permission to 0750
-- [TBC] Simplified the partition layout - https://github.com/PelionIoT/meta-mbed-edge/pull/51 
-- [TBC] Generic `mx8mm` support - Instead of using the imx8mmevk target, let's use mx8mm to generalize the support as the current changed should run on all targets. Generalizing thus to the SoC level target `mx8mm`.
-- [TBC] Removed `networkmanager-nmtui` and instead installed `networkmanager-nmcli`.
-- [TBC] use miniuart bt dtoverlay to enable bluetooth
-   - just use standard console and ble settings
-- [TBC] Use standard tty config, fixes ble
+   - Set the parsec socket directory permission to 0750.
+- [Image] Simplified the partition layout - https://github.com/PelionIoT/meta-mbed-edge/pull/51 .
+- [build process] Generic `mx8mm` support - Instead of using the imx8mmevk target, let's use mx8mm to generalize the support as the current changed should run on all targets. Generalizing thus to the SoC level target `mx8mm`.
+- [OS general] 
+    - Removed `networkmanager-nmtui` and instead installed `networkmanager-nmcli`.
+    - Enable `wifi` by default for all targets.
 - [TBC] removes golang overrides to use native version 1.15.8 provided by current yocto branch
 - [edge-proxy] Modified `edge-proxy` configuration to add new forwarding address for containers domain. 
    - Added `containers.local` to the list of known hosts.
