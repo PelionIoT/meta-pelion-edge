@@ -14,8 +14,11 @@
 - [edge-tool] Added [Edge tool v0.2.0](https://github.com/PelionIoT/mbed-edge/tree/master/edge-tool).
    - Installed only when build with `BYOC_MODE=ON`.
    - Converts the development certificate to CBOR configuration object which is then provided to Edge Core as command line argument.
-- [TBC] LmP RPi3/4 support.
-- [TBC] Add support for Hummingboard Solid with booting from SD card.
+- [new board support] The following boards are now supported in LmP.
+    - RPi3b+
+    - RPi4
+    - SolidRun Hummingboard when booting from SD card.
+           - Added imx8mmsolidrun meta layer.
 - [TBC] Network policy
    - allows kubelet and kube-router to function without external network. Supports offline cache mode
 - [Board specific improvements] 
