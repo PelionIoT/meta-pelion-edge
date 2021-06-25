@@ -55,7 +55,7 @@
 
 - [info] Fixed issue whereby info-command required root access on all LmP supported boards.
 - [info] Fixed issue whereby the `info` command on the UltraZed-EG IOCC attempts to read the CPU temperature when the temperature file does not exist. This resulted in a cat error message.
-- The LmP updates don't accept firmware updates with numbers 10 and 100. By default, the tenth update you perform is version 0.0.10, which fails. To work around this problem, avoid software version numbers with 10 and 100:
+- Fixed issue whereby the LmP updates did not accept firmware updates with numbers 10 and 100. 
    - For example, you can go from 0.0.9 to 0.0.11 by editing the `MAIN` component version information in a file called `~/Pelion_Edge_Credentials/.manifest-dev-tool$ cat update.version.yaml`. Change `MAIN: 0.0.10` to `MAIN: 0.0.11`.
 
 ### Known issues
