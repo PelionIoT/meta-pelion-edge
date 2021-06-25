@@ -8,7 +8,7 @@
    - The storage of secure assets, such as keys, is separated on a per-client basis: Assets created by one client can't be accessed by another.
    - Use `securityContext` in the Pod specifications to restrict the privileges and access control of an application to system resources.
 - [edge-core] Updated Edge Core to [0.18.0](https://github.com/PelionIoT/mbed-edge/releases/tag/0.18.0).
-   - Start edge-core service `After=network-online.target` which is after gateway acquires routeable IP address.
+   - Start edge-core service `After=network-online.target` which is after gateway acquires an IP address.
    - Restrict access to mbed configuration `/userdata/mbed`, setting permissions to 700 with owner=root.
    - Added BYOC_MODE build flow. This enables you to inject the certificates into the image at runtime rather than compile time hence enabling you to create generic developer builds.
 - [edge-tool] Added [Edge tool v0.2.0](https://github.com/PelionIoT/mbed-edge/tree/master/edge-tool).
