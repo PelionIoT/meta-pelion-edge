@@ -18,7 +18,12 @@
 - [TBC] Add support for Hummingboard Solid with booting from SD card.
 - [TBC] Network policy
    - allows kubelet and kube-router to function without external network. Supports offline cache mode
-- [TBC] UZ - align wks.in file usage with i.mx8
+- [Board specific improvements] 
+    - UZ3EG - align wks.in file usage with i.mx8
+    - RPI - use miniurt bt dtoverlay to enable bluetooth 
+             - use standard tty console config
+             - fixes ble to work properly
+    - Boards with Nordic nRF5: dependency to pc-ble-driver into local.conf config, default **off** 
 - [TBC] Change default image file name for MFG tool - `MFGTOOL_FLASH_IMAGE = "console-image-lmp"`.
 - [TBC] Removed meta-arm-autonomy layer.
 - [TBC] add dependency to pc-ble-driver into config, default off
