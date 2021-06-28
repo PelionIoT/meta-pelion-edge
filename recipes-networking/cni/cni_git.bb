@@ -15,8 +15,6 @@ SRCREV_plugins = "1f33fb729ae2b8900785f896df2dc1f6fe5e8239"
 SRC_URI = "\
 	git://github.com/containernetworking/cni.git;nobranch=1;name=cni \
         git://github.com/containernetworking/plugins.git;nobranch=1;destsuffix=${S}/src/github.com/containernetworking/plugins;name=plugins \
-        file://c2d \
-        file://c2d-inner \
 	"
 
 RPROVIDES_${PN} += "kubernetes-cni"
@@ -29,8 +27,9 @@ GO_IMPORT = "import"
 
 PV = "0.7.1+git${SRCREV_cni}"
 
-inherit go
-inherit goarch
+inherit go goarch edge
+
+FILES_${PN} += "${libexecdir}cni/* /opt/cni/* ${EDGE_CNI_BIN}"
 
 do_compile() {
 	mkdir -p ${S}/src/github.com/containernetworking
@@ -53,26 +52,22 @@ do_compile() {
 }
 
 do_install() {
-    localbindir="/wigwag/system/opt/cni/bin"
+    install -d ${D}${EDGE_CNI_BIN}
+    install -m 755 ${S}/src/import/cnitool/cnitool ${D}/${EDGE_CNI_BIN}
+    install -m 755 -D ${B}/plugins/bin/bridge ${D}/${EDGE_CNI_BIN}
+    install -m 755 -D ${B}/plugins/bin/host-local ${D}/${EDGE_CNI_BIN}
+    install -m 755 -D ${B}/plugins/bin/loopback ${D}/${EDGE_CNI_BIN}
+    install -m 755 -D ${B}/plugins/bin/portmap ${D}/${EDGE_CNI_BIN}
 
-    install -d ${D}${localbindir}
-    install -d ${D}/${sysconfdir}/cni/net.d
-
-    install -m 755 ${S}/src/import/cnitool/cnitool ${D}/${localbindir}
-    install -m 755 -D ${B}/plugins/bin/* ${D}/${localbindir}
 
     # Parts of k8s expect the cni binaries to be available in /opt/cni
     install -d ${D}/opt/cni
-    ln -sf /wigag/system/opt/cni/ ${D}/opt/cni/bin
+    ln -sf ${EDGE_CNI_BIN}/ ${D}/opt/cni/bin
     # re-linking to the origional recipeies location
     install -d ${D}${libexecdir}/cni
-    ln -sf /wigwag/system/opt/cni ${D}${libexecdir}/cni
-    #extra features needed by pe
-    install -m 755 -o root -g root ${WORKDIR}/c2d ${D}/${localbindir}
-    install -m 755 -o root -g root ${WORKDIR}/c2d-inner ${D}/${localbindir}
+    ln -sf ${EDGE_CNI_BIN} ${D}${libexecdir}/cni
 }
 
-FILES_${PN} += "${libexecdir}cni/* /opt/cni/* /wigwag/system/opt/cni/bin"
 
 INSANE_SKIP_${PN} += "ldflags already-stripped"
 

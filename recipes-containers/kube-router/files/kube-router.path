@@ -1,0 +1,9 @@
+[Unit]
+Description=Monitor the changes to identity.json file and restart kube-router
+
+[Path]
+PathChanged=EDGE_DATA/edge_gw_config/identity.json
+Unit=kube-router-watcher.service
+
+[Install]
+WantedBy=network.target

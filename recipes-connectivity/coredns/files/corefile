@@ -1,0 +1,10 @@
+.:EDGE_NODEDNSPORT {                                           
+    errors
+    bind EDGE_PODCIDR_GW
+    hosts EDGE_RUN/coredns/hosts { 
+        ttl 3600
+        no_reverse
+    }
+    prometheus :9153
+    loop
+}

@@ -1,6 +1,6 @@
 require maestro_0.0.1.inc
 
-COMPATIBLE_MACHINE = "raspberrypi3"
+COMPATIBLE_MACHINE = "^rpi$"
 
 PROVIDES += " maestro "
 RPROVIDES_${PN} += " maestro "

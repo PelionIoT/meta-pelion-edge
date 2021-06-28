@@ -1,0 +1,896 @@
+From 2abdd5240efde9f2211f2efdd7b2997a7a09b805 Mon Sep 17 00:00:00 2001
+From: Ricardo Salveti <ricardo@foundries.io>
+Date: Wed, 21 Apr 2021 19:34:24 -0300
+Subject: [PATCH 2/2] [FIO extras] imx8mm-solidrun: apply changes from SolidRun
+ BSP
+
+Based imx8mmevk + changes from the SolidRun BSP patches available at
+https://github.com/SolidRun/meta-solidrun-arm-imx8/tree/v4.19.35.
+
+Original patches done by Rabeeh Khoury <rabeeh@solid-run.com>
+and TalPilo <tal.pilo@solid-run.com>.
+
+Signed-off-by: Ricardo Salveti <ricardo@foundries.io>
+[mike@foundries.io: debug / adjust DTS]
+Signed-off-by: Michael Scott <mike@foundries.io>
+---
+ arch/arm/dts/imx8mm-solidrun-u-boot.dtsi      |  14 +-
+ arch/arm/dts/imx8mm-solidrun.dts              | 259 ++----------------
+ board/solidrun/imx8mm_solidrun/Makefile       |   4 +-
+ .../imx8mm_solidrun/imx8mm_solidrun.c         | 194 ++-----------
+ board/solidrun/imx8mm_solidrun/mmc.c          |  50 ++++
+ board/solidrun/imx8mm_solidrun/spl.c          |  25 +-
+ configs/imx8mm_solidrun_defconfig             |   6 +-
+ include/configs/imx8mm_solidrun.h             |  16 +-
+ 8 files changed, 109 insertions(+), 459 deletions(-)
+ create mode 100644 board/solidrun/imx8mm_solidrun/mmc.c
+
+diff --git a/arch/arm/dts/imx8mm-solidrun-u-boot.dtsi b/arch/arm/dts/imx8mm-solidrun-u-boot.dtsi
+index 5bc030db9d1..179d98f8712 100644
+--- a/arch/arm/dts/imx8mm-solidrun-u-boot.dtsi
++++ b/arch/arm/dts/imx8mm-solidrun-u-boot.dtsi
+@@ -67,22 +67,10 @@
+ 	u-boot,dm-spl;
+ };
+ 
+-&reg_usdhc2_vmmc {
+-	u-boot,dm-spl;
+-};
+-
+-&pinctrl_reg_usdhc2_vmmc {
+-	u-boot,dm-spl;
+-};
+-
+ &pinctrl_uart2 {
+ 	u-boot,dm-spl;
+ };
+ 
+-&pinctrl_usdhc2_gpio {
+-	u-boot,dm-spl;
+-};
+-
+ &pinctrl_usdhc2 {
+ 	u-boot,dm-spl;
+ };
+@@ -181,4 +169,4 @@
+ 	/delete-property/ assigned-clocks;
+ 	/delete-property/ assigned-clock-parents;
+ 	/delete-property/ assigned-clock-rates;
+-};
+\ No newline at end of file
++};
+diff --git a/arch/arm/dts/imx8mm-solidrun.dts b/arch/arm/dts/imx8mm-solidrun.dts
+index 09505c5ebd7..7665f36411a 100644
+--- a/arch/arm/dts/imx8mm-solidrun.dts
++++ b/arch/arm/dts/imx8mm-solidrun.dts
+@@ -9,8 +9,8 @@
+ #include "imx8mm.dtsi"
+ 
+ / {
+-	model = "NXP i.MX8MM EVK board";
+-	compatible = "fsl,imx8mm-evk", "fsl,imx8mm";
++	model = "SolidRun i.MX8MM SOM based board";
++	compatible = "fsl,imx8mm-solidrun", "fsl,imx8mm";
+ 
+ 	chosen {
+ 		bootargs = "console=ttymxc1,115200 earlycon=ec_imx6q,0x30890000,115200";
+@@ -28,75 +28,6 @@
+ 			default-state = "on";
+ 		};
+ 	};
+-
+-	reg_usdhc2_vmmc: regulator-usdhc2 {
+-		compatible = "regulator-fixed";
+-		pinctrl-names = "default";
+-		pinctrl-0 = <&pinctrl_reg_usdhc2_vmmc>;
+-		regulator-name = "VSD_3V3";
+-		regulator-min-microvolt = <3300000>;
+-		regulator-max-microvolt = <3300000>;
+-		gpio = <&gpio2 19 GPIO_ACTIVE_HIGH>;
+-		off-on-delay-us = <20000>;
+-		enable-active-high;
+-	};
+-
+-	wm8524: audio-codec {
+-		#sound-dai-cells = <0>;
+-		compatible = "wlf,wm8524";
+-		pinctrl-names = "default";
+-		pinctrl-0 = <&pinctrl_gpio_wlf>;
+-		wlf,mute-gpios = <&gpio5 21 GPIO_ACTIVE_LOW>;
+-	};
+-
+-	sound-wm8524 {
+-		compatible = "simple-audio-card";
+-		simple-audio-card,name = "wm8524-audio";
+-		simple-audio-card,format = "i2s";
+-		simple-audio-card,frame-master = <&cpudai>;
+-		simple-audio-card,bitclock-master = <&cpudai>;
+-		simple-audio-card,widgets =
+-			"Line", "Left Line Out Jack",
+-			"Line", "Right Line Out Jack";
+-		simple-audio-card,routing =
+-			"Left Line Out Jack", "LINEVOUTL",
+-			"Right Line Out Jack", "LINEVOUTR";
+-
+-		cpudai: simple-audio-card,cpu {
+-			sound-dai = <&sai3>;
+-		};
+-
+-		simple-audio-card,codec {
+-			sound-dai = <&wm8524>;
+-			clocks = <&clk IMX8MM_CLK_SAI3_ROOT>;
+-		};
+-	};
+-
+-	dsi_host: dsi-host {
+-		compatible = "samsung,sec-mipi-dsi";
+-		status = "okay";
+-	};
+-
+-	rm67191_panel {
+-		compatible = "raydium,rm67191";
+-		pinctrl-names = "default";
+-		pinctrl-0 = <&pinctrl_mipi_dsi_en>;
+-		reset-gpio = <&gpio1 8 GPIO_ACTIVE_LOW>;
+-		dsi-lanes = <4>;
+-		video-mode = <2>;	/* 0: burst mode
+-					 * 1: non-burst mode with sync event
+-					 * 2: non-burst mode with sync pulse
+-					 */
+-		panel-width-mm = <68>;
+-		panel-height-mm = <121>;
+-		status = "okay";
+-
+-		port {
+-			rm67191_from_dsim: endpoint {
+-				remote-endpoint = <&dsim_to_rm67191>;
+-			};
+-		};
+-	};
+ };
+ 
+ &A53_0 {
+@@ -115,9 +46,12 @@
+ 		#address-cells = <1>;
+ 		#size-cells = <0>;
+ 
+-		ethphy0: ethernet-phy@0 {
++		ethphy0: ethernet-phy@4 {
+ 			compatible = "ethernet-phy-ieee802.3-c22";
+-			reg = <0>;
++			reg = <4>;
++			at803x,led-act-blind-workaround;
++			at803x,eee-okay;
++			at803x,vddio-1p8v;
+ 		};
+ 	};
+ };
+@@ -262,62 +196,6 @@
+ 	scl-gpios = <&gpio5 16 GPIO_ACTIVE_HIGH>;
+ 	sda-gpios = <&gpio5 17 GPIO_ACTIVE_HIGH>;
+ 	status = "okay";
+-
+-	adv_bridge: adv7535@3d {
+-		compatible = "adi,adv7533";
+-		reg = <0x3d>;
+-		adi,addr-cec = <0x3c>;
+-		adi,dsi-lanes = <4>;
+-		status = "okay";
+-
+-		port {
+-			adv7535_from_dsim: endpoint {
+-				remote-endpoint = <&dsim_to_adv7535>;
+-			};
+-		};
+-	};
+-
+-	ptn5110: tcpc@50 {
+-		compatible = "nxp,ptn5110";
+-		pinctrl-names = "default";
+-		pinctrl-0 = <&pinctrl_typec1>;
+-		reg = <0x50>;
+-		interrupt-parent = <&gpio2>;
+-		interrupts = <11 8>;
+-		status = "okay";
+-
+-		typec1_con: connector {
+-			compatible = "usb-c-connector";
+-			label = "USB-C";
+-			power-role = "dual";
+-			data-role = "dual";
+-			try-power-role = "sink";
+-			source-pdos = <PDO_FIXED(5000, 3000, PDO_FIXED_USB_COMM)>;
+-			sink-pdos = <PDO_FIXED(5000, 3000, PDO_FIXED_USB_COMM)
+-				     PDO_VAR(5000, 20000, 3000)>;
+-			op-sink-microwatt = <15000000>;
+-			self-powered;
+-		};
+-	};
+-
+-	ptn5110_2: tcpc@52 {
+-		compatible = "nxp,ptn5110";
+-		reg = <0x52>;
+-		status = "okay";
+-
+-		typec2_con: connector {
+-			compatible = "usb-c-connector";
+-			label = "USB-C";
+-			power-role = "dual";
+-			data-role = "dual";
+-			try-power-role = "sink";
+-			source-pdos = <PDO_FIXED(5000, 3000, PDO_FIXED_USB_COMM)>;
+-			sink-pdos = <PDO_FIXED(5000, 3000, PDO_FIXED_USB_COMM)
+-				     PDO_VAR(5000, 20000, 3000)>;
+-			op-sink-microwatt = <15000000>;
+-			self-powered;
+-		};
+-	};
+ };
+ 
+ &i2c3 {
+@@ -328,22 +206,6 @@
+ 	scl-gpios = <&gpio5 18 GPIO_ACTIVE_HIGH>;
+ 	sda-gpios = <&gpio5 19 GPIO_ACTIVE_HIGH>;
+ 	status = "okay";
+-
+-	pca6416: gpio@20 {
+-		compatible = "ti,tca6416";
+-		reg = <0x20>;
+-		gpio-controller;
+-		#gpio-cells = <2>;
+-	};
+-};
+-
+-&sai3 {
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&pinctrl_sai3>;
+-	assigned-clocks = <&clk IMX8MM_CLK_SAI3>;
+-	assigned-clock-parents = <&clk IMX8MM_AUDIO_PLL1_OUT>;
+-	assigned-clock-rates = <24576000>;
+-	status = "okay";
+ };
+ 
+ &snvs_pwrkey {
+@@ -358,22 +220,17 @@
+ 
+ &usbotg1 {
+ 	status = "okay";
+-	extcon = <&ptn5110>;
+ };
+ 
+ &usbotg2 {
+ 	status = "okay";
+-	extcon = <&ptn5110_2>;
+ };
+ 
+ &usdhc2 {
+-	pinctrl-names = "default", "state_100mhz", "state_200mhz";
+-	pinctrl-0 = <&pinctrl_usdhc2>, <&pinctrl_usdhc2_gpio>;
+-	pinctrl-1 = <&pinctrl_usdhc2_100mhz>, <&pinctrl_usdhc2_gpio>;
+-	pinctrl-2 = <&pinctrl_usdhc2_200mhz>, <&pinctrl_usdhc2_gpio>;
+-	cd-gpios = <&gpio1 15 GPIO_ACTIVE_LOW>;
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_usdhc2>;
+ 	bus-width = <4>;
+-	vmmc-supply = <&reg_usdhc2_vmmc>;
++	non-removable;
+ 	status = "okay";
+ };
+ 
+@@ -394,34 +251,15 @@
+ 	status = "okay";
+ };
+ 
+-&lcdif {
+-	display = <&display0>;
+-	status = "okay";
+-
+-	display0: display@0 {
+-		bits-per-pixel = <24>;
+-		bus-width = <24>;
+-	};
+-};
+-
+-&mipi_dsi {
+-	status = "okay";
+-
+-	port@1 {
+-		dsim_to_adv7535: endpoint {
+-			remote-endpoint = <&adv7535_from_dsim>;
+-		};
+-	};
+-
+-	port@2 {
+-		dsim_to_rm67191: endpoint {
+-			remote-endpoint = <&rm67191_from_dsim>;
+-		};
+-	};
+-};
+-
+ &iomuxc {
+ 	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_hog_1>;
++
++	pinctrl_hog_1: hoggrp-1 {
++		fsl,pins = <
++			MX8MM_IOMUXC_GPIO1_IO08_GPIO1_IO8		0x19
++		>;
++	};
+ 
+ 	pinctrl_fec1: fec1grp {
+ 		fsl,pins = <
+@@ -460,12 +298,6 @@
+ 		>;
+ 	};
+ 
+-	pinctrl_gpio_wlf: gpiowlfgrp {
+-		fsl,pins = <
+-			MX8MM_IOMUXC_I2C4_SDA_GPIO5_IO21	0xd6
+-		>;
+-	};
+-
+ 	pinctrl_i2c1: i2c1grp {
+ 		fsl,pins = <
+ 			MX8MM_IOMUXC_I2C1_SCL_I2C1_SCL			0x400001c3
+@@ -514,27 +346,6 @@
+ 		>;
+ 	};
+ 
+-	pinctrl_reg_usdhc2_vmmc: regusdhc2vmmc {
+-		fsl,pins = <
+-			MX8MM_IOMUXC_SD2_RESET_B_GPIO2_IO19	0x41
+-		>;
+-	};
+-
+-	pinctrl_sai3: sai3grp {
+-		fsl,pins = <
+-			MX8MM_IOMUXC_SAI3_TXFS_SAI3_TX_SYNC     0xd6
+-			MX8MM_IOMUXC_SAI3_TXC_SAI3_TX_BCLK      0xd6
+-			MX8MM_IOMUXC_SAI3_MCLK_SAI3_MCLK        0xd6
+-			MX8MM_IOMUXC_SAI3_TXD_SAI3_TX_DATA0     0xd6
+-		>;
+-	};
+-
+-	pinctrl_typec1: typec1grp {
+-		fsl,pins = <
+-			MX8MM_IOMUXC_SD1_STROBE_GPIO2_IO11	0x159
+-		>;
+-	};
+-
+ 	pinctrl_uart2: uart2grp {
+ 		fsl,pins = <
+ 			MX8MM_IOMUXC_UART2_RXD_UART2_DCE_RX	0x140
+@@ -542,12 +353,6 @@
+ 		>;
+ 	};
+ 
+-	pinctrl_usdhc2_gpio: usdhc2grpgpio {
+-		fsl,pins = <
+-			MX8MM_IOMUXC_GPIO1_IO15_GPIO1_IO15	0x1c4
+-		>;
+-	};
+-
+ 	pinctrl_usdhc2: usdhc2grp {
+ 		fsl,pins = <
+ 			MX8MM_IOMUXC_SD2_CLK_USDHC2_CLK		0x190
+@@ -560,30 +365,6 @@
+ 		>;
+ 	};
+ 
+-	pinctrl_usdhc2_100mhz: usdhc2grp100mhz {
+-		fsl,pins = <
+-			MX8MM_IOMUXC_SD2_CLK_USDHC2_CLK		0x194
+-			MX8MM_IOMUXC_SD2_CMD_USDHC2_CMD		0x1d4
+-			MX8MM_IOMUXC_SD2_DATA0_USDHC2_DATA0	0x1d4
+-			MX8MM_IOMUXC_SD2_DATA1_USDHC2_DATA1	0x1d4
+-			MX8MM_IOMUXC_SD2_DATA2_USDHC2_DATA2	0x1d4
+-			MX8MM_IOMUXC_SD2_DATA3_USDHC2_DATA3	0x1d4
+-			MX8MM_IOMUXC_GPIO1_IO04_USDHC2_VSELECT	0x1d0
+-		>;
+-	};
+-
+-	pinctrl_usdhc2_200mhz: usdhc2grp200mhz {
+-		fsl,pins = <
+-			MX8MM_IOMUXC_SD2_CLK_USDHC2_CLK		0x196
+-			MX8MM_IOMUXC_SD2_CMD_USDHC2_CMD		0x1d6
+-			MX8MM_IOMUXC_SD2_DATA0_USDHC2_DATA0	0x1d6
+-			MX8MM_IOMUXC_SD2_DATA1_USDHC2_DATA1	0x1d6
+-			MX8MM_IOMUXC_SD2_DATA2_USDHC2_DATA2	0x1d6
+-			MX8MM_IOMUXC_SD2_DATA3_USDHC2_DATA3	0x1d6
+-			MX8MM_IOMUXC_GPIO1_IO04_USDHC2_VSELECT	0x1d0
+-		>;
+-	};
+-
+ 	pinctrl_usdhc3: usdhc3grp {
+ 		fsl,pins = <
+ 			MX8MM_IOMUXC_NAND_WE_B_USDHC3_CLK		0x190
+@@ -637,10 +418,4 @@
+ 			MX8MM_IOMUXC_GPIO1_IO02_WDOG1_WDOG_B	0xc6
+ 		>;
+ 	};
+-
+-	pinctrl_mipi_dsi_en: mipi_dsi_en {
+-		fsl,pins = <
+-			MX8MM_IOMUXC_GPIO1_IO08_GPIO1_IO8		0x19
+-		>;
+-	};
+ };
+diff --git a/board/solidrun/imx8mm_solidrun/Makefile b/board/solidrun/imx8mm_solidrun/Makefile
+index cbdf832eec8..10357b56b69 100644
+--- a/board/solidrun/imx8mm_solidrun/Makefile
++++ b/board/solidrun/imx8mm_solidrun/Makefile
+@@ -1,10 +1,10 @@
+ #
+-# Copyright 2018 NXP
++# Copyright 2019 SolidRun ltd.
+ #
+ # SPDX-License-Identifier:      GPL-2.0+
+ #
+ 
+-obj-y += imx8mm_solidrun.o
++obj-y += imx8mm_solidrun.o mmc.o
+ 
+ ifdef CONFIG_SPL_BUILD
+ obj-y += spl.o
+diff --git a/board/solidrun/imx8mm_solidrun/imx8mm_solidrun.c b/board/solidrun/imx8mm_solidrun/imx8mm_solidrun.c
+index b3f4406e746..a92854fe5ca 100644
+--- a/board/solidrun/imx8mm_solidrun/imx8mm_solidrun.c
++++ b/board/solidrun/imx8mm_solidrun/imx8mm_solidrun.c
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0+
+ /*
+- * Copyright 2018 NXP
++ * Copyright 2019 SolidRun ltd.
+  */
+ #include <common.h>
+ #include <miiphy.h>
+@@ -14,7 +14,7 @@
+ #include <asm/mach-imx/mxc_i2c.h>
+ #include <i2c.h>
+ #include <asm/io.h>
+-#include "../common/tcpc.h"
++#include "../../freescale/common/tcpc.h"
+ #include <usb.h>
+ 
+ DECLARE_GLOBAL_DATA_PTR;
+@@ -84,6 +84,24 @@ int board_early_init_f(void)
+ 	return 0;
+ }
+ 
++#define SPR2803_RST_PAD IMX_GPIO_NR(1, 15)
++static iomux_v3_cfg_t const spr2803_rst_pad[] = {
++	IMX8MM_PAD_GPIO1_IO15_GPIO1_IO15 |
++		MUX_PAD_CTRL((PAD_CTL_DSE6 | PAD_CTL_FSEL1)),
++};
++
++static int board_init_spr2803(void)
++{
++	imx_iomux_v3_setup_multiple_pads(spr2803_rst_pad,
++				ARRAY_SIZE(spr2803_rst_pad));
++
++	gpio_request(SPR2803_RST_PAD, "spr2803_rst");
++	gpio_direction_output(SPR2803_RST_PAD, 0);
++	udelay(500);
++	gpio_direction_output(SPR2803_RST_PAD, 1);
++	return 0;
++}
++
+ #if IS_ENABLED(CONFIG_FEC_MXC)
+ static int setup_fec(void)
+ {
+@@ -114,134 +132,14 @@ int board_phy_config(struct phy_device *phydev)
+ #endif
+ 
+ #if defined(CONFIG_USB_TCPC) && !defined(CONFIG_SPL_BUILD)
+-struct tcpc_port port1;
+-struct tcpc_port port2;
+-
+-static int setup_pd_switch(uint8_t i2c_bus, uint8_t addr)
+-{
+-	struct udevice *bus;
+-	struct udevice *i2c_dev = NULL;
+-	int ret;
+-	uint8_t valb;
+-
+-	ret = uclass_get_device_by_seq(UCLASS_I2C, i2c_bus, &bus);
+-	if (ret) {
+-		printf("%s: Can't find bus\n", __func__);
+-		return -EINVAL;
+-	}
+-
+-	ret = dm_i2c_probe(bus, addr, 0, &i2c_dev);
+-	if (ret) {
+-		printf("%s: Can't find device id=0x%x\n",
+-			__func__, addr);
+-		return -ENODEV;
+-	}
+-
+-	ret = dm_i2c_read(i2c_dev, 0xB, &valb, 1);
+-	if (ret) {
+-		printf("%s dm_i2c_read failed, err %d\n", __func__, ret);
+-		return -EIO;
+-	}
+-	valb |= 0x4; /* Set DB_EXIT to exit dead battery mode */
+-	ret = dm_i2c_write(i2c_dev, 0xB, (const uint8_t *)&valb, 1);
+-	if (ret) {
+-		printf("%s dm_i2c_write failed, err %d\n", __func__, ret);
+-		return -EIO;
+-	}
+-
+-	/* Set OVP threshold to 23V */
+-	valb = 0x6;
+-	ret = dm_i2c_write(i2c_dev, 0x8, (const uint8_t *)&valb, 1);
+-	if (ret) {
+-		printf("%s dm_i2c_write failed, err %d\n", __func__, ret);
+-		return -EIO;
+-	}
+-
+-	return 0;
+-}
+-
+-int pd_switch_snk_enable(struct tcpc_port *port)
+-{
+-	if (port == &port1) {
+-		debug("Setup pd switch on port 1\n");
+-		return setup_pd_switch(1, 0x72);
+-	} else if (port == &port2) {
+-		debug("Setup pd switch on port 2\n");
+-		return setup_pd_switch(1, 0x73);
+-	} else
+-		return -EINVAL;
+-}
+-
+-struct tcpc_port_config port1_config = {
+-	.i2c_bus = 1, /*i2c2*/
+-	.addr = 0x50,
+-	.port_type = TYPEC_PORT_UFP,
+-	.max_snk_mv = 5000,
+-	.max_snk_ma = 3000,
+-	.max_snk_mw = 40000,
+-	.op_snk_mv = 9000,
+-	.switch_setup_func = &pd_switch_snk_enable,
+-};
+-
+-struct tcpc_port_config port2_config = {
+-	.i2c_bus = 1, /*i2c2*/
+-	.addr = 0x52,
+-	.port_type = TYPEC_PORT_UFP,
+-	.max_snk_mv = 9000,
+-	.max_snk_ma = 3000,
+-	.max_snk_mw = 40000,
+-	.op_snk_mv = 9000,
+-	.switch_setup_func = &pd_switch_snk_enable,
+-};
+-
+-static int setup_typec(void)
+-{
+-	int ret;
+-
+-	debug("tcpc_init port 2\n");
+-	ret = tcpc_init(&port2, port2_config, NULL);
+-	if (ret) {
+-		printf("%s: tcpc port2 init failed, err=%d\n",
+-		       __func__, ret);
+-	} else if (tcpc_pd_sink_check_charging(&port2)) {
+-		/* Disable PD for USB1, since USB2 has priority */
+-		port1_config.disable_pd = true;
+-		printf("Power supply on USB2\n");
+-	}
+-
+-	debug("tcpc_init port 1\n");
+-	ret = tcpc_init(&port1, port1_config, NULL);
+-	if (ret) {
+-		printf("%s: tcpc port1 init failed, err=%d\n",
+-		       __func__, ret);
+-	} else {
+-		if (!port1_config.disable_pd)
+-			printf("Power supply on USB1\n");
+-		return ret;
+-	}
+-
+-	return ret;
+-}
+-
+ int board_usb_init(int index, enum usb_init_type init)
+ {
+ 	int ret = 0;
+-	struct tcpc_port *port_ptr;
+ 
+ 	debug("board_usb_init %d, type %d\n", index, init);
+ 
+-	if (index == 0)
+-		port_ptr = &port1;
+-	else
+-		port_ptr = &port2;
+-
+ 	imx8m_usb_power(index, true);
+ 
+-	if (init == USB_INIT_HOST)
+-		tcpc_setup_dfp_mode(port_ptr);
+-	else
+-		tcpc_setup_ufp_mode(port_ptr);
+-
+ 	return ret;
+ }
+ 
+@@ -251,38 +149,13 @@ int board_usb_cleanup(int index, enum usb_init_type init)
+ 
+ 	debug("board_usb_cleanup %d, type %d\n", index, init);
+ 
+-	if (init == USB_INIT_HOST) {
+-		if (index == 0)
+-			ret = tcpc_disable_src_vbus(&port1);
+-		else
+-			ret = tcpc_disable_src_vbus(&port2);
+-	}
+-
+ 	imx8m_usb_power(index, false);
+ 	return ret;
+ }
+ 
+ int board_ehci_usb_phy_mode(struct udevice *dev)
+ {
+-	int ret = 0;
+-	enum typec_cc_polarity pol;
+-	enum typec_cc_state state;
+-	struct tcpc_port *port_ptr;
+-
+-	if (dev->req_seq == 0)
+-		port_ptr = &port1;
+-	else
+-		port_ptr = &port2;
+-
+-	tcpc_setup_ufp_mode(port_ptr);
+-
+-	ret = tcpc_get_cc_status(port_ptr, &pol, &state);
+-	if (!ret) {
+-		if (state == TYPEC_STATE_SRC_RD_RA || state == TYPEC_STATE_SRC_RD)
+-			return USB_INIT_HOST;
+-	}
+-
+-	return USB_INIT_DEVICE;
++	return 0;
+ }
+ 
+ #endif
+@@ -294,16 +167,14 @@ int board_ehci_usb_phy_mode(struct udevice *dev)
+ 
+ int board_init(void)
+ {
+-#if defined(CONFIG_USB_TCPC) && !defined(CONFIG_SPL_BUILD)
+-	setup_typec();
+-#endif
+-
+ 	if (IS_ENABLED(CONFIG_FEC_MXC))
+ 		setup_fec();
+ 
+ 	call_imx_sip(FSL_SIP_GPC, FSL_SIP_CONFIG_GPC_PM_DOMAIN, DISPMIX, true, 0);
+ 	call_imx_sip(FSL_SIP_GPC, FSL_SIP_CONFIG_GPC_PM_DOMAIN, MIPI, true, 0);
+ 
++	board_init_spr2803();
++
+ 	return 0;
+ }
+ 
+@@ -313,24 +184,5 @@ int board_late_init(void)
+ 	board_late_mmc_env_init();
+ #endif
+ 
+-#ifdef CONFIG_ENV_VARS_UBOOT_RUNTIME_CONFIG
+-	env_set("board_name", "EVK");
+-	env_set("board_rev", "iMX8MM");
+-#endif
+ 	return 0;
+ }
+-
+-#ifdef CONFIG_FSL_FASTBOOT
+-#ifdef CONFIG_ANDROID_RECOVERY
+-int is_recovery_key_pressing(void)
+-{
+-	return 0; /*TODO*/
+-}
+-#endif /*CONFIG_ANDROID_RECOVERY*/
+-#endif /*CONFIG_FSL_FASTBOOT*/
+-
+-#ifdef CONFIG_ANDROID_SUPPORT
+-bool is_power_key_pressed(void) {
+-	return (bool)(!!(readl(SNVS_HPSR) & (0x1 << 6)));
+-}
+-#endif
+diff --git a/board/solidrun/imx8mm_solidrun/mmc.c b/board/solidrun/imx8mm_solidrun/mmc.c
+new file mode 100644
+index 00000000000..9fc3e687281
+--- /dev/null
++++ b/board/solidrun/imx8mm_solidrun/mmc.c
+@@ -0,0 +1,50 @@
++/*
++ * Copyright (C) 2016 Freescale Semiconductor, Inc.
++ * Copyright 2018 NXP
++ *
++ * SPDX-License-Identifier:	GPL-2.0+
++ */
++#include <common.h>
++#include <asm/arch/sys_proto.h>
++#include <linux/errno.h>
++#include <asm/io.h>
++#include <stdbool.h>
++#include <mmc.h>
++
++static int check_mmc_autodetect(void)
++{
++	char *autodetect_str = env_get("mmcautodetect");
++
++	if ((autodetect_str != NULL) &&
++		(strcmp(autodetect_str, "yes") == 0)) {
++		return 1;
++	}
++
++	return 0;
++}
++
++/* This should be defined for each board */
++__weak int mmc_map_to_kernel_blk(int dev_no)
++{
++	return dev_no;
++}
++
++void board_late_mmc_env_init(void)
++{
++	char cmd[32];
++	char mmcblk[32];
++	u32 dev_no = mmc_get_env_dev();
++
++	if (!check_mmc_autodetect())
++		return;
++
++	env_set_ulong("mmcdev", dev_no);
++
++	/* Set mmcblk env */
++	sprintf(mmcblk, "/dev/mmcblk%dp2 rootwait rw",
++		mmc_map_to_kernel_blk(dev_no));
++	env_set("mmcroot", mmcblk);
++
++	sprintf(cmd, "mmc dev %d", dev_no);
++	run_command(cmd, 0);
++}
+diff --git a/board/solidrun/imx8mm_solidrun/spl.c b/board/solidrun/imx8mm_solidrun/spl.c
+index 3f65582ef4c..6b8e31ce81f 100644
+--- a/board/solidrun/imx8mm_solidrun/spl.c
++++ b/board/solidrun/imx8mm_solidrun/spl.c
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0+
+ /*
+- * Copyright 2019 NXP
++ * Copyright 2019 SolidRun ltd.
+  */
+ 
+ #include <common.h>
+@@ -64,7 +64,7 @@ struct i2c_pads_info i2c_pad_info1 = {
+ 	},
+ };
+ 
+-#define USDHC2_CD_GPIO	IMX_GPIO_NR(2, 18)
++#define USDHC2_CD_GPIO	IMX_GPIO_NR(2, 12)
+ #define USDHC2_PWR_GPIO IMX_GPIO_NR(2, 19)
+ 
+ #define USDHC_PAD_CTRL	(PAD_CTL_DSE6 | PAD_CTL_HYS | PAD_CTL_PUE |PAD_CTL_PE | \
+@@ -94,17 +94,8 @@ static iomux_v3_cfg_t const usdhc2_pads[] = {
+ 	IMX8MM_PAD_SD2_RESET_B_GPIO2_IO19 | MUX_PAD_CTRL(USDHC_GPIO_PAD_CTRL),
+ };
+ 
+-/*
+- * The evk board uses DAT3 to detect CD card plugin,
+- * in u-boot we mux the pin to GPIO when doing board_mmc_getcd.
+- */
+ static iomux_v3_cfg_t const usdhc2_cd_pad =
+-	IMX8MM_PAD_SD2_DATA3_GPIO2_IO18 | MUX_PAD_CTRL(USDHC_GPIO_PAD_CTRL);
+-
+-static iomux_v3_cfg_t const usdhc2_dat3_pad =
+-	IMX8MM_PAD_SD2_DATA3_USDHC2_DATA3 |
+-	MUX_PAD_CTRL(USDHC_PAD_CTRL);
+-
++	IMX8MM_PAD_SD2_CD_B_GPIO2_IO12 | MUX_PAD_CTRL(USDHC_GPIO_PAD_CTRL);
+ 
+ static struct fsl_esdhc_cfg usdhc_cfg[2] = {
+ 	{USDHC2_BASE_ADDR, 0, 4},
+@@ -127,10 +118,12 @@ int board_mmc_init(bd_t *bis)
+ 			usdhc_cfg[0].sdhc_clk = mxc_get_clock(MXC_ESDHC2_CLK);
+ 			imx_iomux_v3_setup_multiple_pads(
+ 				usdhc2_pads, ARRAY_SIZE(usdhc2_pads));
++#if 0
+ 			gpio_request(USDHC2_PWR_GPIO, "usdhc2_reset");
+-			gpio_direction_output(USDHC2_PWR_GPIO, 0);
+-			udelay(500);
+ 			gpio_direction_output(USDHC2_PWR_GPIO, 1);
++			udelay(500);
++			gpio_direction_output(USDHC2_PWR_GPIO, 0);
++#endif
+ 			break;
+ 		case 1:
+ 			init_clk_usdhc(2);
+@@ -171,8 +164,8 @@ int board_mmc_getcd(struct mmc *mmc)
+ 		 * low voltage if no card
+ 		 */
+ 		ret = gpio_get_value(USDHC2_CD_GPIO);
+-
+-		imx_iomux_v3_setup_pad(usdhc2_dat3_pad);
++		if (ret == 0) ret = 1;
++		else ret = 0;
+ 		return ret;
+ 	}
+ 
+diff --git a/configs/imx8mm_solidrun_defconfig b/configs/imx8mm_solidrun_defconfig
+index 00ffc32ed79..932ed1e7c2a 100644
+--- a/configs/imx8mm_solidrun_defconfig
++++ b/configs/imx8mm_solidrun_defconfig
+@@ -13,7 +13,7 @@ CONFIG_SYS_I2C_MXC_I2C3=y
+ CONFIG_ENV_SIZE=0x1000
+ CONFIG_ENV_OFFSET=0x400000
+ CONFIG_DM_GPIO=y
+-CONFIG_TARGET_IMX8MM_EVK=y
++CONFIG_TARGET_IMX8MM_SOLIDRUN=y
+ CONFIG_ARCH_MISC_INIT=y
+ CONFIG_SPL_MMC_SUPPORT=y
+ CONFIG_SPL_SERIAL_SUPPORT=y
+@@ -57,8 +57,8 @@ CONFIG_CMD_EXT4_WRITE=y
+ CONFIG_CMD_FAT=y
+ CONFIG_CMD_SF=y
+ CONFIG_OF_CONTROL=y
+-CONFIG_DEFAULT_DEVICE_TREE="imx8mm-evk"
+-CONFIG_DEFAULT_FDT_FILE="imx8mm-evk.dtb"
++CONFIG_DEFAULT_DEVICE_TREE="imx8mm-solidrun"
++CONFIG_DEFAULT_FDT_FILE="imx8mm-solidrun.dtb"
+ CONFIG_ENV_IS_IN_MMC=y
+ CONFIG_SYS_RELOC_GD_ENV_ADDR=y
+ CONFIG_ENV_VARS_UBOOT_RUNTIME_CONFIG=y
+diff --git a/include/configs/imx8mm_solidrun.h b/include/configs/imx8mm_solidrun.h
+index 56b997f98f2..218b5d9bba9 100644
+--- a/include/configs/imx8mm_solidrun.h
++++ b/include/configs/imx8mm_solidrun.h
+@@ -1,10 +1,10 @@
+ /* SPDX-License-Identifier: GPL-2.0+ */
+ /*
+- * Copyright 2019 NXP
++ * Copyright 2019 SolidRun ltd.
+  */
+ 
+-#ifndef __IMX8MM_EVK_H
+-#define __IMX8MM_EVK_H
++#ifndef __IMX8MM_SOLIDRUN_H
++#define __IMX8MM_SOLIDRUN_H
+ 
+ #include <linux/sizes.h>
+ #include <asm/arch/imx-regs.h>
+@@ -73,7 +73,7 @@
+ #define PHY_ANEG_TIMEOUT 20000
+ 
+ #define CONFIG_FEC_XCV_TYPE             RGMII
+-#define CONFIG_FEC_MXC_PHYADDR          0
++#define CONFIG_FEC_MXC_PHYADDR          4
+ #define FEC_QUIRK_ENET_MAC
+ 
+ #define IMX_FEC_BASE			0x30BE0000
+@@ -227,11 +227,7 @@
+ /* USDHC */
+ #define CONFIG_FSL_USDHC
+ 
+-#ifdef CONFIG_TARGET_IMX8MM_DDR4_EVK
+-#define CONFIG_SYS_FSL_USDHC_NUM	1
+-#else
+ #define CONFIG_SYS_FSL_USDHC_NUM	2
+-#endif
+ #define CONFIG_SYS_FSL_ESDHC_ADDR       0
+ 
+ #define CONFIG_SYS_MMC_IMG_LOAD_PART	1
+@@ -277,8 +273,4 @@
+ #define CONFIG_VIDEO_BMP_LOGO
+ #endif
+ 
+-#if defined(CONFIG_ANDROID_SUPPORT)
+-#include "imx8mm_evk_android.h"
+-#endif
+-
+ #endif
+-- 
+2.31.1
+

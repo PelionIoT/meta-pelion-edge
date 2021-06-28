@@ -6,8 +6,8 @@ After=edge-proxy.service
 [Service]
 Restart=always
 RestartSec=5
-ExecCondition=sh -c '[ -f /userdata/edge_gw_config/identity.json ]'
-ExecStart=/wigwag/system/bin/launch-kubelet.sh
+ExecCondition=sh -c '[ -f EDGE_DATA/edge_gw_config/identity.json ]'
+ExecStart=EDGE_BIN/launch-kubelet.sh
 
 [Install]
 WantedBy=network.target

@@ -1,0 +1,13 @@
+[Unit]
+Description=kube-router service
+Wants=kubelet.service
+After=kubelet.service
+
+[Service]
+Restart=always
+RestartSec=5
+ExecCondition=sh -c '[ -f EDGE_DATA/edge_gw_config/identity.json ]'
+ExecStart=EDGE_BIN/launch-kube-router.sh
+
+[Install]
+WantedBy=network.target

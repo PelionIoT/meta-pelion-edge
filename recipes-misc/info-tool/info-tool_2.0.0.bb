@@ -7,37 +7,34 @@ SRC_URI="\
 git://git@github.com/armPelionEdge/pe-utils.git;protocol=https;name=pe-utils;destsuffix=git/pe-utils \
 "
 
-#SRCREV_FORMAT = "wwrelay-dss"
-SRCREV_pe-utils = "6a436d6986c67f36936a40d31f43462c97b6f615"
+SRCREV_pe-utils = "2.0.9"
 
-inherit pkgconfig gitpkgv 
+inherit pkgconfig gitpkgv edge
 
 PV = "1.0+git${SRCPV}"
 PKGV = "1.0+git${GITPKGV}"
 PR = "r0"
 
 DEPENDS = ""
-RDEPENDS_${PN} += " bash curl bc"
+RDEPENDS_${PN} += " bash curl bc jq"
 
 RM_WORK_EXCLUDE += "${PN}"
 
 FILES_${PN} = "\
-/wigwag/system/bin/ \
-/wigwag/system/lib/bash/ \
+${EDGE_BIN}/ \
+/etc/tmpfiles.d/userdatai-tmpfiles.conf \
 "
 
 S = "${WORKDIR}/git"
-BINLOCATION = "${D}/wigwag/system/bin"
-LIBLOCATION = "${D}/wigwag/system/lib/bash"
 
-do_install() {
-	install -d ${BINLOCATION}
-	install -d ${LIBLOCATION}
-	install -m 0755 ${S}/pe-utils/info-tool/info ${BINLOCATION}/
-	install -m 0755 ${S}/pe-utils/info-tool/procinfo ${BINLOCATION}/
-	install -m 0755 ${S}/pe-utils/info-tool/json2sh ${BINLOCATION}/
-	install -m 0755 ${S}/pe-utils/info-tool/common.sh ${LIBLOCATION}/
-	install -m 0755 ${S}/pe-utils/info-tool/math.sh ${LIBLOCATION}/
-	install -m 0755 ${S}/pe-utils/info-tool/json.sh ${LIBLOCATION}/
+do_compile() {
+	cd ${S}/pe-utils/info-tool
+	edge_replace_vars info
 }
 
+do_install() {
+	install -d ${D}${EDGE_BIN}
+	install -m 0755 ${S}/pe-utils/info-tool/info ${D}/${EDGE_BIN}/
+	install -d "${D}/etc/tmpfiles.d"
+    echo "d ${EDGE_DATA}/info 0777 root root -" >> "${D}/etc/tmpfiles.d/userdatai-tmpfiles.conf"
+}
