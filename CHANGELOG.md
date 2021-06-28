@@ -1,74 +1,74 @@
-# Pelion Edge 2.4.0 - 25th June 2021
+# Pelion Edge 2.4.0 - 28th June 2021
 
 ### New features
 
 - Updated [LmP version to 81](https://foundries.io/products/releases/81/).
-- Secure Edge container applications with Parsec and the Trust Platform Module (TPM) v2.0.
-   - Access TPM resource through Parsec APIs from within the container application.
+- Added secure edge container applications with Parsec and the Trust Platform Module (TPM) v2.0:
+   - You can access the TPM resource through Parsec APIs from within the container application.
    - The storage of secure assets, such as keys, is separated on a per-client basis: Assets created by one client can't be accessed by another.
-   - Use `securityContext` in the Pod specifications to restrict the privileges and access control of an application to system resources.
-- [edge-core] Updated Edge Core to [0.18.0](https://github.com/PelionIoT/mbed-edge/releases/tag/0.18.0).
-   - Start edge-core service `After=network-online.target` which is after gateway acquires an IP address.
-   - Restrict access to mbed configuration `/userdata/mbed`, setting permissions to 700 with owner=root.
-   - Added BYOC_MODE build flow. This enables you to inject the certificates into the image at runtime rather than compile time hence enabling you to create generic developer builds.
-- [edge-tool] Added [Edge tool v0.2.0](https://github.com/PelionIoT/mbed-edge/tree/master/edge-tool).
-   - Installed only when build with `BYOC_MODE=ON`.
-   - Converts the development certificate to CBOR configuration object which is then provided to Edge Core as command line argument.
-- [new board support] The following boards are now supported in LmP.
-    - RPi3b+
-    - RPi4
-    - SolidRun Hummingboard Ripple & Pulse when booting from SD card via `imx8mmsolidrun` meta layer.
-           - Added imx8mmsolidrun meta layer.
-- [Container Orchestration] Network policy controller 
-   - Adds [kube-router](https://github.com/PelionIoT/kube-router), [coredns](https://coredns.io/), and removes older edge-net to support sophisticated networking policies between containers and the host
+   - You can use `securityContext` in the Pod specifications to restrict the privileges and access control of an application to system resources.
+- [edge-core] Updated Edge Core to [0.18.0](https://github.com/PelionIoT/mbed-edge/releases/tag/0.18.0):
+   - Starts Edge Core service `After=network-online.target`, after which the gateway acquires an IP address.
+   - Restricts access to Mbed configuration `/userdata/mbed`, setting permissions to 700 with `owner=root`.
+   - Adds `BYOC_MODE` build flow, so you can inject the certificates into the image at run time rather than compile time. This enables you to create generic developer builds.
+- [edge-tool] Added [Edge tool v0.2.0](https://github.com/PelionIoT/mbed-edge/tree/master/edge-tool):
+   - Installs only when built with `BYOC_MODE=ON`.
+   - Converts the development certificate to a CBOR configuration object, which is then provided to Edge Core as a command-line argument.
+- [New board support] The following boards are now supported in LmP:
+    - RPi3B+.
+    - RPi4.
+    - SolidRun Hummingboard Ripple and SolidRun Hummingboard Pulse when booting from SD card over `imx8mmsolidrun` meta layer.
+           - Added i.MX8MM SolidRun meta layer.
+- [Container orchestration] Network policy controller:
+   - Adds [kube-router](https://github.com/PelionIoT/kube-router) and [coredns](https://coredns.io/) and removes older edge-net to support sophisticated networking policies between containers and the host.
    - Allows kubelet and kube-router to function without external network. Supports offline cache mode.
-- [Board specific improvements] 
-    - UZ3EG - align wks.in file usage with i.mx8
-    - RPI - use miniUART  BT dtoverlay to enable bluetooth.
+- [Board-specific improvements]: 
+    - UZ3EG - align wks.in file usage with i.MX8.
+    - RPI - use miniUART  BT dtoverlay to enable Bluetooth.
              - Use standard TTY console config.
              - BLE now work correctly.
     - New recipe for Nordic Semiconductor´s `pc-ble-driver`, configuration in `local.conf` which defaults to **off** .
-- [Other] Change default image file name for MFG tool - `MFGTOOL_FLASH_IMAGE = "console-image-lmp"`.
+- [Other] Changed default image file name for MFG tool - `MFGTOOL_FLASH_IMAGE = "console-image-lmp"`.
 - [Space conservation] Removed meta-arm-autonomy layer.
-- [Upgrades]
+- [Upgrades]:
     - Added support for full image update.
-    - Prevent duplicate deployment. Modifed to check if the commit has been deployed before making the deployment. This will prevent an issue where a previous deploy can get over-written which in turn would break the rollback functionality.
-- [parsec] Upgraded parsec-se-driver to 0.5.0, parsec-service to 0.7.2 and parsec-tool to 0.3.0.
-   - Set the parsec socket directory permission to 0750.
+    - Prevented duplicate deployment. Modified to check if the commit has been deployed before making the deployment. This prevents a previous deploy from being over-written, which, in turn, would break the rollback functionality.
+- [Parsec] Upgraded parsec-se-driver to 0.5.0, parsec-service to 0.7.2 and parsec-tool to 0.3.0:
+   - Sets the Parsec socket directory permission to 0750.
 - [Image] [Simplified the partition layout](https://github.com/PelionIoT/meta-mbed-edge/pull/51).
-- [build process] Generic `mx8mm` support - Instead of using the imx8mmevk target, let's use mx8mm to generalize the support as the current changes should run on all targets. Generalizing thus to the SoC level target `mx8mm`.
-- [OS general] 
+- [build process] Generic `mx8mm` support - Instead of using the i.MX8MM EVK target, you can use the i.MX8MM to generalize the support because the current changes can run on all targets, generalizing to the SoC level target `mx8mm`.
+- [OS general]: 
     - Replaced `networkmanager-nmtui` with `networkmanager-nmcli`.
-    - Enable Wi-Fi by default for all targets.
+    - Enabled Wi-Fi by default for all targets.
 - [golang] Removed golang overrides (1.14.4) to use native version 1.15.8 provided by current Yocto branch.
 - [edge-proxy] Modified `edge-proxy` configuration to add new forwarding address for containers domain. 
    - Added `containers.local` to the list of known hosts.
 - Updated `info` utility to v2.0.9 and `identity-tool` to v2.0.8.
 - [fluentbit] Reduced the default FluentBit logging level to warning.
-- [mbed-fcce] Upgrades factory-configurator-client-example to v4.9.0.
-- It is no longer required to specify `vendor-id=42fa7b48-1a65-43aa-890f-8c704daade54` to unlock the rich node features in Pelion web portal. Portal now reads the Gateway capabilities from gateway's FeatureMgmt LwM2M object 33457 and then enables the UI associated to the features.
+- [mbed-fcce] Upgraded factory-configurator-client-example to v4.9.0.
+- It is no longer required to specify `vendor-id=42fa7b48-1a65-43aa-890f-8c704daade54` to unlock the rich node features in Pelion Device Management Portal. Portal now reads the gateway capabilities from gateway's FeatureMgmt LwM2M object 33457 and then enables the UI associated to the features.
 
 ### Bug fixes
 
-- [info] Fixed issue whereby `info`-command required `root` access on all LmP supported boards.
-- [info] Fixed issue whereby the `info` command on the UltraZed-EG IOCC attempted to read the default Linux thermal zones, which do not exist in Xilinx BSPs.  Added support for [Xilinx AMS](https://xilinx-wiki.atlassian.net/wiki/spaces/A/pages/18842163/Zynq+UltraScale+MPSoC+AMS) feature for correct temperature reading.
-- Fixed issue whereby the LmP updates did not accept firmware updates with numbers 10 and 100. 
+- [info] Fixed issue whereby `info` command required `root` access on all LmP supported boards.
+- [info] Fixed issue whereby the `info` command on the UltraZed-EG IOCC attempted to read the default Linux thermal zones, which don't exist in Xilinx BSPs. Added support for [Xilinx AMS](https://xilinx-wiki.atlassian.net/wiki/spaces/A/pages/18842163/Zynq+UltraScale+MPSoC+AMS) feature for correct temperature reading.
+- Fixed issue whereby the LmP updates didn't accept firmware updates with numbers 10 and 100. 
 
 ### Known issues
 
-- The Pelion Device Management portal is not correctly updated after a firmware campaign in some instances.
+- The Pelion Device Management portal isn't correctly updated after a firmware campaign in some instances.
 - [maestro] The FeatureMgmt config resource is initialized with a maximum 3.8KB of file content. The remaining file content is truncated during initialization. This is most likely due to the limitation of the gorilla/websocket library but needs further investigation. However, you can still push a file size of a maximum of 64KB through cloud service APIs.
-- [pt-example] `cpu-temperature` device reports random values because the default CPU temperature file is not the same on Yocto and LmP.
-- The LmP build will enable SW TPM and Parsec stacks by default in all configuration, including developer certificate configurations. However, as it will not be used or set up in those configurations the logs will show some TPM related errors - those logs can be ignored.
+- [pt-example] `cpu-temperature` device reports random values because the default CPU temperature file isn't the same on Yocto and LmP.
+- The LmP build enables software TPM and Parsec stacks by default in all configurations, including developer certificate configurations. However, because it won't be used or set up in those configurations, the logs will show some TPM related errors. These logs can be ignored.
 - [Container integration with Parsec](https://developer.pelion.com/docs/device-management-edge/v2.4/container/security-parsec-container.html) doesn't work on the the Raspberry Pi 3 Model B+.
-- When using the Notification service API, if you subscribe to translated device's LwM2M resources which are registered with operation write (PUT) or execute (POST), you will not receive notification of the device state change.
-- [AVNet ZU3EG] If you enable kernel configurations [CPU_IDLE](https://cateee.net/lkddb/web-lkddb/CPU_IDLE.html) and [PREEMPT](https://cateee.net/lkddb/web-lkddb/PREEMPT.html), the LmP release including PetaLinux 2020.2 does not work in a stable manner. Our default configuration has those disabled. If you have any issues with those configurations, please contact Xilinx support.
+- When using the Notification service API, if you subscribe to a translated device's LwM2M resources, which are registered with operation write (PUT) or execute (POST), you won't receive notification of the device state change.
+- [AVNet ZU3EG] If you enable kernel configurations [CPU_IDLE](https://cateee.net/lkddb/web-lkddb/CPU_IDLE.html) and [PREEMPT](https://cateee.net/lkddb/web-lkddb/PREEMPT.html), the LmP release including PetaLinux 2020.2 doesn't work in a stable manner. The default configuration has those disabled. If you have any issues with those configurations, please contact Xilinx support.
 - [AVNet ZU3EG] You can program the Ethernet MAC address to the EEPROM on the board. Please see [the Xilinx support documentation](https://www.xilinx.com/support/answers/70176.html) on how to do this with the `i2c` commands.
 
 ### Limitations
 
-- Firmware update from Edge 2.2 to Edge 2.3, from Edge 2.3 to Edge 2.4, and from Edge 2.2 to Edge 2.4 is not possible on any of the supported platforms. Partition table changes and in some cases FPGA support changes prevent the upgrading between these versions. To update between these versions, manual flashing is required.  OTA update is still supported within the versions.  
-- There is a maximum size limit to the full registration message, which limits the number of devices Edge can host:
+- Firmware update from Edge 2.2 to Edge 2.3, from Edge 2.3 to Edge 2.4 and from Edge 2.2 to Edge 2.4 isn't possible on any of the supported platforms. Partition table changes and in some cases FPGA support changes prevent the upgrading between these versions. To update between these versions, manual flashing is required. OTA update is still supported within the versions.
+- There is a maximum size limit to the full registration message, which limits the number of devices Pelion Edge can host:
    - Maximum registration message size is 64KB.
    - Hosted devices with five typical Resources consume ~280B (the exact size depends, for example, on the length of resource paths). This limits the maximum number to 270 devices.
    - The more Resources you have, the fewer devices can be supported.
@@ -78,7 +78,7 @@
 - Pelion Device Management Client enabled devices must first boostrap to the Pelion Device Management cloud before connecting to Pelion Edge.
 - No moving devices are supported (such as the device moving from Pelion Edge to another edge device.)
 - LmP's base partition table is set above 10GB to support three upgrade images in OSTree. Therefore, we only support SD card installation (compared to supporting onboard EMMC or NAND) for the i.MX 8M Mini EVK and the UltraZed-EG IOCC.
-- Software TPM is [not designed to be resilient](https://sourceforge.net/p/ibmswtpm2/discussion/general/thread/fc5f4e0daf/) against power failures. Instead of disconnecting the power supply to the gateway, always perform a graceful shutdown of the edge device when using software TPM. To resolve this, follow the troubleshooting section of [our documentation about using Pelion Edge with TPM](../security/security-tpm.html#troubleshooting).
+- Software TPM is [not designed to be resilient](https://sourceforge.net/p/ibmswtpm2/discussion/general/thread/fc5f4e0daf/) against power failures. Instead of disconnecting the power supply to the gateway, always perform a graceful shutdown of the edge device when using software TPM. To resolve this, follow the troubleshooting section of [our documentation about using Pelion Edge with TPM](developer.pelion.com/device-management-edge/v2.4/security/security-tpm.html#troubleshooting).
 
 
 # Pelion Edge 2.3.0 - 1st April 2021
