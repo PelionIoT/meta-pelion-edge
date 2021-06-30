@@ -23,6 +23,9 @@ inherit useradd
 # creation code.
 USERADD_PACKAGES = "${PN} ${PN}-developer2"
 
+USERADD_UID_TABLES += "files/pelion-passwd-table"
+USERADD_GID_TABLES += "files/pelion-group-table"
+
 # You must also set USERADD_PARAM and/or GROUPADD_PARAM when
 # you inherit useradd.
 

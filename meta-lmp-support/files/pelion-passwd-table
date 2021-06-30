@@ -1,0 +1,7 @@
+parsec:x:1004:1004::/:/sbin/nologin
+maestro:x:1200:900::/:/sbin/nologin
+deviceos:x:1201:901::/:/sbin/nologin
+developer:x:1202:1022::/:/sbin/nologin
+support:x:1203:1023::/:/sbin/nologin
+user:x:1204:1024::/:/sbin/nologin
+developer2:x:1212:1020::/:/sbin/nologin
