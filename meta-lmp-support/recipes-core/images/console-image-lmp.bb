@@ -94,10 +94,14 @@ ${PARSEC_TOOL} \
 ${SOFTWARE_TPM} \
 "
 
+USERADD_UID_TABLES += "files/pelion-passwd-table"
+USERADD_GID_TABLES += "files/pelion-group-table"
+
 # Create a parsec user and then set permissions on the parsec components to control access.
 # Create the parsec user.
 inherit extrausers
 EXTRA_USERS_PARAMS += "\
+    groupadd parsec;\
     useradd parsec;\
 "
 
