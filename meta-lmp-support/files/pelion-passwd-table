@@ -1,4 +1,4 @@
-parsec:x:1004:1004::/:/sbin/nologin
+parsec:x:1206:1206::/:/sbin/nologin
 maestro:x:1200:900::/:/sbin/nologin
 deviceos:x:1201:901::/:/sbin/nologin
 developer:x:1202:1022::/:/sbin/nologin
