@@ -1,6 +1,6 @@
 # Pelion Edge 2.4.1 - 5th Aug 2021
 
-- Fixed the compilation error by the locking down the crate versions of `parsec-tool` and `parsec-se-driver`.
+- Fixed the compilation error by locking down the crate versions of `parsec-tool` and `parsec-se-driver`.
 
 # Pelion Edge 2.4.0 - 28th June 2021
 
