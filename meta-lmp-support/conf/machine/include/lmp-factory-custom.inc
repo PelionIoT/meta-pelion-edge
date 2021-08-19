@@ -8,3 +8,6 @@ OSTREE_KERNEL_ARGS_COMMON += "cgroup_enable=memory cgroup_memory=1"
 
 #Use sdcard as root device by default
 OSTREE_KERNEL_ARGS_imx8mmevk = "console=tty1 console=ttymxc1,115200 earlycon=ec_imx6q,0x30890000,115200 root=/dev/mmcblk1p2 rootfstype=ext4"
+
+#CONFIG_RCU_BOOST priority
+OSTREE_KERNEL_ARGS_uz += " rcutree.kthread_prio=99"
