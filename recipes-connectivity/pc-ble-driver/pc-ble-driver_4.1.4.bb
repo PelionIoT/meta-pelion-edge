@@ -27,6 +27,7 @@
 #
 LICENSE = "Nordic-Semiconductor-5-Clause"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=772c3f93b8a2f4f2dec94ef7b9f434fb"
+NO_GENERIC_LICENSE[Nordic-Semiconductor-5-Clause] = "LICENSE"
 
 # Fetch a tagged release
 SRC_URI = "git://github.com/NordicSemiconductor/pc-ble-driver.git;protocol=https;tag=v${PV}"
