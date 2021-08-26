@@ -1,3 +1,8 @@
+# Pelion Edge 2.4.2 - 26th Aug 2021
+
+- Fixed kubelet initialization to enable containers to properly inherit host DNS settings.
+- Fixed race condition causing coreDNS to intermittently fail to start.
+
 # Pelion Edge 2.4.1 - 5th Aug 2021
 
 - Fixed the compilation error by locking down the crate versions of `parsec-tool` and `parsec-se-driver`.
