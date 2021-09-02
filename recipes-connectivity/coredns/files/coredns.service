@@ -4,8 +4,6 @@ Wants=kubelet.service
 After=kubelet.service
 Requires=network-online.target
 After=network-online.target
-BindsTo=sys-devices-virtual-net-kube\x2dbridge.device
-After=sys-devices-virtual-net-kube\x2dbridge.device
 
 [Service]
 Restart=always
