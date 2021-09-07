@@ -9,7 +9,7 @@ require recipes-samples/images/lmp-feature-sbin-path-helper.inc
 IMAGE_FEATURES[validitems] += "tools-debug tools-sdk"
 IMAGE_FEATURES += "package-management ssh-server-openssh"
 #IMAGE_LINGUAS = "en-us
-
+IMAGE_FSTYPES += " capsule"
 IMAGE_OVERHEAD_FACTOR = "2"
 
 DEPENDS += "deviceos-users"
