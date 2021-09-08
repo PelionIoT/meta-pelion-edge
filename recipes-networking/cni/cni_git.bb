@@ -9,6 +9,9 @@ Because of this focus, CNI has a wide range of support and the specification \
 is simple to implement. \
 "
 
+#As of go 1.16 go modules are required by default. The following line disables this requirement.
+export GO111MODULE="auto"
+
 SRCREV_cni = "4cfb7b568922a3c79a23e438dc52fe537fc9687e"
 # Version 0.8.5
 SRCREV_plugins = "1f33fb729ae2b8900785f896df2dc1f6fe5e8239"

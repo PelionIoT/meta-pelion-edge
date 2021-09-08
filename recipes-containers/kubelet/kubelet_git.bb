@@ -2,6 +2,9 @@ DESCRIPTION = "Kubernetes without all the extra stuff"
 LICENSE = "Apache-2.0"
 LIC_FILES_CHKSUM = "file://src/${GO_IMPORT}/LICENSE;md5=3b83ef96387f14655fc854ddc3c6bd57"
 
+#As of go 1.16 go modules are required by default. The following line disables this requirement.
+export GO111MODULE="auto"
+
 inherit go pkgconfig gitpkgv systemd edge
 SRC_URI = "git://git@github.com/armPelionEdge/edge-kubelet.git;protocol=https;nobranch=1;depth=1 \
 file://kubeconfig \
