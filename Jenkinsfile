@@ -1,4 +1,4 @@
 #!/usr/bin/env groovy
-@Library('edge-ci') _
+@Library('edge-ci@pr-checks-device-updated') _
 
 repoMetaPelionEdge()
