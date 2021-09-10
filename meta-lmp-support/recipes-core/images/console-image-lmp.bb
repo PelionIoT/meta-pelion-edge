@@ -17,7 +17,6 @@ DEPENDS += "deviceos-users"
 CORE_IMAGE_BASE_INSTALL += " \
     kernel-modules \
     networkmanager-nmcli \
-    git \
     vim \
     rng-tools \
     haveged \
@@ -63,7 +62,6 @@ edge-proxy \
 "
 
 PELION_TESTING = " \
-git \
 panic \
 "
 
