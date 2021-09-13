@@ -1,0 +1,11 @@
+--- a/boot.cmd	2021-09-13 09:54:08.450018290 +0300
++++ b/boot.cmd	2021-09-13 09:53:55.901950997 +0300
+@@ -3,7 +3,7 @@ echo "Using freescale_${fdt_file}"
+ # Default boot type and device
+ setenv bootlimit 3
+ setenv devtype mmc
+-setenv devnum 2
++setenv devnum 1
+ setenv bootpart 1
+ setenv rootpart 2
+ 
