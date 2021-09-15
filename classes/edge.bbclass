@@ -61,8 +61,8 @@ EDGE_COREDNS_STATE = "${EDGE_STATE}/coredns"
 #                                                                                                     #
 #-----------------------------------------------------------------------------------------------------#
 EDGE_NODEIP = "169.254.1.128"
-EDGE_PODCIDR = "10.240.0.0/24"
-EDGE_PODCIDR_GW = "10.240.0.1"
+EDGE_PODCIDR = "169.254.2.0/24"
+EDGE_PODCIDR_GW = "169.254.2.1"
 EDGE_NODEDNSPORT = "53"
 
 
