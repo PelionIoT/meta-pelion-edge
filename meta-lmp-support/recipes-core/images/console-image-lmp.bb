@@ -67,6 +67,11 @@ git \
 panic \
 "
 
+PARSEC_SERVICE_HARDWARE_TPM = " \
+parsec-service-tpm \
+tpm2-tools \
+"
+
 PARSEC_SERVICE_SOFTWARE_TPM = " \
 parsec-service-tpm \
 swtpm-service \
@@ -94,6 +99,7 @@ ${PARSEC_TOOL} \
 "
 IMAGE_INSTALL_append = " ${@bb.utils.contains('PARSEC_PROVIDER', 'PKCS11', '${PARSEC_SERVICE_PKCS11}', '',d)}"
 IMAGE_INSTALL_append = " ${@bb.utils.contains('PARSEC_PROVIDER', 'SOFTWARE_TPM', '${PARSEC_SERVICE_SOFTWARE_TPM}', '',d)}"
+IMAGE_INSTALL_append = " ${@bb.utils.contains('PARSEC_PROVIDER', 'HARDWARE_TPM', '${PARSEC_SERVICE_HARDWARE_TPM}', '',d)}"
 
 USERADD_UID_TABLES += "files/pelion-passwd-table"
 USERADD_GID_TABLES += "files/pelion-group-table"
