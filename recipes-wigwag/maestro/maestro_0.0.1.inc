@@ -1,8 +1,9 @@
 DESCRIPTION = "maestro is a runtime / container manager for deviceOS"
-
 LICENSE = "Apache-2.0"
 LIC_FILES_CHKSUM = "file://src/${GO_IMPORT}/LICENSE;md5=1dece7821bf3fd70fe1309eaa37d52a2"
 
+#As of go 1.16 go modules are required by default. The following line disables this requirement.
+export GO111MODULE="auto"
 
 DEPENDS = "deviceos-users libuv"
 RDEPENDS_${PN} += "bash"
