@@ -1,0 +1,13 @@
+diff --git a/meta-lmp-support/recipes-bsp/u-boot/u-boot-ostree-scr-fit/imx8mm-lpddr4-evk/boot.cmd b/meta-lmp-support/recipes-bsp/u-boot/u-boot-ostree-scr-fit/imx8mm-lpddr4-evk/boot.cmd
+index 5432e14..29f6e87 100644
+--- a/boot.cmd
++++ b/boot.cmd
+@@ -3,7 +3,7 @@ echo "Using freescale_${fdt_file}"
+ # Default boot type and device
+ setenv bootlimit 3
+ setenv devtype mmc
+-setenv devnum 2
++setenv devnum 1
+ 
+ setenv bootcmd_resetvars 'setenv kernel_image; setenv bootargs; setenv kernel_image2; setenv bootargs2'
+ setenv bootcmd_otenv 'run bootcmd_resetvars; ext4load ${devtype} ${devnum}:2 ${loadaddr} /boot/loader/uEnv.txt; env import -t ${loadaddr} ${filesize}'
