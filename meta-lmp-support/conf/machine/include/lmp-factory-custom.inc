@@ -8,8 +8,3 @@ OSTREE_KERNEL_ARGS_COMMON += "cgroup_enable=memory cgroup_memory=1"
 
 #Use sdcard as root device by default
 OSTREE_KERNEL_ARGS_imx8mm-lpddr4-evk = "console=tty1 console=ttymxc1,115200 earlycon=ec_imx6q,0x30890000,115200 root=/dev/mmcblk1p2 rootfstype=ext4"
-
-PACKAGECONFIG_append_pn-networkmanager_portenta-m8 = " modemmanager"
-
-# drop idle timeout in weston
-PACKAGECONFIG_append_pn-weston-init_portenta-m8 = " no-idle-timeout"
