@@ -138,10 +138,3 @@ ROOTFS_POSTPROCESS_COMMAND += " \
 "
 
 export IMAGE_BASENAME = "console-image-lmp"
-
-# SolidRun Hummingboard Pulse has a Murata 1MW wifi/bt module which uses custom recipes
-# linux-firmware-cyw-fmac-fw, linux-firmware-cyw-fmac-nvram and linux-firmware-cyw-bt-patch.
-# Make sure we avoid default linux bcm43455 firmware
-CORE_IMAGE_BASE_INSTALL_remove_imx8mmsolidrun = " \
-    linux-firmware-bcm43455 \
-"

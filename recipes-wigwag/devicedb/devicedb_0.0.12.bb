@@ -4,6 +4,9 @@ LIC_FILES_CHKSUM = "file://src/${GO_IMPORT}/LICENSE;md5=58b1e0eba1968eab8a0f4644
 # avoid the `-linkshared` option in this recipe as it causes a panic
 GO_LINKSHARED=""
 
+#As of go 1.16 go modules are required by default. The following line disables this requirement.
+export GO111MODULE="auto"
+
 inherit go pkgconfig gitpkgv
 
 PR = "r5"

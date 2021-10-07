@@ -65,10 +65,8 @@ write_resolv_conf(){
 		if [[ ! -e EDGE_RUN/coredns ]]; then
 			mkdir -p EDGE_RUN/coredns
 		fi
-
 		echo "nameserver ${NODEIP}" > $RCONF
-		addNS cat/etc/resolv.conf
-		addNS /etc/resolv-conf.NetworkManager
+		addNS /etc/resolv.conf
 		echo "search $searchLine" >> $RCONF
 	}
 	write

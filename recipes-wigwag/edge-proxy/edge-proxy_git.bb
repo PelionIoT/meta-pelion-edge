@@ -2,6 +2,10 @@ DESCRIPTION = "Tunneling proxy for all FOG services"
 LICENSE = "Apache-2.0"
 LIC_FILES_CHKSUM = "file://src/${GO_IMPORT}/LICENSE;md5=86d3f3a95c324c9479bd8986968f4327"
 
+#As of go 1.16 go modules are required by default. The following line disables this requirement.
+export GO111MODULE="auto"
+
+
 inherit go pkgconfig gitpkgv systemd
 
 PR = "r0"

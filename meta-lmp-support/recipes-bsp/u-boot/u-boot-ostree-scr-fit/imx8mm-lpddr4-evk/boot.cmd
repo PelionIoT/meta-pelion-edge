@@ -3,7 +3,7 @@ echo "Using freescale_${fdt_file}"
 # Default boot type and device
 setenv bootlimit 3
 setenv devtype mmc
-setenv devnum 1
+setenv devnum 2
 
 setenv bootcmd_resetvars 'setenv kernel_image; setenv bootargs; setenv kernel_image2; setenv bootargs2'
 setenv bootcmd_otenv 'run bootcmd_resetvars; ext4load ${devtype} ${devnum}:2 ${loadaddr} /boot/loader/uEnv.txt; env import -t ${loadaddr} ${filesize}'
