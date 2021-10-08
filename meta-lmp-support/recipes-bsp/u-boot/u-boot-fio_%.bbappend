@@ -1,6 +1,6 @@
 FILESEXTRAPATHS_prepend_imx8mm-lpddr4-evk := "${THISDIR}/${PN}:"
 
-SRC_URI_append_imx8mm-lpddr4-evk += "file://0001-Disable-1V8-on-usdhc2-for-SDMUX.patch "
+SRC_URI_append_imx8mm-lpddr4-evk = " file://0001-Disable-1V8-on-usdhc2-for-SDMUX.patch"
 
 do_configure_append_imx8mm-lpddr4-evk() {
     # boot from SD
