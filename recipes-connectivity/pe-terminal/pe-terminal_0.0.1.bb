@@ -1,28 +1,27 @@
 DESCRIPTION = "Pelion Relay-Terminal for web based ssh sessions"
 
 LICENSE = "Apache-2.0"
-LIC_FILES_CHKSUM = "file://src/${GO_IMPORT}/LICENSE;md5=58b1e0eba1968eab8a0f46444674102a"
+
+GO_IMPORT = "github.com/PelionIoT/pe-terminal"
+
+inherit pkgconfig systemd go gitpkgv
 
 RT_SERVICE_FILE = "pelion-relay-term.service"
 PR = "r1"
-S = "${WORKDIR}/git/relay-term"
 
-FILES_${PN} += "\
-    ${systemd_system_unitdir}/${PN}-watcher.service\
-    ${systemd_system_unitdir}/${PN}-watcher.path\
-    "
-
-SRC_URI = "git://git@github.com/PelionIoT/pe-terminal.git;protocol=https \
+SRC_URI = "git://${GO_IMPORT};protocol=https \
 file://${RT_SERVICE_FILE} \
 file://${BPN}-watcher.service \
 file://${BPN}-watcher.path \
 "
-GO_IMPORT = "github.com/PelionIoT/pe-terminal/"
+
+LIC_FILES_CHKSUM = "file://src/${GO_IMPORT}/LICENSE;md5=86d3f3a95c324c9479bd8986968f4327"
+
+# S = "${WORKDIR}/src/${GO_IMPORT}"
+# As of go 1.16 go modules are required by default. The following line disables this requirement.
+# export GO111MODULE="auto"
 
 SRCREV = "5be41d5f8ae5a6e93643d0067533124e11d5d3a0"
-
-inherit pkgconfig systemd go
-
 SYSTEMD_PACKAGES = "${PN}"
 SYSTEMD_SERVICE_${PN} = "${RT_SERVICE_FILE} \
 ${PN}-watcher.service \
@@ -30,12 +29,18 @@ ${PN}-watcher.path"
 
 SYSTEMD_AUTO_ENABLE_${PN} = "enable"
 
-DEPENDS =""
-RDEPENDS_${PN} += ""
+FILES_${PN} += "\
+    ${systemd_system_unitdir}/${PN}-watcher.service\
+    ${systemd_system_unitdir}/${PN}-watcher.path\
+    ${systemd_system_unitdir}/${RT_SERVICE_FILE}\
+    ${EDGE_BIN}/pe-terminal\
+    "
+
+do_compile_append() {
+    edge_replace_vars ${RT_SERVICE_FILE} ${BPN}-watcher.path
+}
 
 do_install() {
-
-    edge_replace_vars ${RT_SERVICE_FILE} ${BPN}-watcher.path
 
     install -d ${D}${EDGE_BIN}
     install -d ${D}${systemd_system_unitdir}
