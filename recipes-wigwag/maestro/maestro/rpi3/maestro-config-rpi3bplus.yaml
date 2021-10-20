@@ -21,7 +21,7 @@ gateway_capabilities:
     config_filepath: "/etc/td-agent-bit/td-agent-bit.conf"
   - name: "urn:fid:pelion.com:terminal:1.0.0"
     enable: true
-    config_filepath: "/wigwag/wigwag-core-modules/relay-term/config/config.json"
+    config_filepath: "{{EDGE_ETC}}/pe-terminal/config.json"
   - name: "urn:fid:pelion.com:kaas:1.0.0"
     enable: true
     config_filepath: "/wigwag/system/var/lib/kubelet/kubeconfig"
