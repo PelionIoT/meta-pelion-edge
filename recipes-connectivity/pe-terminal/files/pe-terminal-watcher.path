@@ -3,7 +3,7 @@ Description=Monitor the changes to identity.json file and restart relay-term
 
 [Path]
 PathChanged=EDGE_ETC/pe-terminal/config.json
-Unit=relay-term-watcher.service
+Unit=pe-terminal-watcher.service
 
 [Install]
 WantedBy=network.target
