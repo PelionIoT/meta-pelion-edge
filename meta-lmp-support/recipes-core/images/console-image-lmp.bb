@@ -67,17 +67,23 @@ git \
 panic \
 "
 
-PARSEC_SERVICE = " \
+PARSEC_SERVICE_HARDWARE_TPM = " \
 parsec-service-tpm \
+tpm2-tools \
+"
+
+PARSEC_SERVICE_SOFTWARE_TPM = " \
+parsec-service-tpm \
+swtpm-service \
+tpm2-tools \
+"
+
+PARSEC_SERVICE_PKCS11 = " \
+parsec-service-pkcs11 \
 "
 
 PARSEC_TOOL = " \
 parsec-tool \
-"
-
-SOFTWARE_TPM = " \
-swtpm-service \
-tpm2-tools \
 "
 
 IMAGE_INSTALL += " \
@@ -89,10 +95,11 @@ ${PELION_SYSTEMS_MANAGEMENT} \
 ${PELION_CONTAINER_ORCHESTRATION} \
 ${PELION_TESTING} \
 ${MACHINE_EXTRA_RRECOMMENDS} \
-${PARSEC_SERVICE} \
 ${PARSEC_TOOL} \
-${SOFTWARE_TPM} \
 "
+IMAGE_INSTALL_append = " ${@bb.utils.contains('PARSEC_PROVIDER', 'PKCS11', '${PARSEC_SERVICE_PKCS11}', '',d)}"
+IMAGE_INSTALL_append = " ${@bb.utils.contains('PARSEC_PROVIDER', 'SOFTWARE_TPM', '${PARSEC_SERVICE_SOFTWARE_TPM}', '',d)}"
+IMAGE_INSTALL_append = " ${@bb.utils.contains('PARSEC_PROVIDER', 'HARDWARE_TPM', '${PARSEC_SERVICE_HARDWARE_TPM}', '',d)}"
 
 USERADD_UID_TABLES += "files/pelion-passwd-table"
 USERADD_GID_TABLES += "files/pelion-group-table"
@@ -113,7 +120,9 @@ ROOTFS_POSTPROCESS_COMMAND_append = " \
 setup_parsec_files() {
     chown -R parsec:parsec ${IMAGE_ROOTFS}/etc/parsec
     chown -R parsec:parsec ${IMAGE_ROOTFS}/usr/libexec/parsec
-    chown parsec:parsec ${IMAGE_ROOTFS}/usr/bin/swtpm.sh
+    if [ "${PARSEC_PROVIDER}" = "SOFTWARE_TPM" ]; then
+        chown parsec:parsec ${IMAGE_ROOTFS}/usr/bin/swtpm.sh
+    fi
 }
 set_local_timezone() {
     ln -sf /usr/share/zoneinfo/EST5EDT ${IMAGE_ROOTFS}/etc/localtime
