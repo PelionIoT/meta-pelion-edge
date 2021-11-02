@@ -73,11 +73,15 @@ write_resolv_conf(){
 }
 
 setup_local_kaas_network(){
-	IP="${1}"
-	ip link add kaas0 type dummy
-	ip addr add ${IP}/24 dev kaas0
-	ip route add ${IP}/24 dev kaas0
-	ip link set dev kaas0 up
+    IP="${1}"
+    ip link add kaas0 type dummy
+    ip addr add ${IP}/30 dev kaas0
+    ip link set dev kaas0 up
+
+    # Lower priority by increasing metric
+    kaasRoute=`ip route | grep kaas0`
+    ip route del $kaasRoute
+    ip route add $kaasRoute metric 999
 }
 
 
