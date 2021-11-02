@@ -1,6 +1,5 @@
 {
-	"cloud": "http://{{FOG_PROXY_ADDR}}/relay-term",
-	"noValidate": true,
-	"certificate": "",
-	"key": ""
+	"cloud": "ws://{{FOG_PROXY_ADDR}}/relay-term",
+	"command": "/bin/bash",
+	"logLevel": "info"
 }

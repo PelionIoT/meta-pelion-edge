@@ -2,7 +2,7 @@
 Description=Monitor the changes to identity.json file and restart relay-term
 
 [Path]
-PathChanged=/wigwag/wigwag-core-modules/relay-term/config/config.json
+PathChanged=EDGE_ETC/pe-terminal/config.json
 Unit=relay-term-watcher.service
 
 [Install]

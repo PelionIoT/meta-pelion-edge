@@ -21,7 +21,7 @@ gateway_capabilities:
     config_filepath: "/etc/td-agent-bit/td-agent-bit.conf"
   - name: "urn:fid:pelion.com:terminal:1.0.0"
     enable: true
-    config_filepath: "/wigwag/wigwag-core-modules/relay-term/config/config.json"
+    config_filepath: "{{EDGE_ETC}}/pe-terminal/config.json"
   - name: "urn:fid:pelion.com:kaas:1.0.0"
     enable: true
     config_filepath: "/wigwag/system/var/lib/kubelet/kubeconfig"
@@ -36,6 +36,8 @@ var_defs:
      value: 9000
    - key: "LOCAL_DATABASE_STORAGE_DIRECTORY"
      value: "/userdata/etc/devicejs/db"
+   - key: "EDGE_ETC"
+     value: "/wigwag/system/etc"
 devicedb_conn_config:
     devicedb_uri: "http://localhost:{{LOCAL_DEVICEDB_PORT}}" #default uri
     devicedb_prefix: "configs.device" #default prefix
@@ -74,7 +76,7 @@ static_file_generators:
      output_file: "/wigwag/etc/devicejs/devicedb.yaml"
    - name: "relayTerm"
      template_file: "/wigwag/etc/template/relayTerm.template.json"
-     output_file: "/wigwag/wigwag-core-modules/relay-term/config/config.json"
+     output_file: "{{EDGE_ETC}}/pe-terminal/config.json"
 jobs:
    - job: "devicedb"
      immutable: true
