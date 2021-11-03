@@ -1,4 +1,4 @@
-require maestro_0.0.1.inc
+require maestro_0.0.2.inc
 
 COMPATIBLE_MACHINE = "uz"
 
@@ -8,9 +8,6 @@ RPROVIDES_${PN} += " maestro "
 FILESEXTRAPATHS_prepend := "${THISDIR}/maestro/uz:"
 SRC_URI += "file://maestro-config-uz.yaml \
             file://relayTerm.template.json \
-            file://0001-aarch64-arm.patch \
-            file://0002-eventfd2.patch \
-            file://0003-build-with-autoconf.patch \
             "
 
 do_install_append() {
