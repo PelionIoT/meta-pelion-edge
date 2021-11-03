@@ -17,7 +17,8 @@
 # limitations under the License.
 # ----------------------------------------------------------------------------
 
+POD_CIDR=EDGE_PODCIDR
 
-EDGE_BIN/coredns-rules.sh add EDGE_PODCIDR EDGE_NODEDNSPORT
+EDGE_BIN/coredns-rules.sh add ${POD_CIDR} EDGE_NODEDNSPORT
 
 exec EDGE_BIN/coredns -conf EDGE_STATE/coredns/corefile
