@@ -1,0 +1,29 @@
+diff --git a/core/drivers/crypto/crypto_api/acipher/rsa.c b/core/drivers/crypto/crypto_api/acipher/rsa.c
+index 50d53cc9..019ee754 100644
+--- a/core/drivers/crypto/crypto_api/acipher/rsa.c
++++ b/core/drivers/crypto/crypto_api/acipher/rsa.c
+@@ -187,16 +187,21 @@ TEE_Result crypto_acipher_rsaes_decrypt(uint32_t algo, struct rsa_keypair *key,
+ 	struct drvcrypt_rsa *rsa = NULL;
+ 	struct drvcrypt_rsa_ed rsa_data = { };
+ 
+-	if (!key || !msg || !cipher || !msg_len || (!label && label_len)) {
++	if (!key || !cipher || !msg_len || (!label && label_len)) {
+ 		CRYPTO_TRACE("Parameters error (key @%p)\n"
+-			     "(msg @%p size %zu bytes)\n"
++			     "msg size %zu bytes)\n"
+ 			     "(cipher @%p size %zu bytes)\n"
+ 			     "(label @%p size %zu bytes)",
+-			     key, msg, msg_len ? *msg_len : 0,
++			     key, msg_len ? *msg_len : 0,
+ 			     cipher, cipher_len, label, label_len);
+ 		return TEE_ERROR_BAD_PARAMETERS;
+ 	}
+ 
++	if (!msg) {
++		*msg_len = crypto_bignum_num_bytes(key->n);
++		return TEE_ERROR_SHORT_BUFFER;
++	}
++
+ 	rsa = drvcrypt_get_ops(CRYPTO_RSA);
+ 	if (rsa) {
+ 		/* Prepare the encryption data parameters */
