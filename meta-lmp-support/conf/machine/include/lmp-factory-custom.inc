@@ -12,9 +12,9 @@ OSTREE_KERNEL_ARGS_imx8mm-lpddr4-evk = "console=tty1 console=ttymxc1,115200 earl
 # Set defaults for PARSEC_PROVIDER.
 # All boards can support the SOFTWARE_TPM.
 # The mx8 and uz boards can use PKCS11
-# The rpi can only use the SOFTWARE_TPM
+# The rpi can use the SOFTHSM
 
 PARSEC_PROVIDER ?= "SOFTWARE_TPM"
 PARSEC_PROVIDER_uz ?= "PKCS11"
 PARSEC_PROVIDER_mx8 ?= "PKCS11"
-PARSEC_PROVIDER_rpi ?= "SOFTWARE_TPM"
+PARSEC_PROVIDER_rpi ?= "SOFTHSM"
