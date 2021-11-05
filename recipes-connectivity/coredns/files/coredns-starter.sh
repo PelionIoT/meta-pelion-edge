@@ -16,12 +16,40 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # ----------------------------------------------------------------------------
-if [[ ! -e /sys/class/net/kube-bridge ]]; then
-	echo "kube-bridge does not exist"
-	exit 2
-fi
-state=$(cat /sys/class/net/kube-bridge/operstate)
-if [[ $state = "down" ]]; then
-	echo "kube-bridge down, awaiting pod deployment. (This log message is expected to repeat. Everything is healthy.)"
-	exit 1
-fi
+OFFLINE_WAIT_DURATION=5
+ONLINE_WAIT_DURATION=20
+
+check_network_device() {
+    if [[ ! -e /sys/class/net/kube-bridge ]]; then
+        return 2
+    fi
+
+    state=$(cat /sys/class/net/kube-bridge/operstate)
+    if [[ $state = "down" ]]; then
+        return 1
+    fi
+
+    return 0
+}
+
+while true; do
+    systemctl is-active --quiet coredns
+    
+    if [[ $? -eq 0 ]]; then
+        # Service is already running
+        sleep $ONLINE_WAIT_DURATION
+        continue
+    fi 
+
+    check_network_device
+
+    if [[ $? -eq 0 ]]; then
+        echo "Starting coredns.service"
+        systemctl start coredns.service
+        sleep $ONLINE_WAIT_DURATION
+        continue
+    fi
+
+    # Service is dead and device is NOT ready
+    sleep $OFFLINE_WAIT_DURATION
+done
