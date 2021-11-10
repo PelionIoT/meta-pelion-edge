@@ -9,6 +9,12 @@ OSTREE_KERNEL_ARGS_COMMON += "cgroup_enable=memory cgroup_memory=1"
 #Use sdcard as root device by default
 OSTREE_KERNEL_ARGS_imx8mm-lpddr4-evk = "console=tty1 console=ttymxc1,115200 earlycon=ec_imx6q,0x30890000,115200 root=/dev/mmcblk1p2 rootfstype=ext4"
 
+# Disable anything to do with pushing image to server
+# (mainly just silences a warning about SOTA_PACKED_CREDENTIALS not being set)
+IMAGE_FSTYPES_remove = "ostreepush"
+IMAGE_FSTYPES_remove = "garagesign"
+IMAGE_FSTYPES_remove = "garagecheck"
+
 # Set defaults for PARSEC_PROVIDER.
 # All boards can support the SOFTWARE_TPM.
 # The mx8 and uz boards can use PKCS11
