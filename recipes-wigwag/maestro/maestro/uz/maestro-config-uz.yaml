@@ -6,8 +6,6 @@ configDBPath: /userdata/etc/maestroConfig.db
 clientId: "{{ARCH_SERIAL_NUMBER}}"
 network:
     disable: true
-processes:
-    reaper_interval: 1500
 platform_readers:
   - platform: "fsonly"
     params:
@@ -32,17 +30,8 @@ var_defs:
      value: "gateways.local:8080"
    - key: "MAESTRO_RUNNER_DIR"
      value: "/wigwag/devicejs-core-modules/maestroRunner"
-   - key: "LOCAL_DEVICEDB_PORT"
-     value: 9000
-   - key: "LOCAL_DATABASE_STORAGE_DIRECTORY"
-     value: "/userdata/etc/devicejs/db"
    - key: "EDGE_ETC"
      value: "/wigwag/system/etc"
-devicedb_conn_config:
-    devicedb_uri: "http://localhost:{{LOCAL_DEVICEDB_PORT}}" #default uri
-    devicedb_prefix: "configs.device" #default prefix
-    devicedb_bucket: "lww" #default bucket
-    relay_id: "{{ARCH_DEVICE_ID}}" #default relay id  
 mdns:
   static_records:
    - name: "WigWagRelay"
@@ -70,22 +59,27 @@ symphony: # symphony system management APIs
     url_logs: "http://{{FOG_PROXY_ADDR}}/relay-logs/logs"
     url_stats: "http://{{FOG_PROXY_ADDR}}/relay-stats/stats_obj"
     send_time_threshold: 120000       # set the send time threshold to 2 minutes
+targets:
+   - file: "/wigwag/log/maestro_gw.log"
+     rotate:
+         max_files: 4
+         max_file_size: 10000000  # 10MB max file size
+         max_total_size: 42000000
+         rotate_on_start: true
+     delim: "\n"
+     format_time: "[%ld:%d] "
+     format_level: "<%s> "
+     format_tag: "{%s} "
+     format_origin: "(%s) "
+     filters:
+       - levels: warn
+         format_pre: "\u001B[33m"    # yellow
+         format_post: "\u001B[39m"
+       - levels: error
+         format_pre: "\u001B[31m"    # red
+         format_post: "\u001B[39m"
 static_file_generators:
-   - name: "devicedb"
-     template_file: "/wigwag/etc/template/devicedb.template.conf"
-     output_file: "/wigwag/etc/devicejs/devicedb.yaml"
    - name: "relayTerm"
      template_file: "/wigwag/etc/template/relayTerm.template.json"
      output_file: "{{EDGE_ETC}}/pe-terminal/config.json"
-jobs:
-   - job: "devicedb"
-     immutable: true
-     die_on_parent_death: true
-     exec_cmd: "/wigwag/system/bin/devicedb"
-     restart: true
-     restart_limit: 5000
-     restart_pause: 1
-     exec_args:
-        - "start"
-        - "-conf=/wigwag/etc/devicejs/devicedb.yaml"
 config_end: true
