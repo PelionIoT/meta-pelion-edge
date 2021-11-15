@@ -7,9 +7,9 @@ After=edge-proxy.service
 Restart=always
 RestartSec=5s
 Environment="LD_LIBRARY_PATH=/wigwag/system/lib"
-ExecCondition=sh -c '[ -f /userdata/edge_gw_config/identity.json ]'
-ExecStartPre=mkdir -p /userdata/etc/
-ExecStart=env GODEBUG=madvdontneed=1 /wigwag/system/bin/maestro -config /wigwag/etc/run/maestro-config.yaml
+ExecCondition=sh -c '[ -f EDGE_DATA/edge_gw_config/identity.json ]'
+ExecStartPre=mkdir -p EDGE_DATA/etc/
+ExecStart=env GODEBUG=madvdontneed=1 EDGE_BIN/maestro -config EDGE_CONFIG/maestro-config.yaml
 
 [Install]
 RequiredBy=network.target
