@@ -46,6 +46,9 @@ EDGE_ETC = "/wigwag/system/etc"
 EDGE_DATA = "/userdata"
 EDGE_STATE = "/wigwag/system/var/lib"
 EDGE_OPT = "/wigwag/system/opt"
+EDGE_CONFIG = "/wigwag/etc/run"
+EDGE_TEMPLATE = "/wigwag/etc/template"
+EDGE_LOG = "/wigwag/log"
 #END TEMPORARY
 
 EDGE_CNI_CONF = "${EDGE_ETC}/cni/net.d"

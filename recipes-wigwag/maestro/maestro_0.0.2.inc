@@ -19,6 +19,8 @@ SRC_URI = "git://${GO_IMPORT};protocol=https \
 file://${RT_SERVICE_FILE} \
 file://maestro-watcher.service \
 file://maestro-watcher.path \
+file://maestro-config-uz.yaml \
+file://relayTerm.template.json \
 "
 
 SRCREV = "v3.0.0"
@@ -30,14 +32,14 @@ maestro-watcher.service"
 
 SYSTEMD_AUTO_ENABLE_${PN} = "enable"
 
-RUN_CONFIG_DIR="wigwag/etc/run"
-TEMPLATE_CONFIG_DIR="wigwag/etc/template"
-MAESTRO_JOBS_LOG_DIR="wigwag/log"
+RUN_CONFIG_DIR=${EDGE_RUN}
+TEMPLATE_CONFIG_DIR=${EDGE_TEMPLATE}
+MAESTRO_JOBS_LOG_DIR=${EDGE_LOG}
 
 FILESEXTRAPATHS_prepend := "${THISDIR}/maestro:"
 FILES_${PN} += "\
-    /wigwag/system/bin/*\
-    /wigwag/system/lib/*\
+    ${EDGE_BIN}/*\
+    ${EDGE_LIB}/*\
     ${EDGE_BIN}/maestro \
     /${RUN_CONFIG_DIR}/*\
     /${TEMPLATE_CONFIG_DIR}/*\
@@ -56,6 +58,14 @@ do_compile() {
   cd ${S}/../
 
   edge_replace_vars ${RT_SERVICE_FILE} maestro-watcher.path
+}
+
+do_install_append() {
+    # Maestro configuration management
+    install -d ${D}/${RUN_CONFIG_DIR}
+    install -d ${D}/${TEMPLATE_CONFIG_DIR}
+    install -m 0644 ${WORKDIR}/maestro-config.yaml ${D}/${RUN_CONFIG_DIR}/maestro-config.yaml
+    install -m 0644 ${WORKDIR}/relayTerm.template.json ${D}/${TEMPLATE_CONFIG_DIR}/relayTerm.template.json
 }
 
 do_install() {

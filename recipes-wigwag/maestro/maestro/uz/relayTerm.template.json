@@ -1,5 +1,0 @@
-{
-	"cloud": "ws://{{FOG_PROXY_ADDR}}/relay-term",
-	"command": "/bin/bash",
-	"logLevel": "info"
-}
