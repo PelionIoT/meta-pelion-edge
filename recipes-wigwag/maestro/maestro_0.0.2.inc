@@ -19,7 +19,7 @@ SRC_URI = "git://${GO_IMPORT};protocol=https \
 file://${RT_SERVICE_FILE} \
 file://maestro-watcher.service \
 file://maestro-watcher.path \
-file://maestro-config-uz.yaml \
+file://maestro-config.yaml \
 file://relayTerm.template.json \
 "
 
