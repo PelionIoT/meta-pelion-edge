@@ -34,12 +34,10 @@ SYSTEMD_AUTO_ENABLE_${PN} = "enable"
 
 FILESEXTRAPATHS_prepend := "${THISDIR}/maestro:"
 FILES_${PN} += "\
-    ${EDGE_BIN}/*\
-    ${EDGE_LIB}/*\
     ${EDGE_BIN}/maestro \
-    /${EDGE_CONFIG}/*\
-    /${EDGE_TEMPLATE}/*\
-    /${EDGE_LOG}\
+    ${EDGE_CONFIG}/maestro-config.yaml\
+    ${EDGE_TEMPLATE}/relayTerm.template.json\
+    ${EDGE_LOG}\
     ${systemd_system_unitdir}/maestro.service\
     ${systemd_system_unitdir}/maestro-watcher.service\
     ${systemd_system_unitdir}/maestro-watcher.path\
