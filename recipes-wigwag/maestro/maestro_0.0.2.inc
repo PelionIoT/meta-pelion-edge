@@ -32,18 +32,14 @@ maestro-watcher.service"
 
 SYSTEMD_AUTO_ENABLE_${PN} = "enable"
 
-RUN_CONFIG_DIR=${EDGE_CONFIG}
-TEMPLATE_CONFIG_DIR=${EDGE_TEMPLATE}
-MAESTRO_JOBS_LOG_DIR=${EDGE_LOG}
-
 FILESEXTRAPATHS_prepend := "${THISDIR}/maestro:"
 FILES_${PN} += "\
     ${EDGE_BIN}/*\
     ${EDGE_LIB}/*\
     ${EDGE_BIN}/maestro \
-    /${RUN_CONFIG_DIR}/*\
-    /${TEMPLATE_CONFIG_DIR}/*\
-    /${MAESTRO_JOBS_LOG_DIR}\
+    /${EDGE_CONFIG}/*\
+    /${EDGE_TEMPLATE}/*\
+    /${EDGE_LOG}\
     ${systemd_system_unitdir}/maestro.service\
     ${systemd_system_unitdir}/maestro-watcher.service\
     ${systemd_system_unitdir}/maestro-watcher.path\
@@ -62,10 +58,10 @@ do_compile() {
 
 do_install_append() {
     # Maestro configuration management
-    install -d ${D}/${RUN_CONFIG_DIR}
-    install -d ${D}/${TEMPLATE_CONFIG_DIR}
-    install -m 0644 ${WORKDIR}/maestro-config.yaml ${D}/${RUN_CONFIG_DIR}/maestro-config.yaml
-    install -m 0644 ${WORKDIR}/relayTerm.template.json ${D}/${TEMPLATE_CONFIG_DIR}/relayTerm.template.json
+    install -d ${D}/${EDGE_CONFIG}
+    install -d ${D}/${EDGE_TEMPLATE}
+    install -m 0644 ${WORKDIR}/maestro-config.yaml ${D}/${EDGE_CONFIG}/maestro-config.yaml
+    install -m 0644 ${WORKDIR}/relayTerm.template.json ${D}/${EDGE_TEMPLATE}/relayTerm.template.json
 }
 
 do_install() {
@@ -74,7 +70,7 @@ do_install() {
   install -d ${D}${systemd_system_unitdir}
   install -d ${D}/${bindir}
   install -d ${D}/${libdir}
-  install -d ${D}/${MAESTRO_JOBS_LOG_DIR}
+  install -d ${D}/${EDGE_LOG}
   install -m 0755 ${S}/src/${GO_IMPORT}/bin/maestro ${D}${EDGE_BIN}/maestro
   ln -sf /${EDGE_BIN}/maestro ${D}/${bindir}/maestro
 
