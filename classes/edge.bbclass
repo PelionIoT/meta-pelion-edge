@@ -46,6 +46,9 @@ EDGE_ETC = "/wigwag/system/etc"
 EDGE_DATA = "/userdata"
 EDGE_STATE = "/wigwag/system/var/lib"
 EDGE_OPT = "/wigwag/system/opt"
+EDGE_CONFIG = "/wigwag/etc/run"
+EDGE_TEMPLATE = "/wigwag/etc/template"
+EDGE_LOG = "/wigwag/log"
 #END TEMPORARY
 
 EDGE_CNI_CONF = "${EDGE_ETC}/cni/net.d"
@@ -78,12 +81,15 @@ edge_replace_vars() {
 	    sed -i  "s/EDGE_STATE/$(echo ${EDGE_STATE} | sed -e 's/\\/\\\\/g; s/\//\\\//g; s/&/\\\&/g')/g" "$file"
 	    sed -i  "s/EDGE_OPT/$(echo ${EDGE_OPT} | sed -e 's/\\/\\\\/g; s/\//\\\//g; s/&/\\\&/g')/g" "$file"
 	    sed -i  "s/EDGE_RUN/$(echo ${EDGE_RUN} | sed -e 's/\\/\\\\/g; s/\//\\\//g; s/&/\\\&/g')/g" "$file"
-	    
+	    sed -i  "s/EDGE_CONFIG/$(echo ${EDGE_CONFIG} | sed -e 's/\\/\\\\/g; s/\//\\\//g; s/&/\\\&/g')/g" "$file"
+	    sed -i  "s/EDGE_LOG/$(echo ${EDGE_LOG} | sed -e 's/\\/\\\\/g; s/\//\\\//g; s/&/\\\&/g')/g" "$file"
+	    sed -i  "s/EDGE_TEMPLATE/$(echo ${EDGE_TEMPLATE} | sed -e 's/\\/\\\\/g; s/\//\\\//g; s/&/\\\&/g')/g" "$file"
+
 	    sed -i  "s/EDGE_CNI_CONF/$(echo ${EDGE_CNI_CONF} | sed -e 's/\\/\\\\/g; s/\//\\\//g; s/&/\\\&/g')/g" "$file"
 	    sed -i  "s/EDGE_CNI_CONF/$(echo ${EDGE_CNI_BIN} | sed -e 's/\\/\\\\/g; s/\//\\\//g; s/&/\\\&/g')/g" "$file"
 	    sed -i  "s/EDGE_KUBELET_STATE/$(echo ${EDGE_KUBELET_STATE} | sed -e 's/\\/\\\\/g; s/\//\\\//g; s/&/\\\&/g')/g" "$file"
 	    sed -i  "s/EDGE_COREDNS_STATE/$(echo ${EDGE_COREDNS_STATE} | sed -e 's/\\/\\\\/g; s/\//\\\//g; s/&/\\\&/g')/g" "$file"
-	    
+
 	   	sed -i  "s/EDGE_NODEIP/$(echo ${EDGE_NODEIP} | sed -e 's/\\/\\\\/g; s/\//\\\//g; s/&/\\\&/g')/g" "$file"
 		sed -i  "s/EDGE_PODCIDR_GW/$(echo ${EDGE_PODCIDR_GW} | sed -e 's/\\/\\\\/g; s/\//\\\//g; s/&/\\\&/g')/g" "$file"
 	   	sed -i  "s/EDGE_PODCIDR/$(echo ${EDGE_PODCIDR} | sed -e 's/\\/\\\\/g; s/\//\\\//g; s/&/\\\&/g')/g" "$file"
