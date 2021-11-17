@@ -80,7 +80,7 @@ edge_replace_vars() {
 	    sed -i  "s/EDGE_RUN/$(echo ${EDGE_RUN} | sed -e 's/\\/\\\\/g; s/\//\\\//g; s/&/\\\&/g')/g" "$file"
 	    
 	    sed -i  "s/EDGE_CNI_CONF/$(echo ${EDGE_CNI_CONF} | sed -e 's/\\/\\\\/g; s/\//\\\//g; s/&/\\\&/g')/g" "$file"
-	    sed -i  "s/EDGE_CNI_CONF/$(echo ${EDGE_CNI_BIN} | sed -e 's/\\/\\\\/g; s/\//\\\//g; s/&/\\\&/g')/g" "$file"
+	    sed -i  "s/EDGE_CNI_BIN/$(echo ${EDGE_CNI_BIN} | sed -e 's/\\/\\\\/g; s/\//\\\//g; s/&/\\\&/g')/g" "$file"
 	    sed -i  "s/EDGE_KUBELET_STATE/$(echo ${EDGE_KUBELET_STATE} | sed -e 's/\\/\\\\/g; s/\//\\\//g; s/&/\\\&/g')/g" "$file"
 	    sed -i  "s/EDGE_COREDNS_STATE/$(echo ${EDGE_COREDNS_STATE} | sed -e 's/\\/\\\\/g; s/\//\\\//g; s/&/\\\&/g')/g" "$file"
 	    

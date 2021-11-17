@@ -64,11 +64,11 @@ do_install() {
 
 
     # Parts of k8s expect the cni binaries to be available in /opt/cni
-    install -d ${D}/opt/cni
-    ln -sf ${EDGE_CNI_BIN}/ ${D}/opt/cni/bin
+    #install -d ${D}/opt/cni
+    #ln -sf ${EDGE_CNI_BIN}/ ${D}/opt/cni/bin
     # re-linking to the origional recipeies location
-    install -d ${D}${libexecdir}/cni
-    ln -sf ${EDGE_CNI_BIN} ${D}${libexecdir}/cni
+    #install -d ${D}${libexecdir}/cni
+    #ln -sf ${EDGE_CNI_BIN} ${D}${libexecdir}/cni
 }
 
 
