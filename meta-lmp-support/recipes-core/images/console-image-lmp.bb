@@ -47,7 +47,6 @@ mbed-fcce \
 PELION_SYSTEMS_MANAGEMENT = "\
 edge-proxy \
 maestro \
-devicedb \
 info-tool \
 pe-terminal \
 fluentbit \
