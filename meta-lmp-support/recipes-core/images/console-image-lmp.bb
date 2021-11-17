@@ -81,6 +81,10 @@ PARSEC_SERVICE_PKCS11 = " \
 parsec-service-pkcs11 \
 "
 
+PARSEC_SERVICE_SOFTHSM = " \
+parsec-service-softhsm \
+"
+
 PARSEC_TOOL = " \
 parsec-tool \
 "
@@ -97,6 +101,7 @@ ${MACHINE_EXTRA_RRECOMMENDS} \
 ${PARSEC_TOOL} \
 "
 IMAGE_INSTALL_append = " ${@bb.utils.contains('PARSEC_PROVIDER', 'PKCS11', '${PARSEC_SERVICE_PKCS11}', '',d)}"
+IMAGE_INSTALL_append = " ${@bb.utils.contains('PARSEC_PROVIDER', 'SOFTHSM', '${PARSEC_SERVICE_SOFTHSM}', '',d)}"
 IMAGE_INSTALL_append = " ${@bb.utils.contains('PARSEC_PROVIDER', 'SOFTWARE_TPM', '${PARSEC_SERVICE_SOFTWARE_TPM}', '',d)}"
 IMAGE_INSTALL_append = " ${@bb.utils.contains('PARSEC_PROVIDER', 'HARDWARE_TPM', '${PARSEC_SERVICE_HARDWARE_TPM}', '',d)}"
 
@@ -121,6 +126,9 @@ setup_parsec_files() {
     chown -R parsec:parsec ${IMAGE_ROOTFS}/usr/libexec/parsec
     if [ "${PARSEC_PROVIDER}" = "SOFTWARE_TPM" ]; then
         chown parsec:parsec ${IMAGE_ROOTFS}/usr/bin/swtpm.sh
+    fi
+    if [ "${PARSEC_PROVIDER}" = "SOFTHSM" ]; then
+        chown parsec:parsec ${IMAGE_ROOTFS}/usr/bin/init_pkcs11_slots.sh
     fi
 }
 set_local_timezone() {

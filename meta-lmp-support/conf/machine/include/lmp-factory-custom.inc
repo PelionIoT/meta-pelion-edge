@@ -10,11 +10,11 @@ OSTREE_KERNEL_ARGS_COMMON += "cgroup_enable=memory cgroup_memory=1"
 OSTREE_KERNEL_ARGS_imx8mm-lpddr4-evk = "console=tty1 console=ttymxc1,115200 earlycon=ec_imx6q,0x30890000,115200 root=/dev/mmcblk1p2 rootfstype=ext4"
 
 # Set defaults for PARSEC_PROVIDER.
-# All boards can support the SOFTWARE_TPM.
-# The mx8 and uz boards can use PKCS11
-# The rpi can only use the SOFTWARE_TPM
+# All boards can support the SOFTHSM.
+# The mx8 and uz boards could use PKCS11, but not without combined update.
+# The rpi can use the SOFTHSM
 
-PARSEC_PROVIDER ?= "SOFTWARE_TPM"
-PARSEC_PROVIDER_uz ?= "PKCS11"
-PARSEC_PROVIDER_mx8 ?= "PKCS11"
-PARSEC_PROVIDER_rpi ?= "SOFTWARE_TPM"
+PARSEC_PROVIDER ?= "SOFTHSM"
+PARSEC_PROVIDER_uz ?= "SOFTHSM"
+PARSEC_PROVIDER_mx8 ?= "SOFTHSM"
+PARSEC_PROVIDER_rpi ?= "SOFTHSM"
