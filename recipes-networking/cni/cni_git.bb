@@ -62,15 +62,7 @@ do_install() {
     install -m 755 -D ${B}/plugins/bin/loopback ${D}/${EDGE_CNI_BIN}
     install -m 755 -D ${B}/plugins/bin/portmap ${D}/${EDGE_CNI_BIN}
 
-
-    # Parts of k8s expect the cni binaries to be available in /opt/cni
-    #install -d ${D}/opt/cni
-    #ln -sf ${EDGE_CNI_BIN}/ ${D}/opt/cni/bin
-    # re-linking to the origional recipeies location
-    #install -d ${D}${libexecdir}/cni
-    #ln -sf ${EDGE_CNI_BIN} ${D}${libexecdir}/cni
 }
-
 
 INSANE_SKIP_${PN} += "ldflags already-stripped"
 
