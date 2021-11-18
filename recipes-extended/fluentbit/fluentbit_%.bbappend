@@ -6,6 +6,9 @@ FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
 FB_PKG_NAME = "td-agent-bit"
 FB_CONF_FILES_LOCATION = "/etc/${FB_PKG_NAME}"
 
+# Set this to "1" in local.conf to enable IMS logs via fluentbit to pelion
+FB_INPUT_IMA ??="0"
+
 # To install fluentbit with systemd headers
 DEPENDS_append = " systemd"
 
@@ -21,6 +24,7 @@ SRC_URI = "http://fluentbit.io/releases/1.3/fluent-bit-${PV}.tar.gz \
             ${@bb.utils.contains('DISTRO_FEATURES','usrmerge','file://0001-support-usrmerge.patch','',d)} \
             file://${FB_PKG_NAME}.service \
             file://${FB_PKG_NAME}.conf \
+            file://${FB_PKG_NAME}-ims-tail-input.conf \
             file://${FB_PKG_NAME}-watcher.service \
             file://${FB_PKG_NAME}.path"
 
@@ -30,6 +34,11 @@ ${FB_PKG_NAME}-watcher.service \
 ${FB_PKG_NAME}.path"
 
 do_install_append() {
+    if [ "${FB_INPUT_IMA}" = "1" ]; then
+        bbnote "Adding IMA input config"
+        cat ${WORKDIR}/${FB_PKG_NAME}-ims-tail-input.conf >> ${WORKDIR}/${FB_PKG_NAME}.conf
+    fi
+
     install -d ${D}${FB_CONF_FILES_LOCATION}
     install -m 0644 ${WORKDIR}/${FB_PKG_NAME}.conf ${D}${FB_CONF_FILES_LOCATION}/${FB_PKG_NAME}.conf
 
