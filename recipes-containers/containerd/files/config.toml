@@ -1,0 +1,4 @@
+ [plugins.cri.cni]
+      bin_dir = "EDGE_CNI_BIN"
+[plugins.opt]
+	path = "EDGE_OPT/containerd"
