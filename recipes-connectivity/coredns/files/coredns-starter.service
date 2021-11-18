@@ -1,0 +1,14 @@
+[Unit]
+Description=Monitor network interface and start CoreDNS service
+Wants=kubelet.service
+After=kubelet.service
+Requires=network-online.target
+After=network-online.target
+
+[Service]
+Restart=always
+RestartSec=5
+ExecStart=EDGE_BIN/coredns-starter.sh
+
+[Install]
+WantedBy=multi-user.target

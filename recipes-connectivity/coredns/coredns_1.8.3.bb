@@ -10,11 +10,12 @@ file://coredns.service \
 file://corefile \
 file://coredns-rules.sh \
 file://launch-coredns.sh \
-file://kube-bridge-ready.sh \
+file://coredns-starter.sh \
+file://coredns-starter.service \
   "
 
 SYSTEMD_PACKAGES = "${PN}"
-SYSTEMD_SERVICE_${PN} = "coredns.service"
+SYSTEMD_SERVICE_${PN} = "coredns-starter.service"
 SYSTEMD_AUTO_ENABLE_${PN} = "enable"
 
 SRCREV = "v${PV}"
@@ -28,10 +29,11 @@ RDEPENDS_${PN} += "bash "
 FILES_${PN} =  " \
     ${EDGE_BIN}/coredns\
     ${EDGE_BIN}/launch-coredns.sh \
-    ${EDGE_BIN}/kube-bridge-ready.sh \
     ${EDGE_BIN}/coredns-rules.sh \
+    ${EDGE_BIN}/coredns-starter.sh \
     ${EDGE_COREDNS_STATE}/corefile \
     ${systemd_system_unitdir}/coredns.service \
+    ${systemd_system_unitdir}/coredns-starter.service \
     "
 
 do_configure(){
@@ -51,7 +53,7 @@ do_compile(){
   cd ${B}
   chmod -R u+w *
   cd ${S}/../
-  edge_replace_vars corefile launch-coredns.sh coredns.service
+  edge_replace_vars corefile launch-coredns.sh coredns.service coredns-starter.service
 }
 
 do_install() {
@@ -60,8 +62,9 @@ do_install() {
   install -d ${D}${systemd_system_unitdir}
   install -m 0755 ${S}/src/${GO_IMPORT}/coredns ${D}${EDGE_BIN}/coredns
   install -m 0755 ${S}/../coredns-rules.sh ${D}${EDGE_BIN}/coredns-rules.sh
-  install -m 0755 ${S}/../kube-bridge-ready.sh ${D}${EDGE_BIN}/kube-bridge-ready.sh  
+  install -m 0755 ${S}/../coredns-starter.sh ${D}${EDGE_BIN}/coredns-starter.sh  
   install -m 0755 ${S}/../launch-coredns.sh ${D}${EDGE_BIN}/launch-coredns.sh
   install -m 0644 ${S}/../coredns.service ${D}${systemd_system_unitdir}/coredns.service
+  install -m 0644 ${S}/../coredns-starter.service ${D}${systemd_system_unitdir}/coredns-starter.service
   install -m 0644 ${S}/../corefile ${D}${EDGE_COREDNS_STATE}/corefile
 }

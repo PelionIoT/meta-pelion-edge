@@ -6,10 +6,9 @@ Requires=network-online.target
 After=network-online.target
 
 [Service]
-Restart=always
-RestartSec=5
-ExecStartPre=EDGE_BIN/kube-bridge-ready.sh
+Type=simple
+Restart=no
 ExecStart=EDGE_BIN/launch-coredns.sh
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=
