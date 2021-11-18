@@ -25,6 +25,8 @@ if [[ $? -ne 0 ]] || [[ $DEVICE_ID == null ]]; then
 fi
 
 RCONF=EDGE_RUN/coredns/resolv.conf
+NODE_IP=EDGE_NODEIP
+POD_CIDR_GW=EDGE_PODCIDR_GW
 
 write_resolv_conf(){
 	usage (){
@@ -73,20 +75,24 @@ write_resolv_conf(){
 }
 
 setup_local_kaas_network(){
-	IP="${1}"
-	ip link add kaas0 type dummy
-	ip addr add ${IP}/24 dev kaas0
-	ip route add ${IP}/24 dev kaas0
-	ip link set dev kaas0 up
+    IP="${1}"
+    ip link add kaas0 type dummy
+    ip addr add ${IP}/30 dev kaas0
+    ip link set dev kaas0 up
+
+    # Lower priority by increasing metric
+    kaasRoute=`ip route | grep kaas0`
+    ip route del $kaasRoute
+    ip route add $kaasRoute metric 999
 }
 
 
-write_resolv_conf EDGE_PODCIDR_GW
-setup_local_kaas_network EDGE_NODEIP
+write_resolv_conf ${POD_CIDR_GW}
+setup_local_kaas_network ${NODE_IP}
 
 exec EDGE_BIN/kubelet \
 --v=2 \
---node-ip=EDGE_NODEIP \
+--node-ip=${NODE_IP} \
 --root-dir=/var/lib/kubelet \
 --offline-cache-path=EDGE_KUBELET_STATE/store \
 --fail-swap-on=false \
