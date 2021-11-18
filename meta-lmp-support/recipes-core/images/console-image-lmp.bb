@@ -14,11 +14,12 @@ IMAGE_OVERHEAD_FACTOR = "2"
 
 DEPENDS += "deviceos-users"
 
+
 CORE_IMAGE_BASE_INSTALL += " \
     kernel-modules \
     networkmanager-nmcli \
     git \
-    vim \
+    nano \
     rng-tools \
     haveged \
     packagegroup-core-full-cmdline-utils \
