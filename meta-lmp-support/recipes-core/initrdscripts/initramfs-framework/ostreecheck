@@ -1,0 +1,60 @@
+#!/bin/sh
+
+# Initial concept of how to do OSTree fsck+diff to check
+# rootfs integrity.
+#
+# TODO:
+# - uncomment "fatal"s
+# - change various "msg" to "info"/"debug"
+# - verify validity of deployment hash via a signature
+# - verify version number to prevent rollback
+# - handling of /etc ?
+
+ostreecheck_enabled() {
+	return 0
+}
+
+ostreecheck_run() {
+	msg "OSTree check here"
+	ls -l /
+	ls -l /sysroot
+	/usr/bin/ostree fsck --repo=$ROOTFS_DIR/ostree/repo
+	if [ $? -ne 0 ]; then
+		msg "OSTree repo is damaged!"
+		#fatal
+	else
+		msg "OSTree repo intact"
+	fi
+
+	OSTREE_DEPLOY=`/usr/bin/ostree admin --sysroot=$ROOTFS_DIR --print-current-dir`
+	if [ $? -ne 0 ]; then
+		msg "OSTree admin --print-current-dir failed"
+		return
+		#fatal
+	fi
+
+	msg "OSTree deployment is at ${OSTREE_DEPLOY}"
+
+	# Extract revision ID from deployment path by
+	# stripping everything up to the last '/',
+	# and everything after the last '.'
+	ostree_rev="${OSTREE_DEPLOY##*/}"
+	ostree_rev="${ostree_rev%%.*}"
+	if [ -z "${ostree_rev}" ]; then
+		msg "No OSTree rev found"
+		return 1
+		#fatal
+	fi
+
+	msg "Checking contents of OSTree rev ${ostree_rev}"
+	# For now just look for modified or deleted usr files
+	# (We would expect to see a bunch of added etc and var files.)
+	# grep returns 0 if any matches are found
+	/usr/bin/ostree diff --repo=$ROOTFS_DIR/ostree/repo ${ostree_rev} ${OSTREE_DEPLOY} | grep "[MD] *usr/"
+	if [ $? -eq 0 ]; then
+		msg "OSTree deployment modified"
+		#fatal
+	else
+		msg "OSTree deployment intact"
+	fi
+}
