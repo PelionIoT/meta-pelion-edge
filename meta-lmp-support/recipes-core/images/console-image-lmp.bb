@@ -117,6 +117,10 @@ EXTRA_USERS_PARAMS += "\
     useradd parsec;\
 "
 
+# Add the parsec group the ETC_GROUP_MEMBERS. This will allow the group to be added to user accounts,
+# via the useradd command
+ETC_GROUP_MEMBERS_append = " parsec"
+
 # modify the ownership of the folders and files that only the parsec user needs access to.
 
 ROOTFS_POSTPROCESS_COMMAND_append = " \
