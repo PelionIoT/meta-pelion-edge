@@ -91,7 +91,6 @@ write_resolv_conf ${POD_CIDR_GW}
 setup_local_kaas_network ${NODE_IP}
 
 exec EDGE_BIN/kubelet \
---v=2 \
 --node-ip=${NODE_IP} \
 --root-dir=/var/lib/kubelet \
 --offline-cache-path=EDGE_KUBELET_STATE/store \
