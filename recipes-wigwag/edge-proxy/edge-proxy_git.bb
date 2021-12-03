@@ -6,7 +6,7 @@ LIC_FILES_CHKSUM = "file://src/${GO_IMPORT}/LICENSE;md5=86d3f3a95c324c9479bd8986
 export GO111MODULE="auto"
 
 
-inherit go pkgconfig gitpkgv systemd
+inherit go pkgconfig gitpkgv systemd edge
 
 PR = "r0"
 SRC_URI = "git://git@github.com/PelionIoT/edge-proxy.git;protocol=https;name=ep;depth=1 \
@@ -31,23 +31,26 @@ GO_IMPORT = "github.com/PelionIoT/edge-proxy"
 
 RDEPENDS_${PN} = "jq bash"
 
-wbindir = "/wigwag/system/bin"
-wetcdir = "/wigwag/etc"
 FILES_${PN} = "\
-	${wbindir}/edge-proxy\
-	${wbindir}/launch-edge-proxy.sh\
-	${wetcdir}/edge-proxy.conf.json\
-  ${systemd_system_unitdir}/edge-proxy.service\
-  ${systemd_system_unitdir}/edge-proxy-watcher.service\
-  ${systemd_system_unitdir}/edge-proxy.path\
+	${EDGE_BIN}/edge-proxy \
+	${EDGE_BIN}/launch-edge-proxy.sh \
+	${EDGE_ETC}/edge-proxy.conf.json \
+  ${systemd_system_unitdir}/edge-proxy.service \
+  ${systemd_system_unitdir}/edge-proxy-watcher.service \
+  ${systemd_system_unitdir}/edge-proxy.path \
 	"
 
-do_install () {
-  install -d ${D}${wbindir}
-  install -m 0755 ${B}/${GO_BUILD_BINDIR}/edge-proxy ${D}${wbindir}/
-  install -m 0755 ${WORKDIR}/launch-edge-proxy.sh ${D}${wbindir}/
-  install -d ${D}${wetcdir}
-  install -m 0755 ${WORKDIR}/edge-proxy.conf.json ${D}${wetcdir}/
+do_compile_append() {
+  cd ${WORKDIR}
+  edge_replace_vars edge-proxy.path edge-proxy.service launch-edge-proxy.sh
+}
+
+do_install() {
+  install -d ${D}${EDGE_BIN}
+  install -m 0755 ${B}/${GO_BUILD_BINDIR}/edge-proxy ${D}${EDGE_BIN}/
+  install -m 0755 ${WORKDIR}/launch-edge-proxy.sh ${D}${EDGE_BIN}/
+  install -d ${D}${EDGE_ETC}
+  install -m 0755 ${WORKDIR}/edge-proxy.conf.json ${D}${EDGE_ETC}/
   install -d ${D}${systemd_system_unitdir}
   install -m 0644 ${WORKDIR}/edge-proxy.service ${D}${systemd_system_unitdir}
   install -m 0644 ${WORKDIR}/edge-proxy-watcher.service ${D}${systemd_system_unitdir}

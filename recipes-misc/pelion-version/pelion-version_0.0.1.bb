@@ -7,13 +7,12 @@ SRC_URI = "file://BUILDMMU.txt"
 
 PR = "r0"
 
+inherit edge
+
 S = "${WORKDIR}"
 
 FILES_${PN} = " \
-/wigwag \
-/wigwag/wwrelay-utils \
-/wigwag/wwrelay-utils/conf \
-/wigwag/etc \
+	${EDGE_ETC}/versions.json \
 "
 
 do_compile() {
@@ -36,10 +35,8 @@ do_compile() {
 }
 
 do_install() {
-	install -d ${D}/wigwag/wwrelay-utils/conf
-	install -d ${D}/wigwag/etc
-    install -m 0755 ${S}/version.json ${D}/wigwag/wwrelay-utils/conf/versions.json
-	install -m 0755 ${S}/version.json ${D}/wigwag/etc/versions.json
+	install -d ${D}/${EDGE_ETC}
+	install -m 0755 ${S}/version.json ${D}/${EDGE_ETC}/versions.json
 }
 
 

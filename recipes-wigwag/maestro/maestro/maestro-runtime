@@ -1,4 +1,4 @@
-/wigwag/log/maestro-runtime.log {
+EDGE_LOG/maestro-runtime.log {
     rotate 10
     size 4M
     nodateext

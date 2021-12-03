@@ -11,7 +11,7 @@ DEPENDS += "${@ 'parsec-se-driver' if d.getVar('MBED_EDGE_CORE_CONFIG_PARSEC_TPM
 
 RDEPENDS_${PN} += "bash python3 python3-core"
 
-inherit cmake pkgconfig gitpkgv distutils3 setuptools3 python3native
+inherit cmake pkgconfig gitpkgv distutils3 setuptools3 python3native edge
 
 SRC_URI = " \
 git://github.com/parallaxsecond/parsec-se-driver.git;protocol=https;name=parsec;destsuffix=parsec-se-driver;branch=main \
@@ -28,20 +28,17 @@ SRCREV_pn-${PN} = "${PV}"
 SRCREV_parsec = "0.5.0"
 
 S = "${WORKDIR}/git"
-FILES_${PN} = "/wigwag/wwrelay-utils/I2C/*"
+FILES_${PN} = "${EDGE_BIN}/factory-configurator-client-armcompiled.elf"
 
 lcl_maybe_fortify = '-D_FORTIFY_SOURCE=0'
 
 do_configure() {
 
     cd ${S}
-
     export PYTHONPATH=$PYTHONPATH:`pwd`/recipe-sysroot-native/usr/lib/python3.8
     export PATH=$PYTHONPATH:$PATH
-
     export HTTP_PROXY=${HTTP_PROXY}
     export HTTPS_PROXY=${HTTPS_PROXY}
-
     pip3 install mbed-cli==1.10.5 click==7.1.2 requests pyopenssl==20.0.1
 
 }
@@ -93,8 +90,6 @@ do_compile() {
 
 do_install() {
 
-    install -d ${D}/wigwag
-    install -d ${D}/wigwag/wwrelay-utils
-    install -d ${D}/wigwag/wwrelay-utils/I2C
-    install -m 755 ${S}/__Yocto_Generic_YoctoLinux_mbedtls/Debug/factory-configurator-client-example.elf ${D}/wigwag/wwrelay-utils/I2C/factory-configurator-client-armcompiled.elf
+    install -d ${D}/${EDGE_BIN}
+    install -m 755 ${S}/__Yocto_Generic_YoctoLinux_mbedtls/Debug/factory-configurator-client-example.elf ${D}/${EDGE_BIN}/factory-configurator-client-armcompiled.elf
 }

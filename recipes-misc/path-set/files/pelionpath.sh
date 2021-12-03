@@ -30,7 +30,7 @@ if [ -x /usr/bin/dircolors ]; then
 	alias egrep='egrep --color=auto'
 fi
 
-export PATH="/wigwag/system/bin:/wigwag/system/lib:/wigwag/system/lib/bash:$PATH"
-export LD_LIBRARY_PATH="/wigwag/system/lib:/wigwag/system/lib/bash:$LD_LIBRARY_PATH"
-export BASHLIBS="/wigwag/system/lib/bash/:$BASHLIBS"
+export PATH="EDGE_BIN:EDGE_LIB:EDGE_SCRIPTS:$PATH"
+export LD_LIBRARY_PATH="EDGE_LIB:EDGE_SCRIPTS:$LD_LIBRARY_PATH"
+export BASHLIBS="EDGE_SCRIPTS/:$BASHLIBS"
 

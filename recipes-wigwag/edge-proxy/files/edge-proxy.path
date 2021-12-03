@@ -2,7 +2,7 @@
 Description=Monitor the changes to identity.json file and restart edge-proxy
 
 [Path]
-PathChanged=/userdata/edge_gw_config/identity.json
+PathChanged=EDGE_DATA/edge_gw_config/identity.json
 Unit=edge-proxy-watcher.service
 
 [Install]

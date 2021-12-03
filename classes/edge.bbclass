@@ -18,8 +18,11 @@
 #                                     | .__/ \__,_|\__|_| |_|___/                                     #
 #                                     |_|                                                             #
 #-----------------------------------------------------------------------------------------------------#
-#/usr/bin
-EDGE_BIN = "${bindir}"
+#/usr/bin/edge
+EDGE_BIN = "${bindir}/edge"
+
+#/usr/bin/edge/scripts
+EDGE_SCRIPTS = "${EDGE_BIN}/scripts"
 
 #/usr/lib/edge
 EDGE_LIB = "${libdir}/edge"
@@ -39,8 +42,19 @@ EDGE_OPT = "${base_prefix}/opt"
 #/var/run/edge 
 EDGE_RUN = "${localstatedir}/run/edge"
 
+#/var/rootdirs/userdata/config
+EDGE_CONFIG = "${EDGE_DATA}/config"
+
+#/var/rootdirs/userdata/template
+EDGE_TEMPLATE = "${EDGE_DATA}/template"
+
+#/var/log/edge
+EDGE_LOG = "${localstatedir}/log/edge"
+
+
 #TEMPORARY: The following lines keep the system as it was in 2.3 
 EDGE_BIN = "/wigwag/system/bin"
+EDGE_SCRIPTS = "/wigwag/system/lib/bash"
 EDGE_LIB = "/wigwag/system/lib"
 EDGE_ETC = "/wigwag/system/etc"
 EDGE_DATA = "/userdata"
@@ -75,6 +89,7 @@ EDGE_NODEDNSPORT = "53"
 edge_replace_vars() {
 	for file in "$@"; do
 	    sed -i  "s/EDGE_BIN/$(echo ${EDGE_BIN} | sed -e 's/\\/\\\\/g; s/\//\\\//g; s/&/\\\&/g')/g" "$file"
+	    sed -i  "s/EDGE_SCRIPTS/$(echo ${EDGE_SCRIPTS} | sed -e 's/\\/\\\\/g; s/\//\\\//g; s/&/\\\&/g')/g" "$file"
 	    sed -i  "s/EDGE_LIB/$(echo ${EDGE_LIB} | sed -e 's/\\/\\\\/g; s/\//\\\//g; s/&/\\\&/g')/g" "$file"
 	    sed -i  "s/EDGE_ETC/$(echo ${EDGE_ETC} | sed -e 's/\\/\\\\/g; s/\//\\\//g; s/&/\\\&/g')/g" "$file"
 	    sed -i  "s/EDGE_DATA/$(echo ${EDGE_DATA} | sed -e 's/\\/\\\\/g; s/\//\\\//g; s/&/\\\&/g')/g" "$file"

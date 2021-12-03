@@ -63,7 +63,6 @@ do_install_append() {
 }
 
 do_install() {
-
   install -d ${D}${EDGE_BIN}
   install -d ${D}${systemd_system_unitdir}
   install -d ${D}/${bindir}

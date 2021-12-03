@@ -11,7 +11,7 @@ file://wait-for-pelion-identity.service \
 #SRCREV_FORMAT = "wwrelay-dss"
 SRCREV_pe-utils = "2.0.7"
 
-inherit pkgconfig gitpkgv systemd
+inherit pkgconfig gitpkgv systemd edge
 
 #INHIBIT_PACKAGE_STRIP = "1"
 
@@ -29,20 +29,28 @@ RDEPENDS_${PN} += " bash curl jq"
 RM_WORK_EXCLUDE += "${PN}"
 
 FILES_${PN} = "\
-/wigwag/* \
-${systemd_system_unitdirsystemd_system_unitdir}/wait-for-pelion-identity.service \
+	${EDGE_SCRIPTS}/identity-tools/generate-identity.sh  \
+	${EDGE_SCRIPTS}/identity-tools/developer_identity/create-dev-identity.sh \
+	${EDGE_SCRIPTS}/identity-tools/developer_identity/radioProfile.template.json \
+	${EDGE_SCRIPTS}/identity-tools/developer_identity/common.sh \
+	${EDGE_SCRIPTS}/identity-tools/developer_identity/VERSION \
+	${systemd_system_unitdir}/wait-for-pelion-identity.service \
 "
 
 S = "${WORKDIR}/git"
-PU = "${D}/wigwag/wwrelay-utils/identity-tools"
+
+do_compile(){
+	cd ${WORKDIR}
+	edge_replace_vars wait-for-pelion-identity.service
+}
 
 do_install() {
-	install -d ${PU}/developer_identity
-	install -m 0755 ${S}/pe-utils/identity-tools/generate-identity.sh ${PU}/
-	install -m 0755 ${S}/pe-utils/identity-tools/developer_identity/create-dev-identity.sh ${PU}/developer_identity/
-	install -m 0755 ${S}/pe-utils/identity-tools/developer_identity/radioProfile.template.json ${PU}/developer_identity/
-	install -m 0755 ${S}/pe-utils/identity-tools/developer_identity/common.sh ${PU}/developer_identity/
-	install -m 0755 ${S}/pe-utils/identity-tools/developer_identity/VERSION ${PU}/developer_identity/
+	install -d ${D}${EDGE_SCRIPTS}/identity-tools/developer_identity
+	install -m 0755 ${S}/pe-utils/identity-tools/generate-identity.sh ${D}${EDGE_SCRIPTS}/identity-tools/
+	install -m 0755 ${S}/pe-utils/identity-tools/developer_identity/create-dev-identity.sh ${D}${EDGE_SCRIPTS}/identity-tools/developer_identity/
+	install -m 0755 ${S}/pe-utils/identity-tools/developer_identity/radioProfile.template.json ${D}${EDGE_SCRIPTS}/identity-tools/developer_identity/
+	install -m 0755 ${S}/pe-utils/identity-tools/developer_identity/common.sh ${D}${EDGE_SCRIPTS}/identity-tools/developer_identity/
+	install -m 0755 ${S}/pe-utils/identity-tools/developer_identity/VERSION ${D}${EDGE_SCRIPTS}/identity-tools/developer_identity/
 
 	# Install systemd units
 	install -d ${D}${systemd_system_unitdir}

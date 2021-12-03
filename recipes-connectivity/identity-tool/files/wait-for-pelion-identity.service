@@ -7,7 +7,7 @@ After=edge-core.service
 Restart=on-failure
 RestartSec=5s
 RemainAfterExit=true
-ExecStart=/wigwag/wwrelay-utils/identity-tools/generate-identity.sh 9101 /userdata/edge_gw_config
+ExecStart=EDGE_SCRIPTS/identity-tools/generate-identity.sh 9101 EDGE_DATA/edge_gw_config
 
 [Install]
 WantedBy=network.target
