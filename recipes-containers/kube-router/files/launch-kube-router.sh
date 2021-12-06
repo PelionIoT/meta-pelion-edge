@@ -24,13 +24,8 @@ if [[ $? -ne 0 ]] || [[ $DEVICE_ID == null ]]; then
 fi
 
 POD_CIDR=EDGE_PODCIDR
-CONFIG=EDGE_RUN/kuberouter.conflist
 
-if [[ ! -f ${CONFIG} ]]; then
-	cp EDGE_CNI_CONF/10-kuberouter.conflist ${CONFIG}
-fi
-
-exec env NODE_NAME=${DEVICE_ID} KUBE_ROUTER_CNI_CONF_FILE=${CONFIG} EDGE_BIN/kube-router \
+exec env NODE_NAME=${DEVICE_ID} KUBE_ROUTER_CNI_CONF_FILE=EDGE_RUN/10-kuberouter.conflist EDGE_BIN/kube-router \
 --v=1 \
 --kubeconfig=EDGE_KUBELET_STATE/kubeconfig \
 --run-firewall=true \
