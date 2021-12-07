@@ -103,7 +103,7 @@ exec EDGE_BIN/kubelet \
 --hostname-override=${DEVICE_ID} \
 --kubeconfig=EDGE_KUBELET_STATE/kubeconfig \
 --cni-bin-dir=EDGE_OPT/cni/bin \
---cni-conf-dir=EDGE_RUN/10-kuberouter.conflist \
+--cni-conf-dir=EDGE_RUN/ \
 --network-plugin=cni \
 --register-node=true \
 --node-status-update-frequency=150s \
