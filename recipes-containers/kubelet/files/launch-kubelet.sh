@@ -86,9 +86,13 @@ setup_local_kaas_network(){
     ip route add $kaasRoute metric 999
 }
 
-
 write_resolv_conf ${POD_CIDR_GW}
 setup_local_kaas_network ${NODE_IP}
+
+# Move kuberouter CNI config
+if [[ ! -f EDGE_RUN/10-kuberouter.conflist ]]; then
+	cp EDGE_CNI_CONF/10-kuberouter.conflist EDGE_RUN/10-kuberouter.conflist
+fi
 
 exec EDGE_BIN/kubelet \
 --node-ip=${NODE_IP} \
@@ -99,7 +103,7 @@ exec EDGE_BIN/kubelet \
 --hostname-override=${DEVICE_ID} \
 --kubeconfig=EDGE_KUBELET_STATE/kubeconfig \
 --cni-bin-dir=EDGE_OPT/cni/bin \
---cni-conf-dir=EDGE_CNI_CONF \
+--cni-conf-dir=EDGE_RUN/ \
 --network-plugin=cni \
 --register-node=true \
 --node-status-update-frequency=150s \
