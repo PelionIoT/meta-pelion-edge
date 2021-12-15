@@ -1,3 +1,76 @@
+# # Pelion Edge 2.5.0 - 14th Dec 2021
+
+## New features
+
+- Updated [LmP version to v83](https://foundries.io/products/releases/83/).
+    - Introduced a new machine for the AVNET ZU3EG board. Use the `zue3eg-iocc-ebbr` machine to enable UEFI Capsule Update, which lets you update the boot partition together with another component - for example, the kernel - as part of Pelion's Combined Update feature.
+    - Dropped boot.cmd for imx8 boards in support of the default u-boot from LmP.
+- [Edge-Core] Updated [Edge Core to 0.19.1](https://github.com/PelionIoT/mbed-edge/releases/tag/0.19.1).
+    - Brought in Pelion Device Management Client 4.11.1.
+    - Introduced Combined Update callback capabilities.
+    - Updated Mbed TLS version to 2.27.
+    - Set `MBED_CONF_MBED_CLIENT_MAX_RECONNECT_TIMEOUT` to 10 minutes by default. This provides faster reconnection in the event of a network breakdown.
+- [Terminal]
+    - Rewrote terminal with `golang`.
+    - Removed the need for `node.js` in the build.
+    - This decreased build RAM requirements, build size and build time.
+- [Parsec]
+    - Upgraded parsec-se-driver to 0.6.0.
+    - Upgraded parsec-service to 0.8.1.
+    - Upgraded parsec-tool to 0.4.0.
+- [CoreDNS]
+    - CoreDNS now uses 172.21.1.0/30 as the default IP address internally. If this IP conflicts with the local network, you can override the default address with a script.
+    - Added a new starter service for CoreDNS to reduce the amount of log spam.
+- [mbed-fcce] Upgraded factory-configurator-client-example to v4.11.1.
+- [Maestro] Upgraded to release 3.0.0.
+    - Removed devicedb dependency.
+    - Removed greaslib and complimentary patches.
+    - Simplified logging and configuration of Maestro.
+- [devicedb] removed.
+    - Replicated functionality internal in Maestro and Edge-Core.
+- [other]
+    - Enabled SoftHSM in targets by default (not used though). This prevents TPM-related error log entries generated when using Parsec.
+    - Added Yocto "Hardknott" compatibility.
+    - Replaced vim with nano.
+
+## Bug fixes
+
+- Fixed a bug that caused very large OSTree updates (100 MB) to fail.
+- You can now create a delta patch for firmware update by comparing any two firmware versions. Previously, you always had to compare the new firmware version to the original base version.
+
+    For example, to update to v1.2, you can now create a delta patch by comparing v1.1 to 1.2, whereas previously you had to create a delta patch comparing v1.0 to v1.2, if v1.0 was your original base version.
+
+- Removed warning about `SOTA_PACKED_CREDENTIALS`.
+- Fixed file/folder usage to make the build more compatible with OSTree directory usage.
+- Removed software TPM and all related limitations and known issues.
+
+## Known issues
+
+- Alpine Linux/muslc has issues with DNS lookups when used from containers. For more details, see [Deploying Containers/DNS issues](https://github.com/PelionIoT/pelion-dm-edge-docs/blob/f62fe9335f4c37a29668cea563084d9413290740/docs/container-orchestration/deploying.md#dns-issues-with-muslc--alpine-linux).
+- The new `golang`-based terminal has some stability issues that can lead to connection loss. Click **Reopen Terminal** to reconnect.
+- The Pelion Device Management portal isn't correctly updated after a firmware campaign in some instances.
+- [Maestro] The FeatureMgmt config resource is initialized with a maximum file content of 3.8KB. The remaining file content is truncated during initialization. This is most likely due to the limitation of the Gorilla WebSocket library but needs further investigation. However, you can still push a file of up to 64KB through cloud service APIs.
+- [pt-example] `cpu-temperature` device reports random values because the default CPU temperature file isn't the same on Yocto and LmP.
+- [Container integration with Parsec](../container/security-parsec-container.html) doesn't work on the Raspberry Pi 3 Model B+.
+- When using the Notification service API, if you subscribe to a translated device's LwM2M resources, which are registered with operation write (PUT) or execute (POST), you won't receive notification of the device state change.
+- [AVNet ZU3EG] If you enable the [PREEMPT](https://cateee.net/lkddb/web-lkddb/PREEMPT.html) kernel configuration item, the LmP release, including PetaLinux 2020.2, doesn't work in a stable manner. PREEMPT is disabled in the default configuration. If you have any issues with this configuration, please contact Xilinx support.
+- [AVNet ZU3EG] You can program the Ethernet MAC address to the EEPROM on the board. Please see [the Xilinx support documentation](https://www.xilinx.com/support/answers/70176.html) on how to do this with the `i2c` commands.
+- When using Wi-Fi, the device shutdown can take longer than expected because Edge Core takes 1m 35s to shut down.
+
+## Limitations
+
+- Firmware update from Edge 2.4 to Edge 2.5 is not possible with the AVNET ZU3EG platform because the UEFI Capsule Update requires a new partition for `grub`.
+- There is a maximum size limit to the full registration message, which limits the number of devices Pelion Edge can host:
+   - Maximum registration message size is 64KB.
+   - Hosted devices with five typical Resources consume ~280B (the exact size depends, for example, on the length of resource paths). This limits the maximum number to 270 devices.
+   - The more Resources you have, the fewer devices can be supported.
+   - The Pelion Edge device Resources are also included in the same registration message.
+   - **Test the limits with your configuration and set guidance accordingly.**
+- Devices behind Pelion Edge don't support [auto-observation](https://www.pelion.com/docs/device-management/current/connecting/device-guidelines.html#auto-observation).
+- Pelion Device Management Client-enabled devices must bootstrap to the Pelion Device Management cloud before connecting to Pelion Edge.
+- No moving devices are supported (such as the device moving from Pelion Edge to another edge device.)
+- LmP's base partition table is set above 10GB to support three upgrade images in OSTree. Therefore, we only support SD card installation (compared to supporting onboard EMMC or NAND) for the i.MX 8M Mini EVK and the UltraZed-EG IOCC.
+
 # Pelion Edge 2.4.2 - 26th Aug 2021
 
 - Fixed kubelet initialization to enable containers to properly inherit host DNS settings.

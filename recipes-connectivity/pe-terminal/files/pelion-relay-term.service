@@ -1,0 +1,11 @@
+[Unit]
+Description=relay terminal for remote terminals in pelion cloud
+Wants=maestro.service
+After=maestro.service
+
+[Service]
+Restart=always
+RestartSec=5s
+Environment="TERM=xterm-256color"
+ExecCondition=sh -c '[ -f EDGE_DATA/edge_gw_config/identity.json ]'
+ExecStart=EDGE_BIN/pe-terminal -config=EDGE_ETC/pe-terminal/config.json

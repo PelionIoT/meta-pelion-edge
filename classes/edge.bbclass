@@ -46,6 +46,9 @@ EDGE_ETC = "/wigwag/system/etc"
 EDGE_DATA = "/userdata"
 EDGE_STATE = "/wigwag/system/var/lib"
 EDGE_OPT = "/wigwag/system/opt"
+EDGE_CONFIG = "/wigwag/etc/run"
+EDGE_TEMPLATE = "/wigwag/etc/template"
+EDGE_LOG = "/wigwag/log"
 #END TEMPORARY
 
 EDGE_CNI_CONF = "${EDGE_ETC}/cni/net.d"
@@ -60,9 +63,9 @@ EDGE_COREDNS_STATE = "${EDGE_STATE}/coredns"
 #                               \_/ \__,_|_|  |_|\__,_|_.__/|_|\___||___/                             #
 #                                                                                                     #
 #-----------------------------------------------------------------------------------------------------#
-EDGE_NODEIP = "10.0.0.50"
-EDGE_PODCIDR = "10.240.0.0/24"
-EDGE_PODCIDR_GW = "10.240.0.1"
+EDGE_NODEIP = "172.21.1.0"
+EDGE_PODCIDR = "172.21.2.0/24"
+EDGE_PODCIDR_GW = "172.21.2.1"
 EDGE_NODEDNSPORT = "53"
 
 
@@ -78,12 +81,15 @@ edge_replace_vars() {
 	    sed -i  "s/EDGE_STATE/$(echo ${EDGE_STATE} | sed -e 's/\\/\\\\/g; s/\//\\\//g; s/&/\\\&/g')/g" "$file"
 	    sed -i  "s/EDGE_OPT/$(echo ${EDGE_OPT} | sed -e 's/\\/\\\\/g; s/\//\\\//g; s/&/\\\&/g')/g" "$file"
 	    sed -i  "s/EDGE_RUN/$(echo ${EDGE_RUN} | sed -e 's/\\/\\\\/g; s/\//\\\//g; s/&/\\\&/g')/g" "$file"
-	    
+	    sed -i  "s/EDGE_CONFIG/$(echo ${EDGE_CONFIG} | sed -e 's/\\/\\\\/g; s/\//\\\//g; s/&/\\\&/g')/g" "$file"
+	    sed -i  "s/EDGE_LOG/$(echo ${EDGE_LOG} | sed -e 's/\\/\\\\/g; s/\//\\\//g; s/&/\\\&/g')/g" "$file"
+	    sed -i  "s/EDGE_TEMPLATE/$(echo ${EDGE_TEMPLATE} | sed -e 's/\\/\\\\/g; s/\//\\\//g; s/&/\\\&/g')/g" "$file"
+
 	    sed -i  "s/EDGE_CNI_CONF/$(echo ${EDGE_CNI_CONF} | sed -e 's/\\/\\\\/g; s/\//\\\//g; s/&/\\\&/g')/g" "$file"
-	    sed -i  "s/EDGE_CNI_CONF/$(echo ${EDGE_CNI_BIN} | sed -e 's/\\/\\\\/g; s/\//\\\//g; s/&/\\\&/g')/g" "$file"
+	    sed -i  "s/EDGE_CNI_BIN/$(echo ${EDGE_CNI_BIN} | sed -e 's/\\/\\\\/g; s/\//\\\//g; s/&/\\\&/g')/g" "$file"
 	    sed -i  "s/EDGE_KUBELET_STATE/$(echo ${EDGE_KUBELET_STATE} | sed -e 's/\\/\\\\/g; s/\//\\\//g; s/&/\\\&/g')/g" "$file"
 	    sed -i  "s/EDGE_COREDNS_STATE/$(echo ${EDGE_COREDNS_STATE} | sed -e 's/\\/\\\\/g; s/\//\\\//g; s/&/\\\&/g')/g" "$file"
-	    
+
 	   	sed -i  "s/EDGE_NODEIP/$(echo ${EDGE_NODEIP} | sed -e 's/\\/\\\\/g; s/\//\\\//g; s/&/\\\&/g')/g" "$file"
 		sed -i  "s/EDGE_PODCIDR_GW/$(echo ${EDGE_PODCIDR_GW} | sed -e 's/\\/\\\\/g; s/\//\\\//g; s/&/\\\&/g')/g" "$file"
 	   	sed -i  "s/EDGE_PODCIDR/$(echo ${EDGE_PODCIDR} | sed -e 's/\\/\\\\/g; s/\//\\\//g; s/&/\\\&/g')/g" "$file"

@@ -1,9 +1,0 @@
-/wigwag/log/devicedb.log {
-missingok
-notifempty
-compress
-size 5M
-rotate 2
-copytruncate
-daily
-}

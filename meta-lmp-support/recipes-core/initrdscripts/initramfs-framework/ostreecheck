@@ -1,0 +1,70 @@
+#!/bin/sh
+
+# Initial concept of how to do OSTree fsck+diff to check
+# rootfs integrity.
+#
+# TODO:
+# - uncomment "fatal"s
+# - change various "msg" to "info"/"debug"
+# - verify validity of deployment hash via a signature
+# - verify version number to prevent rollback
+# - handling of /etc ?
+
+ostreecheck_enabled() {
+	return 0
+}
+
+ostreecheck_run() {
+	# We are running between ostree-prepare-root /rootfs and the move of
+	# that to /.
+
+	# In ostree 2021.1, ostree-prepare-root creates /run/ostree-booted, which
+	# confuses ostree commands run before the remount - they try to remount
+	# /sysroot, which doesn't exist yet.
+	# (Upstream ostree patch to avoid this pending at
+	# https://github.com/ostreedev/ostree/pull/2486 )
+	# Temporarily move the ostree-booted file (if it exists) to make it work.
+	mv /run/ostree-booted /run/ostree-booted.orig 2> /dev/null
+
+	msg "Checking OSTree repo"
+	/usr/bin/ostree fsck --repo=$ROOTFS_DIR/ostree/repo
+	if [ $? -ne 0 ]; then
+		msg "OSTree repo is damaged!"
+		#fatal
+	else
+		msg "OSTree repo intact"
+	fi
+
+	OSTREE_DEPLOY=`/usr/bin/ostree admin --sysroot=$ROOTFS_DIR --print-current-dir`
+	if [ $? -ne 0 ]; then
+		msg "OSTree admin --print-current-dir failed!"
+		return
+		#fatal
+	fi
+
+	# Extract revision ID from deployment path by
+	# stripping everything up to the last '/',
+	# and everything after the last '.'
+	ostree_rev="${OSTREE_DEPLOY##*/}"
+	ostree_rev="${ostree_rev%%.*}"
+	if [ -z "${ostree_rev}" ]; then
+		msg "No OSTree rev found!"
+		return 1
+		#fatal
+	fi
+
+	msg "Checking contents of OSTree deployment at ${OSTREE_DEPLOY}"
+	# For now just look for modified or deleted usr files
+	# (We would expect to see a bunch of added etc and var files.)
+	# grep returns 0 if any matches are found
+	/usr/bin/ostree diff --repo=$ROOTFS_DIR/ostree/repo ${ostree_rev} ${OSTREE_DEPLOY} | grep "[MD] *usr/"
+	if [ $? -eq 0 ]; then
+		msg "OSTree deployment modified!"
+		#fatal
+	else
+		msg "OSTree deployment intact"
+	fi
+
+	# Put back ostree-booted, if it existed.
+	mv /run/ostree-booted.orig /run/ostree-booted 2> /dev/null
+}

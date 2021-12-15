@@ -2,6 +2,9 @@ DESCRIPTION = "kube-router provides high performance networking for kubernetes"
 LICENSE = "Apache-2.0"
 IMPORT = "github.com/pelioniot/kube-router"
 
+#As of go 1.16 go modules are required by default. The following line disables this requirement.
+export GO111MODULE="auto"
+
 
 LIC_FILES_CHKSUM = "file://src/${GO_IMPORT}/LICENSE;md5=e3fc50a88d0a364313df4b21ef20c29e"
 inherit go pkgconfig gitpkgv systemd edge

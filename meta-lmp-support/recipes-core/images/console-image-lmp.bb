@@ -14,11 +14,12 @@ IMAGE_OVERHEAD_FACTOR = "2"
 
 DEPENDS += "deviceos-users"
 
+
 CORE_IMAGE_BASE_INSTALL += " \
     kernel-modules \
     networkmanager-nmcli \
     git \
-    vim \
+    nano \
     rng-tools \
     haveged \
     packagegroup-core-full-cmdline-utils \
@@ -47,9 +48,8 @@ mbed-fcce \
 PELION_SYSTEMS_MANAGEMENT = "\
 edge-proxy \
 maestro \
-devicedb \
 info-tool \
-relay-term \
+pe-terminal \
 fluentbit \
 "
 
@@ -67,17 +67,27 @@ git \
 panic \
 "
 
-PARSEC_SERVICE = " \
+PARSEC_SERVICE_HARDWARE_TPM = " \
 parsec-service-tpm \
+tpm2-tools \
+"
+
+PARSEC_SERVICE_SOFTWARE_TPM = " \
+parsec-service-tpm \
+swtpm-service \
+tpm2-tools \
+"
+
+PARSEC_SERVICE_PKCS11 = " \
+parsec-service-pkcs11 \
+"
+
+PARSEC_SERVICE_SOFTHSM = " \
+parsec-service-softhsm \
 "
 
 PARSEC_TOOL = " \
 parsec-tool \
-"
-
-SOFTWARE_TPM = " \
-swtpm-service \
-tpm2-tools \
 "
 
 IMAGE_INSTALL += " \
@@ -89,17 +99,27 @@ ${PELION_SYSTEMS_MANAGEMENT} \
 ${PELION_CONTAINER_ORCHESTRATION} \
 ${PELION_TESTING} \
 ${MACHINE_EXTRA_RRECOMMENDS} \
-${PARSEC_SERVICE} \
 ${PARSEC_TOOL} \
-${SOFTWARE_TPM} \
 "
+IMAGE_INSTALL_append = " ${@bb.utils.contains('PARSEC_PROVIDER', 'PKCS11', '${PARSEC_SERVICE_PKCS11}', '',d)}"
+IMAGE_INSTALL_append = " ${@bb.utils.contains('PARSEC_PROVIDER', 'SOFTHSM', '${PARSEC_SERVICE_SOFTHSM}', '',d)}"
+IMAGE_INSTALL_append = " ${@bb.utils.contains('PARSEC_PROVIDER', 'SOFTWARE_TPM', '${PARSEC_SERVICE_SOFTWARE_TPM}', '',d)}"
+IMAGE_INSTALL_append = " ${@bb.utils.contains('PARSEC_PROVIDER', 'HARDWARE_TPM', '${PARSEC_SERVICE_HARDWARE_TPM}', '',d)}"
+
+USERADD_UID_TABLES += "files/pelion-passwd-table"
+USERADD_GID_TABLES += "files/pelion-group-table"
 
 # Create a parsec user and then set permissions on the parsec components to control access.
 # Create the parsec user.
 inherit extrausers
 EXTRA_USERS_PARAMS += "\
+    groupadd parsec;\
     useradd parsec;\
 "
+
+# Add the parsec group the ETC_GROUP_MEMBERS. This will allow the group to be added to user accounts,
+# via the useradd command
+ETC_GROUP_MEMBERS_append = " parsec"
 
 # modify the ownership of the folders and files that only the parsec user needs access to.
 
@@ -109,7 +129,12 @@ ROOTFS_POSTPROCESS_COMMAND_append = " \
 setup_parsec_files() {
     chown -R parsec:parsec ${IMAGE_ROOTFS}/etc/parsec
     chown -R parsec:parsec ${IMAGE_ROOTFS}/usr/libexec/parsec
-    chown parsec:parsec ${IMAGE_ROOTFS}/usr/bin/swtpm.sh
+    if [ "${PARSEC_PROVIDER}" = "SOFTWARE_TPM" ]; then
+        chown parsec:parsec ${IMAGE_ROOTFS}/usr/bin/swtpm.sh
+    fi
+    if [ "${PARSEC_PROVIDER}" = "SOFTHSM" ]; then
+        chown parsec:parsec ${IMAGE_ROOTFS}/usr/bin/init_pkcs11_slots.sh
+    fi
 }
 set_local_timezone() {
     ln -sf /usr/share/zoneinfo/EST5EDT ${IMAGE_ROOTFS}/etc/localtime
@@ -125,10 +150,3 @@ ROOTFS_POSTPROCESS_COMMAND += " \
 "
 
 export IMAGE_BASENAME = "console-image-lmp"
-
-# SolidRun Hummingboard Pulse has a Murata 1MW wifi/bt module which uses custom recipes
-# linux-firmware-cyw-fmac-fw, linux-firmware-cyw-fmac-nvram and linux-firmware-cyw-bt-patch.
-# Make sure we avoid default linux bcm43455 firmware
-CORE_IMAGE_BASE_INSTALL_remove_imx8mmsolidrun = " \
-    linux-firmware-bcm43455 \
-"
