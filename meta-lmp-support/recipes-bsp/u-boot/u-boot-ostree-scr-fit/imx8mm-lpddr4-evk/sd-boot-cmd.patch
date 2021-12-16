@@ -8,6 +8,6 @@ index 5432e14..29f6e87 100644
  setenv devtype mmc
 -setenv devnum 2
 +setenv devnum 1
+ setenv bootpart 1
+ setenv rootpart 2
  
- setenv bootcmd_resetvars 'setenv kernel_image; setenv bootargs; setenv kernel_image2; setenv bootargs2'
- setenv bootcmd_otenv 'run bootcmd_resetvars; ext4load ${devtype} ${devnum}:2 ${loadaddr} /boot/loader/uEnv.txt; env import -t ${loadaddr} ${filesize}'
