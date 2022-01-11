@@ -1,4 +1,8 @@
-# # Pelion Edge 2.5.0 - 14th Dec 2021
+# Pelion Edge 2.5.1 - 11th Jan 2021
+
+- Fixed compilation error by pointing [mbedtls repository definition](https://github.com/PelionIoT/meta-mbed-edge/commit/56dce48ed2d832d603b86505d2467ef0d9f821e4) to the redefined location
+
+# Pelion Edge 2.5.0 - 14th Dec 2021
 
 ## New features
 
