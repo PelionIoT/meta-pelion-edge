@@ -1,4 +1,4 @@
-# Pelion Edge 2.5.1 - 14th Jan 2021
+# Pelion Edge 2.5.1 - 18th Jan 2021
 
 - Fixed code fetch error by pointing [mbedtls repository definition](https://github.com/PelionIoT/meta-mbed-edge/commit/56dce48ed2d832d603b86505d2467ef0d9f821e4) to the redefined location.
 - Fixed code fetch error on `meta-mbed-edge`/`mbed-edge` and `mbed-edge-examples` by using `protocol=https` in `SRC_URI` as [GitHub is now brownouting plain-text git fetching/cloning](https://github.blog/2021-09-01-improving-git-protocol-security-github/).
