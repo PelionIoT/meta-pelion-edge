@@ -16,7 +16,7 @@ PKGV = "1.0+git${GITPKGV}"
 PR = "r0"
 
 DEPENDS = ""
-RDEPENDS_${PN} += "awk bash curl bc findutils jq sed"
+RDEPENDS_${PN} += "bash bc curl  gawk findutils jq sed"
 
 RM_WORK_EXCLUDE += "${PN}"
 
