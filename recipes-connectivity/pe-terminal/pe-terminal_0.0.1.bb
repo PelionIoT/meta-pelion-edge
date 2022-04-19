@@ -20,7 +20,7 @@ file://${BPN}-watcher.path \
 
 LIC_FILES_CHKSUM = "file://src/${GO_IMPORT}/LICENSE;md5=86d3f3a95c324c9479bd8986968f4327"
 
-SRCREV = "5be41d5f8ae5a6e93643d0067533124e11d5d3a0"
+SRCREV = "013af9ab34de510d5258bcf1d0d7c49c911144cb"
 SYSTEMD_PACKAGES = "${PN}"
 SYSTEMD_SERVICE_${PN} = "${RT_SERVICE_FILE} \
 ${PN}-watcher.service \
