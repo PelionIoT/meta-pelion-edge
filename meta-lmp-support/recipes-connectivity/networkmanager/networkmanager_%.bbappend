@@ -1,4 +1,4 @@
-FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 
 # Patch the IPv6 to use EUI64 as default
 # If you want to enable the non-eui64 IP addresses, you can disable this patch

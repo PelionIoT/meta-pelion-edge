@@ -7,7 +7,7 @@ LIC_FILES_CHKSUM = "file://LICENCE;md5=cbc5f665d04f741f1e006d2096236ba7"
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 
-SRC_URI = "git://github.com/murata-wireless/cyw-fmac-fw;protocol=https"
+SRC_URI = "git://github.com/murata-wireless/cyw-fmac-fw;protocol=https;branch=master"
 SRCREV = "ba140e42c3320262fc52e185c3af93eeb10117df"
 PV = "20210112"
 
@@ -25,7 +25,7 @@ do_install() {
     install -m 0644 ${S}/cyfmac${CYPRESS_PART}.${CYPRESS_MODEL}.clm_blob ${D}${nonarch_base_libdir}/firmware/brcm/brcmfmac${CYPRESS_PART}.clm_blob
 }
 
-FILES_${PN} = " \
+FILES:${PN} = " \
     ${nonarch_base_libdir}/firmware/LICENCE.cyw-fmac-fw \
     ${nonarch_base_libdir}/firmware/brcm/brcmfmac${CYPRESS_PART}.bin \
     ${nonarch_base_libdir}/firmware/brcm/brcmfmac${CYPRESS_PART}.clm_blob \

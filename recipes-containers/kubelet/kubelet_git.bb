@@ -16,18 +16,18 @@ file://set-kubelet-ip.sh \
   "
 
 SYSTEMD_PACKAGES = "${PN}"
-SYSTEMD_SERVICE_${PN} = "kubelet.service"
-SYSTEMD_AUTO_ENABLE_${PN} = "enable"
+SYSTEMD_SERVICE:${PN} = "kubelet.service"
+SYSTEMD_AUTO_ENABLE:${PN} = "enable"
 
 #SRCREV = "${AUTOREV}"
 SRCREV = "f8ebb1afd620f6a29691a21656a1bc3b54283906"
 PR = "r1"
 
 DEPENDS = "libseccomp"
-RDEPENDS_${PN} += " docker libseccomp cni bash jq kube-router coredns"
+RDEPENDS:${PN} += " docker libseccomp cni bash jq kube-router coredns"
 
 
-FILES_${PN} =  "\
+FILES:${PN} =  "\
     ${EDGE_BIN}/kubelet\
     ${EDGE_BIN}/launch-kubelet.sh\
     ${EDGE_BIN}/set-kubelet-ip.sh\

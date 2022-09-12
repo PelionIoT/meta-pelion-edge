@@ -52,7 +52,7 @@ USERADD_GID_TABLES += "files/pelion-group-table"
 # "
 
 
-USERADD_PARAM_${PN} = "\
+USERADD_PARAM:${PN} = "\
 -u 1200 -r -s /bin/bash -P 'maestro' -g maestro -G dialout,tty maestro; \
 -u 1201 -r -s /bin/bash -P 'deviceos' -g deviceos deviceos; \
 -u 1202 -d /home/developer -m -r -s /bin/bash -P 'developer' -g developer developer; \
@@ -62,13 +62,13 @@ USERADD_PARAM_${PN} = "\
 
 # user3 will be managed in the useradd-example-user3 pacakge:
 # As an example, we use the -P option to set clear text password for user3
-USERADD_PARAM_${PN}-developer2 = "-u 1212 -d /home/developer2 -m -r -s /bin/bash -P 'developer2' developer2"
+USERADD_PARAM:${PN}-developer2 = "-u 1212 -d /home/developer2 -m -r -s /bin/bash -P 'developer2' developer2"
 
 # GROUPADD_PARAM works the same way, which you set to the options
 # you'd normally pass to the groupadd command. This will create
 # groups group1 and group2:
 
-GROUPADD_PARAM_${PN} = "\
+GROUPADD_PARAM:${PN} = "\
 -g 900 maestro; \
 -g 901 deviceos; \
 -g 1022 developer; \
@@ -78,7 +78,7 @@ GROUPADD_PARAM_${PN} = "\
 "
 
 # Likewise, we'll manage group3 in the useradd-example-user3 package:
-GROUPADD_PARAM_${PN}-user3 = "-g 1032 developer2"
+GROUPADD_PARAM:${PN}-user3 = "-g 1032 developer2"
 
 # datadir = /usr/share
 #install -d (directory)
@@ -109,8 +109,8 @@ do_install () {
 	chgrp -R developer ${D}${datadir}/developer2
 }
 
-FILES_${PN} = "${datadir}/user1/* ${datadir}/user2/*"
-FILES_${PN}-developer2 = "${datadir}/developer2/*"
+FILES:${PN} = "${datadir}/user1/* ${datadir}/user2/*"
+FILES:${PN}-developer2 = "${datadir}/developer2/*"
 
 # Prevents do_package failures with:
 # debugsources.list: No such file or directory:

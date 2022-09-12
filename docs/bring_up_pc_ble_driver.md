@@ -19,14 +19,14 @@ To configure `pc-ble-driver` for your board:
 
    ```
    # Uncomment following line to get pc-ble-driver into image.
-   # IMAGE_INSTALL_append = " pc-ble-driver"
+   # IMAGE_INSTALL:append = " pc-ble-driver"
    ```
 
    to:
 
    ```
    # Uncomment following line to get pc-ble-driver into image.
-   IMAGE_INSTALL_append = " pc-ble-driver"
+   IMAGE_INSTALL:append = " pc-ble-driver"
    ```
 
 1. Build:

@@ -9,7 +9,7 @@ PR = "r0"
 
 S = "${WORKDIR}"
 
-FILES_${PN} = " \
+FILES:${PN} = " \
 /wigwag \
 /wigwag/wwrelay-utils \
 /wigwag/wwrelay-utils/conf \

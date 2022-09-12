@@ -9,13 +9,13 @@ MBED_EDGE_CMAKE_BUILD_TYPE ?= "Debug"
 DEPENDS = "deviceos-users python3-native python3-pip-native python3 python3-setuptools-native python3-setuptools-scm cmake-native mercurial-native python3-pyusb-native"
 DEPENDS += "${@ 'parsec-se-driver' if d.getVar('MBED_EDGE_CORE_CONFIG_PARSEC_TPM_SE_SUPPORT') == 'ON' else ' '}"
 
-RDEPENDS_${PN} += "bash python3 python3-core"
+RDEPENDS:${PN} += "bash python3 python3-core"
 
 inherit cmake pkgconfig gitpkgv distutils3 setuptools3 python3native
 
 SRC_URI = " \
 git://github.com/parallaxsecond/parsec-se-driver.git;protocol=https;name=parsec;destsuffix=parsec-se-driver;branch=main \
-git://git@github.com/PelionIoT/factory-configurator-client-example.git;protocol=https; \
+git://git@github.com/PelionIoT/factory-configurator-client-example.git;protocol=https;;branch=master \
 file://0001-Added-trusted-storage-to-Yocto-target.patch \
 file://0001-fix-build-getting-cross-compiler-iface-setting-to-et.patch \
 file://0001-fix-arm_uc_pal_linux_extensions.manual_patch \
@@ -24,11 +24,11 @@ file://linux-se-config.cmake \
 file://0001-fix_psa_storage_location.patch \
 "
 
-SRCREV_pn-${PN} = "${PV}"
+SRCREV:pn-${PN} = "${PV}"
 SRCREV_parsec = "0.5.0"
 
 S = "${WORKDIR}/git"
-FILES_${PN} = "/wigwag/wwrelay-utils/I2C/*"
+FILES:${PN} = "/wigwag/wwrelay-utils/I2C/*"
 
 lcl_maybe_fortify = '-D_FORTIFY_SOURCE=0'
 

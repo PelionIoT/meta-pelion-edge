@@ -1,7 +1,7 @@
 # Adding default Fluentbit configuration.
 # Adding watcher service to restart Fluenbit when configuration is updated.
 
-FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 
 FB_PKG_NAME = "td-agent-bit"
 FB_CONF_FILES_LOCATION = "/etc/${FB_PKG_NAME}"
@@ -10,12 +10,12 @@ FB_CONF_FILES_LOCATION = "/etc/${FB_PKG_NAME}"
 FB_INPUT_IMA ??="0"
 
 # To install fluentbit with systemd headers
-DEPENDS_append = " systemd"
+DEPENDS:append = " systemd"
 
 # Enable SystemD input plugin
 EXTRA_OECMAKE += "-DFLB_IN_SYSTEMD=On "
 
-FILES_${PN} += "\
+FILES:${PN} += "\
     ${systemd_system_unitdir}/${FB_PKG_NAME}-watcher.service\
     ${systemd_system_unitdir}/${FB_PKG_NAME}.path\
     "
@@ -29,11 +29,11 @@ SRC_URI = "http://fluentbit.io/releases/1.3/fluent-bit-${PV}.tar.gz \
             file://${FB_PKG_NAME}.path"
 
 SYSTEMD_PACKAGES = "${PN}"
-SYSTEMD_SERVICE_${PN} = "${FB_PKG_NAME}.service \
+SYSTEMD_SERVICE:${PN} = "${FB_PKG_NAME}.service \
 ${FB_PKG_NAME}-watcher.service \
 ${FB_PKG_NAME}.path"
 
-do_install_append() {
+do_install:append() {
     if [ "${FB_INPUT_IMA}" = "1" ]; then
         bbnote "Adding IMA input config"
         cat ${WORKDIR}/${FB_PKG_NAME}-ims-tail-input.conf >> ${WORKDIR}/${FB_PKG_NAME}.conf

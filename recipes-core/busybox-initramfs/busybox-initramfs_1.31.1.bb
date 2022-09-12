@@ -54,7 +54,7 @@ SRC_URI = "https://busybox.net/downloads/busybox-${PV}.tar.bz2;name=tarball \
            file://busybox-CVE-2018-1000500.patch \
            file://0001-hwclock-make-glibc-2.31-compatible.patch \
 "
-SRC_URI_append_libc-musl = " file://musl.cfg "
+SRC_URI:append:libc-musl = " file://musl.cfg "
 
 SRC_URI[tarball.md5sum] = "70913edaf2263a157393af07565c17f0"
 SRC_URI[tarball.sha256sum] = "d0f940a72f648943c1f2211e0e3117387c31d765137d92bd8284a3fb9752a998"

@@ -1,7 +1,7 @@
 
 COMPATIBLE_MACHINE = "^rpi$"
 
-do_deploy_append() {
+do_deploy:append() {
     if [ -z "${MENDER_ARTIFACT_NAME}" ]; then
         if [ -n "${KERNEL_IMAGETYPE}" ]; then
             sed -i '/#kernel=/ c\kernel=${KERNEL_IMAGETYPE}' ${DEPLOYDIR}/${BOOTFILES_DIR_NAME}/config.txt

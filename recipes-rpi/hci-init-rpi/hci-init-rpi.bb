@@ -18,4 +18,4 @@ do_install () {
 INITSCRIPT_NAME = "hci-init-rpi.sh"
 INITSCRIPT_PARAMS = "defaults 25"
 
-FILES_${PN} = "${sysconfdir}/init.d"
+FILES:${PN} = "${sysconfdir}/init.d"

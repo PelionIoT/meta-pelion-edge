@@ -5,7 +5,7 @@ LIC_FILES_CHKSUM = "file://src/${GO_IMPORT}/LICENSE;md5=1dece7821bf3fd70fe1309ea
 GO_IMPORT = "github.com/PelionIoT/maestro"
 
 DEPENDS = "deviceos-users libuv"
-RDEPENDS_${PN} += "bash"
+RDEPENDS:${PN} += "bash"
 
 # avoid the `-linkshared` option in this recipe as it causes a panic
 GO_LINKSHARED=""
@@ -15,7 +15,7 @@ inherit pkgconfig systemd go gitpkgv edge
 RT_SERVICE_FILE = "maestro.service"
 PR = "r0"
 
-SRC_URI = "git://${GO_IMPORT};protocol=https \
+SRC_URI = "git://${GO_IMPORT};protocol=https;branch=master \
 file://${RT_SERVICE_FILE} \
 file://maestro-watcher.service \
 file://maestro-watcher.path \
@@ -26,14 +26,14 @@ file://relayTerm.template.json \
 SRCREV = "v3.0.0"
 
 SYSTEMD_PACKAGES = "${PN}"
-SYSTEMD_SERVICE_${PN} = "maestro.service \
+SYSTEMD_SERVICE:${PN} = "maestro.service \
 maestro-watcher.path \
 maestro-watcher.service"
 
-SYSTEMD_AUTO_ENABLE_${PN} = "enable"
+SYSTEMD_AUTO_ENABLE:${PN} = "enable"
 
-FILESEXTRAPATHS_prepend := "${THISDIR}/maestro:"
-FILES_${PN} += "\
+FILESEXTRAPATHS:prepend := "${THISDIR}/maestro:"
+FILES:${PN} += "\
     ${EDGE_BIN}/maestro \
     ${EDGE_CONFIG}/maestro-config.yaml\
     ${EDGE_TEMPLATE}/relayTerm.template.json\
@@ -54,7 +54,7 @@ do_compile() {
   edge_replace_vars ${RT_SERVICE_FILE} maestro-watcher.path
 }
 
-do_install_append() {
+do_install:append() {
     # Maestro configuration management
     install -d ${D}/${EDGE_CONFIG}
     install -d ${D}/${EDGE_TEMPLATE}

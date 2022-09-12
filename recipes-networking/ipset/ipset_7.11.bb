@@ -3,7 +3,7 @@
 
 DESCRIPTION = "Administration tool for IP sets"
 HOMEPAGE = "http://ipset.netfilter.org"
-LICENSE = "GPL-2.0"
+LICENSE = "GPL-2.0-only"
 LIC_FILES_CHKSUM = "file://COPYING;md5=59530bdf33659b29e73d4adb9f9f6552"
 SECTION = "base"
 
@@ -16,6 +16,6 @@ inherit autotools pkgconfig module-base
 
 EXTRA_OECONF += "-with-kbuild=${KBUILD_OUTPUT} --with-ksource=${STAGING_KERNEL_DIR}"
 
-RRECOMMENDS_${PN} = "\
+RRECOMMENDS:${PN} = "\
     kernel-module-ip-set \
 "

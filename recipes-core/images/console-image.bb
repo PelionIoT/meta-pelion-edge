@@ -95,7 +95,7 @@ EXTRA_USERS_PARAMS += "\
 
 # modify the ownership of the folders and files that only the parsec user needs access to.
 
-ROOTFS_POSTPROCESS_COMMAND_append = " \
+ROOTFS_POSTPROCESS_COMMAND:append = " \
   setup_parsec_files; \
 "
 setup_parsec_files() {

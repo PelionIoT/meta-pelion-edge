@@ -101,10 +101,10 @@ ${PELION_TESTING} \
 ${MACHINE_EXTRA_RRECOMMENDS} \
 ${PARSEC_TOOL} \
 "
-IMAGE_INSTALL_append = " ${@bb.utils.contains('PARSEC_PROVIDER', 'PKCS11', '${PARSEC_SERVICE_PKCS11}', '',d)}"
-IMAGE_INSTALL_append = " ${@bb.utils.contains('PARSEC_PROVIDER', 'SOFTHSM', '${PARSEC_SERVICE_SOFTHSM}', '',d)}"
-IMAGE_INSTALL_append = " ${@bb.utils.contains('PARSEC_PROVIDER', 'SOFTWARE_TPM', '${PARSEC_SERVICE_SOFTWARE_TPM}', '',d)}"
-IMAGE_INSTALL_append = " ${@bb.utils.contains('PARSEC_PROVIDER', 'HARDWARE_TPM', '${PARSEC_SERVICE_HARDWARE_TPM}', '',d)}"
+IMAGE_INSTALL:append = " ${@bb.utils.contains('PARSEC_PROVIDER', 'PKCS11', '${PARSEC_SERVICE_PKCS11}', '',d)}"
+IMAGE_INSTALL:append = " ${@bb.utils.contains('PARSEC_PROVIDER', 'SOFTHSM', '${PARSEC_SERVICE_SOFTHSM}', '',d)}"
+IMAGE_INSTALL:append = " ${@bb.utils.contains('PARSEC_PROVIDER', 'SOFTWARE_TPM', '${PARSEC_SERVICE_SOFTWARE_TPM}', '',d)}"
+IMAGE_INSTALL:append = " ${@bb.utils.contains('PARSEC_PROVIDER', 'HARDWARE_TPM', '${PARSEC_SERVICE_HARDWARE_TPM}', '',d)}"
 
 USERADD_UID_TABLES += "files/pelion-passwd-table"
 USERADD_GID_TABLES += "files/pelion-group-table"
@@ -119,11 +119,11 @@ EXTRA_USERS_PARAMS += "\
 
 # Add the parsec group the ETC_GROUP_MEMBERS. This will allow the group to be added to user accounts,
 # via the useradd command
-ETC_GROUP_MEMBERS_append = " parsec"
+ETC_GROUP_MEMBERS:append = " parsec"
 
 # modify the ownership of the folders and files that only the parsec user needs access to.
 
-ROOTFS_POSTPROCESS_COMMAND_append = " \
+ROOTFS_POSTPROCESS_COMMAND:append = " \
   setup_parsec_files; \
 "
 setup_parsec_files() {

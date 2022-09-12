@@ -17,18 +17,18 @@ file://10-kuberouter.conflist \
   "
 
 SYSTEMD_PACKAGES = "${PN}"
-SYSTEMD_SERVICE_${PN} = "kube-router.service"
-SYSTEMD_AUTO_ENABLE_${PN} = "enable"
+SYSTEMD_SERVICE:${PN} = "kube-router.service"
+SYSTEMD_AUTO_ENABLE:${PN} = "enable"
 
 SRCREV = "533593ebd47315dff4cdcd1433567bc8d341b8ed"
 
 PR = "r1"
 
 DEPENDS = "git"
-RDEPENDS_${PN} += "bash kubelet ipset"
+RDEPENDS:${PN} += "bash kubelet ipset"
 
 
-FILES_${PN} =  "\
+FILES:${PN} =  "\
     ${EDGE_BIN}/kube-router \
     ${EDGE_BIN}/launch-kube-router.sh \
     ${EDGE_CNI_CONF}/10-kuberouter.conflist \

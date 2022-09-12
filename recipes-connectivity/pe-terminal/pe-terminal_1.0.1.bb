@@ -12,7 +12,7 @@ inherit pkgconfig systemd go gitpkgv edge
 RT_SERVICE_FILE = "pelion-relay-term.service"
 PR = "r1"
 
-SRC_URI = "git://${GO_IMPORT};protocol=https \
+SRC_URI = "git://${GO_IMPORT};protocol=https;branch=master \
 file://${RT_SERVICE_FILE} \
 file://${BPN}-watcher.service \
 file://${BPN}-watcher.path \
@@ -22,13 +22,13 @@ LIC_FILES_CHKSUM = "file://src/${GO_IMPORT}/LICENSE;md5=86d3f3a95c324c9479bd8986
 
 SRCREV = "v${PV}"
 SYSTEMD_PACKAGES = "${PN}"
-SYSTEMD_SERVICE_${PN} = "${RT_SERVICE_FILE} \
+SYSTEMD_SERVICE:${PN} = "${RT_SERVICE_FILE} \
 ${PN}-watcher.service \
 ${PN}-watcher.path"
 
-SYSTEMD_AUTO_ENABLE_${PN} = "enable"
+SYSTEMD_AUTO_ENABLE:${PN} = "enable"
 
-FILES_${PN} += "\
+FILES:${PN} += "\
     ${systemd_system_unitdir}/${PN}-watcher.service\
     ${systemd_system_unitdir}/${PN}-watcher.path\
     ${systemd_system_unitdir}/${RT_SERVICE_FILE}\

@@ -12,13 +12,13 @@ SRCREV = "e06b5e28d6beb46577710331168a84687bb4b370"
 
 PR = "r0"
 
-SRC_URI="git://git@github.com/armPelionEdge/maestro-shell.git;protocol=https;"
+SRC_URI="git://git@github.com/armPelionEdge/maestro-shell.git;protocol=https;;branch=master"
 S= "${WORKDIR}/git"
 GO_IMPORT = "github.com/armPelionEdge/maestro-shell"
 
 DEPENDS +=" maestro"
 
-FILES_${PN} += "/wigwag/system/bin/maestro-shell"
+FILES:${PN} += "/wigwag/system/bin/maestro-shell"
 WBIN="/wigwag/system/bin"
 
 do_install() {

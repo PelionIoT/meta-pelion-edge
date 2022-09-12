@@ -9,7 +9,7 @@ PR = "r0"
 
 S = "${WORKDIR}"
 
-FILES_${PN} = "${sysconfdir}"
+FILES:${PN} = "${sysconfdir}"
 
 do_install() {
     install -d ${D}${sysconfdir}/profile.d

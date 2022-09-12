@@ -13,7 +13,7 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=772c3f93b8a2f4f2dec94ef7b9f434fb"
 NO_GENERIC_LICENSE[Nordic-Semiconductor-5-Clause] = "LICENSE"
 
 # Fetch UART Client Example
-SRC_URI = "git://github.com/NordicSemiconductor/pc-ble-driver.git;protocol=https"
+SRC_URI = "git://github.com/NordicSemiconductor/pc-ble-driver.git;protocol=https;branch=master"
 SRCREV = "bc8821bf74edaad84e5eaf07782affd7005c70a6"
 
 DEPENDS = "asio catch2 fmt spdlog udev"
@@ -31,7 +31,7 @@ inherit cmake
 EXTRA_OECMAKE = ""
 
 # XXX: need to shovel these somewhere, so far -dev package will do. Perhaps a -doc would be better for LICENSE file?
-FILES_${PN}-dev += "\
+FILES:${PN}-dev += "\
     ${datadir}/LICENSE \
     ${datadir}/nrf-ble-driver/nrf-ble-driver*.cmake \
      "

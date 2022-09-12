@@ -7,7 +7,7 @@ RPI_USE_U_BOOT = "1"
 # to take a better look at the u-boot startup messages,
 # uncomment these lines to disable the normal boot logo/splash
 #DISABLE_RPI_BOOT_LOGO = "1"
-#IMAGE_FEATURES_remove = "splash"
+#IMAGE_FEATURES:remove = "splash"
 
 DISTRO_FEATURES = "ext2 opengl usbhost ${DISTRO_FEATURES_LIBC} virtualization k8s"
 
@@ -18,17 +18,17 @@ PREFERRED_PROVIDER_jpeg-native = "libjpeg-turbo-native"
 
 PREFERRED_PROVIDER_udev = "eudev"
 
-DISTRO_FEATURES_append = " systemd"
+DISTRO_FEATURES:append = " systemd"
 VIRTUAL-RUNTIME_init_manager = "systemd" 
 VIRTUAL-RUNTIME_initscripts = "systemd-compat-units"
 DISTRO_FEATURES_BACKFILL_CONSIDERED = "sysvinit"
 
-MACHINE_FEATURES_remove = "apm"
+MACHINE_FEATURES:remove = "apm"
 
 WKS_FILE = "console-image.wic"
 IMAGE_FSTYPES = "${INITRAMFS_FSTYPES} wic wic.gz wic.bmap"
 
-DISTRO_FEATURES_append += " bluez5 bluetooth wifi"
+DISTRO_FEATURES:append += " bluez5 bluetooth wifi"
 
 # Choose the board you are building for
 #MACHINE="raspberrypi"
@@ -53,7 +53,7 @@ ENABLE_UART = "1"
 # disables the bluetooth radio, so do not leave this on by default.
 #ENABLE_SERIAL_CONSOLE = "1"
 #SERIAL_CONSOLES = "115200;ttyAMA0"
-# SERIAL_CONSOLES_forcevariable = ""
+# SERIAL_CONSOLES:forcevariable = ""
 
 #DL_DIR = "${HOME}/oe-sources"
 #SSTATE_DIR = "/oe4/rpi/sstate-cache"

@@ -11,9 +11,9 @@ OSTREE_KERNEL_ARGS_imx8mm-lpddr4-evk = "console=tty1 console=ttymxc1,115200 earl
 
 # Disable anything to do with pushing image to server
 # (mainly just silences a warning about SOTA_PACKED_CREDENTIALS not being set)
-IMAGE_FSTYPES_remove = "ostreepush"
-IMAGE_FSTYPES_remove = "garagesign"
-IMAGE_FSTYPES_remove = "garagecheck"
+IMAGE_FSTYPES:remove = "ostreepush"
+IMAGE_FSTYPES:remove = "garagesign"
+IMAGE_FSTYPES:remove = "garagecheck"
 
 # Set defaults for PARSEC_PROVIDER.
 # All boards can support the SOFTHSM.

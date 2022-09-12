@@ -7,7 +7,7 @@ LIC_FILES_CHKSUM = "file://LICENCE.cypress;md5=cbc5f665d04f741f1e006d2096236ba7"
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 
-SRC_URI = "git://github.com/murata-wireless/cyw-fmac-nvram;protocol=https"
+SRC_URI = "git://github.com/murata-wireless/cyw-fmac-nvram;protocol=https;branch=master"
 SRCREV = "8710e74e79470f666912c3ccadf1e354d6fb209c"
 PV = "20210112"
 
@@ -24,7 +24,7 @@ do_install() {
     install -m 0644 ${S}/cyfmac${CYPRESS_PART}.${CYPRESS_MODEL}.txt ${D}${nonarch_base_libdir}/firmware/brcm/brcmfmac${CYPRESS_PART}.txt
 }
 
-FILES_${PN} = " \
+FILES:${PN} = " \
     ${nonarch_base_libdir}/firmware/LICENCE.cyw-fmac-nvram \
     ${nonarch_base_libdir}/firmware/brcm/brcmfmac${CYPRESS_PART}.txt \
 "

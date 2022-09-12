@@ -1,6 +1,6 @@
-FILESEXTRAPATHS_prepend_imx8mm-lpddr4-evk := "${THISDIR}/${PN}:"
+FILESEXTRAPATHS:prepend_imx8mm-lpddr4-evk := "${THISDIR}/${PN}:"
 
-do_configure_append_imx8mm-lpddr4-evk() {
+do_configure:append_imx8mm-lpddr4-evk() {
     # boot from SD
     sed -i '/CONFIG_SECONDARY_BOOT_RUNTIME_DETECTION=y/d' ${B}/.config
     sed -i '/CONFIG_SECONDARY_BOOT_SECTOR_OFFSET=0x1000/d' ${B}/.config

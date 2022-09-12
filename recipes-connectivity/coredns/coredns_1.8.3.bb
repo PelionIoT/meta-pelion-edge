@@ -15,18 +15,18 @@ file://coredns-starter.service \
   "
 
 SYSTEMD_PACKAGES = "${PN}"
-SYSTEMD_SERVICE_${PN} = "coredns-starter.service"
-SYSTEMD_AUTO_ENABLE_${PN} = "enable"
+SYSTEMD_SERVICE:${PN} = "coredns-starter.service"
+SYSTEMD_AUTO_ENABLE:${PN} = "enable"
 
 SRCREV = "v${PV}"
 
 PR = "r1"
 
 DEPENDS = "git "
-RDEPENDS_${PN} += "bash "
+RDEPENDS:${PN} += "bash "
 
 
-FILES_${PN} =  " \
+FILES:${PN} =  " \
     ${EDGE_BIN}/coredns\
     ${EDGE_BIN}/launch-coredns.sh \
     ${EDGE_BIN}/coredns-rules.sh \

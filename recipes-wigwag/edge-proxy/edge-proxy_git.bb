@@ -9,7 +9,7 @@ export GO111MODULE="auto"
 inherit go pkgconfig gitpkgv systemd
 
 PR = "r0"
-SRC_URI = "git://git@github.com/PelionIoT/edge-proxy.git;protocol=https;name=ep;depth=1 \
+SRC_URI = "git://git@github.com/PelionIoT/edge-proxy.git;protocol=https;name=ep;depth=1;branch=master \
            file://edge-proxy.service \
            file://edge-proxy-watcher.service \
            file://edge-proxy.path \
@@ -18,22 +18,22 @@ SRC_URI = "git://git@github.com/PelionIoT/edge-proxy.git;protocol=https;name=ep;
            "
 
 SYSTEMD_PACKAGES = "${PN}"
-SYSTEMD_SERVICE_${PN} = "edge-proxy.service \
+SYSTEMD_SERVICE:${PN} = "edge-proxy.service \
 edge-proxy.path \
 edge-proxy-watcher.service \
 "
 
-SYSTEMD_AUTO_ENABLE_${PN} = "enable"
+SYSTEMD_AUTO_ENABLE:${PN} = "enable"
 
 SRCREV_FORMAT = "ep"
 SRCREV_ep = "d2e0fcdab1481487cab243c0ed3b4dc41febc49f"
 GO_IMPORT = "github.com/PelionIoT/edge-proxy"
 
-RDEPENDS_${PN} = "jq bash"
+RDEPENDS:${PN} = "jq bash"
 
 wbindir = "/wigwag/system/bin"
 wetcdir = "/wigwag/etc"
-FILES_${PN} = "\
+FILES:${PN} = "\
 	${wbindir}/edge-proxy\
 	${wbindir}/launch-edge-proxy.sh\
 	${wetcdir}/edge-proxy.conf.json\

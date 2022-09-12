@@ -4,7 +4,7 @@ LICENSE = "Apache-2.0"
 LIC_FILES_CHKSUM = "file://${WORKDIR}/git/pe-utils/LICENSE;md5=1dece7821bf3fd70fe1309eaa37d52a2"
 
 SRC_URI="\
-git://git@github.com/armPelionEdge/pe-utils.git;protocol=https;name=pe-utils;destsuffix=git/pe-utils \
+git://git@github.com/armPelionEdge/pe-utils.git;protocol=https;name=pe-utils;destsuffix=git/pe-utils;branch=master \
 "
 
 SRCREV_pe-utils = "2.0.9"
@@ -16,11 +16,11 @@ PKGV = "1.0+git${GITPKGV}"
 PR = "r0"
 
 DEPENDS = ""
-RDEPENDS_${PN} += " bash curl bc jq"
+RDEPENDS:${PN} += " bash curl bc jq"
 
 RM_WORK_EXCLUDE += "${PN}"
 
-FILES_${PN} = "\
+FILES:${PN} = "\
 ${EDGE_BIN}/ \
 /etc/tmpfiles.d/userdatai-tmpfiles.conf \
 "

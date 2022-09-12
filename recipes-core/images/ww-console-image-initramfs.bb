@@ -14,7 +14,7 @@ verify signatures and activating dm-verity."
 DEPENDS += "u-boot-mkimage-native"
 
 PACKAGE_INSTALL = "ww-console-image-initramfs-init util-linux-findfs busybox-initramfs e2fsprogs-e2fsck e2fsprogs-mke2fs  openssl openssl-bin"
-FILES_e2fsprogs-mke2fs = "${base_sbindir}/mke2fs ${base_sbindir}/mkfs.ext* ${sysconfdir}/mke2fs.conf"
+FILES:e2fsprogs-mke2fs = "${base_sbindir}/mke2fs ${base_sbindir}/mkfs.ext* ${sysconfdir}/mke2fs.conf"
 
 # Do not pollute the initrd image with rootfs features
 IMAGE_FEATURES = ""

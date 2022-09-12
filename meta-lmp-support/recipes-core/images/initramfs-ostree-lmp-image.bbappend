@@ -1,1 +1,1 @@
-PACKAGE_INSTALL_append = " initramfs-module-ostreecheck"
+PACKAGE_INSTALL:append = " initramfs-module-ostreecheck"
