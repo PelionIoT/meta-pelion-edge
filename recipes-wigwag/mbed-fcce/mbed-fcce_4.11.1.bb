@@ -42,7 +42,7 @@ do_configure() {
     export HTTP_PROXY=${HTTP_PROXY}
     export HTTPS_PROXY=${HTTPS_PROXY}
 
-    pip3 install mbed-cli==1.10.5 click==7.1.2 requests pyopenssl==20.0.1
+    pip3 install mbed-tools==7.57.0
 
 }
 
@@ -53,7 +53,7 @@ do_compile() {
     export HTTP_PROXY=${HTTP_PROXY}
     export HTTPS_PROXY=${HTTPS_PROXY}
 
-    mbedpath=$(which mbed);
+    mbedpath=$(which mbed-tools);
     python3 $mbedpath deploy
 
     python3 pal-platform/pal-platform.py -v deploy --target=Yocto_Generic_YoctoLinux_mbedtls generate
