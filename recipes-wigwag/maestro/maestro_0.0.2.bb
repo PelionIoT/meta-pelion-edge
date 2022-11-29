@@ -4,6 +4,9 @@ LIC_FILES_CHKSUM = "file://src/${GO_IMPORT}/LICENSE;md5=1dece7821bf3fd70fe1309ea
 
 GO_IMPORT = "github.com/PelionIoT/maestro"
 
+PROVIDES += " maestro "
+RPROVIDES_${PN} += " maestro "
+
 DEPENDS = "deviceos-users libuv"
 RDEPENDS_${PN} += "bash"
 
