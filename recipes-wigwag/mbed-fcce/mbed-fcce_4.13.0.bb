@@ -16,7 +16,6 @@ inherit cmake pkgconfig gitpkgv distutils3 setuptools3 python3native
 SRC_URI = " \
 git://github.com/parallaxsecond/parsec-se-driver.git;protocol=https;name=parsec;destsuffix=parsec-se-driver;branch=main \
 git://git@github.com/PelionIoT/factory-configurator-client-example.git;protocol=https; \
-file://0001-Added-trusted-storage-to-Yocto-target.patch \
 file://0001-fix-build-getting-cross-compiler-iface-setting-to-et.patch \
 file://0001-fix-arm_uc_pal_linux_extensions.manual_patch \
 file://0001-fix-mcc_common_setup.manual_patch \
@@ -36,14 +35,13 @@ do_configure() {
 
     cd ${S}
 
-    export PYTHONPATH=$PYTHONPATH:`pwd`/recipe-sysroot-native/usr/lib/python3.8
+    export PYTHONPATH=$PYTHONPATH:`pwd`/recipe-sysroot-native/usr/lib/python3.9
     export PATH=$PYTHONPATH:$PATH
 
     export HTTP_PROXY=${HTTP_PROXY}
     export HTTPS_PROXY=${HTTPS_PROXY}
 
     pip3 install mbed-tools==7.57.0
-
 }
 
 do_compile() {
@@ -54,7 +52,11 @@ do_compile() {
     export HTTPS_PROXY=${HTTPS_PROXY}
 
     mbedpath=$(which mbed-tools);
-    python3 $mbedpath deploy
+    # Don't deploy Mbed OS, that's waste in Linux
+    if [ -f "mbed-os.lib" ]; then 
+        rm "mbed-os.lib"
+    fi
+    python3 "$mbedpath" deploy
 
     python3 pal-platform/pal-platform.py -v deploy --target=Yocto_Generic_YoctoLinux_mbedtls generate
 

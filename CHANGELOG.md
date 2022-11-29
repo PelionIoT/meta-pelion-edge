@@ -1,10 +1,19 @@
-# Pelion Edge 2.5.1 - 18th Jan 2021
+# Edge 2.6.0 - Dec 2022
+
+-[Edge-Core] Mbed-Edge also known as Edge-Core updated to version 0.2.0.
+    - This uses Device Management Client 4.13.0.
+    - Updated Mbed TLS version to 2.28.1.
+    - updated libCurl to version 7.76.0.
+    - Factory Configurator Client Example also updated to version 4.13.0.
+- Updated [LmP to version 85](https://foundries.io/products/releases/83/).
+
+# Edge 2.5.1 - 18th Jan 2021
 
 - Fixed code fetch error by pointing [mbedtls repository definition](https://github.com/PelionIoT/meta-mbed-edge/commit/56dce48ed2d832d603b86505d2467ef0d9f821e4) to the redefined location.
 - Fixed code fetch error on `meta-mbed-edge`/`mbed-edge` and `mbed-edge-examples` by using `protocol=https` in `SRC_URI` as [GitHub is now brownouting plain-text git fetching/cloning](https://github.blog/2021-09-01-improving-git-protocol-security-github/).
 - Updated `bitbake` tooling to version [3.3.4](https://github.com/openembedded/bitbake/commits/yocto-3.3.4), which has support for using https-protocol by default to avoid GitHub plain-text cloning issue.
 
-# Pelion Edge 2.5.0 - 14th Dec 2021
+# Edge 2.5.0 - 14th Dec 2021
 
 ## New features
 
@@ -66,27 +75,27 @@
 ## Limitations
 
 - Firmware update from Edge 2.4 to Edge 2.5 is not possible with the AVNET ZU3EG platform because the UEFI Capsule Update requires a new partition for `grub`.
-- There is a maximum size limit to the full registration message, which limits the number of devices Pelion Edge can host:
+- There is a maximum size limit to the full registration message, which limits the number of devices Edge can host:
    - Maximum registration message size is 64KB.
    - Hosted devices with five typical Resources consume ~280B (the exact size depends, for example, on the length of resource paths). This limits the maximum number to 270 devices.
    - The more Resources you have, the fewer devices can be supported.
-   - The Pelion Edge device Resources are also included in the same registration message.
+   - The Edge device Resources are also included in the same registration message.
    - **Test the limits with your configuration and set guidance accordingly.**
-- Devices behind Pelion Edge don't support [auto-observation](https://www.pelion.com/docs/device-management/current/connecting/device-guidelines.html#auto-observation).
-- Pelion Device Management Client-enabled devices must bootstrap to the Pelion Device Management cloud before connecting to Pelion Edge.
-- No moving devices are supported (such as the device moving from Pelion Edge to another edge device.)
+- Devices behind Edge don't support [auto-observation](https://www.pelion.com/docs/device-management/current/connecting/device-guidelines.html#auto-observation).
+- Pelion Device Management Client-enabled devices must bootstrap to the Pelion Device Management cloud before connecting to Edge.
+- No moving devices are supported (such as the device moving from Edge to another edge device.)
 - LmP's base partition table is set above 10GB to support three upgrade images in OSTree. Therefore, we only support SD card installation (compared to supporting onboard EMMC or NAND) for the i.MX 8M Mini EVK and the UltraZed-EG IOCC.
 
-# Pelion Edge 2.4.2 - 26th Aug 2021
+# Edge 2.4.2 - 26th Aug 2021
 
 - Fixed kubelet initialization to enable containers to properly inherit host DNS settings.
 - Fixed race condition causing coreDNS to intermittently fail to start.
 
-# Pelion Edge 2.4.1 - 5th Aug 2021
+# Edge 2.4.1 - 5th Aug 2021
 
 - Fixed the compilation error by locking down the crate versions of `parsec-tool` and `parsec-se-driver`.
 
-# Pelion Edge 2.4.0 - 28th June 2021
+# Edge 2.4.0 - 28th June 2021
 
 ### New features
 
@@ -156,26 +165,26 @@
 ### Limitations
 
 - Firmware update from Edge 2.2 to Edge 2.3, from Edge 2.3 to Edge 2.4 and from Edge 2.2 to Edge 2.4 isn't possible on any of the supported platforms. Partition table changes and in some cases FPGA support changes prevent the upgrading between these versions. To update between these versions, manual flashing is required. OTA update is still supported within the versions.
-- There is a maximum size limit to the full registration message, which limits the number of devices Pelion Edge can host:
+- There is a maximum size limit to the full registration message, which limits the number of devices Edge can host:
    - Maximum registration message size is 64KB.
    - Hosted devices with five typical Resources consume ~280B (the exact size depends, for example, on the length of resource paths). This limits the maximum number to 270 devices.
    - The more Resources you have, the fewer devices can be supported.
-   - The Pelion Edge device Resources are also included in the same registration message.
+   - The Edge device Resources are also included in the same registration message.
    - **Test the limits with your configuration, and set guidance accordingly.**
-- Devices behind Pelion Edge don't support [auto-observation](https://www.pelion.com/docs/device-management/current/connecting/device-guidelines.html#auto-observation).
-- Pelion Device Management Client enabled devices must first boostrap to the Pelion Device Management cloud before connecting to Pelion Edge.
-- No moving devices are supported (such as the device moving from Pelion Edge to another edge device.)
+- Devices behind Edge don't support [auto-observation](https://www.pelion.com/docs/device-management/current/connecting/device-guidelines.html#auto-observation).
+- Pelion Device Management Client enabled devices must first boostrap to the Pelion Device Management cloud before connecting to Edge.
+- No moving devices are supported (such as the device moving from Edge to another edge device.)
 - LmP's base partition table is set above 10GB to support three upgrade images in OSTree. Therefore, we only support SD card installation (compared to supporting onboard EMMC or NAND) for the i.MX 8M Mini EVK and the UltraZed-EG IOCC.
-- Software TPM is [not designed to be resilient](https://sourceforge.net/p/ibmswtpm2/discussion/general/thread/fc5f4e0daf/) against power failures. Instead of disconnecting the power supply to the gateway, always perform a graceful shutdown of the edge device when using software TPM. To resolve this, follow the troubleshooting section of [our documentation about using Pelion Edge with TPM](developer.pelion.com/device-management-edge/v2.4/security/security-tpm.html#troubleshooting).
+- Software TPM is [not designed to be resilient](https://sourceforge.net/p/ibmswtpm2/discussion/general/thread/fc5f4e0daf/) against power failures. Instead of disconnecting the power supply to the gateway, always perform a graceful shutdown of the edge device when using software TPM. To resolve this, follow the troubleshooting section of [our documentation about using Edge with TPM](developer.pelion.com/device-management-edge/v2.4/security/security-tpm.html#troubleshooting).
 
 
-# Pelion Edge 2.3.0 - 1st April 2021
+# Edge 2.3.0 - 1st April 2021
 
 ### New features
 
 This release adds features to the Linux microPlatform (LmP) OS, which supports NXP's i.MX8 development platform i.MX 8M Mini EVK and AVNet's Xilinx MPSoC Starter kit UltraZed-EG IOCC. This release:
 
-- [TPM] Introduces [Secure Pelion Edge with the Trusted Platform Module (TPM) v2.0](https://developer.pelion.com/docs/device-management-edge/latest/secure-with-tpm.html):
+- [TPM] Introduces [Secure Edge with the Trusted Platform Module (TPM) v2.0](https://developer.pelion.com/docs/device-management-edge/latest/secure-with-tpm.html):
    - [meta-parsec] Leverages [Platfrom Abstraction for Security (Parsec)](https://parallaxsecond.github.io/parsec-book/index.html) to interface with TPM and adds a [new meta layer](https://github.com/PelionIoT/meta-parsec) to build `parsec` service 0.6.0.
    - [swtpm] `meta-parsec` layer also brings in [IBM's software TPM](https://sourceforge.net/projects/ibmswtpm2/) `swtpm` package. If your hardware supports physical TPM, we recommend you comment out this package from the `console-image-lmp.bb` file.
    - [parsec-se-driver] Adds a recipe to build [Parsec Secure Element driver](https://github.com/parallaxsecond/parsec-se-driver) 0.4.0, which is a dependency of Edge Core and mbed-fcce package when compiled with `MBED_EDGE_CORE_CONFIG_PARSEC_TPM_SE_SUPPORT=ON`.
@@ -194,8 +203,8 @@ This release adds features to the Linux microPlatform (LmP) OS, which supports N
 
 ### Bug fixes
 
-- [pt-example] Pelion Edge 2.2 used protocol translator example 0.13.0, which wasn't compatible with Edge Core 0.15.0. We fixed this by upgrading the example to version 0.16.0.
-- In Pelion Edge 2.2, using the i.MX 8M Mini EVK in production mode with firmware update enabled failed with a FOTA_ASSERT after the reboot. This has been fixed.
+- [pt-example] Edge 2.2 used protocol translator example 0.13.0, which wasn't compatible with Edge Core 0.15.0. We fixed this by upgrading the example to version 0.16.0.
+- In Edge 2.2, using the i.MX 8M Mini EVK in production mode with firmware update enabled failed with a FOTA_ASSERT after the reboot. This has been fixed.
 
 ### Known issues
 
@@ -217,30 +226,30 @@ This release adds features to the Linux microPlatform (LmP) OS, which supports N
    - Maximum registration message size is 64KB.
    - Hosted devices with five typical Resources consume ~280B (the exact size depends, for example, on the length of resource paths). This limits the maximum number to 270 devices.
    - The more Resources you have, the fewer devices can be supported.
-   - The Pelion Edge device Resources are also included in the same registration message.
+   - The Edge device Resources are also included in the same registration message.
    - **Test the limits with your configuration, and set guidance accordingly.**
-- Devices behind Pelion Edge don't support [auto-observation](https://www.pelion.com/docs/device-management/current/connecting/device-guidelines.html#auto-observation).
-- Pelion Device Management Client enabled devices must first boostrap to the Pelion Device Management cloud before connecting to Pelion Edge.
-- No moving devices are supported (such as the device moving from Pelion Edge to another edge device.)
+- Devices behind Edge don't support [auto-observation](https://www.pelion.com/docs/device-management/current/connecting/device-guidelines.html#auto-observation).
+- Pelion Device Management Client enabled devices must first boostrap to the Pelion Device Management cloud before connecting to Edge.
+- No moving devices are supported (such as the device moving from Edge to another edge device.)
 - LmP's base partition table is set above 10GB to support three upgrade images in OSTree. Therefore, we only support SD card installation (compared to supporting onboard EMMC or NAND) for the i.MX 8M Mini EVK and the UltraZed-EG IOCC.
 
 ### Important note
 
 While provisioning your gateway, please use `vendor-id=42fa7b48-1a65-43aa-890f-8c704daade54` to unlock the rich node features, such as gateway logs and gateway terminal in the Pelion web portal.
 
-# Pelion Edge 2.2.0 - February 2021
+# Edge 2.2.0 - February 2021
 
 ## New features
 
-In this release of Pelion Edge 2.2, we introduce support for two additional platforms and one additional Yocto distribution operating system:
+In this release of Edge 2.2, we introduce support for two additional platforms and one additional Yocto distribution operating system:
 
-- Now supported by Pelion Edge is the Linux microPlatform (LmP) OS, running on NXP's [i.MX8 development platform imx8mmevk](https://www.nxp.com/design/development-boards/i-mx-evaluation-and-development-boards/evaluation-kit-for-the-i-mx-8m-mini-applications-processor:8MMINILPD4-EVK), an excellent choice for typical gateway solutions
+- Now supported by Edge is the Linux microPlatform (LmP) OS, running on NXP's [i.MX8 development platform imx8mmevk](https://www.nxp.com/design/development-boards/i-mx-evaluation-and-development-boards/evaluation-kit-for-the-i-mx-8m-mini-applications-processor:8MMINILPD4-EVK), an excellent choice for typical gateway solutions
 - AVNet's [UltraZed-EG Starter kit](https://www.avnet.com/shop/us/products/avnet-engineering-services/aes-zu3eg-1-sk-g-3074457345635014225/) based on Xilinx Zynq UltraScale+ MPSoC. This FPGA capable is the perfect choice when you need to support some legacy HW with modern, cost-efficient HW without doing your own custom SoC.
-- Pelion Edge continues support of Yocto's Poky OS on the Raspberry PI3.
+- Edge continues support of Yocto's Poky OS on the Raspberry PI3.
 
-[Quick start guides](https://developer.pelion.com/docs/device-management-edge/2.2/quick-start/index.html) are available for all three platforms and should be followed individually because the build systems have differences. meta-pelion-edge and meta-mbed-edge are the basis for all Pelion Edge programs. Although the operating systems are different in support models, Pelion Edge has been tested to perform and operate the same within both OS environments. Moreover, both operating systems have the same feature set, other than the following difference:
+[Quick start guides](https://developer.pelion.com/docs/device-management-edge/2.2/quick-start/index.html) are available for all three platforms and should be followed individually because the build systems have differences. meta-pelion-edge and meta-mbed-edge are the basis for all Edge programs. Although the operating systems are different in support models, Edge has been tested to perform and operate the same within both OS environments. Moreover, both operating systems have the same feature set, other than the following difference:
 
-   - [FOTA Update] Pelion Edge on Poky OS continues to use overlayFS for upgrades as it did in previous releases. Pelion Edge on LmP OS uses a new mechanism called [OSTree](https://ostreedev.github.io/ostree/).
+   - [FOTA Update] Edge on Poky OS continues to use overlayFS for upgrades as it did in previous releases. Edge on LmP OS uses a new mechanism called [OSTree](https://ostreedev.github.io/ostree/).
 
 The primary features in this release:
 
@@ -268,7 +277,7 @@ The primary features in this release:
    - By default, Fluent Bit is configured with the following input endpoints - CPU, MEM, Systemd services - edge-core, edge-proxy, pelion-relay-term, Maestro, kubelet, Docker and wait-for-pelion-identity. FluentBit is also configured with an output endpoint HTTP to publish logs at API endpoint: `http://gateways.local:8080/v3/device-logs` (routing through the edge-proxy service).
 - [Verified logging](https://developer.pelion.com/docs/device-management-edge/2.2/managing/verified-logging.md) - allows you to sign the logs in the device to prevent log manipulation.
    - [journald] Enabled Forward Secure Sealing (FSS) feature of systemd journal.
-   - To configure Pelion Edge gateway with a sealing key and to keep track of the verification key in production setup, use Pelion Edge Provisioner (PEP) tool [v2.3.0](https://github.com/PelionIoT/pelion-edge-provisioner/releases/tag/v2.3.0).
+   - To configure Edge gateway with a sealing key and to keep track of the verification key in production setup, use Edge Provisioner (PEP) tool [v2.3.0](https://github.com/PelionIoT/pelion-edge-provisioner/releases/tag/v2.3.0).
    - By default, the gateway is configured with persistent journal logging for Yocto Poky Raspberry PI3. To disable persistent logging, set flag `VOLATILE_LOG_DIR = "no"` in `local.conf`, and update the `Storage` in recipes-core/systemd/systemd-conf/journald.conf. Note: If you disable persistent logging, the FSS feature won't work.
    - By default, the gateway is configured **without** persistent journal logging for LMP `uz3eg-iocc` and `imx8mmevk`. To disable persistent logging, set flag `VOLATILE_LOG_DIR = "no"` in `local.conf`, and update the `Storage` in recipes-core/systemd/systemd-conf/journald.conf. Note: If you disable persistent logging, the FSS feature won't work.
 - [systemd] Configured to manage the network. By default, we disabled Maestro's network management feature.
@@ -286,9 +295,9 @@ The primary features in this release:
    - devicejs-ng.
    - Compatible devicejs-ng protocol translators.
 - [image improvements] Simplified and improved the "raspberrypi" supported image "console-image":
-   - console-image previously, version 1.0 through 2.1, contained Pelion Edge and development tools, including but not limited to: compliers, editors, analysis tools, stress tools and SQA tools. Pelion Edge version 2.2's console-image contains a minimized set of accompanying software for running and testing all of Pelion Edge's software and features. Note: This isn't a minimal image that strips common Linux tools but is instead what you might expect to find on a heavy embedded device. With this new strategy, you can customize the image more easily. You can strip the image more to make a more lightweight embedded OS or add more packages to make it more like the previously provided image.
+   - console-image previously, version 1.0 through 2.1, contained Edge and development tools, including but not limited to: compliers, editors, analysis tools, stress tools and SQA tools. Edge version 2.2's console-image contains a minimized set of accompanying software for running and testing all of Edge's software and features. Note: This isn't a minimal image that strips common Linux tools but is instead what you might expect to find on a heavy embedded device. With this new strategy, you can customize the image more easily. You can strip the image more to make a more lightweight embedded OS or add more packages to make it more like the previously provided image.
       - LmP's equivalent image is named `lmp-console-image`.
-   - meta-pelion-edge itself as a Yocto layer is now easier to incorporate with other layers, allowing other Yocto projects to incorporate Pelion Edge.
+   - meta-pelion-edge itself as a Yocto layer is now easier to incorporate with other layers, allowing other Yocto projects to incorporate Edge.
    - Updated the splash screen banner from "DeviceOS by WigWag" to "Pelion".
    - [recipe removals] Removed:
       - wwrelay-utils recipe. Previously, this bitbake recipe performed many functions that have been replaced. For more details, please reference the recipe additions section below.
@@ -299,15 +308,15 @@ The primary features in this release:
       - node-netkit recipe because devicejs is deprecated.
       - fftw recipe because the image no longer ships with developer tools enabled.
       - emacs recipe because the image no longer ships with developer tools enabled.
-      - dnsmasq recipe because Pelion Edge programs no longer need these features.
+      - dnsmasq recipe because Edge programs no longer need these features.
       - deviceOSWD recipe because the old wigwag relay is no longer supported.
       - maestro-watchdog recipe because the old wigwag relay is no longer supported.
 
 ### Bug fixes
 
 - After production factory flow, if you ran the `info` command before Edge Core paired with the cloud, the `info` command showed `N/A` for the deviceID while displaying connected. This has been fixed.
-- Streamlined the startup sequence of Pelion Edge programs to remove the cyclic dependency, which caused many starts and stops of processes in certain conditions.
-- When conducting back-to-back production factory flow with the Pelion Edge Provisioner, the mcc_config directory sometimes was not written correctly, and upon reboot, Edge Core didn't connect properly. This has been fixed.
+- Streamlined the startup sequence of Edge programs to remove the cyclic dependency, which caused many starts and stops of processes in certain conditions.
+- When conducting back-to-back production factory flow with the Edge Provisioner, the mcc_config directory sometimes was not written correctly, and upon reboot, Edge Core didn't connect properly. This has been fixed.
 
 ### Known issues
 
@@ -327,30 +336,30 @@ If you enable kernel configurations [CPU_IDLE](https://cateee.net/lkddb/web-lkdd
    - Maximum registration message size is 64KB.
    - Hosted devices with five typical Resources consume ~280B (the exact size depends, for example, on the length of resource paths). This limits the maximum number to 270 devices.
    - The more Resources you have, the fewer devices can be supported.
-   - The Pelion Edge device Resources are also included in the same registration message.
+   - The Edge device Resources are also included in the same registration message.
    - **Test the limits with your configuration, and set guidance accordingly.**
-- Devices behind Pelion Edge do not support [auto-observation](https://www.pelion.com/docs/device-management/current/connecting/device-guidelines.html#auto-observation).
-- Pelion Device Management Client enabled devices must first boostrap to the Pelion Device Management cloud before connecting to Pelion Edge.
-- No moving devices are supported (such as the device moving from Pelion Edge to another edge device.)
+- Devices behind Edge do not support [auto-observation](https://www.pelion.com/docs/device-management/current/connecting/device-guidelines.html#auto-observation).
+- Pelion Device Management Client enabled devices must first boostrap to the Pelion Device Management cloud before connecting to Edge.
+- No moving devices are supported (such as the device moving from Edge to another edge device.)
 - LmP's base partition table is set above 10GB to support three upgrade images in OSTree. Therefore, we only support SD card installation (compared to supporting onboard EMMC or NAND) for the `imx8mmevk` and the `uz3eg-iocc`.
 
 ### Important note
 
 While provisioning your gateway, please use `vendor-id=42fa7b48-1a65-43aa-890f-8c704daade54` to unlock the rich node features, such as gateway logs and gateway terminal in the Pelion web portal.
 
-## Pelion Edge 2.1.2 - January 2021
+## Edge 2.1.2 - January 2021
 
 Updated 'pip' download url to download specific verson.
 
-## Pelion Edge 2.1.1 - December 2020
+## Edge 2.1.1 - December 2020
 
 Pinned dependency that broke 'mbed_fcc' build dependency.
 
-## Pelion Edge 2.1.0-1 - October 2020
+## Edge 2.1.0-1 - October 2020
 
 Updated package source file protocol from SSH to HTTPS.
 
-## Pelion Edge 2.1.0 - September 2020
+## Edge 2.1.0 - September 2020
 
 The primary feature in this release is the addition of container orchestration:
 
@@ -371,15 +380,15 @@ The primary feature in this release is the addition of container orchestration:
 
 ### Known issues
 
-- When conducting back-to-back production factory flow with the Pelion Edge Provisioner, the mcc_config directory sometimes is not written correctly and upon reboot, Edge-Core does not connect properly. Workaround: Run the provisioner again.
+- When conducting back-to-back production factory flow with the Edge Provisioner, the mcc_config directory sometimes is not written correctly and upon reboot, Edge-Core does not connect properly. Workaround: Run the provisioner again.
 - After production factory flow, if you run the info command before Edge core pairs with the cloud, the info command shows N/A for the deviceID while displaying connected. Workaround: Delete the file /wigwag/system/lib/bash/relaystatics.sh, and rerun the info command.
 - Portal is not correctly updated after a firmware campaign in some instances.
 
 ### Limitations
 
 - The maximum translated devices behind the edge gateway is 100.
-- Devices behind Pelion Edge do not support [auto-observation.](https://www.pelion.com/docs/device-management/current/connecting/device-guidelines.html#auto-observation)
-- Pelion Device Management Client enabled devices must first boostrap to the Pelion Device Management Cloud before connecting to Pelion Edge.
+- Devices behind Edge do not support [auto-observation.](https://www.pelion.com/docs/device-management/current/connecting/device-guidelines.html#auto-observation)
+- Pelion Device Management Client enabled devices must first boostrap to the Pelion Device Management Cloud before connecting to Edge.
 - No moving devices are supported. (Device would be moving from Edge to another Edge device.)
 
 ### Important note
@@ -411,7 +420,7 @@ While provisioning your gateway, please use `vendor-id=42fa7b48-1a65-43aa-890f-8
 * While provisioning your gateway, please use `vendor-id=42fa7b48-1a65-43aa-890f-8c704daade54` to unlock the rich node features, such as gateway logs and gateway terminal in the Pelion web portal.
 ## 1.0.0
 ### Summary abstract
-This is the 1.0 release of the Pelion Edge for Gateways. In general, it is a Yocto metalayer to build an operating system for a gateway that will connect to the Arm Pelion Cloud. Once provisioned with the Pelion Cloud, the gateway can register Bluetooth devices to the cloud, participate in secure update campaigns and be controlled from a mobile application. The first supported platform is the Raspberry PI3b+.
+This is the 1.0 release of the Edge for Gateways. In general, it is a Yocto metalayer to build an operating system for a gateway that will connect to the Arm Pelion Cloud. Once provisioned with the Pelion Cloud, the gateway can register Bluetooth devices to the cloud, participate in secure update campaigns and be controlled from a mobile application. The first supported platform is the Raspberry PI3b+.
 ### Features description
 - Gateway-based service enabling edge applications to interact with gateway-connected devices through a REST API.
 - Systems management API and daemon (Maestro):
