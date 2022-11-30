@@ -1,4 +1,4 @@
-SUMMARY = "A console enabled image with minimal additions to run all of Pelion"
+SUMMARY = "A console enabled image with minimal additions to run all of Izuma Edge"
 
 IMAGE_FEATURES[validitems] += ""
 IMAGE_FEATURES += "package-management splash"
@@ -37,6 +37,7 @@ maestro \
 info-tool \
 pe-terminal \
 fluentbit \
+testnet \
 "
 
 PELION_PROTOCOL_TRANSLATION = " \
