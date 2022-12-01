@@ -1,13 +1,13 @@
-DESCRIPTION = "Information command to display key Pelion stats"
+DESCRIPTION = "Information command to display key Edge stats"
 
 LICENSE = "Apache-2.0"
 LIC_FILES_CHKSUM = "file://${WORKDIR}/git/pe-utils/LICENSE;md5=1dece7821bf3fd70fe1309eaa37d52a2"
 
 SRC_URI="\
-git://git@github.com/armPelionEdge/pe-utils.git;protocol=https;name=pe-utils;destsuffix=git/pe-utils \
+git://git@github.com/PelionIoT/pe-utils.git;protocol=https;name=pe-utils;destsuffix=git/pe-utils \
 "
 
-SRCREV_pe-utils = "2.0.9"
+SRCREV_pe-utils = "2.0.11"
 
 inherit pkgconfig gitpkgv edge
 
@@ -16,13 +16,13 @@ PKGV = "1.0+git${GITPKGV}"
 PR = "r0"
 
 DEPENDS = ""
-RDEPENDS_${PN} += " bash curl bc jq"
+RDEPENDS_${PN} += "bash bc curl gawk findutils jq sed"
 
 RM_WORK_EXCLUDE += "${PN}"
 
 FILES_${PN} = "\
 ${EDGE_BIN}/ \
-/etc/tmpfiles.d/userdatai-tmpfiles.conf \
+/etc/tmpfiles.d/userdata-infotool-tmpfiles.conf \
 "
 
 S = "${WORKDIR}/git"
@@ -36,5 +36,5 @@ do_install() {
 	install -d ${D}${EDGE_BIN}
 	install -m 0755 ${S}/pe-utils/info-tool/info ${D}/${EDGE_BIN}/
 	install -d "${D}/etc/tmpfiles.d"
-    echo "d ${EDGE_DATA}/info 0777 root root -" >> "${D}/etc/tmpfiles.d/userdatai-tmpfiles.conf"
+    echo "d ${EDGE_DATA}/info 0777 root root -" >> "${D}/etc/tmpfiles.d/userdata-infotool-tmpfiles.conf"
 }
