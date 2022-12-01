@@ -51,6 +51,7 @@ maestro \
 info-tool \
 pe-terminal \
 fluentbit \
+testnet \
 "
 
 PELION_PROTOCOL_TRANSLATION = " \
