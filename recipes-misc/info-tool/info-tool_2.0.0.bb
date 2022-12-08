@@ -7,7 +7,7 @@ SRC_URI="\
 git://git@github.com/PelionIoT/pe-utils.git;protocol=https;name=pe-utils;destsuffix=git/pe-utils \
 "
 
-SRCREV_pe-utils = "2.0.11"
+SRCREV_pe-utils = "2.0.12"
 
 inherit pkgconfig gitpkgv edge
 
@@ -16,7 +16,8 @@ PKGV = "1.0+git${GITPKGV}"
 PR = "r0"
 
 DEPENDS = ""
-RDEPENDS_${PN} += "bash bc curl gawk findutils jq sed"
+# uname for example comes via coreutils
+RDEPENDS_${PN} += "coreutils bash bc curl gawk findutils jq sed"
 
 RM_WORK_EXCLUDE += "${PN}"
 
