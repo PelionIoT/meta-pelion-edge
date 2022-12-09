@@ -6,7 +6,7 @@ LIC_FILES_CHKSUM = "file://${WORKDIR}/git/pe-utils/LICENSE;md5=1dece7821bf3fd70f
 SRC_URI="\
 git://git@github.com/PelionIoT/pe-utils.git;protocol=https;name=pe-utils;destsuffix=git/pe-utils \
 "
-SRCREV_pe-utils = "2.0.11"
+SRCREV_pe-utils = "2.0.12"
 
 inherit pkgconfig gitpkgv edge
 

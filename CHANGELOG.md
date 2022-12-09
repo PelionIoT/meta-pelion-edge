@@ -6,6 +6,8 @@
     - updated libCurl to version 7.76.0.
     - Factory Configurator Client Example also updated to version 4.13.0.
 - Updated [LmP to version 85](https://foundries.io/products/releases/83/).
+- Updated `info` to version 2.0.12 (via pe-utils -repo).
+- New recipe for `testnet.sh` for verifying any firewall issues with connectivity (via pe-utils repo).
 
 # Edge 2.5.1 - 18th Jan 2021
 
