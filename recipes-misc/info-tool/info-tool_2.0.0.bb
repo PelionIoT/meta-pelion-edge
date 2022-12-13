@@ -7,7 +7,7 @@ SRC_URI="\
 git://git@github.com/PelionIoT/pe-utils.git;protocol=https;name=pe-utils;destsuffix=git/pe-utils \
 "
 
-SRCREV_pe-utils = "2.0.12"
+SRCREV_pe-utils = "2.0.13"
 
 inherit pkgconfig gitpkgv edge
 
@@ -29,13 +29,14 @@ ${EDGE_BIN}/ \
 S = "${WORKDIR}/git"
 
 do_compile() {
-	cd ${S}/pe-utils/info-tool
-	edge_replace_vars info
+    cd ${S}/pe-utils/info-tool
+    edge_replace_vars info
 }
 
 do_install() {
-	install -d ${D}${EDGE_BIN}
-	install -m 0755 ${S}/pe-utils/info-tool/info ${D}/${EDGE_BIN}/
-	install -d "${D}/etc/tmpfiles.d"
+    install -d ${D}${EDGE_BIN}
+    install -m 0755 ${S}/pe-utils/info-tool/info ${D}/${EDGE_BIN}/
+    install -d "${D}/etc/tmpfiles.d"
+    echo "d /var/rootdirs/userdata 0755 root root -" >> "${D}/etc/tmpfiles.d/userdata-infotool-tmpfiles.conf"
     echo "d ${EDGE_DATA}/info 0777 root root -" >> "${D}/etc/tmpfiles.d/userdata-infotool-tmpfiles.conf"
 }
