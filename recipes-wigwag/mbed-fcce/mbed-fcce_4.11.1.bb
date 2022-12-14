@@ -53,6 +53,10 @@ do_compile() {
     export HTTP_PROXY=${HTTP_PROXY}
     export HTTPS_PROXY=${HTTPS_PROXY}
 
+    # Don't deploy Mbed OS, that's waste in Linux
+    if [ -f "mbed-os.lib" ]; then
+        rm "mbed-os.lib"
+    fi
     mbedpath=$(which mbed-tools);
     python3 $mbedpath deploy
 
