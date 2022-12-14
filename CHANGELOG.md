@@ -1,3 +1,7 @@
+# Pelion Edge 2.5.2
+
+- Fix compilation error related to `mbed-fcce`.
+
 # Pelion Edge 2.5.1 - 18th Jan 2021
 
 - Fixed code fetch error by pointing [mbedtls repository definition](https://github.com/PelionIoT/meta-mbed-edge/commit/56dce48ed2d832d603b86505d2467ef0d9f821e4) to the redefined location.
