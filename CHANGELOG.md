@@ -1,6 +1,7 @@
 # Pelion Edge 2.5.2
 
 - Fix compilation error related to `mbed-fcce`.
+- Pull in `opencontainer/runc` recipe to `meta-pelion-edge` to fix master to main rename build breakage.
 
 # Pelion Edge 2.5.1 - 18th Jan 2021
 
