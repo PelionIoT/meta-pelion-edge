@@ -1,3 +1,11 @@
+# Pelion Edge 2.5.2
+
+- Fix compilation error related to `mbed-fcce` to fix random compilation problems.
+    - Pull in `openssl` version 1.1.1o.
+    - Stop deploying `mbed-os.lib`.
+    - Update Python in `mbed-fcce` recipe to 3.9.
+- Pull in `opencontainer/runc` recipe to `meta-pelion-edge` to fix master to main rename build breakage.
+
 # Pelion Edge 2.5.1 - 18th Jan 2021
 
 - Fixed code fetch error by pointing [mbedtls repository definition](https://github.com/PelionIoT/meta-mbed-edge/commit/56dce48ed2d832d603b86505d2467ef0d9f821e4) to the redefined location.

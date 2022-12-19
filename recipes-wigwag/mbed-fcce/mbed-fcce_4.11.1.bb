@@ -36,14 +36,13 @@ do_configure() {
 
     cd ${S}
 
-    export PYTHONPATH=$PYTHONPATH:`pwd`/recipe-sysroot-native/usr/lib/python3.8
+    export PYTHONPATH=$PYTHONPATH:`pwd`/recipe-sysroot-native/usr/lib/python3.9
     export PATH=$PYTHONPATH:$PATH
 
     export HTTP_PROXY=${HTTP_PROXY}
     export HTTPS_PROXY=${HTTPS_PROXY}
 
-    pip3 install mbed-cli==1.10.5 click==7.1.2 requests pyopenssl==20.0.1
-
+    pip3 install mbed-tools==7.57.0
 }
 
 do_compile() {
@@ -52,10 +51,12 @@ do_compile() {
 
     export HTTP_PROXY=${HTTP_PROXY}
     export HTTPS_PROXY=${HTTPS_PROXY}
-
-    mbedpath=$(which mbed);
+    mbedpath=$(which mbed-tools);
+    # Don't deploy Mbed OS, that's waste in Linux
+    if [ -f "mbed-os.lib" ]; then 
+        rm "mbed-os.lib"
+    fi
     python3 $mbedpath deploy
-
     python3 pal-platform/pal-platform.py -v deploy --target=Yocto_Generic_YoctoLinux_mbedtls generate
 
     if [ "${MBED_EDGE_CORE_CONFIG_PARSEC_TPM_SE_SUPPORT}" = "ON" ]; then
